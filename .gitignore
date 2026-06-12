@@ -1,0 +1,9 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# Node (si más adelante se agrega tooling)
+node_modules/
+dist/
+.env
