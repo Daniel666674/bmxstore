@@ -41,7 +41,7 @@
 
   <section class="section" style="padding-top:20px">
     <div class="wrap">
-      <div class="values">
+      <div class="values stagger">
         <div class="value-card"><div class="n">01</div><h3>Comunidad primero</h3><p>+12.000 riders nos siguen en redes. Apoyamos jams, contests y a quienes empiezan.</p></div>
         <div class="value-card"><div class="n">02</div><h3>Producto real</h3><p>Solo marcas que probamos y montamos. Si no nos sirve a nosotros, no te lo vendemos.</p></div>
         <div class="value-card"><div class="n">03</div><h3>Asesoría honesta</h3><p>Te ayudamos a armar la BMX correcta para tu nivel, estilo y presupuesto.</p></div>
@@ -78,8 +78,9 @@
     const cols = ["pink","cyan","lime","yellow","orange","purple"];
     document.getElementById("ig").innerHTML = cols.concat(cols).slice(0,12).map((c,i) => {
       const fake = { brand:"#STIKE", name:"SESSION "+(i+1), color:c };
-      return `<a class="ig-cell" href="${STIKE_CONFIG.ig}" target="_blank" rel="noopener"><img src="${stikeProductImage(fake,300)}" alt="Comunidad Stike"><span class="ig-ico">⃝ ver en IG</span></a>`;
+      return `<a class="ig-cell" href="${STIKE_CONFIG.ig}" target="_blank" rel="noopener"><img src="${stikeProductImage(fake,300)}" alt="Comunidad Stike"><span class="ig-ico">ver en IG</span></a>`;
     }).join("");
   </script>
+  <script src="assets/js/animations.js"></script>
 </body>
 </html>

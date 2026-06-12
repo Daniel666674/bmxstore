@@ -36,7 +36,7 @@
       if (!cart.length) {
         mount.innerHTML = `
         <div class="cart-empty">
-          <div class="big">🛒</div>
+          <div class="big"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
           <h2 style="font-size:34px;margin:10px 0">Tu carrito está vacío</h2>
           <p style="color:var(--muted)">Agrega bicicletas, repuestos o ropa y vuelve aquí para terminar tu compra.</p>
           <a class="btn cyan" href="tienda.html" style="margin-top:14px">Ir a la tienda</a>
@@ -76,7 +76,7 @@
       mount.innerHTML = `
       <div class="cart-layout">
         <div class="cart-items">
-          ${subtotal < FREE_SHIP ? `<div class="card" style="padding:14px 16px;border-color:var(--cyan)">🚚 Te faltan <b style="color:var(--cyan)">${stikePrice(missing)}</b> para el <b>envío gratis</b>.</div>` : `<div class="card" style="padding:14px 16px;border-color:var(--lime)">🎉 ¡Tienes <b style="color:var(--lime)">envío gratis</b>!</div>`}
+          ${subtotal < FREE_SHIP ? `<div class="card" style="padding:14px 16px;border-color:var(--cyan)">Te faltan <b style="color:var(--cyan)">${stikePrice(missing)}</b> para el <b>envío gratis</b>.</div>` : `<div class="card" style="padding:14px 16px;border-color:var(--lime)"><b style="color:var(--lime)">Envío gratis</b> aplicado a tu pedido.</div>`}
           ${rows}
           <a href="tienda.html" class="link-more" style="margin-top:8px;display:inline-block">← Seguir comprando</a>
         </div>
@@ -86,7 +86,7 @@
           <div class="line"><span>Envío</span><span>${shipping === 0 ? "Gratis" : stikePrice(shipping)}</span></div>
           <div class="promo-input">
             <input type="text" placeholder="Código promo" id="promo">
-            <button class="btn sm" onclick="stikeToast('Código aplicado en el checkout 😉')">Aplicar</button>
+            <button class="btn sm" onclick="stikeToast('Código aplicado en el checkout')">Aplicar</button>
           </div>
           <div class="line total"><span>Total</span><span>${stikePrice(total)}</span></div>
           <a class="btn wa block" style="margin-top:16px" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Finalizar por WhatsApp</a>
@@ -103,5 +103,6 @@
     }
     render();
   </script>
+  <script src="assets/js/animations.js"></script>
 </body>
 </html>

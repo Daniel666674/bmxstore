@@ -84,7 +84,7 @@
             <div><b>Categoría:</b> <a href="tienda.html?cat=${p.cat}" style="color:var(--cyan)">${cat ? cat.name : ""}</a>${p.sub ? ` · <a href="tienda.html?cat=${p.cat}&sub=${encodeURIComponent(p.sub)}" style="color:var(--cyan)">${p.sub}</a>` : ""}</div>
             <div><b>Marca:</b> ${p.brand}</div>
             <div><b>SKU:</b> ${p.id.toUpperCase()}</div>
-            <div>🚚 Envíos a toda Colombia · 🔧 Armado y ajuste gratis</div>
+            <div>Envíos a toda Colombia · Armado y ajuste gratis</div>
           </div>
         </div>
       </div>`;
@@ -111,5 +111,6 @@
       document.getElementById("related").innerHTML = (related.length ? related : fallback).map(stikeProductCard).join("");
     }
   </script>
+  <script src="assets/js/animations.js"></script>
 </body>
 </html>

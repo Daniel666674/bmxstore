@@ -1,6 +1,5 @@
 /* =========================================================================
    STIKE BIKE SHOP — App / UI compartida
-   Header, navegación, carrito (localStorage), render de productos, toasts.
    ========================================================================= */
 
 const STIKE_CONFIG = {
@@ -19,18 +18,31 @@ const STIKE_CONFIG = {
   igHandle: "@stikebikeshop"
 };
 
-/* Detecta prefijo de ruta (todas las páginas viven en la raíz) */
 const STIKE_BASE = "";
 
-/* ----------------------------- LOGO SVG -------------------------------- */
+/* ----------------------------- SOCIAL ICONS ----------------------------- */
+const SOCICO_IG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="white"/></svg>`;
+const SOCICO_FB = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M16 4h-2.5C11.6 4 10 5.6 10 7.5V10H8v3h2v9h3v-9h2.5l.5-3H13V7.5c0-.3.2-.5.5-.5H16V4z"/></svg>`;
+const SOCICO_TT = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.41a8.16 8.16 0 004.77 1.52V7.49a4.85 4.85 0 01-1-.8z"/></svg>`;
+const SOCICO_WA = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.08L2 22l4.92-1.36A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.97 13.47c-.21.59-.96 1.07-1.62 1.21-.43.09-.99.16-2.88-.62-2.43-1-3.96-3.47-4.08-3.63-.12-.17-.99-1.32-.99-2.51 0-1.2.63-1.78.85-2.03.22-.24.48-.3.64-.3h.46c.14 0 .33-.05.51.39.19.46.64 1.57.7 1.68.06.11.1.24.02.39l-.24.37c-.12.13-.25.29-.36.39-.12.1-.24.21-.1.41.14.2.62.91 1.33 1.47.92.73 1.69.96 1.93 1.07.24.1.38.09.52-.06.14-.14.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.38.65 1.62.77.24.12.4.18.46.28.06.1.06.57-.15 1.17z"/></svg>`;
+
+/* ----------------------------- BEAR LOGO -------------------------------- */
 function stikeLogoSVG(size) {
   size = size || 46;
-  return `
-<svg class="logo" width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <rect x="3" y="3" width="58" height="58" rx="12" fill="#0b0b0d" stroke="#ff2e88" stroke-width="3"/>
-  <path d="M40 12 L20 34 H32 L24 52 L46 28 H33 L40 12 Z" fill="#1fe0ff" stroke="#ff2e88" stroke-width="2" stroke-linejoin="round"/>
-  <circle cx="15" cy="50" r="3" fill="#b4ff1a"/>
-  <circle cx="50" cy="16" r="3" fill="#ffe11a"/>
+  return `<svg class="logo" width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect width="64" height="64" rx="12" fill="#0b0b0d"/>
+  <circle cx="15" cy="18" r="8" fill="#ffffff"/>
+  <circle cx="15" cy="18" r="4" fill="#0b0b0d"/>
+  <circle cx="49" cy="18" r="8" fill="#ffffff"/>
+  <circle cx="49" cy="18" r="4" fill="#0b0b0d"/>
+  <ellipse cx="32" cy="41" rx="20" ry="18" fill="#ffffff"/>
+  <path d="M12 32 Q12 12 32 10 Q52 12 52 32 Z" fill="#ffffff"/>
+  <rect x="9" y="29" width="46" height="7" rx="3.5" fill="#c8c8c8"/>
+  <rect x="14" y="37" width="13" height="9" rx="3" fill="#0b0b0d" stroke="#ffffff" stroke-width="1.2"/>
+  <rect x="37" y="37" width="13" height="9" rx="3" fill="#0b0b0d" stroke="#ffffff" stroke-width="1.2"/>
+  <line x1="27" y1="41.5" x2="37" y2="41.5" stroke="#ffffff" stroke-width="1.5"/>
+  <ellipse cx="32" cy="52" rx="6" ry="4.5" fill="#e2e2e2"/>
+  <ellipse cx="32" cy="51" rx="2.5" ry="2" fill="#0b0b0d"/>
 </svg>`;
 }
 
@@ -52,7 +64,7 @@ function stikeAddToCart(id, qty) {
   if (row) row.qty += qty; else cart.push({ id, qty });
   stikeSaveCart(cart);
   const p = stikeFindProduct(id);
-  stikeToast(`✔ ${p ? p.name : "Producto"} agregado`);
+  stikeToast((p ? p.name : "Producto") + " agregado al carrito");
 }
 function stikeUpdateQty(id, qty) {
   const cart = stikeGetCart();
@@ -124,7 +136,6 @@ function stikeProductCard(p) {
 function stikeNavDropdown(cat) {
   if (!cat.subs.length) return "";
   if (cat.slug === "repuestos") {
-    // Mega menú en columnas
     const items = cat.subs.map(s =>
       `<a href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
     return `<div class="dropdown mega">
@@ -154,11 +165,11 @@ function stikeRenderHeader(active) {
   const header = `
   <div class="topbar">
     <div class="wrap">
-      <div class="ticker"><span>🔥 ENVÍOS A TODA COLOMBIA &nbsp; • &nbsp; <b>3 CUOTAS SIN INTERÉS</b> &nbsp; • &nbsp; RECOGE EN TIENDA EN CHAPINERO &nbsp; • &nbsp; ARMAMOS TU BMX GRATIS &nbsp; • &nbsp; <b>COMUNIDAD STIKE BOGOTÁ</b> 🛹</span></div>
+      <div class="ticker"><span>ENVÍOS A TODA COLOMBIA &nbsp; ✦ &nbsp; <b>3 CUOTAS SIN INTERÉS</b> &nbsp; ✦ &nbsp; RECOGE EN CHAPINERO &nbsp; ✦ &nbsp; ARMAMOS TU BMX GRATIS &nbsp; ✦ &nbsp; <b>COMUNIDAD STIKE BOGOTÁ</b></span></div>
       <div class="social">
-        <a href="${C.ig}" target="_blank" rel="noopener">IG</a>
-        <a href="${C.fb}" target="_blank" rel="noopener">FB</a>
-        <a href="${C.tiktok}" target="_blank" rel="noopener">TikTok</a>
+        <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig soc-sm" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
+        <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb soc-sm" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>
+        <a href="${C.tiktok}" target="_blank" rel="noopener" class="soc soc-tt soc-sm" title="TikTok" aria-label="TikTok">${SOCICO_TT}</a>
       </div>
     </div>
   </div>
@@ -177,7 +188,8 @@ function stikeRenderHeader(active) {
           <a class="icon-btn" href="nosotros.html" title="Nosotros" aria-label="Nosotros">★</a>
           <a class="icon-btn" href="contacto.html" title="Contacto" aria-label="Contacto">✆</a>
           <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
-            🛒<span class="cart-count">0</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-count">0</span>
           </a>
           <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú">☰</button>
         </div>
@@ -215,8 +227,6 @@ function stikeBindHeader() {
     nav.classList.remove("open");
     backdrop.classList.remove("show");
   });
-  // En móvil, abrir submenús al tocar el caret
-  nav && nav.querySelectorAll(".has-mega > a, li > a > .caret").forEach(() => {});
   nav && nav.querySelectorAll(".nav-list > li").forEach(li => {
     const caret = li.querySelector(".caret");
     if (!caret) return;
@@ -247,7 +257,7 @@ function stikeRenderFooter() {
         <h2>¿Listo para rodar?</h2>
         <p>Escríbenos por WhatsApp y arma tu BMX con asesoría real de riders.</p>
       </div>
-      <a class="btn wa" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">⟶ Hablar por WhatsApp</a>
+      <a class="btn wa" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">Hablar por WhatsApp</a>
     </div>
   </section>
   <footer class="site-footer">
@@ -257,10 +267,10 @@ function stikeRenderFooter() {
           <div class="brand">${stikeLogoSVG(40)} <span class="name">Stike<small>${C.tagline}</small></span></div>
           <p style="margin-top:14px">La tienda BMX de Bogotá. Bicicletas, repuestos, ropa y la comunidad más activa de la ciudad.</p>
           <div class="foot-social">
-            <a href="${C.ig}" target="_blank" rel="noopener" title="Instagram">IG</a>
-            <a href="${C.fb}" target="_blank" rel="noopener" title="Facebook">FB</a>
-            <a href="${C.tiktok}" target="_blank" rel="noopener" title="TikTok">TT</a>
-            <a href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener" title="WhatsApp">WA</a>
+            <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
+            <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>
+            <a href="${C.tiktok}" target="_blank" rel="noopener" class="soc soc-tt" title="TikTok" aria-label="TikTok">${SOCICO_TT}</a>
+            <a href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener" class="soc soc-wa" title="WhatsApp" aria-label="WhatsApp">${SOCICO_WA}</a>
           </div>
         </div>
         <div>
@@ -283,7 +293,7 @@ function stikeRenderFooter() {
             <input type="email" placeholder="Tu correo" required>
             <button class="btn sm" type="submit">Unirme</button>
           </form>
-          <p style="margin-top:14px">📍 ${C.address}<br>🕒 ${C.hours}<br>📞 ${C.whatsappPretty}</p>
+          <p style="margin-top:14px">${C.address}<br>${C.hours}<br>${C.whatsappPretty}</p>
         </div>
       </div>
       <div class="footer-bottom">
@@ -301,7 +311,7 @@ function stikeRenderFooter() {
 function stikeNewsletter(e) {
   e.preventDefault();
   e.target.reset();
-  stikeToast("✔ ¡Bienvenido a la comunidad Stike!");
+  stikeToast("Bienvenido a la comunidad Stike");
 }
 
 /* --------------------- Delegación global de eventos -------------------- */
@@ -319,7 +329,8 @@ function stikeFloatingWA() {
   a.href = "https://wa.me/" + STIKE_CONFIG.whatsapp;
   a.target = "_blank"; a.rel = "noopener";
   a.title = "Escríbenos por WhatsApp";
-  a.innerHTML = "💬";
+  a.setAttribute("aria-label", "Escríbenos por WhatsApp");
+  a.innerHTML = SOCICO_WA;
   document.body.appendChild(a);
 }
 

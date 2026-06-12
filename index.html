@@ -18,8 +18,8 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <span class="eyebrow tag-pill" style="background:var(--lime);color:#0b0b0d">📍 Bogotá · Chapinero</span>
-        <h1>Rueda <span class="o1">duro</span>,<br>vive <span class="o2">BMX</span></h1>
+        <span class="eyebrow tag-pill" style="background:var(--lime);color:#0b0b0d">Bogotá · Chapinero</span>
+        <h1>Rueda <span class="o1 glitch">duro</span>,<br>vive <span class="o2">BMX</span></h1>
         <p class="lead">Bicicletas completas, repuestos de las mejores marcas, ropa y protecciones. Armamos tu BMX con asesoría real de riders y lo enviamos a toda Colombia.</p>
         <div class="hero-cta">
           <a class="btn" href="tienda.html?cat=bicicletas">Ver bicicletas</a>
@@ -68,7 +68,7 @@
         </div>
         <a class="link-more" href="tienda.html">Ver todo →</a>
       </div>
-      <div class="cat-grid" id="home-cats"></div>
+      <div class="cat-grid stagger" id="home-cats"></div>
     </div>
   </section>
 
@@ -82,18 +82,18 @@
         </div>
         <a class="link-more" href="tienda.html">Ver catálogo →</a>
       </div>
-      <div class="product-grid" id="home-featured"></div>
+      <div class="product-grid stagger" id="home-featured"></div>
     </div>
   </section>
 
   <!-- VALUE PROPS -->
   <section class="section" style="padding-top:0">
     <div class="wrap">
-      <div class="props">
-        <div class="prop"><span class="ico">🚚</span><div><h4>Envíos a Colombia</h4><p>Despacho en 24h dentro de Bogotá y a todo el país.</p></div></div>
-        <div class="prop"><span class="ico">🔧</span><div><h4>Armado gratis</h4><p>Recibe tu BMX lista para rodar, ajustada por riders.</p></div></div>
-        <div class="prop"><span class="ico">💳</span><div><h4>Paga fácil</h4><p>Tarjeta, PSE, Nequi, Efecty y cuotas sin interés.</p></div></div>
-        <div class="prop"><span class="ico">🤝</span><div><h4>Asesoría real</h4><p>Hablas con riders que sí montan, no con un bot.</p></div></div>
+      <div class="props stagger">
+        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span><div><h4>Envíos a Colombia</h4><p>Despacho en 24h dentro de Bogotá y a todo el país.</p></div></div>
+        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span><div><h4>Armado gratis</h4><p>Recibe tu BMX lista para rodar, ajustada por riders.</p></div></div>
+        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span><div><h4>Paga fácil</h4><p>Tarjeta, PSE, Nequi, Efecty y cuotas sin interés.</p></div></div>
+        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><h4>Asesoría real</h4><p>Hablas con riders que sí montan, no con un bot.</p></div></div>
       </div>
     </div>
   </section>
@@ -108,7 +108,7 @@
         </div>
         <a class="link-more" href="tienda.html?cat=promo">Ver ofertas →</a>
       </div>
-      <div class="product-grid" id="home-promo"></div>
+      <div class="product-grid stagger" id="home-promo"></div>
     </div>
   </section>
 
@@ -147,6 +147,7 @@
   <script>
     stikeInit("home");
 
+
     // Categorías
     document.getElementById("home-cats").innerHTML = STIKE_CATEGORIES.map(c => `
       <a class="cat-card ${c.color}" href="tienda.html?cat=${c.slug}">
@@ -175,9 +176,10 @@
         const fake = { brand: "#STIKE", name: "RIDER " + (i+1), color: c };
         return `<a class="ig-cell" href="${STIKE_CONFIG.ig}" target="_blank" rel="noopener">
           <img src="${stikeProductImage(fake, 300)}" alt="Comunidad Stike">
-          <span class="ig-ico">⃝ ver en IG</span>
+          <span class="ig-ico">ver en IG</span>
         </a>`;
       }).join("");
   </script>
+  <script src="assets/js/animations.js"></script>
 </body>
 </html>
