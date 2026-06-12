@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Producto — Stike Bike Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0d'/%3E%3Cpath d='M40 12 L20 34 H32 L24 52 L46 28 H33 L40 12 Z' fill='%231fe0ff'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div class="wrap page-head" style="padding-bottom:0">
+    <nav class="breadcrumb" id="crumb"></nav>
+  </div>
+
+  <div class="wrap" id="pdp-mount"></div>
+
+  <section class="section" style="padding-top:20px">
+    <div class="wrap">
+      <div class="section-head"><h2>También te puede gustar</h2></div>
+      <div class="product-grid" id="related"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    stikeInit();
+    const id = new URLSearchParams(location.search).get("id");
+    const p = stikeFindProduct(id);
+    const mount = document.getElementById("pdp-mount");
+
+    if (!p) {
+      document.getElementById("crumb").innerHTML = `<a href="index.html">Inicio</a><span class="sep">/</span><span>Producto</span>`;
+      mount.innerHTML = `<div class="empty"><h3 style="font-size:30px">Producto no encontrado</h3><p>Es posible que ya no esté disponible.</p><a class="btn cyan" href="tienda.html">Volver a la tienda</a></div>`;
+    } else {
+      const cat = stikeCategory(p.cat);
+      document.getElementById("crumb").innerHTML =
+        `<a href="index.html">Inicio</a><span class="sep">/</span><a href="tienda.html?cat=${p.cat}">${cat ? cat.name : "Tienda"}</a><span class="sep">/</span><span>${p.name}</span>`;
+
+      const oldPrice = p.old ? `<span class="old">${stikePrice(p.old)}</span>` : "";
+      const discount = p.old ? `<span class="tag-pill" style="background:var(--yellow);color:#0b0b0d;margin-left:10px">-${Math.round((1 - p.price / p.old) * 100)}%</span>` : "";
+      const stockHtml = p.stock > 0
+        ? `<span class="stock">● En stock (${p.stock} disponibles)</span>`
+        : `<span class="stock out">● Agotado — consúltanos por WhatsApp</span>`;
+      const specs = (p.specs || []).map(s => `<li>${s}</li>`).join("");
+      const img = stikeProductImage(p, 800);
+      const waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.name} (${stikePrice(p.price)}). ¿Está disponible?`);
+
+      mount.innerHTML = `
+      <div class="pdp">
+        <div class="pdp-gallery">
+          <div class="main"><img id="main-img" src="${img}" alt="${p.name}"></div>
+          <div class="pdp-thumbs">
+            ${[0,1,2,3].map(i => `<button class="${i===0?"active":""}" data-thumb><img src="${img}" alt="vista ${i+1}"></button>`).join("")}
+          </div>
+        </div>
+        <div class="pdp-info">
+          <span class="brandline">${p.brand}</span>
+          <h1>${p.name}</h1>
+          <div class="price">${stikePrice(p.price)} ${oldPrice}${discount}</div>
+          <div style="margin-top:12px">${stockHtml}</div>
+          <p class="desc">${p.desc}</p>
+          <div class="pdp-actions">
+            <div class="qty">
+              <button data-q="-1" aria-label="Menos">−</button>
+              <input id="qty" type="text" value="1" inputmode="numeric" aria-label="Cantidad">
+              <button data-q="1" aria-label="Más">+</button>
+            </div>
+            <button class="btn" id="add-btn" ${p.stock===0?"disabled style=opacity:.5":""}>Agregar al carrito</button>
+            <a class="btn wa" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Comprar por WhatsApp</a>
+          </div>
+          <div class="pdp-info-specs">
+            <h3 style="font-size:20px;margin-bottom:8px">Especificaciones</h3>
+            <ul class="spec-list">${specs}</ul>
+          </div>
+          <div class="pdp-meta">
+            <div><b>Categoría:</b> <a href="tienda.html?cat=${p.cat}" style="color:var(--cyan)">${cat ? cat.name : ""}</a>${p.sub ? ` · <a href="tienda.html?cat=${p.cat}&sub=${encodeURIComponent(p.sub)}" style="color:var(--cyan)">${p.sub}</a>` : ""}</div>
+            <div><b>Marca:</b> ${p.brand}</div>
+            <div><b>SKU:</b> ${p.id.toUpperCase()}</div>
+            <div>🚚 Envíos a toda Colombia · 🔧 Armado y ajuste gratis</div>
+          </div>
+        </div>
+      </div>`;
+
+      // Cantidad
+      const qtyEl = document.getElementById("qty");
+      document.querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => {
+        let v = parseInt(qtyEl.value) || 1;
+        v = Math.max(1, v + parseInt(b.getAttribute("data-q")));
+        qtyEl.value = v;
+      }));
+      qtyEl.addEventListener("input", () => { qtyEl.value = qtyEl.value.replace(/[^0-9]/g, ""); });
+      const addBtn = document.getElementById("add-btn");
+      if (addBtn && p.stock > 0) addBtn.addEventListener("click", () => stikeAddToCart(p.id, Math.max(1, parseInt(qtyEl.value) || 1)));
+      // Thumbs (placeholder)
+      document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
+        document.querySelectorAll("[data-thumb]").forEach(o => o.classList.remove("active"));
+        t.classList.add("active");
+      }));
+
+      // Relacionados
+      const related = STIKE_PRODUCTS.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4);
+      const fallback = STIKE_PRODUCTS.filter(x => x.id !== p.id).slice(0, 4);
+      document.getElementById("related").innerHTML = (related.length ? related : fallback).map(stikeProductCard).join("");
+    }
+  </script>
+</body>
+</html>

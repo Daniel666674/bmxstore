@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito — Stike Bike Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0d'/%3E%3Cpath d='M40 12 L20 34 H32 L24 52 L46 28 H33 L40 12 Z' fill='%231fe0ff'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div class="wrap page-head">
+    <nav class="breadcrumb"><a href="index.html">Inicio</a><span class="sep">/</span><span>Carrito</span></nav>
+    <h1>Tu carrito</h1>
+  </div>
+
+  <div class="wrap" id="cart-mount"></div>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    stikeInit();
+    const FREE_SHIP = 300000;
+    const SHIP_COST = 18000;
+
+    function render() {
+      const cart = stikeGetCart();
+      const mount = document.getElementById("cart-mount");
+
+      if (!cart.length) {
+        mount.innerHTML = `
+        <div class="cart-empty">
+          <div class="big">🛒</div>
+          <h2 style="font-size:34px;margin:10px 0">Tu carrito está vacío</h2>
+          <p style="color:var(--muted)">Agrega bicicletas, repuestos o ropa y vuelve aquí para terminar tu compra.</p>
+          <a class="btn cyan" href="tienda.html" style="margin-top:14px">Ir a la tienda</a>
+        </div>`;
+        return;
+      }
+
+      const rows = cart.map(r => {
+        const p = stikeFindProduct(r.id);
+        if (!p) return "";
+        return `
+        <div class="cart-row" data-row="${p.id}">
+          <div class="ci-img"><a href="producto.html?id=${p.id}"><img src="${stikeProductImage(p,200)}" alt="${p.name}"></a></div>
+          <div>
+            <div class="ci-brand">${p.brand}</div>
+            <a href="producto.html?id=${p.id}" class="ci-title">${p.name}</a>
+            <div class="ci-price">${stikePrice(p.price)}</div>
+          </div>
+          <div class="ci-right">
+            <div class="qty">
+              <button data-dec="${p.id}" aria-label="Menos">−</button>
+              <input type="text" value="${r.qty}" data-qty="${p.id}" inputmode="numeric" aria-label="Cantidad">
+              <button data-inc="${p.id}" aria-label="Más">+</button>
+            </div>
+            <button class="remove" data-remove="${p.id}">✕ Quitar</button>
+          </div>
+        </div>`;
+      }).join("");
+
+      const subtotal = stikeCartTotal();
+      const shipping = subtotal >= FREE_SHIP ? 0 : SHIP_COST;
+      const total = subtotal + shipping;
+      const missing = FREE_SHIP - subtotal;
+      const waLines = cart.map(r => { const p = stikeFindProduct(r.id); return p ? `• ${r.qty}x ${p.name} — ${stikePrice(p.price * r.qty)}` : ""; }).join("%0A");
+      const waMsg = `Hola Stike! Quiero hacer este pedido:%0A${waLines}%0A%0ASubtotal: ${stikePrice(subtotal)}%0ATotal: ${stikePrice(total)}`;
+
+      mount.innerHTML = `
+      <div class="cart-layout">
+        <div class="cart-items">
+          ${subtotal < FREE_SHIP ? `<div class="card" style="padding:14px 16px;border-color:var(--cyan)">🚚 Te faltan <b style="color:var(--cyan)">${stikePrice(missing)}</b> para el <b>envío gratis</b>.</div>` : `<div class="card" style="padding:14px 16px;border-color:var(--lime)">🎉 ¡Tienes <b style="color:var(--lime)">envío gratis</b>!</div>`}
+          ${rows}
+          <a href="tienda.html" class="link-more" style="margin-top:8px;display:inline-block">← Seguir comprando</a>
+        </div>
+        <aside class="summary">
+          <h3>Resumen</h3>
+          <div class="line"><span>Subtotal</span><span>${stikePrice(subtotal)}</span></div>
+          <div class="line"><span>Envío</span><span>${shipping === 0 ? "Gratis" : stikePrice(shipping)}</span></div>
+          <div class="promo-input">
+            <input type="text" placeholder="Código promo" id="promo">
+            <button class="btn sm" onclick="stikeToast('Código aplicado en el checkout 😉')">Aplicar</button>
+          </div>
+          <div class="line total"><span>Total</span><span>${stikePrice(total)}</span></div>
+          <a class="btn wa block" style="margin-top:16px" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Finalizar por WhatsApp</a>
+          <button class="btn block" style="margin-top:10px" onclick="stikeToast('Checkout demo — conecta tu pasarela de pago')">Pagar ahora</button>
+          <p style="color:var(--muted);font-size:12px;margin-top:14px;text-align:center">Pagos: Tarjeta · PSE · Nequi · Efecty</p>
+        </aside>
+      </div>`;
+
+      // Eventos
+      mount.querySelectorAll("[data-inc]").forEach(b => b.addEventListener("click", () => { const id=b.getAttribute("data-inc"); const c=stikeGetCart().find(x=>x.id===id); stikeUpdateQty(id,(c?c.qty:1)+1); render(); }));
+      mount.querySelectorAll("[data-dec]").forEach(b => b.addEventListener("click", () => { const id=b.getAttribute("data-dec"); const c=stikeGetCart().find(x=>x.id===id); stikeUpdateQty(id,(c?c.qty:1)-1); render(); }));
+      mount.querySelectorAll("[data-qty]").forEach(inp => inp.addEventListener("change", () => { const id=inp.getAttribute("data-qty"); stikeUpdateQty(id, Math.max(1, parseInt(inp.value)||1)); render(); }));
+      mount.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => { stikeRemoveFromCart(b.getAttribute("data-remove")); render(); }));
+    }
+    render();
+  </script>
+</body>
+</html>

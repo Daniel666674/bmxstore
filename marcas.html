@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcas — Stike Bike Shop</title>
+  <meta name="description" content="Las mejores marcas BMX en Stike Bike Shop: Total, Odyssey, Shadow, Cult, Sunday y más.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0d'/%3E%3Cpath d='M40 12 L20 34 H32 L24 52 L46 28 H33 L40 12 Z' fill='%231fe0ff'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div class="wrap page-head">
+    <nav class="breadcrumb"><a href="index.html">Inicio</a><span class="sep">/</span><span>Marcas</span></nav>
+    <h1>Marcas</h1>
+    <div class="count">Trabajamos con las marcas más respetadas del BMX mundial. Toca una para ver sus productos.</div>
+  </div>
+
+  <div class="wrap" style="padding-bottom:70px">
+    <div class="brand-grid" id="brand-grid" style="grid-template-columns:repeat(4,1fr)"></div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    stikeInit("marcas");
+    document.getElementById("brand-grid").innerHTML = STIKE_BRANDS.map(b => {
+      const count = STIKE_PRODUCTS.filter(p => p.brand === b).length;
+      return `<a class="brand-chip" id="${encodeURIComponent(b)}" href="tienda.html?brand=${encodeURIComponent(b)}" style="flex-direction:column;gap:6px;min-height:120px">
+        <span style="font-size:22px">${b}</span>
+        <small style="font-family:var(--body);font-weight:600;letter-spacing:0;text-transform:none;color:var(--cyan)">${count} producto${count===1?"":"s"}</small>
+      </a>`;
+    }).join("");
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosotros — Stike Bike Shop</title>
+  <meta name="description" content="Stike Bike Shop nació de la comunidad BMX de Bogotá. Conoce nuestra historia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0d'/%3E%3Cpath d='M40 12 L20 34 H32 L24 52 L46 28 H33 L40 12 Z' fill='%231fe0ff'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div class="wrap page-head">
+    <nav class="breadcrumb"><a href="index.html">Inicio</a><span class="sep">/</span><span>Nosotros</span></nav>
+  </div>
+
+  <div class="wrap">
+    <div class="about-hero">
+      <div>
+        <span class="kicker" style="color:var(--pink)">Desde el barrio para el mundo</span>
+        <h1>Somos <span class="o1" style="color:var(--pink)">Stike</span>,<br>la BMX de <span class="o2" style="color:var(--cyan)">Bogotá</span></h1>
+        <p>Stike Bike Shop nació de la calle y de las sesiones en los parques de Bogotá. Cansados de no encontrar repuestos y buena asesoría, montamos la tienda que nosotros mismos queríamos: precios reales, marcas top y gente que sí monta.</p>
+        <p>Hoy somos punto de encuentro de riders, organizamos jams, apoyamos a la escena local y mantenemos viva la comunidad más activa de la ciudad en Instagram y Facebook.</p>
+        <div class="hero-cta">
+          <a class="btn" href="tienda.html">Ver la tienda</a>
+          <a class="btn ghost" href="https://instagram.com/stikebikeshop" target="_blank" rel="noopener">Síguenos en IG</a>
+        </div>
+      </div>
+      <div class="hero-art" style="aspect-ratio:4/5;max-width:420px">
+        <span class="blob a"></span><span class="blob b"></span><span class="blob c"></span>
+        <span class="sticker" style="background:var(--yellow);top:20px;left:18px;transform:rotate(-6deg)">BOGOTÁ</span>
+        <span class="sticker" style="background:var(--lime);bottom:24px;right:18px;transform:rotate(5deg)">RIDE OR DIE</span>
+        <div style="font-family:var(--display);font-size:90px;color:#fff;line-height:.85;text-align:center;text-transform:uppercase">Stike<br><span style="color:var(--cyan);font-size:40px;letter-spacing:6px">BMX</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top:20px">
+    <div class="wrap">
+      <div class="values">
+        <div class="value-card"><div class="n">01</div><h3>Comunidad primero</h3><p>+12.000 riders nos siguen en redes. Apoyamos jams, contests y a quienes empiezan.</p></div>
+        <div class="value-card"><div class="n">02</div><h3>Producto real</h3><p>Solo marcas que probamos y montamos. Si no nos sirve a nosotros, no te lo vendemos.</p></div>
+        <div class="value-card"><div class="n">03</div><h3>Asesoría honesta</h3><p>Te ayudamos a armar la BMX correcta para tu nivel, estilo y presupuesto.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head"><div><span class="kicker">Nuestra ruta</span><h2>La historia</h2></div></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="yr">'19</div><div><h3 style="font-size:20px">Empezó en una sesión</h3><p style="color:var(--muted)">Un grupo de amigos riders revendiendo partes entre la parche. Así arrancó todo.</p></div></div>
+        <div class="tl-item"><div class="yr">'21</div><div><h3 style="font-size:20px">Tienda online</h3><p style="color:var(--muted)">Abrimos la tienda virtual y empezamos a despachar a toda Colombia.</p></div></div>
+        <div class="tl-item"><div class="yr">'23</div><div><h3 style="font-size:20px">Local en Chapinero</h3><p style="color:var(--muted)">Inauguramos el punto físico: taller, tienda y lugar de encuentro de la escena.</p></div></div>
+        <div class="tl-item"><div class="yr">'26</div><div><h3 style="font-size:20px">La comunidad Stike</h3><p style="color:var(--muted)">Más de 12K seguidores, jams propios y la marca Stike creciendo en las calles.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section community" style="margin-top:10px">
+    <div class="wrap">
+      <div class="section-head"><div><span class="kicker" style="color:var(--pink)">#RodandoConStike</span><h2>Síguenos</h2></div>
+        <a class="link-more" href="https://instagram.com/stikebikeshop" target="_blank" rel="noopener">@stikebikeshop →</a></div>
+      <div class="ig-grid" id="ig"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    stikeInit();
+    const cols = ["pink","cyan","lime","yellow","orange","purple"];
+    document.getElementById("ig").innerHTML = cols.concat(cols).slice(0,12).map((c,i) => {
+      const fake = { brand:"#STIKE", name:"SESSION "+(i+1), color:c };
+      return `<a class="ig-cell" href="${STIKE_CONFIG.ig}" target="_blank" rel="noopener"><img src="${stikeProductImage(fake,300)}" alt="Comunidad Stike"><span class="ig-ico">⃝ ver en IG</span></a>`;
+    }).join("");
+  </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stike Bike Shop — Tienda BMX en Bogotá</title>
+  <meta name="description" content="Stike Bike Shop: la tienda BMX de Bogotá. Bicicletas completas, repuestos, protecciones, ropa y la comunidad más activa de la ciudad. Envíos a toda Colombia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0d'/%3E%3Cpath d='M40 12 L20 34 H32 L24 52 L46 28 H33 L40 12 Z' fill='%231fe0ff'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow tag-pill" style="background:var(--lime);color:#0b0b0d">📍 Bogotá · Chapinero</span>
+        <h1>Rueda <span class="o1">duro</span>,<br>vive <span class="o2">BMX</span></h1>
+        <p class="lead">Bicicletas completas, repuestos de las mejores marcas, ropa y protecciones. Armamos tu BMX con asesoría real de riders y lo enviamos a toda Colombia.</p>
+        <div class="hero-cta">
+          <a class="btn" href="tienda.html?cat=bicicletas">Ver bicicletas</a>
+          <a class="btn ghost" href="tienda.html?cat=repuestos">Comprar repuestos</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat s1"><b>+12K</b><span>Comunidad IG / FB</span></div>
+          <div class="stat s2"><b>+800</b><span>Productos en stock</span></div>
+          <div class="stat s3"><b>24h</b><span>Despacho en Bogotá</span></div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <span class="blob a"></span><span class="blob b"></span><span class="blob c"></span>
+        <span class="sticker" style="background:var(--yellow);top:18px;right:20px;transform:rotate(6deg)">NEW DROP</span>
+        <span class="sticker" style="background:var(--cyan);bottom:24px;left:18px;transform:rotate(-7deg)">STREET / PARK</span>
+        <svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="BMX">
+          <g stroke="#f5f5f7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <circle cx="48" cy="96" r="36"/>
+            <circle cx="152" cy="96" r="36"/>
+            <path d="M48 96 L92 44 H140 M92 44 L120 96 M48 96 L120 96 M140 44 L152 96"/>
+            <path d="M40 38 H66 M150 30 H176"/>
+            <path d="M92 44 L88 30 M152 60 L152 96"/>
+          </g>
+          <circle cx="48" cy="96" r="6" fill="#ff2e88"/>
+          <circle cx="152" cy="96" r="6" fill="#1fe0ff"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="track">
+      <span>STREET <i>✦</i> PARK <i>✦</i> DIRT <i>✦</i> FLATLAND <i>✦</i> ENVÍOS A TODA COLOMBIA <i>✦</i> ARMADO GRATIS <i>✦</i> COMUNIDAD STIKE <i>✦</i></span>
+      <span>STREET <i>✦</i> PARK <i>✦</i> DIRT <i>✦</i> FLATLAND <i>✦</i> ENVÍOS A TODA COLOMBIA <i>✦</i> ARMADO GRATIS <i>✦</i> COMUNIDAD STIKE <i>✦</i></span>
+    </div>
+  </div>
+
+  <!-- CATEGORÍAS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Explora la tienda</span>
+          <h2>Categorías</h2>
+        </div>
+        <a class="link-more" href="tienda.html">Ver todo →</a>
+      </div>
+      <div class="cat-grid" id="home-cats"></div>
+    </div>
+  </section>
+
+  <!-- DESTACADOS -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Lo más vendido</span>
+          <h2>Destacados <span class="spray">de la semana</span></h2>
+        </div>
+        <a class="link-more" href="tienda.html">Ver catálogo →</a>
+      </div>
+      <div class="product-grid" id="home-featured"></div>
+    </div>
+  </section>
+
+  <!-- VALUE PROPS -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="props">
+        <div class="prop"><span class="ico">🚚</span><div><h4>Envíos a Colombia</h4><p>Despacho en 24h dentro de Bogotá y a todo el país.</p></div></div>
+        <div class="prop"><span class="ico">🔧</span><div><h4>Armado gratis</h4><p>Recibe tu BMX lista para rodar, ajustada por riders.</p></div></div>
+        <div class="prop"><span class="ico">💳</span><div><h4>Paga fácil</h4><p>Tarjeta, PSE, Nequi, Efecty y cuotas sin interés.</p></div></div>
+        <div class="prop"><span class="ico">🤝</span><div><h4>Asesoría real</h4><p>Hablas con riders que sí montan, no con un bot.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMO BANNER -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker" style="color:var(--yellow)">Precios de calle</span>
+          <h2>Zona <span class="mark">Promo</span></h2>
+        </div>
+        <a class="link-more" href="tienda.html?cat=promo">Ver ofertas →</a>
+      </div>
+      <div class="product-grid" id="home-promo"></div>
+    </div>
+  </section>
+
+  <!-- MARCAS -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Trabajamos con</span>
+          <h2>Marcas</h2>
+        </div>
+        <a class="link-more" href="marcas.html">Todas las marcas →</a>
+      </div>
+      <div class="brand-grid" id="home-brands"></div>
+    </div>
+  </section>
+
+  <!-- COMUNIDAD -->
+  <section class="section community">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker" style="color:var(--pink)">#RodandoConStike</span>
+          <h2>La comunidad <span class="spray">manda</span></h2>
+        </div>
+        <a class="link-more" href="https://instagram.com/stikebikeshop" target="_blank" rel="noopener">Síguenos en IG →</a>
+      </div>
+      <div class="ig-grid" id="home-ig"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    stikeInit("home");
+
+    // Categorías
+    document.getElementById("home-cats").innerHTML = STIKE_CATEGORIES.map(c => `
+      <a class="cat-card ${c.color}" href="tienda.html?cat=${c.slug}">
+        <span class="go">→</span>
+        <h3>${c.name}</h3>
+        <span>${c.blurb}</span>
+      </a>`).join("");
+
+    // Destacados (primeros productos variados)
+    const featured = ["stk-pro20","frame-total","helmet-tsg","tee-stike","sprk-shadow","fork-odyssey","hoodie-stike","pedal-odyssey"]
+      .map(stikeFindProduct).filter(Boolean);
+    document.getElementById("home-featured").innerHTML = featured.map(stikeProductCard).join("");
+
+    // Promo
+    document.getElementById("home-promo").innerHTML =
+      STIKE_PRODUCTS.filter(p => p.old).slice(0,4).map(stikeProductCard).join("");
+
+    // Marcas
+    document.getElementById("home-brands").innerHTML =
+      STIKE_BRANDS.map(b => `<a class="brand-chip" href="marcas.html#${encodeURIComponent(b)}">${b}</a>`).join("");
+
+    // Comunidad (grilla estilo IG con placeholders)
+    const igColors = ["pink","cyan","lime","yellow","orange","purple"];
+    document.getElementById("home-ig").innerHTML = igColors.concat(igColors.slice(0,6)).slice(0,12)
+      .map((c,i) => {
+        const fake = { brand: "#STIKE", name: "RIDER " + (i+1), color: c };
+        return `<a class="ig-cell" href="${STIKE_CONFIG.ig}" target="_blank" rel="noopener">
+          <img src="${stikeProductImage(fake, 300)}" alt="Comunidad Stike">
+          <span class="ig-ico">⃝ ver en IG</span>
+        </a>`;
+      }).join("");
+  </script>
+</body>
+</html>
