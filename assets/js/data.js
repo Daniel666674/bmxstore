@@ -286,16 +286,16 @@ const STIKE_PRODUCTS = [
     specs: ["Tipo: Pivotal", "Material: Cuero negro", "Corte original", "Hecha en Colombia"] }
 ];
 
-/* --------- Generador de imagen SVG estilo grafiti (data-URI) ----------- */
-/* Grayscale ramp — placeholders/community render strictly B&W.
-   [accent glyph color, gradient base] tuned for subtle variety. */
+/* --------- Generador de imagen SVG (data-URI) — placeholder B&W --------- */
+/* Solo se usa cuando un producto no tiene foto real, y para la grilla IG.
+   Tratamiento premium monocromo: marco, marca de oso al agua y nombre. */
 const STIKE_PALETTE = {
-  pink:   ["#ffffff", "#23232a"],
-  cyan:   ["#d4d4da", "#1c1c22"],
-  yellow: ["#ededf0", "#26262d"],
-  lime:   ["#ffffff", "#1a1a20"],
-  orange: ["#bdbdc4", "#202026"],
-  purple: ["#9a9aa3", "#17171c"]
+  pink:   ["#ffffff", "#18181b"],
+  cyan:   ["#ffffff", "#161619"],
+  yellow: ["#ffffff", "#1a1a1d"],
+  lime:   ["#ffffff", "#141417"],
+  orange: ["#ffffff", "#1c1c20"],
+  purple: ["#ffffff", "#121215"]
 };
 
 function stikeProductImage(product, size) {
@@ -304,7 +304,6 @@ function stikeProductImage(product, size) {
   const pal = STIKE_PALETTE[product.color] || STIKE_PALETTE.pink;
   const label = (product.brand || "STIKE").toUpperCase();
   const name = (product.name || "").toUpperCase();
-  // partir el nombre en 2 líneas
   const words = name.split(" ");
   const mid = Math.ceil(words.length / 2);
   const l1 = words.slice(0, mid).join(" ");
@@ -312,30 +311,31 @@ function stikeProductImage(product, size) {
   const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 600 600">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="${pal[1]}"/>
-      <stop offset="1" stop-color="#0c0c10"/>
+      <stop offset="1" stop-color="#0a0a0b"/>
     </linearGradient>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
-    </pattern>
   </defs>
   <rect width="600" height="600" fill="url(#g)"/>
-  <rect width="600" height="600" fill="url(#grid)"/>
-  <circle cx="120" cy="110" r="130" fill="${pal[0]}" opacity="0.18"/>
-  <circle cx="500" cy="500" r="160" fill="${pal[0]}" opacity="0.14"/>
-  <!-- BMX glyph -->
-  <g transform="translate(300,300)" stroke="${pal[0]}" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
-    <circle cx="-95" cy="55" r="70"/>
-    <circle cx="95" cy="55" r="70"/>
-    <path d="M-95 55 L-20 -35 L70 -35 M-20 -35 L40 55 M-95 55 L40 55 M70 -35 L95 55"/>
-    <path d="M-110 -40 L-70 -40" />
-    <path d="M55 -55 L85 -55"/>
+  <rect x="22" y="22" width="556" height="556" rx="18" fill="none" stroke="#ffffff" stroke-opacity="0.10"/>
+  <!-- marca de oso al agua -->
+  <g transform="translate(300,266)" fill="#ffffff" opacity="0.05">
+    <circle cx="-86" cy="-78" r="50"/>
+    <circle cx="86" cy="-78" r="50"/>
+    <ellipse cx="0" cy="8" rx="132" ry="120"/>
   </g>
-  <rect x="40" y="34" width="${40 + label.length * 17}" height="42" rx="6" fill="${pal[0]}" transform="rotate(-3 60 55)"/>
-  <text x="58" y="64" font-family="Arial, sans-serif" font-weight="900" font-size="26" fill="#0b0b0d" transform="rotate(-3 60 55)">${label}</text>
-  <text x="300" y="520" text-anchor="middle" font-family="Arial Narrow, Arial, sans-serif" font-weight="900" font-size="34" fill="#ffffff" opacity="0.92">${l1}</text>
-  <text x="300" y="558" text-anchor="middle" font-family="Arial Narrow, Arial, sans-serif" font-weight="900" font-size="34" fill="${pal[0]}">${l2}</text>
+  <!-- gafas (pista del oso) -->
+  <g transform="translate(300,260)" fill="#0a0a0b" opacity="0.45">
+    <rect x="-92" y="-8" width="74" height="40" rx="18"/>
+    <rect x="18" y="-8" width="74" height="40" rx="18"/>
+    <rect x="-22" y="2" width="44" height="14" rx="7"/>
+  </g>
+  <!-- marca -->
+  <text x="46" y="70" font-family="Arial Narrow, Arial, sans-serif" font-weight="700" letter-spacing="4" font-size="24" fill="#ffffff" opacity="0.92">${label}</text>
+  <line x1="46" y1="84" x2="150" y2="84" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/>
+  <!-- nombre -->
+  <text x="300" y="500" text-anchor="middle" font-family="Arial Narrow, Arial, sans-serif" font-weight="700" letter-spacing="1" font-size="34" fill="#ffffff" opacity="0.95">${l1}</text>
+  <text x="300" y="540" text-anchor="middle" font-family="Arial Narrow, Arial, sans-serif" font-weight="700" letter-spacing="1" font-size="34" fill="#ffffff" opacity="0.6">${l2}</text>
 </svg>`.trim();
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }

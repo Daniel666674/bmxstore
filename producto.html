@@ -49,7 +49,11 @@
       const stockHtml = p.stock > 0
         ? `<span class="stock">● En stock (${p.stock} disponibles)</span>`
         : `<span class="stock out">● Agotado — consúltanos por WhatsApp</span>`;
-      const specs = (p.specs || []).map(s => `<li>${s}</li>`).join("");
+      const specs = (p.specs || []).map(s => {
+        const idx = s.indexOf(":");
+        if (idx === -1) return `<div class="spec-row"><span class="k">·</span><span class="v">${s}</span></div>`;
+        return `<div class="spec-row"><span class="k">${s.slice(0, idx)}</span><span class="v">${s.slice(idx + 1).trim()}</span></div>`;
+      }).join("");
       const img = stikeProductImage(p, 800);
       const waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.name} (${stikePrice(p.price)}). ¿Está disponible?`);
 
@@ -58,30 +62,32 @@
         <div class="pdp-gallery">
           <div class="main"><img id="main-img" src="${img}" alt="${p.name}"></div>
           <div class="pdp-thumbs">
-            ${[0,1,2,3].map(i => `<button class="${i===0?"active":""}" data-thumb><img src="${img}" alt="vista ${i+1}"></button>`).join("")}
+            ${[0,1,2,3].map(i => `<button class="${i===0?"active":""}" data-thumb data-src="${img}" aria-label="Vista ${i+1}"><img src="${img}" alt="${p.name} vista ${i+1}"></button>`).join("")}
           </div>
         </div>
         <div class="pdp-info">
           <span class="brandline">${p.brand}</span>
           <h1>${p.name}</h1>
-          <div class="price">${stikePrice(p.price)} ${oldPrice}${discount}</div>
-          <div style="margin-top:12px">${stockHtml}</div>
-          <p class="desc">${p.desc}</p>
-          <div class="pdp-actions">
-            <div class="qty">
-              <button data-q="-1" aria-label="Menos">−</button>
-              <input id="qty" type="text" value="1" inputmode="numeric" aria-label="Cantidad">
-              <button data-q="1" aria-label="Más">+</button>
+          <div class="buy-box">
+            <div class="price">${stikePrice(p.price)} ${oldPrice}${discount}</div>
+            <div style="margin-top:12px">${stockHtml}</div>
+            <div class="pdp-actions">
+              <div class="qty">
+                <button data-q="-1" aria-label="Menos">−</button>
+                <input id="qty" type="text" value="1" inputmode="numeric" aria-label="Cantidad">
+                <button data-q="1" aria-label="Más">+</button>
+              </div>
+              <button class="btn" id="add-btn" ${p.stock===0?"disabled style=opacity:.5":""}>Agregar al carrito</button>
             </div>
-            <button class="btn" id="add-btn" ${p.stock===0?"disabled style=opacity:.5":""}>Agregar al carrito</button>
-            <a class="btn wa" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Comprar por WhatsApp</a>
+            <a class="btn wa block" style="margin-top:12px" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Comprar por WhatsApp</a>
           </div>
+          <p class="desc">${p.desc}</p>
           <div class="pdp-info-specs">
-            <h3 style="font-size:20px;margin-bottom:8px">Especificaciones</h3>
-            <ul class="spec-list">${specs}</ul>
+            <h3 style="font-size:20px;margin-bottom:10px">Especificaciones</h3>
+            <div class="spec-table">${specs}</div>
           </div>
           <div class="pdp-meta">
-            <div><b>Categoría:</b> <a href="tienda.html?cat=${p.cat}" style="color:var(--cyan)">${cat ? cat.name : ""}</a>${p.sub ? ` · <a href="tienda.html?cat=${p.cat}&sub=${encodeURIComponent(p.sub)}" style="color:var(--cyan)">${p.sub}</a>` : ""}</div>
+            <div><b>Categoría:</b> <a href="tienda.html?cat=${p.cat}" style="color:var(--ink)">${cat ? cat.name : ""}</a>${p.sub ? ` · <a href="tienda.html?cat=${p.cat}&sub=${encodeURIComponent(p.sub)}" style="color:var(--ink)">${p.sub}</a>` : ""}</div>
             <div><b>Marca:</b> ${p.brand}</div>
             <div><b>SKU:</b> ${p.id.toUpperCase()}</div>
             <div>Envíos a toda Colombia · Armado y ajuste gratis</div>
@@ -99,10 +105,13 @@
       qtyEl.addEventListener("input", () => { qtyEl.value = qtyEl.value.replace(/[^0-9]/g, ""); });
       const addBtn = document.getElementById("add-btn");
       if (addBtn && p.stock > 0) addBtn.addEventListener("click", () => stikeAddToCart(p.id, Math.max(1, parseInt(qtyEl.value) || 1)));
-      // Thumbs (placeholder)
+      // Thumbs — swap main image
+      const mainImg = document.getElementById("main-img");
       document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
         document.querySelectorAll("[data-thumb]").forEach(o => o.classList.remove("active"));
         t.classList.add("active");
+        const src = t.getAttribute("data-src");
+        if (src && mainImg) mainImg.src = src;
       }));
 
       // Relacionados

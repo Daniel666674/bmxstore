@@ -213,6 +213,8 @@ body::after {
 .hero h1 .o1 { color: #ffffff; }
 .hero h1 .o2 { -webkit-text-stroke: 2px #ffffff; color: transparent; }
 .hero p.lead { font-size: 18px; color: var(--muted); max-width: 52ch; margin: 0 0 26px; }
+.hero-lockup { display: flex; align-items: center; gap: 16px; margin: 0 0 22px; font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 4px; font-size: 13px; color: var(--muted); }
+.hero-lockup .rule { width: 46px; height: 1px; background: var(--ink); opacity: .55; flex-shrink: 0; }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-stats { display: flex; gap: 28px; margin-top: 34px; flex-wrap: wrap; }
 .hero-stats .stat b { font-family: var(--display); font-size: 34px; display: block; line-height: 1; }
@@ -379,29 +381,39 @@ body::after {
 .empty { text-align: center; padding: 70px 20px; color: var(--muted); }
 
 /* =========================== PRODUCT DETAIL =========================== */
-.pdp { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; padding: 16px 0 70px; align-items: start; }
-.pdp-gallery .main { aspect-ratio: 1/1; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #0e0e12; }
-.pdp-gallery .main img { width: 100%; height: 100%; object-fit: contain; padding: 10px; background: #f8f8f8; }
-.pdp-thumbs { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 10px; }
-.pdp-thumbs button { aspect-ratio: 1/1; border-radius: 10px; overflow: hidden; border: 2px solid var(--line); background: #0e0e12; padding: 0; }
-.pdp-thumbs button.active { border-color: var(--accent); }
-.pdp-info .brandline { color: var(--cyan); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
-.pdp-info h1 { font-size: clamp(30px, 5vw, 46px); margin: 8px 0 14px; }
-.pdp-info .price { font-family: var(--display); font-size: 40px; }
+.pdp { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 16px 0 70px; align-items: start; }
+.pdp-gallery { position: sticky; top: 110px; }
+.pdp-gallery .main { aspect-ratio: 1/1; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #f3f3f3; }
+.pdp-gallery .main img { width: 100%; height: 100%; object-fit: contain; padding: 14px; background: #f3f3f3; transition: transform .6s var(--ease); }
+.pdp-gallery .main:hover img { transform: scale(1.04); }
+.pdp-thumbs { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 12px; }
+.pdp-thumbs button { aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #f3f3f3; padding: 0; cursor: pointer; transition: border-color .2s, transform .2s; }
+.pdp-thumbs button img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+.pdp-thumbs button:hover { transform: translateY(-2px); }
+.pdp-thumbs button.active { border-color: var(--ink); }
+.pdp-info .brandline { color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
+.pdp-info h1 { font-size: clamp(30px, 5vw, 46px); margin: 10px 0 16px; }
+.pdp-info .price { font-family: var(--display); font-weight: 600; font-size: 40px; }
 .pdp-info .price .old { font-family: var(--body); font-size: 18px; color: var(--muted); text-decoration: line-through; margin-left: 10px; font-weight: 400; }
 .pdp-info .desc { color: var(--muted); margin: 18px 0; }
-.pdp-info .stock { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--lime); margin-bottom: 10px; }
-.pdp-info .stock.out { color: var(--orange); }
-.qty { display: inline-flex; align-items: center; border: 2px solid var(--line); border-radius: 10px; overflow: hidden; }
-.qty button { background: var(--bg-3); border: none; color: var(--ink); width: 42px; height: 46px; font-size: 20px; }
-.qty button:hover { background: var(--accent); color: #0b0b0d; }
-.qty input { width: 54px; height: 46px; text-align: center; background: transparent; border: none; color: var(--ink); font-family: var(--display); font-size: 20px; }
-.pdp-actions { display: flex; gap: 12px; margin: 18px 0; flex-wrap: wrap; align-items: center; }
+.pdp-info .stock { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); margin-bottom: 10px; }
+.pdp-info .stock.out { color: var(--muted); }
+/* Buy box */
+.buy-box { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px; margin: 18px 0; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.qty button { background: transparent; border: none; color: var(--ink); width: 44px; height: 46px; font-size: 20px; transition: background .2s, color .2s; }
+.qty button:hover { background: var(--ink); color: #09090a; }
+.qty input { width: 50px; height: 46px; text-align: center; background: transparent; border: none; color: var(--ink); font-family: var(--display); font-size: 20px; }
+.pdp-actions { display: flex; gap: 12px; margin: 16px 0 0; flex-wrap: wrap; align-items: center; }
+.pdp-actions .btn { flex: 1; min-width: 160px; }
+/* Spec table */
+.spec-table { border-top: 1px solid var(--line); margin-top: 6px; }
+.spec-row { display: grid; grid-template-columns: 40% 1fr; gap: 14px; padding: 12px 2px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.spec-row .k { color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; align-self: center; }
+.spec-row .v { color: var(--ink); }
 .pdp-meta { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; font-size: 14px; color: var(--muted); }
 .pdp-meta div { margin-bottom: 8px; }
 .pdp-meta b { color: var(--ink); }
-.spec-list { list-style: disc; padding-left: 18px; color: var(--muted); }
-.spec-list li { margin: 6px 0; }
 
 /* =============================== CART ================================= */
 .cart-layout { display: grid; grid-template-columns: 1fr 360px; gap: 30px; padding: 16px 0 80px; align-items: start; }
@@ -477,7 +489,7 @@ body::after {
   .hero-art { max-width: 460px; }
   .pdp, .contact-grid, .about-hero { grid-template-columns: 1fr; }
   .cart-layout { grid-template-columns: 1fr; }
-  .summary, .filters { position: static; }
+  .summary, .filters, .pdp-gallery { position: static; }
 }
 @media (max-width: 760px) {
   :root { --header-h: 64px; }
