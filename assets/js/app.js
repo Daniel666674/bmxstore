@@ -26,31 +26,11 @@ const SOCICO_FB = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.or
 const SOCICO_TT = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.41a8.16 8.16 0 004.77 1.52V7.49a4.85 4.85 0 01-1-.8z"/></svg>`;
 const SOCICO_WA = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.08L2 22l4.92-1.36A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.97 13.47c-.21.59-.96 1.07-1.62 1.21-.43.09-.99.16-2.88-.62-2.43-1-3.96-3.47-4.08-3.63-.12-.17-.99-1.32-.99-2.51 0-1.2.63-1.78.85-2.03.22-.24.48-.3.64-.3h.46c.14 0 .33-.05.51.39.19.46.64 1.57.7 1.68.06.11.1.24.02.39l-.24.37c-.12.13-.25.29-.36.39-.12.1-.24.21-.1.41.14.2.62.91 1.33 1.47.92.73 1.69.96 1.93 1.07.24.1.38.09.52-.06.14-.14.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.38.65 1.62.77.24.12.4.18.46.28.06.1.06.57-.15 1.17z"/></svg>`;
 
-/* ----------------------------- BEAR LOGO -------------------------------- */
+/* ------------------------------ LOGO ----------------------------------- */
+/* Real Stike emblem, vector-traced from the brand artwork (white on transparent) */
 function stikeLogoSVG(size) {
   size = size || 46;
-  return `<svg class="logo" width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <rect width="64" height="64" rx="13" fill="#0b0b0d"/>
-  <!-- ears -->
-  <circle cx="19" cy="26" r="7" fill="#ffffff"/>
-  <circle cx="45" cy="26" r="7" fill="#ffffff"/>
-  <circle cx="19" cy="26" r="3" fill="#0b0b0d"/>
-  <circle cx="45" cy="26" r="3" fill="#0b0b0d"/>
-  <!-- face -->
-  <ellipse cx="32" cy="38" rx="17" ry="15" fill="#ffffff"/>
-  <!-- snapback cap dome -->
-  <path d="M16 35 Q15 18 32 17 Q49 18 48 35 Z" fill="#cfcfd4"/>
-  <!-- cap brim -->
-  <path d="M43 34 Q58 33 60 37.5 Q56 40 44 38.5 Z" fill="#a9a9b0"/>
-  <!-- sunglasses -->
-  <rect x="19" y="35" width="10" height="6.5" rx="3.2" fill="#0b0b0d"/>
-  <rect x="35" y="35" width="10" height="6.5" rx="3.2" fill="#0b0b0d"/>
-  <rect x="28" y="37" width="8" height="2.2" rx="1" fill="#0b0b0d"/>
-  <!-- snout -->
-  <ellipse cx="32" cy="47" rx="6.5" ry="5" fill="#e8e8ea"/>
-  <ellipse cx="32" cy="45.5" rx="2.6" ry="1.9" fill="#0b0b0d"/>
-  <path d="M32 47.4 V49.6" stroke="#0b0b0d" stroke-width="1.4" stroke-linecap="round"/>
-</svg>`;
+  return `<img class="logo" src="assets/img/logo-stike.svg" alt="Stike Bike Shop" style="height:${size}px;width:auto" />`;
 }
 
 /* ----------------------------- CARRITO --------------------------------- */
@@ -125,7 +105,7 @@ function stikeProductCard(p) {
   <article class="card">
     <div class="thumb">
       ${badge}
-      <button class="fav" title="Guardar" aria-label="Guardar">♡</button>
+      <button class="fav" title="Guardar" aria-label="Guardar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
       <a href="producto.html?id=${p.id}">
         <img src="${stikeProductImage(p, 600)}" alt="${p.name}" loading="lazy">
       </a>
@@ -162,7 +142,7 @@ function stikeRenderHeader(active) {
     const isActive = active === cat.slug ? " active" : "";
     const hasMega = cat.subs.length ? " has-mega" : "";
     const accent = cat.slug === "promo" ? ` data-accent="promo"` : "";
-    const caret = cat.subs.length ? `<span class="caret">▾</span>` : "";
+    const caret = cat.subs.length ? `<span class="caret"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>` : "";
     return `<li class="${isActive}${hasMega}">
       <a href="tienda.html?cat=${cat.slug}"${accent}>${cat.name}${caret}</a>
       ${stikeNavDropdown(cat)}
@@ -184,21 +164,21 @@ function stikeRenderHeader(active) {
     <div class="wrap">
       <div class="header-main">
         <a class="brand" href="index.html">
-          ${stikeLogoSVG(46)}
-          <span class="name">Stike<small>${C.tagline}</small></span>
+          ${stikeLogoSVG(52)}
+          <span class="name">Stike<small>BIKE SHOP · BOGOTÁ</small></span>
         </a>
         <form class="search" onsubmit="stikeDoSearch(event)">
           <input type="search" id="site-search" placeholder="Busca marcos, llantas, cascos, marcas...">
-          <button type="submit" aria-label="Buscar">⌕</button>
+          <button type="submit" aria-label="Buscar"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
         </form>
         <div class="header-actions">
-          <a class="icon-btn" href="nosotros.html" title="Nosotros" aria-label="Nosotros">★</a>
-          <a class="icon-btn" href="contacto.html" title="Contacto" aria-label="Contacto">✆</a>
+          <a class="icon-btn" href="nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
+          <a class="icon-btn" href="contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
           <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             <span class="cart-count">0</span>
           </a>
-          <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú">☰</button>
+          <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg></button>
         </div>
       </div>
     </div>
@@ -326,7 +306,7 @@ document.addEventListener("click", (e) => {
   const add = e.target.closest("[data-add]");
   if (add) { stikeAddToCart(add.getAttribute("data-add")); }
   const fav = e.target.closest(".fav");
-  if (fav) { fav.textContent = fav.textContent === "♡" ? "♥" : "♡"; fav.style.color = "#fff"; }
+  if (fav) { fav.classList.toggle("liked"); }
 });
 
 /* WhatsApp flotante */

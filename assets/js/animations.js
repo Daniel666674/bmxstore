@@ -98,8 +98,8 @@
         var r = card.getBoundingClientRect();
         var x = (e.clientX - r.left) / r.width - 0.5;
         var y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = 'perspective(700px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 7) + 'deg) translateY(-5px)';
-        card.style.transition = 'border-color .15s, box-shadow .15s';
+        card.style.transform = 'perspective(900px) rotateY(' + (x * 4) + 'deg) rotateX(' + (-y * 4) + 'deg) translateY(-6px)';
+        card.style.transition = 'border-color .2s, box-shadow .2s';
       });
       card.addEventListener('mouseleave', function () {
         card.style.transform = '';
