@@ -56,7 +56,8 @@ const STIKE_CATEGORIES = [
 /* ------------------------------- Marcas -------------------------------- */
 const STIKE_BRANDS = [
   "Total BMX", "Odyssey", "Shadow", "Cult", "Sunday", "Wethepeople",
-  "Éclat", "Federal", "Kink", "BSD", "Fly Bikes", "Demolition"
+  "Éclat", "Federal", "Kink", "BSD", "Fly Bikes", "Demolition",
+  "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia"
 ];
 
 /* ----------------------------- Productos -------------------------------- */
@@ -89,17 +90,21 @@ const STIKE_PRODUCTS = [
 
   // ---- Repuestos: Tenedores ----
   { id: "fork-odyssey", name: "Tenedor Odyssey R32", brand: "Odyssey", cat: "repuestos", sub: "Tenedores", price: 360000, old: null, color: "pink", badge: null, stock: 7,
+    img: "assets/img/products/IMG_7181.jpeg",
     desc: "Tenedor Odyssey R32, el estándar de la industria. Cromoly butado y peg-friendly.",
     specs: ["Material: Cromoly 4130", "Offset: 32mm", "Eje: 10mm / 14mm", "Steerer butado"] },
   { id: "fork-shadow", name: "Tenedor Shadow Vultus", brand: "Shadow", cat: "repuestos", sub: "Tenedores", price: 330000, old: null, color: "lime", badge: null, stock: 5,
+    img: "assets/img/products/IMG_7179.jpeg",
     desc: "Shadow Vultus, ultraligero con tecnología SST para máxima resistencia y poco peso.",
     specs: ["Material: SST Cromoly", "Offset: 30mm", "Peso: 0.85 kg"] },
 
   // ---- Repuestos: Timones / Manubrios ----
   { id: "bar-cult", name: "Manubrio Cult Crew 4pc", brand: "Cult", cat: "repuestos", sub: "Manubrios", price: 240000, old: null, color: "orange", badge: null, stock: 9,
+    img: "assets/img/products/IMG_7175.jpeg",
     desc: "Manubrio 4 piezas Cult Crew, altura 9\", curva clásica y sensación sólida.",
     specs: ["Altura: 9.5\"", "Ancho: 29\"", "Material: Cromoly", "Backsweep: 12°"] },
   { id: "stem-eclat", name: "Timón Éclat Dynamic", brand: "Éclat", cat: "repuestos", sub: "Timones", price: 210000, old: 260000, color: "yellow", badge: "promo", stock: 6,
+    img: "assets/img/products/IMG_7185.jpeg",
     desc: "Timón frontal Éclat Dynamic, mecanizado CNC y perfil bajo para mejor control.",
     specs: ["Tipo: Front load", "Material: 6061-T6", "Reach: 50mm", "Peso: 285g"] },
 
@@ -107,12 +112,14 @@ const STIKE_PRODUCTS = [
   { id: "crank-bsd", name: "Bielas BSD Substance XL", brand: "BSD", cat: "repuestos", sub: "Bielas", price: 540000, old: null, color: "cyan", badge: null, stock: 4,
     desc: "Bielas tubulares BSD Substance XL, eje de 24mm y resistencia comprobada en street.",
     specs: ["Largo: 175mm", "Eje: 24mm", "Material: Cromoly tubular", "Spline 48"] },
-  { id: "sprk-shadow", name: "Plato Shadow Sabotage 25T", brand: "Shadow", cat: "repuestos", sub: "Platos", price: 150000, old: null, color: "pink", badge: "new", stock: 12,
-    desc: "Sprocket Shadow Sabotage 25T, guard integrado para proteger los dientes en los grinds.",
-    specs: ["Dientes: 25T", "Material: 7075 alloy", "Guard integrado", "Peso: 110g"] },
+  { id: "sprk-shadow", name: "Plato Fate Garuda 25T Negro", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Platos", price: 150000, old: null, color: "pink", badge: "new", stock: 12,
+    img: "assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg",
+    desc: "Plato Fate Garuda 25T en negro, diseñado en Colombia. Guard integrado y mecanizado CNC.",
+    specs: ["Dientes: 25T / 28T", "Material: 7075 alloy CNC", "Guard integrado", "Hecho en Colombia"] },
 
   // ---- Repuestos: Cadenas / Frenos ----
   { id: "chain-kmc", name: "Cadena Shadow Interlock V2", brand: "Shadow", cat: "repuestos", sub: "Cadenas", price: 95000, old: null, color: "lime", badge: null, stock: 15,
+    img: "assets/img/products/IMG_7166.jpeg",
     desc: "Cadena media-link Shadow Interlock V2, súper resistente y fácil de reparar.",
     specs: ["Tipo: Half-link", "1/8\"", "Color: negro", "Pin reforzado"] },
   { id: "brake-odyssey", name: "Freno Odyssey Springfield", brand: "Odyssey", cat: "repuestos", sub: "Frenos", price: 180000, old: null, color: "purple", badge: null, stock: 6,
@@ -124,27 +131,33 @@ const STIKE_PRODUCTS = [
     desc: "Manzana freecoaster Federal Stance FC, slack ajustable y rodamientos sellados.",
     specs: ["Tipo: Freecoaster", "Hueco: 9T", "Slack ajustable", "Eje 14mm"] },
   { id: "rim-eclat", name: "Rin Éclat Bondi 36H", brand: "Éclat", cat: "repuestos", sub: "Rines", price: 210000, old: null, color: "cyan", badge: null, stock: 8,
+    img: "assets/img/products/IMG_7171.jpeg",
     desc: "Rin doble pared Éclat Bondi, 36 huecos, ligero y resistente para impactos fuertes.",
     specs: ["Huecos: 36", "Doble pared", "Material: 6061", "Pinned joint"] },
   { id: "tire-total", name: "Llanta Total Killabee 2.4\"", brand: "Total BMX", cat: "repuestos", sub: "Llantas", price: 120000, old: null, color: "yellow", badge: null, stock: 20,
+    img: "assets/img/products/IMG_7170.jpeg",
     desc: "Llanta Total Killabee 2.4\", buen agarre y baja resistencia para rodar rápido.",
     specs: ["Medida: 20\" x 2.4\"", "100 PSI", "Dual compound", "Folding bead"] },
 
   // ---- Repuestos: Pedales / Sillas / Tacos ----
-  { id: "pedal-odyssey", name: "Pedales Odyssey Twisted Pro", brand: "Odyssey", cat: "repuestos", sub: "Pedales", price: 85000, old: null, color: "pink", badge: null, stock: 25,
-    desc: "El clásico que nunca falla. Odyssey Twisted Pro con eje sellado y excelente grip.",
-    specs: ["Material: Nylon/Fiberglass", "Eje: sellado", "Pins moldeados", "9/16\""] },
-  { id: "seat-cult", name: "Silla Cult Slim Pivotal", brand: "Cult", cat: "repuestos", sub: "Sillas y Postes", price: 130000, old: null, color: "lime", badge: null, stock: 10,
-    desc: "Silla Cult Slim Pivotal, perfil delgado y resistente, con base reforzada.",
-    specs: ["Tipo: Pivotal", "Espuma slim", "Funda resistente"] },
-  { id: "peg-shadow", name: "Tacos Shadow Little Ones (par)", brand: "Shadow", cat: "repuestos", sub: "Tacos y Hubguards", price: 90000, old: null, color: "purple", badge: null, stock: 14,
-    desc: "Par de tacos Shadow con camisa de cromoly reemplazable. Deslizan como mantequilla.",
-    specs: ["Material: Cromoly + nylon", "Largo: 4.5\"", "Sleeve reemplazable", "Incluye par"] },
+  { id: "pedal-odyssey", name: "Pedales Plataforma BMX Negro", brand: "Odyssey", cat: "repuestos", sub: "Pedales", price: 85000, old: null, color: "pink", badge: null, stock: 25,
+    img: "assets/img/products/IMG_7143.jpeg",
+    desc: "Pedales plataforma de nylon/fibra reforzada, excelente grip y eje sellado de acero.",
+    specs: ["Material: Nylon/Fibra", "Eje: sellado acero", "Plataforma ancha", "9/16\""] },
+  { id: "seat-cult", name: "Silla Fate Pivotal Pana Negro", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Sillas y Postes", price: 130000, old: null, color: "lime", badge: "new", stock: 10,
+    img: "assets/img/products/3A06D926-2987-4488-AA12-28567FE35426.jpeg",
+    desc: "Silla pivotal Fate BMX Colombia en pana negra. Diseño original corte clásico, muy cómoda.",
+    specs: ["Tipo: Pivotal", "Material: Pana negro", "Corte original", "Hecha en Colombia"] },
+  { id: "peg-shadow", name: "Tacos Fate BMX (par)", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Tacos y Hubguards", price: 90000, old: null, color: "purple", badge: null, stock: 14,
+    img: "assets/img/products/IMG_7145.jpeg",
+    desc: "Par de tacos Fate BMX de aluminio anodizado, deslizamiento fluido en mármol, cemento y acero.",
+    specs: ["Material: Aluminio 6061", "Largo: 4.5\"", "Eje: 10/14mm", "Incluye par"] },
 
   // ---- Protecciones ----
-  { id: "helmet-tsg", name: "Casco Stike Street Helmet", brand: "Stike", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "pink", badge: "new", stock: 12,
-    desc: "Casco certificado para street y park. Ventilación óptima y ajuste seguro. Branding Stike.",
-    specs: ["Certificación: CE EN1078", "Tallas: S/M/L", "11 ventilaciones", "Acolchado lavable"] },
+  { id: "helmet-tsg", name: "Casco TSG Evolution Salmón", brand: "Stike", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "pink", badge: "new", stock: 12,
+    img: "assets/img/products/IMG_7130.jpeg",
+    desc: "Casco TSG Evolution, certificado CE para street y park. Forro extraíble y ajuste de carraca.",
+    specs: ["Certificación: CE EN1078", "Tallas: S/M/L/XL", "10 ventilaciones", "Forro lavable"] },
   { id: "knee-fuse", name: "Rodilleras Fuse Echo", brand: "Stike", cat: "protecciones", sub: "Rodilleras", price: 175000, old: 210000, color: "cyan", badge: "promo", stock: 9,
     desc: "Rodilleras ligeras con buena movilidad y protección sólida para caídas duras.",
     specs: ["Tallas: S-XL", "Ventiladas", "Lavables", "Ajuste con velcro"] },
@@ -159,9 +172,10 @@ const STIKE_PRODUCTS = [
   { id: "hoodie-stike", name: "Buso Stike Box Logo", brand: "Stike", cat: "ropa", sub: "Busos y Chaquetas", price: 165000, old: 199000, color: "orange", badge: "promo", stock: 16,
     desc: "Hoodie pesado con box logo bordado. El favorito para rodar en las noches frías de Bogotá.",
     specs: ["Material: Algodón/poly 320g", "Tallas: S-XXL", "Logo bordado", "Bolsillo canguro"] },
-  { id: "cap-stike", name: "Gorra Stike Snapback", brand: "Stike", cat: "ropa", sub: "Gorras", price: 69000, old: null, color: "yellow", badge: null, stock: 22,
-    desc: "Snapback estructurada con parche bordado. Ajuste universal, estilo de sobra.",
-    specs: ["Tipo: Snapback", "Ajuste universal", "Parche bordado", "6 paneles"] },
+  { id: "cap-stike", name: "Gorra Fate BMX Colombia", brand: "Fate BMX Colombia", cat: "ropa", sub: "Gorras", price: 69000, old: null, color: "yellow", badge: "new", stock: 22,
+    img: "assets/img/products/IMG_7138.jpeg",
+    desc: "Gorra negra Fate BMX Colombia, logo bordado en hilo blanco. Orgullosamente colombiana.",
+    specs: ["Tipo: Dad hat", "Ajuste con hebilla", "Logo bordado", "Hecha en Colombia"] },
   { id: "sunnies-stike", name: "Gafas Stike UV400", brand: "Stike", cat: "ropa", sub: "Gafas", price: 95000, old: null, color: "cyan", badge: null, stock: 14,
     desc: "Gafas con protección UV400 y lentes resistentes a impactos. Para rodar bajo el sol bogotano.",
     specs: ["Protección: UV400", "Lente policarbonato", "Montura flexible"] },
@@ -173,15 +187,103 @@ const STIKE_PRODUCTS = [
   { id: "tool-stike", name: "Multiherramienta Stike 18-en-1", brand: "Stike", cat: "accesorios", sub: "Herramientas", price: 89000, old: null, color: "lime", badge: "new", stock: 20,
     desc: "Multiherramienta compacta con todo lo necesario para ajustes rápidos en la calle.",
     specs: ["18 funciones", "Acero cromo-vanadio", "Estuche incluido"] },
-  { id: "grip-odi", name: "Grips ODI Longneck XL", brand: "Odyssey", cat: "accesorios", sub: "Grips", price: 55000, old: null, color: "pink", badge: null, stock: 28,
-    desc: "Grips clásicos ODI Longneck XL, el agarre legendario de toda la vida.",
-    specs: ["Largo: 160mm", "Flange opcional", "Tapones incluidos"] },
+  { id: "grip-odi", name: "Grips Wethepeople Flow XL", brand: "Wethepeople", cat: "accesorios", sub: "Grips", price: 55000, old: null, color: "pink", badge: null, stock: 28,
+    img: "assets/img/products/IMG_7182.jpeg",
+    desc: "Grips Wethepeople Flow XL, textura acanalada y compound firme para máximo control.",
+    specs: ["Largo: 160mm", "Sin flange", "Compound firm", "Tapones incluidos"] },
   { id: "pump-stike", name: "Bomba de piso Stike Pro", brand: "Stike", cat: "accesorios", sub: "Bombas", price: 110000, old: 135000, color: "orange", badge: "promo", stock: 13,
     desc: "Bomba de piso con manómetro, válvula Presta/Schrader. Infla rápido y preciso.",
     specs: ["Presión: 160 PSI", "Manómetro análogo", "Doble válvula"] },
   { id: "stickers-stike", name: "Sticker Pack Stike Graffiti", brand: "Stike", cat: "accesorios", sub: "Pegatinas", price: 25000, old: null, color: "yellow", badge: null, stock: 50,
     desc: "Pack de 12 calcomanías resistentes al agua con los diseños grafiti de la marca.",
-    specs: ["12 stickers", "Vinilo resistente", "Anti-agua / anti-UV"] }
+    specs: ["12 stickers", "Vinilo resistente", "Anti-agua / anti-UV"] },
+
+  // ---- Nuevos productos (imágenes reales) ----
+  { id: "chain-silver", name: "Cadena KMC Z410 Plata", brand: "Kink", cat: "repuestos", sub: "Cadenas", price: 75000, old: null, color: "cyan", badge: "new", stock: 18,
+    img: "assets/img/products/IMG_7165.jpeg",
+    desc: "Cadena KMC Z410 niquelada, resistente y de fácil mantenimiento. Ideal para armar o reponer.",
+    specs: ["Tipo: 1/8\"", "Color: plateado", "Eslabón estándar", "Compatible BMX"] },
+
+  { id: "tire-street", name: "Llanta BMX Street 2.25\"", brand: "Federal", cat: "repuestos", sub: "Llantas", price: 95000, old: null, color: "lime", badge: null, stock: 12,
+    img: "assets/img/products/IMG_7167.jpeg",
+    desc: "Llanta de perfil bajo para street y skatepark, con buen grip en concreto y asfalto.",
+    specs: ["Medida: 20\" x 2.25\"", "Perfil bajo", "Wire bead", "90 PSI max"] },
+
+  { id: "rim-eclat-2", name: "Rin Éclat Cortex 20H Negro", brand: "Éclat", cat: "repuestos", sub: "Rines", price: 195000, old: null, color: "purple", badge: null, stock: 5,
+    img: "assets/img/products/IMG_7172.jpeg",
+    desc: "Versión 20 huecos del Éclat Cortex, para riders que priorizan peso sin sacrificar resistencia.",
+    specs: ["Huecos: 20", "Doble pared", "Material: 6061", "Pinned joint"] },
+
+  { id: "rim-fly", name: "Rin Fly Bikes Neutron 36H", brand: "Fly Bikes", cat: "repuestos", sub: "Rines", price: 205000, old: 240000, color: "orange", badge: "promo", stock: 4,
+    img: "assets/img/products/IMG_7173.jpeg",
+    desc: "Rin Fly Bikes Neutron ultra reforzado con pinned joint y acabado anodizado negro.",
+    specs: ["Huecos: 36", "Doble pared", "Anodizado negro", "Pinned joint"] },
+
+  { id: "bar-saltplus", name: "Manubrio SaltPlus Race 4pc", brand: "SaltPlus", cat: "repuestos", sub: "Manubrios", price: 235000, old: null, color: "cyan", badge: null, stock: 6,
+    img: "assets/img/products/IMG_7176.jpeg",
+    desc: "Manubrio SaltPlus Race de 4 piezas en cromoly, altura 9.5\" y buen backsweep.",
+    specs: ["Altura: 9.5\"", "Ancho: 28.5\"", "Material: Cromoly", "Backsweep: 10°"] },
+
+  { id: "bar-stranger", name: "Manubrio Stranger Highrise 9.5\"", brand: "Stranger", cat: "repuestos", sub: "Manubrios", price: 260000, old: null, color: "lime", badge: "new", stock: 5,
+    img: "assets/img/products/IMG_7177.jpeg",
+    desc: "Manubrio Stranger Highrise, cromoly full con crossbar. Sensación rígida y gran control.",
+    specs: ["Altura: 9.5\"", "Ancho: 29\"", "Material: Cromoly full", "Crossbar incluido"] },
+
+  { id: "fork-cruiser", name: "Tenedor Cruiser 26\" Negro", brand: "Federal", cat: "repuestos", sub: "Tenedores", price: 280000, old: null, color: "orange", badge: null, stock: 3,
+    img: "assets/img/products/IMG_7178.jpeg",
+    desc: "Tenedor cromoly para BMX cruiser 26\", pintado negro con acabado brillante.",
+    specs: ["Rueda: 26\"", "Material: Cromoly", "Eje: 10mm", "Offset: 28mm"] },
+
+  { id: "expander-mutanty", name: "Expander Mutanty M24", brand: "Mutanty", cat: "accesorios", sub: "Herramientas", price: 35000, old: null, color: "purple", badge: null, stock: 25,
+    img: "assets/img/products/IMG_7180.jpeg",
+    desc: "Expander de aluminio anodizado M24 para horquillas sin rosca. Fácil instalación.",
+    specs: ["Tamaño: M24", "Material: Aluminio 6061", "Llave Allen 6mm"] },
+
+  { id: "grip-kink", name: "Grips Kink Form Flangeless", brand: "Kink", cat: "accesorios", sub: "Grips", price: 48000, old: null, color: "cyan", badge: null, stock: 22,
+    img: "assets/img/products/IMG_7183.jpeg",
+    desc: "Grips Kink Form sin flange, compound suave y agarre consistente en toda condición.",
+    specs: ["Sin flange", "Largo: 155mm", "Compound suave", "Tapones incluidos"] },
+
+  { id: "grip-eclat-red", name: "Grips Éclat Recoil Rojo", brand: "Éclat", cat: "accesorios", sub: "Grips", price: 62000, old: null, color: "pink", badge: "new", stock: 15,
+    img: "assets/img/products/IMG_7184.jpeg",
+    desc: "Grips Éclat Recoil en rojo vivo con tapones a juego. Doble compound para máximo grip.",
+    specs: ["Color: rojo", "Flange incluido", "Doble compound", "Tapones a juego"] },
+
+  { id: "stem-trueno", name: "Timón Trueno Front Load", brand: "Trueno", cat: "repuestos", sub: "Timones", price: 195000, old: null, color: "orange", badge: "new", stock: 7,
+    img: "assets/img/products/IMG_7186.jpeg",
+    desc: "Timón Trueno mecanizado CNC, carga frontal con clamp dentado para mayor agarre.",
+    specs: ["Tipo: Front load", "Material: 6061 CNC", "Reach: 53mm", "Clamp dentado"] },
+
+  // ---- Nuevos productos ZIPs 2 & 3 (Fate BMX Colombia + otros) ----
+  { id: "stem-kink", name: "Timón Kink Williams Front Load", brand: "Kink", cat: "repuestos", sub: "Timones", price: 225000, old: null, color: "yellow", badge: null, stock: 8,
+    img: "assets/img/products/IMG_7122.jpeg",
+    desc: "Timón Kink Williams de 4 tornillos, mecanizado CNC, robusto y perfectamente equilibrado.",
+    specs: ["Tipo: Front load", "Material: 6061 CNC", "4 tornillos", "Reach: 52mm"] },
+
+  { id: "helmet-tsg-white", name: "Casco TSG Evolution Blanco", brand: "Stike", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "cyan", badge: null, stock: 9,
+    img: "assets/img/products/IMG_7131.jpeg",
+    desc: "Casco TSG Evolution en blanco mate, ligero y certificado. El favorito de los riders urbanos.",
+    specs: ["Certificación: CE EN1078", "Tallas: S/M/L/XL", "10 ventilaciones", "Forro lavable"] },
+
+  { id: "cap-federal", name: "Gorra Federal Script Cap", brand: "Federal", cat: "ropa", sub: "Gorras", price: 65000, old: null, color: "orange", badge: null, stock: 18,
+    img: "assets/img/products/IMG_7137.jpeg",
+    desc: "Gorra Federal con logo bordado en rojo y blanco. Clásica snapback estructurada.",
+    specs: ["Tipo: Snapback", "6 paneles", "Ajuste universal", "Logo bordado"] },
+
+  { id: "frame-fate", name: "Marco Fate BMX Colombia", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Marcos", price: 890000, old: null, color: "cyan", badge: "new", stock: 4,
+    img: "assets/img/products/IMG_7139.jpeg",
+    desc: "Marco Fate BMX Colombia. Diseñado y fabricado en Colombia por riders para riders. Cromoly full.",
+    specs: ["Material: Cromoly 4130", "Top tube: 20.75\"", "Chainstay: 13\"", "Hecho en Colombia"] },
+
+  { id: "sprk-fate-chrome", name: "Plato Fate Garuda 25T Cromado", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Platos", price: 160000, old: null, color: "lime", badge: null, stock: 8,
+    img: "assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg",
+    desc: "Versión cromada del Plato Fate Garuda. Guard integrado, mecanizado CNC y brillo impecable.",
+    specs: ["Dientes: 25T / 28T", "Material: 7075 alloy CNC", "Guard integrado", "Color: cromado"] },
+
+  { id: "seat-fate-leather", name: "Silla Fate Pivotal Cuero Negro", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Sillas y Postes", price: 140000, old: null, color: "purple", badge: null, stock: 7,
+    img: "assets/img/products/3B54281B-6080-4074-A754-4142F71ADBC2.jpeg",
+    desc: "Silla pivotal Fate BMX Colombia en cuero negro. Diseño firme y cómodo, corte original.",
+    specs: ["Tipo: Pivotal", "Material: Cuero negro", "Corte original", "Hecha en Colombia"] }
 ];
 
 /* --------- Generador de imagen SVG estilo grafiti (data-URI) ----------- */
@@ -195,6 +297,7 @@ const STIKE_PALETTE = {
 };
 
 function stikeProductImage(product, size) {
+  if (product && product.img) return product.img;
   size = size || 600;
   const pal = STIKE_PALETTE[product.color] || STIKE_PALETTE.pink;
   const label = (product.brand || "STIKE").toUpperCase();

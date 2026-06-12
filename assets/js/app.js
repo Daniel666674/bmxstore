@@ -7,15 +7,14 @@ const STIKE_CONFIG = {
   name: "Stike",
   full: "Stike Bike Shop",
   tagline: "BMX · BOGOTÁ",
-  // Datos de contacto (placeholder — reemplazar por los reales)
-  whatsapp: "573200000000",
-  whatsappPretty: "+57 320 000 0000",
-  phone: "+57 (601) 000 0000",
+  whatsapp: "573118108848",
+  whatsappPretty: "+57 311 810 8848",
+  phone: "+57 311 810 8848",
   email: "hola@stikebikeshop.com",
-  address: "Cra. 13 #45-12, Chapinero, Bogotá D.C.",
+  address: "Bogotá D.C., Colombia",
   hours: "Lun a Sáb · 10:00 a.m. – 7:00 p.m.",
-  ig: "https://instagram.com/stikebikeshop",
-  fb: "https://facebook.com/stikebikeshop",
+  ig: "https://www.instagram.com/stikebikeshop?igsh=emVzZXc0NWVlNmcy",
+  fb: "https://www.facebook.com/share/1Cz3ezfUvL/?mibextid=wwXIfr",
   tiktok: "https://tiktok.com/@stikebikeshop",
   igHandle: "@stikebikeshop"
 };
