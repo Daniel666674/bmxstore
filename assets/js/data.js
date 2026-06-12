@@ -287,13 +287,15 @@ const STIKE_PRODUCTS = [
 ];
 
 /* --------- Generador de imagen SVG estilo grafiti (data-URI) ----------- */
+/* Grayscale ramp — placeholders/community render strictly B&W.
+   [accent glyph color, gradient base] tuned for subtle variety. */
 const STIKE_PALETTE = {
-  pink:   ["#ff2e88", "#7a0f3d"],
-  cyan:   ["#1fe0ff", "#0a4d5c"],
-  yellow: ["#ffe11a", "#7a6a00"],
-  lime:   ["#b4ff1a", "#3d5c00"],
-  orange: ["#ff6a00", "#5c2600"],
-  purple: ["#8b5cf6", "#2e1a5c"]
+  pink:   ["#ffffff", "#23232a"],
+  cyan:   ["#d4d4da", "#1c1c22"],
+  yellow: ["#ededf0", "#26262d"],
+  lime:   ["#ffffff", "#1a1a20"],
+  orange: ["#bdbdc4", "#202026"],
+  purple: ["#9a9aa3", "#17171c"]
 };
 
 function stikeProductImage(product, size) {

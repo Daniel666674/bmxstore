@@ -30,19 +30,26 @@ const SOCICO_WA = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.or
 function stikeLogoSVG(size) {
   size = size || 46;
   return `<svg class="logo" width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <rect width="64" height="64" rx="12" fill="#0b0b0d"/>
-  <circle cx="15" cy="18" r="8" fill="#ffffff"/>
-  <circle cx="15" cy="18" r="4" fill="#0b0b0d"/>
-  <circle cx="49" cy="18" r="8" fill="#ffffff"/>
-  <circle cx="49" cy="18" r="4" fill="#0b0b0d"/>
-  <ellipse cx="32" cy="41" rx="20" ry="18" fill="#ffffff"/>
-  <path d="M12 32 Q12 12 32 10 Q52 12 52 32 Z" fill="#ffffff"/>
-  <rect x="9" y="29" width="46" height="7" rx="3.5" fill="#c8c8c8"/>
-  <rect x="14" y="37" width="13" height="9" rx="3" fill="#0b0b0d" stroke="#ffffff" stroke-width="1.2"/>
-  <rect x="37" y="37" width="13" height="9" rx="3" fill="#0b0b0d" stroke="#ffffff" stroke-width="1.2"/>
-  <line x1="27" y1="41.5" x2="37" y2="41.5" stroke="#ffffff" stroke-width="1.5"/>
-  <ellipse cx="32" cy="52" rx="6" ry="4.5" fill="#e2e2e2"/>
-  <ellipse cx="32" cy="51" rx="2.5" ry="2" fill="#0b0b0d"/>
+  <rect width="64" height="64" rx="13" fill="#0b0b0d"/>
+  <!-- ears -->
+  <circle cx="19" cy="26" r="7" fill="#ffffff"/>
+  <circle cx="45" cy="26" r="7" fill="#ffffff"/>
+  <circle cx="19" cy="26" r="3" fill="#0b0b0d"/>
+  <circle cx="45" cy="26" r="3" fill="#0b0b0d"/>
+  <!-- face -->
+  <ellipse cx="32" cy="38" rx="17" ry="15" fill="#ffffff"/>
+  <!-- snapback cap dome -->
+  <path d="M16 35 Q15 18 32 17 Q49 18 48 35 Z" fill="#cfcfd4"/>
+  <!-- cap brim -->
+  <path d="M43 34 Q58 33 60 37.5 Q56 40 44 38.5 Z" fill="#a9a9b0"/>
+  <!-- sunglasses -->
+  <rect x="19" y="35" width="10" height="6.5" rx="3.2" fill="#0b0b0d"/>
+  <rect x="35" y="35" width="10" height="6.5" rx="3.2" fill="#0b0b0d"/>
+  <rect x="28" y="37" width="8" height="2.2" rx="1" fill="#0b0b0d"/>
+  <!-- snout -->
+  <ellipse cx="32" cy="47" rx="6.5" ry="5" fill="#e8e8ea"/>
+  <ellipse cx="32" cy="45.5" rx="2.6" ry="1.9" fill="#0b0b0d"/>
+  <path d="M32 47.4 V49.6" stroke="#0b0b0d" stroke-width="1.4" stroke-linecap="round"/>
 </svg>`;
 }
 
@@ -319,7 +326,7 @@ document.addEventListener("click", (e) => {
   const add = e.target.closest("[data-add]");
   if (add) { stikeAddToCart(add.getAttribute("data-add")); }
   const fav = e.target.closest(".fav");
-  if (fav) { fav.textContent = fav.textContent === "♡" ? "♥" : "♡"; fav.style.color = fav.textContent === "♥" ? "#ff2e88" : "#fff"; }
+  if (fav) { fav.textContent = fav.textContent === "♡" ? "♥" : "♡"; fav.style.color = "#fff"; }
 });
 
 /* WhatsApp flotante */
