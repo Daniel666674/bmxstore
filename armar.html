@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arma tu BMX — Stike Bike Shop</title>
+  <meta name="description" content="Arma tu BMX pieza por pieza: cuadro, horquilla, transmisión, ruedas y dirección. Precio al instante y armado gratis en Stike Bike Shop, Bogotá.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div class="wrap page-head">
+    <nav class="breadcrumb"><a href="index.html">Inicio</a><span class="sep">/</span><span>Arma tu BMX</span></nav>
+    <h1>Arma tu <span class="spray">BMX</span></h1>
+    <div class="count">Elige cada componente y construye tu setup ideal. Precio al instante · armado y ajuste gratis.</div>
+  </div>
+
+  <div class="wrap builder-layout">
+    <div class="builder-main">
+      <div class="builder-steps" id="builder-steps"></div>
+      <div class="builder-stepwrap" id="builder-stepwrap"></div>
+      <div class="builder-nav">
+        <button class="btn ghost" id="prev-step">← Anterior</button>
+        <button class="btn" id="next-step">Siguiente →</button>
+      </div>
+    </div>
+
+    <aside class="builder-summary">
+      <h3>Tu build</h3>
+      <div id="build-list"></div>
+      <div class="line total"><span>Total</span><span id="build-total">$0</span></div>
+      <button class="btn block" id="add-build">Agregar todo al carrito</button>
+      <a class="btn wa block" id="wa-build" target="_blank" rel="noopener" style="margin-top:10px">Cotizar por WhatsApp</a>
+      <p class="builder-note">Armado y ajuste gratis · Asesoría real de riders · Envíos a toda Colombia</p>
+    </aside>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    stikeInit("armar");
+
+    const STEPS = [
+      { key: "cuadro",     label: "Cuadro",      subs: ["Marcos"] },
+      { key: "horquilla",  label: "Horquilla",   subs: ["Tenedores"] },
+      { key: "transmision",label: "Transmisión", subs: ["Bielas", "Platos"] },
+      { key: "ruedas",     label: "Ruedas",      subs: ["Rines", "Manzanas", "Llantas"] },
+      { key: "direccion",  label: "Dirección",   subs: ["Manubrios", "Timones"] }
+    ];
+    let current = 0;
+    const build = {}; // key -> productId
+
+    function optionsFor(step) {
+      return STIKE_PRODUCTS.filter(p => p.cat === "repuestos" && step.subs.includes(p.sub));
+    }
+
+    function renderSteps() {
+      document.getElementById("builder-steps").innerHTML = STEPS.map((s, i) => {
+        const done = build[s.key] ? " done" : "";
+        const act = i === current ? " active" : "";
+        return `<button class="bstep${act}${done}" data-step="${i}">
+          <span class="bstep-n">${done ? "✓" : (i + 1)}</span><span class="bstep-l">${s.label}</span>
+        </button>`;
+      }).join("");
+      document.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click", () => {
+        current = +b.getAttribute("data-step"); renderAll();
+      }));
+    }
+
+    function renderStep() {
+      const step = STEPS[current];
+      const opts = optionsFor(step);
+      const wrap = document.getElementById("builder-stepwrap");
+      wrap.innerHTML = `
+        <div class="bstep-head">
+          <span class="kicker">Paso ${current + 1} de ${STEPS.length}</span>
+          <h2>Elige tu ${step.label}</h2>
+        </div>
+        <div class="boption-grid">
+          <button class="boption skip ${!build[step.key] ? "active" : ""}" data-pick="">
+            <span class="bopt-skip">Sin ${step.label.toLowerCase()}<small>Lo elijo después / lo tengo</small></span>
+          </button>
+          ${opts.map(p => `
+            <button class="boption ${build[step.key] === p.id ? "active" : ""}" data-pick="${p.id}">
+              <span class="bopt-img"><img src="${stikeProductImage(p, 300)}" alt="${p.name}" loading="lazy"></span>
+              <span class="bopt-info">
+                <span class="bopt-brand">${p.brand}</span>
+                <span class="bopt-name">${p.name}</span>
+                <span class="bopt-price">${stikePrice(p.price)}</span>
+              </span>
+            </button>`).join("")}
+        </div>`;
+      wrap.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => {
+        const id = b.getAttribute("data-pick");
+        if (id) build[step.key] = id; else delete build[step.key];
+        if (current < STEPS.length - 1) current++;
+        renderAll(); scrollBuilder();
+      }));
+    }
+
+    function renderSummary() {
+      let total = 0;
+      const html = STEPS.map(s => {
+        const id = build[s.key];
+        const p = id ? stikeFindProduct(id) : null;
+        if (p) total += p.price;
+        return `<div class="build-row ${p ? "" : "empty"}">
+          <span class="br-label">${s.label}</span>
+          <span class="br-val">${p ? p.name : "—"}</span>
+          <span class="br-price">${p ? stikePrice(p.price) : ""}</span>
+        </div>`;
+      }).join("");
+      document.getElementById("build-list").innerHTML = html;
+      document.getElementById("build-total").textContent = stikePrice(total);
+
+      const chosen = STEPS.filter(s => build[s.key]).map(s => {
+        const p = stikeFindProduct(build[s.key]);
+        return `• ${s.label}: ${p.name} — ${stikePrice(p.price)}`;
+      });
+      const msg = `Hola Stike! Quiero armar esta BMX:%0A${chosen.join("%0A") || "(aún sin selección)"}%0A%0ATotal estimado: ${stikePrice(total)}%0A%0A¿Me asesoran para completarla?`;
+      document.getElementById("wa-build").href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${msg}`;
+    }
+
+    function renderNav() {
+      document.getElementById("prev-step").disabled = current === 0;
+      document.getElementById("next-step").textContent = current === STEPS.length - 1 ? "Ver resumen ↓" : "Siguiente →";
+    }
+
+    function scrollBuilder() {
+      const el = document.getElementById("builder-steps");
+      if (el) { const y = el.getBoundingClientRect().top + window.scrollY - 120; window.scrollTo({ top: Math.max(0, y), behavior: "smooth" }); }
+    }
+
+    function renderAll() { renderSteps(); renderStep(); renderSummary(); renderNav(); }
+
+    document.getElementById("prev-step").addEventListener("click", () => { if (current > 0) { current--; renderAll(); scrollBuilder(); } });
+    document.getElementById("next-step").addEventListener("click", () => { if (current < STEPS.length - 1) { current++; renderAll(); scrollBuilder(); } });
+    document.getElementById("add-build").addEventListener("click", () => {
+      const chosen = STEPS.filter(s => build[s.key]);
+      if (!chosen.length) { stikeToast("Elige al menos un componente"); return; }
+      chosen.forEach(s => stikeAddToCart(build[s.key], 1));
+      stikeToast("Build agregado al carrito");
+      setTimeout(() => window.location.href = "carrito.html", 750);
+    });
+
+    renderAll();
+  </script>
+  <script src="assets/js/animations.js"></script>
+</body>
+</html>
