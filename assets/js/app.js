@@ -152,7 +152,7 @@ function stikeRenderHeader(active) {
   const header = `
   <div class="topbar">
     <div class="wrap">
-      <div class="ticker"><span>ENVÍOS A TODA COLOMBIA &nbsp; ✦ &nbsp; <b>3 CUOTAS SIN INTERÉS</b> &nbsp; ✦ &nbsp; RECOGE EN CHAPINERO &nbsp; ✦ &nbsp; ARMAMOS TU BMX GRATIS &nbsp; ✦ &nbsp; <b>COMUNIDAD STIKE BOGOTÁ</b></span></div>
+      <div class="ticker"><span>ENVÍOS A TODA COLOMBIA &nbsp; ✦ &nbsp; <b>3 CUOTAS SIN INTERÉS</b> &nbsp; ✦ &nbsp; RECOGE EN VENECIA &nbsp; ✦ &nbsp; ARMAMOS TU BMX GRATIS &nbsp; ✦ &nbsp; <b>COMUNIDAD STIKE BOGOTÁ</b></span></div>
       <div class="social">
         <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig soc-sm" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
         <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb soc-sm" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>

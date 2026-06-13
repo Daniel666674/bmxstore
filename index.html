@@ -22,7 +22,7 @@
     <div class="hero-overlay"></div>
     <div class="wrap">
       <div class="hero-copy">
-        <span class="eyebrow tag-pill" style="background:var(--ink);color:#09090a">Bogotá · Chapinero</span>
+        <span class="eyebrow tag-pill" style="background:var(--ink);color:#09090a">Bogotá · Venecia</span>
         <h1>Rueda <span class="o1 glitch">duro</span>,<br>vive <span class="o2">BMX</span></h1>
         <div class="hero-lockup">
           <span class="rule"></span>
@@ -142,7 +142,7 @@
 
     // Categorías
     document.getElementById("home-cats").innerHTML = STIKE_CATEGORIES.map(c => `
-      <a class="cat-card ${c.color}" href="tienda.html?cat=${c.slug}">
+      <a class="cat-card ${c.color}" href="tienda.html?cat=${c.slug}" style="background-image:url('assets/img/cat-${c.slug}.jpg')">
         <span class="go">→</span>
         <h3>${c.name}</h3>
         <span>${c.blurb}</span>
