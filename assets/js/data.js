@@ -283,7 +283,58 @@ const STIKE_PRODUCTS = [
   { id: "seat-fate-leather", name: "Silla Fate Pivotal Cuero Negro", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Sillas y Postes", price: 140000, old: null, color: "purple", badge: null, stock: 7,
     img: "assets/img/products/3B54281B-6080-4074-A754-4142F71ADBC2.jpeg",
     desc: "Silla pivotal Fate BMX Colombia en cuero negro. Diseño firme y cómodo, corte original.",
-    specs: ["Tipo: Pivotal", "Material: Cuero negro", "Corte original", "Hecha en Colombia"] }
+    specs: ["Tipo: Pivotal", "Material: Cuero negro", "Corte original", "Hecha en Colombia"] },
+
+  // ---- Lote nuevo: marcos, mazas y pedales (fotos reales) ----
+  { id: "frame-cult-wb", name: "Marco Cult Control 20.75\" Blanco/Azul", brand: "Cult", cat: "repuestos", sub: "Marcos", price: 1050000, old: 1180000, color: "cyan", badge: "promo", stock: 3,
+    img: "assets/img/products/IMG_7258.jpeg",
+    desc: "Marco Cult Control en cromoly 4130 con acabado fade blanco a azul y detalles rojos. Geometría street/park versátil.",
+    specs: ["Material: Cromoly 4130 full", "Top tube: 20.75\"", "Trasero: 13.2\" - 13.6\"", "Mounts: removibles", "Color: Blanco/Azul"] },
+
+  { id: "frame-federal-white", name: "Marco Federal Bruno LT Blanco", brand: "Federal", cat: "repuestos", sub: "Marcos", price: 980000, old: null, color: "lime", badge: "new", stock: 4,
+    img: "assets/img/products/IMG_7259.jpeg",
+    desc: "Marco Federal Bruno LT en blanco mate. Liviano, rígido y pensado para street técnico.",
+    specs: ["Material: 13-Cromoly", "Top tube: 21\"", "Investment cast", "Mounts: removibles", "Color: Blanco mate"] },
+
+  { id: "frame-wtp-green", name: "Marco Wethepeople Battleship Verde", brand: "Wethepeople", cat: "repuestos", sub: "Marcos", price: 1020000, old: null, color: "lime", badge: "new", stock: 3,
+    img: "assets/img/products/IMG_7260.jpeg",
+    desc: "Marco Wethepeople Battleship en verde lima. Tubería cromoly full con geometría para park y trails.",
+    specs: ["Material: Cromoly 4130 full", "Top tube: 20.85\"", "Mid BB", "Verde lima", "Made for park/dirt"] },
+
+  { id: "hub-cassette-black", name: "Maza Trasera Cassette Shadow Negra", brand: "Shadow", cat: "repuestos", sub: "Manzanas", price: 560000, old: null, color: "pink", badge: null, stock: 5,
+    img: "assets/img/products/IMG_7264.jpeg",
+    desc: "Maza trasera cassette Shadow en negro, engrane rápido y sellado para uso intensivo.",
+    specs: ["Tipo: Cassette", "Driver: 9T", "Engrane: 60 puntos", "Eje: 14mm", "Color: Negro"] },
+
+  { id: "hub-rear-eclat", name: "Maza Trasera Éclat Negra", brand: "Éclat", cat: "repuestos", sub: "Manzanas", price: 540000, old: 620000, color: "cyan", badge: "promo", stock: 4,
+    img: "assets/img/products/IMG_7265.jpeg",
+    desc: "Maza trasera Éclat sellada en negro mate. Confiable, suave y de fácil mantenimiento.",
+    specs: ["Tipo: Cassette", "Driver: 9T", "Rodamientos sellados", "Eje: 14mm", "Color: Negro"] },
+
+  { id: "hub-chrome", name: "Maza Trasera Cassette Cromada", brand: "Éclat", cat: "repuestos", sub: "Manzanas", price: 600000, old: null, color: "yellow", badge: "new", stock: 3,
+    img: "assets/img/products/IMG_7266.jpeg",
+    desc: "Maza trasera cassette en acabado cromado pulido. Brillo impecable y rendimiento de gama alta.",
+    specs: ["Tipo: Cassette", "Driver: 9T", "Acabado: Cromado", "Eje: 14mm", "Rodamientos sellados"] },
+
+  { id: "hub-front-fed", name: "Maza Delantera Federal Negra", brand: "Federal", cat: "repuestos", sub: "Manzanas", price: 280000, old: null, color: "purple", badge: null, stock: 8,
+    img: "assets/img/products/IMG_7267.jpeg",
+    desc: "Maza delantera Federal sellada en negro. Ligera y resistente para cualquier setup.",
+    specs: ["Tipo: Delantera", "Eje: 3/8\"", "Rodamientos sellados", "Female axle", "Color: Negro"] },
+
+  { id: "pedal-plastic-blk", name: "Pedales Plástico Platform Negros", brand: "Odyssey", cat: "repuestos", sub: "Pedales", price: 90000, old: null, color: "lime", badge: null, stock: 22,
+    img: "assets/img/products/IMG_7268.jpeg",
+    desc: "Pedales de plástico reforzado con buen agarre y cuerpo ancho. Livianos y económicos.",
+    specs: ["Material: Nylon reforzado", "Eje: 9/16\"", "Pines moldeados", "Cuerpo ancho", "Color: Negro"] },
+
+  { id: "pedal-alloy-blk", name: "Pedales Aluminio Pro Negros", brand: "Stranger", cat: "repuestos", sub: "Pedales", price: 130000, old: null, color: "orange", badge: "new", stock: 12,
+    img: "assets/img/products/IMG_7269.jpeg",
+    desc: "Pedales de aluminio CNC con pines reemplazables y plataforma sólida para street agresivo.",
+    specs: ["Material: Aluminio CNC", "Eje: 9/16\" cromoly", "Pines reemplazables", "Sellados", "Color: Negro"] },
+
+  { id: "pedal-grip-blk", name: "Pedales SaltPlus AM Negros", brand: "SaltPlus", cat: "repuestos", sub: "Pedales", price: 78000, old: null, color: "cyan", badge: null, stock: 20,
+    img: "assets/img/products/IMG_7270.jpeg",
+    desc: "Pedales SaltPlus AM de plataforma plana con excelente grip. Perfectos para el día a día.",
+    specs: ["Material: Compuesto", "Eje: 9/16\"", "Pines integrados", "Plataforma plana", "Color: Negro"] }
 ];
 
 /* --------- Generador de imagen SVG (data-URI) — placeholder B&W --------- */

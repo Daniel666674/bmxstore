@@ -1,6 +1,8 @@
 ;(function () {
   'use strict';
 
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* ---- Page loader ---- */
   const loader = document.createElement('div');
   loader.id = 'stike-loader';
@@ -11,6 +13,27 @@
     loader.classList.add('done');
     setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 700);
   });
+
+  /* ---- Scroll progress bar ---- */
+  var bar = document.createElement('div');
+  bar.className = 'scroll-progress';
+  if (document.body) document.body.appendChild(bar);
+  var barTick = false;
+  window.addEventListener('scroll', function () {
+    if (barTick) return;
+    barTick = true;
+    requestAnimationFrame(function () {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+      barTick = false;
+    });
+  }, { passive: true });
+
+  /* ---- Auto-tag more elements so the whole site animates ---- */
+  document.querySelectorAll('.section-head, .cta-band .wrap, .tl-item, .map-embed, .contact-card, .about-hero > div, .pdp-info, .pdp-gallery')
+    .forEach(function (el) { el.classList.add('reveal'); });
+  document.querySelectorAll('.brand-grid, .ig-grid, .values, .props, .subcat-chips')
+    .forEach(function (el) { el.classList.add('stagger'); });
 
   /* ---- Scroll reveal ---- */
   var revealObs = new IntersectionObserver(function (entries) {
@@ -40,18 +63,21 @@
   }
   observeAll();
 
-  /* ---- Hero parallax ---- */
-  var heroArt = document.querySelector('.hero-art');
-  if (heroArt) {
+  /* ---- Hero parallax (copy drifts up + fades on scroll) ---- */
+  var heroCopy = document.querySelector('.hero-copy');
+  if (heroCopy && !reduceMotion) {
     var ticking = false;
     window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(function () {
-          heroArt.style.transform = 'translateY(' + (window.scrollY * 0.09) + 'px)';
-          ticking = false;
-        });
-        ticking = true;
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        if (y < window.innerHeight) {
+          heroCopy.style.transform = 'translateY(' + (y * 0.16) + 'px)';
+          heroCopy.style.opacity = Math.max(0, 1 - y / 620);
+        }
+        ticking = false;
+      });
     }, { passive: true });
   }
 
@@ -92,13 +118,13 @@
   });
 
   /* ---- 3D card tilt (desktop only) ---- */
-  if (window.matchMedia('(hover: hover)').matches) {
+  if (window.matchMedia('(hover: hover)').matches && !reduceMotion) {
     document.querySelectorAll('.card').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         var r = card.getBoundingClientRect();
         var x = (e.clientX - r.left) / r.width - 0.5;
         var y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = 'perspective(900px) rotateY(' + (x * 4) + 'deg) rotateX(' + (-y * 4) + 'deg) translateY(-6px)';
+        card.style.transform = 'perspective(900px) rotateY(' + (x * 5) + 'deg) rotateX(' + (-y * 5) + 'deg) translateY(-8px)';
         card.style.transition = 'border-color .2s, box-shadow .2s';
       });
       card.addEventListener('mouseleave', function () {
@@ -109,13 +135,13 @@
   }
 
   /* ---- Magnetic buttons (desktop only) ---- */
-  if (window.matchMedia('(hover: hover)').matches) {
+  if (window.matchMedia('(hover: hover)').matches && !reduceMotion) {
     document.querySelectorAll('.btn:not(.sm):not(.block)').forEach(function (btn) {
       btn.addEventListener('mousemove', function (e) {
         var r = btn.getBoundingClientRect();
-        var x = (e.clientX - r.left - r.width / 2) * 0.2;
-        var y = (e.clientY - r.top - r.height / 2) * 0.2;
-        btn.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        var x = (e.clientX - r.left - r.width / 2) * 0.3;
+        var y = (e.clientY - r.top - r.height / 2) * 0.3;
+        btn.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(1.04)';
       });
       btn.addEventListener('mouseleave', function () {
         btn.style.transform = '';
