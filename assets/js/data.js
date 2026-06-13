@@ -65,26 +65,33 @@ const STIKE_BRANDS = [
 const STIKE_PRODUCTS = [
   // ---- Bicicletas completas ----
   { id: "stk-pro20", name: "Stike Pro 20\" Completa", brand: "Stike", cat: "bicicletas", sub: "Pro / Expert", price: 1890000, old: 2150000, color: "pink", badge: "promo", stock: 6,
+    img: "assets/img/products/2943A084-3EAD-41A8-B2AA-A420EB120F64.jpeg",
     desc: "Bicicleta BMX completa nivel pro. Marco cromoly 4130, ideal para street y park. Armada y revisada en nuestro taller en Bogotá.",
     specs: ["Marco: Cromoly 4130 full", "Rin: 20\"", "Sistema: Freecoaster", "Peso: 11.2 kg", "Frenos: U-brake trasero"] },
   { id: "stk-street20", name: "Cult Gateway Street 20\"", brand: "Cult", cat: "bicicletas", sub: "Street", price: 1650000, old: null, color: "cyan", badge: "new", stock: 4,
+    img: "assets/img/products/9066D51B-A8AE-48FE-AA72-34C2C19695FB.jpeg",
     desc: "Completa Cult Gateway, perfecta para empezar en el street con componentes de calidad y geometría versátil.",
     specs: ["Marco: Hi-Ten / Cromoly", "Rin: 20\"", "Top tube: 20.5\"", "Llantas: 2.4\"", "Tacos incluidos"] },
   { id: "stk-park20", name: "Sunday Primer Park 20\"", brand: "Sunday", cat: "bicicletas", sub: "Park", price: 1780000, old: null, color: "lime", badge: null, stock: 3,
+    img: "assets/img/products/350D6F6D-D868-4E2C-B567-1CE804106646.jpeg",
     desc: "Sunday Primer, ágil y ligera para rampas y bowls. Respuesta inmediata y mucho estilo.",
     specs: ["Marco: Cromoly downtube", "Rin: 20\"", "Geometría park", "Manzana sellada", "Sprocket 25T"] },
   { id: "stk-kids16", name: "Stike Mini 16\" Niños", brand: "Stike", cat: "bicicletas", sub: "Niños", price: 720000, old: 850000, color: "yellow", badge: "promo", stock: 8,
+    img: "assets/img/products/226240AD-272F-415C-A74A-D77F85FABCF6.jpeg",
     desc: "La primera BMX ideal para los más pequeños riders. Resistente, segura y lista para el parque.",
     specs: ["Rin: 16\"", "Edad: 5-8 años", "Freno trasero", "Ruedas de apoyo opcionales"] },
   { id: "stk-begin20", name: "Wethepeople Nova 20\"", brand: "Wethepeople", cat: "bicicletas", sub: "Principiantes", price: 1290000, old: null, color: "orange", badge: null, stock: 5,
+    img: "assets/img/products/6A8906E2-F138-4755-ABDC-B83AC8D2680A.jpeg",
     desc: "Completa accesible y confiable para arrancar en el BMX sin complicaciones.",
     specs: ["Marco: Hi-Ten", "Rin: 20\"", "Top tube: 20\"", "Freno U-brake"] },
 
   // ---- Repuestos: Marcos ----
   { id: "frame-total", name: "Marco Total Killabee K4", brand: "Total BMX", cat: "repuestos", sub: "Marcos", price: 980000, old: null, color: "cyan", badge: "new", stock: 4,
+    img: "assets/img/products/IMG_7282.jpeg",
     desc: "Marco insignia de Total BMX, full cromoly con butados y geometría afinada para street/park.",
     specs: ["Material: Cromoly 4130 full", "Top tube: 20.8\"", "Ángulo dirección: 75°", "Peso: 2.1 kg"] },
   { id: "frame-fly", name: "Marco Fly Bikes Proton", brand: "Fly Bikes", cat: "repuestos", sub: "Marcos", price: 910000, old: 1040000, color: "purple", badge: "promo", stock: 2,
+    img: "assets/img/products/IMG_7283.jpeg",
     desc: "Marco Fly Bikes Proton, ligero y reactivo. Tubería butada y dropouts integrados.",
     specs: ["Material: Cromoly", "Top tube: 21\"", "Chainstay: 13\"", "Made in Spain"] },
 
@@ -110,6 +117,7 @@ const STIKE_PRODUCTS = [
 
   // ---- Repuestos: Bielas / Platos ----
   { id: "crank-bsd", name: "Bielas BSD Substance XL", brand: "BSD", cat: "repuestos", sub: "Bielas", price: 540000, old: null, color: "cyan", badge: null, stock: 4,
+    img: "assets/img/products/IMG_7284.jpeg",
     desc: "Bielas tubulares BSD Substance XL, eje de 24mm y resistencia comprobada en street.",
     specs: ["Largo: 175mm", "Eje: 24mm", "Material: Cromoly tubular", "Spline 48"] },
   { id: "sprk-shadow", name: "Plato Fate Garuda 25T Negro", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Platos", price: 150000, old: null, color: "pink", badge: "new", stock: 12,
@@ -123,11 +131,13 @@ const STIKE_PRODUCTS = [
     desc: "Cadena media-link Shadow Interlock V2, súper resistente y fácil de reparar.",
     specs: ["Tipo: Half-link", "1/8\"", "Color: negro", "Pin reforzado"] },
   { id: "brake-odyssey", name: "Freno Odyssey Springfield", brand: "Odyssey", cat: "repuestos", sub: "Frenos", price: 180000, old: null, color: "purple", badge: null, stock: 6,
+    img: "assets/img/products/IMG_7285.jpeg",
     desc: "Kit de freno U-brake Odyssey Springfield con palanca Monolever. Frenadas precisas.",
     specs: ["Tipo: U-brake", "Incluye palanca", "Pads M2", "Cable incluido"] },
 
   // ---- Repuestos: Manzanas / Rines / Llantas ----
   { id: "hub-fed", name: "Manzana Federal Stance FC", brand: "Federal", cat: "repuestos", sub: "Manzanas", price: 620000, old: 720000, color: "orange", badge: "promo", stock: 3,
+    img: "assets/img/products/IMG_7286.jpeg",
     desc: "Manzana freecoaster Federal Stance FC, slack ajustable y rodamientos sellados.",
     specs: ["Tipo: Freecoaster", "Hueco: 9T", "Slack ajustable", "Eje 14mm"] },
   { id: "rim-eclat", name: "Rin Éclat Bondi 36H", brand: "Éclat", cat: "repuestos", sub: "Rines", price: 210000, old: null, color: "cyan", badge: null, stock: 8,
