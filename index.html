@@ -90,6 +90,27 @@
     </div>
   </section>
 
+  <!-- ARMA TU BMX -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="build-band reveal">
+        <div class="build-band-text">
+          <span class="kicker">Hazla tuya</span>
+          <h2>Arma tu <span class="o2">BMX</span> pieza por pieza</h2>
+          <p>Elige cuadro, horquilla, transmisión, ruedas y dirección. Te damos el precio al instante y la armamos gratis en el taller.</p>
+          <a class="btn" href="armar.html">Empezar a armar</a>
+        </div>
+        <ol class="build-band-steps">
+          <li><span>01</span>Cuadro</li>
+          <li><span>02</span>Horquilla</li>
+          <li><span>03</span>Transmisión</li>
+          <li><span>04</span>Ruedas</li>
+          <li><span>05</span>Dirección</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <!-- PROMO BANNER -->
   <section class="section" style="padding-top:0">
     <div class="wrap">
@@ -115,6 +136,19 @@
         <a class="link-more" href="marcas.html">Todas las marcas →</a>
       </div>
       <div class="brand-grid" id="home-brands"></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker">La comunidad habla</span>
+          <h2>Lo que dicen los <span class="spray">riders</span></h2>
+        </div>
+      </div>
+      <div class="testi-grid stagger" id="home-testi"></div>
     </div>
   </section>
 
@@ -160,6 +194,20 @@
     // Marcas
     document.getElementById("home-brands").innerHTML =
       STIKE_BRANDS.map(b => `<a class="brand-chip" href="marcas.html#${encodeURIComponent(b)}">${b}</a>`).join("");
+
+    // Testimonios (sin emojis: estrellas en SVG, avatares con iniciales)
+    const STAR = '<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>';
+    const testimonials = [
+      { q: "Armé mi primera completa con ellos y la asesoría fue real. Me ayudaron a elegir cada parte según mi nivel y presupuesto.", n: "Andrés M.", r: "Street · Venecia", i: "AM" },
+      { q: "Pedí repuestos un martes y el jueves ya estaba rodando. Envío rápido a toda Colombia y todo original.", n: "Laura G.", r: "Park · Bogotá", i: "LG" },
+      { q: "El parche más sólido de la ciudad. Más que una tienda, es la comunidad BMX de Bogotá. Recomendados.", n: "Sebastián R.", r: "Dirt · Soacha", i: "SR" }
+    ];
+    document.getElementById("home-testi").innerHTML = testimonials.map(t => `
+      <figure class="testi-card">
+        <div class="testi-stars">${STAR.repeat(5)}</div>
+        <blockquote>${t.q}</blockquote>
+        <figcaption><span class="testi-avatar">${t.i}</span><span class="testi-who"><b>${t.n}</b><span>${t.r}</span></span></figcaption>
+      </figure>`).join("");
 
     // Comunidad (grilla estilo IG con placeholders)
     const igColors = ["pink","cyan","lime","yellow","orange","purple"];

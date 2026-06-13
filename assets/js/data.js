@@ -430,3 +430,18 @@ function stikeCategory(slug) { return STIKE_CATEGORIES.find(c => c.slug === slug
 function stikePrice(n) {
   return "$" + n.toLocaleString("es-CO");
 }
+
+/* --------- Tallas seleccionables por producto -----------------------------
+   Devuelve un array de tallas si el producto las requiere (ropa, tenis,
+   protecciones que se usan en el cuerpo). Permite override por p.sizes.   */
+function stikeSizesFor(p) {
+  if (!p) return null;
+  if (p.sizes) return p.sizes;
+  const sub = (p.sub || "").toLowerCase();
+  if (sub.includes("tenis")) return ["38", "39", "40", "41", "42", "43", "44"];
+  if (p.cat === "ropa" && (sub.includes("camiseta") || sub.includes("buso") || sub.includes("chaqueta")))
+    return ["S", "M", "L", "XL", "XXL"];
+  if (p.cat === "protecciones" && (sub.includes("casco") || sub.includes("rodiller") || sub.includes("coder") || sub.includes("guante") || sub.includes("espiniller")))
+    return ["S", "M", "L", "XL"];
+  return null;
+}
