@@ -206,6 +206,7 @@ function stikeRenderHeader(active) {
           <li class="${active === 'home' ? 'active' : ''}"><a href="index.html">Inicio</a></li>
           ${navItems}
           <li class="${active === 'marcas' ? 'active' : ''}"><a href="marcas.html">Marcas</a></li>
+          <li class="${active === 'blog' ? 'active' : ''}"><a href="blog.html">Blog</a></li>
           <li class="nav-build ${active === 'armar' ? 'active' : ''}"><a href="armar.html"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Arma tu BMX</a></li>
         </ul>
       </div>
@@ -373,6 +374,7 @@ function stikeRenderFooter() {
           ${catLinks}
           <a href="marcas.html">Marcas</a>
           <a href="armar.html">Arma tu BMX</a>
+          <a href="blog.html">Blog</a>
         </div>
         <div>
           <h5>Ayuda</h5>

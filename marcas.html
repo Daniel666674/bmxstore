@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marcas — Stike Bike Shop</title>
   <meta name="description" content="Las mejores marcas BMX en Stike Bike Shop: Total, Odyssey, Shadow, Cult, Sunday y más.">
+  <link rel="canonical" href="https://daniel666674.github.io/bmxstore/marcas.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Stike Bike Shop">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:title" content="Marcas BMX | Stike Bike Shop">
+  <meta property="og:description" content="Trabajamos con las marcas más respetadas del BMX mundial.">
+  <meta property="og:url" content="https://daniel666674.github.io/bmxstore/marcas.html">
+  <meta property="og:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -30,7 +40,7 @@
   <script src="assets/js/app.js"></script>
   <script>
     stikeInit("marcas");
-    document.getElementById("brand-grid").innerHTML = STIKE_BRANDS.map(b => {
+    document.getElementById("brand-grid").innerHTML = STIKE_BRANDS.filter(b => STIKE_PRODUCTS.some(p => p.brand === b)).map(b => {
       const count = STIKE_PRODUCTS.filter(p => p.brand === b).length;
       return `<a class="brand-chip" id="${encodeURIComponent(b)}" href="tienda.html?brand=${encodeURIComponent(b)}" style="flex-direction:column;gap:6px;min-height:120px">
         <span style="font-size:22px">${b}</span>

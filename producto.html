@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Producto — Stike Bike Shop</title>
+  <meta name="description" id="meta-desc" content="Producto BMX en Stike Bike Shop, tu tienda BMX en Bogotá.">
+  <link rel="canonical" id="meta-canonical" href="https://daniel666674.github.io/bmxstore/producto.html">
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="Stike Bike Shop">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:title" id="og-title" content="Producto — Stike Bike Shop">
+  <meta property="og:description" id="og-desc" content="Producto BMX en Stike Bike Shop, Bogotá.">
+  <meta property="og:image" id="og-image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -41,6 +51,15 @@
       mount.innerHTML = `<div class="empty"><h3 style="font-size:30px">Producto no encontrado</h3><p>Es posible que ya no esté disponible.</p><a class="btn cyan" href="tienda.html">Volver a la tienda</a></div>`;
     } else {
       const cat = stikeCategory(p.cat);
+      document.title = p.name + " — Stike Bike Shop";
+      (function () {
+        const setMeta = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
+        setMeta("meta-desc", "content", p.desc);
+        setMeta("meta-canonical", "href", location.href);
+        setMeta("og-title", "content", p.name + " — Stike Bike Shop");
+        setMeta("og-desc", "content", p.desc);
+        if (p.img) setMeta("og-image", "content", new URL(p.img, location.href).href);
+      })();
       document.getElementById("crumb").innerHTML =
         `<a href="index.html">Inicio</a><span class="sep">/</span><a href="tienda.html?cat=${p.cat}">${cat ? cat.name : "Tienda"}</a><span class="sep">/</span><span>${p.name}</span>`;
 
