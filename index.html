@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stike Bike Shop — Tienda BMX en Bogotá</title>
-  <meta name="description" content="Stike Bike Shop: la tienda BMX de Bogotá. Bicicletas completas, repuestos, protecciones, ropa y la comunidad más activa de la ciudad. Envíos a toda Colombia.">
+  <meta name="description" content="Stike Bike Shop: la tienda BMX de Bogotá. Repuestos, protecciones, ropa y la comunidad más activa de la ciudad. Te armamos la BMX a tu medida y enviamos a toda Colombia.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,10 +28,10 @@
           <span class="rule"></span>
           <span>The house of all who come</span>
         </div>
-        <p class="lead">Bicicletas completas, repuestos de las mejores marcas, ropa y protecciones. Armamos tu BMX con asesoría real de riders y lo enviamos a toda Colombia.</p>
+        <p class="lead">Repuestos de las mejores marcas, ropa y protecciones — y te armamos la BMX a tu medida. Asesoría real de riders reconocidos a nivel internacional, con envíos a toda Colombia.</p>
         <div class="hero-cta">
-          <a class="btn" href="tienda.html?cat=bicicletas">Ver bicicletas</a>
-          <a class="btn ghost" href="tienda.html?cat=repuestos">Comprar repuestos</a>
+          <a class="btn" href="armar.html">Arma tu BMX</a>
+          <a class="btn ghost" href="tienda.html?cat=repuestos">Ver repuestos</a>
         </div>
         <div class="hero-stats">
           <div class="stat s1"><b>+12K</b><span>Comunidad IG / FB</span></div>
@@ -61,6 +61,27 @@
         <a class="link-more" href="tienda.html">Ver todo →</a>
       </div>
       <div class="cat-grid stagger" id="home-cats"></div>
+    </div>
+  </section>
+
+  <!-- CREW / COMUNIDAD -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="crew-band reveal">
+        <div class="crew-text">
+          <span class="kicker">El crew</span>
+          <h2>Riders de verdad, <span class="o2">reconocidos</span> a nivel internacional</h2>
+          <p>Stike no es una tienda más: la levantamos riders activos con trayectoria fuera de Colombia, montando, viajando y representando el BMX bogotano en la escena global. Cada consejo que te damos viene de alguien que sí rueda.</p>
+          <p>Y todo eso vive en Instagram: una comunidad que crece cada día con sesiones, jams y la cultura BMX de la ciudad.</p>
+          <a class="btn" href="https://instagram.com/stikebikeshop" target="_blank" rel="noopener">Únete a la comunidad en IG</a>
+        </div>
+        <div class="crew-stats">
+          <div class="crew-stat"><b>+12K</b><span>Comunidad en Instagram</span></div>
+          <div class="crew-stat"><b>100%</b><span>Riders activos</span></div>
+          <div class="crew-stat"><b>Global</b><span>Trayectoria internacional</span></div>
+          <div class="crew-stat"><b>Venecia</b><span>Base en Bogotá</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -183,7 +204,7 @@
       </a>`).join("");
 
     // Destacados (primeros productos variados)
-    const featured = ["stk-pro20","frame-total","helmet-tsg","tee-stike","sprk-shadow","fork-odyssey","hoodie-stike","pedal-odyssey"]
+    const featured = ["frame-fate","frame-total","helmet-tsg","tee-stike","sprk-shadow","fork-odyssey","hoodie-stike","pedal-odyssey"]
       .map(stikeFindProduct).filter(Boolean);
     document.getElementById("home-featured").innerHTML = featured.map(stikeProductCard).join("");
 
@@ -198,7 +219,7 @@
     // Testimonios (sin emojis: estrellas en SVG, avatares con iniciales)
     const STAR = '<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>';
     const testimonials = [
-      { q: "Armé mi primera completa con ellos y la asesoría fue real. Me ayudaron a elegir cada parte según mi nivel y presupuesto.", n: "Andrés M.", r: "Street · Venecia", i: "AM" },
+      { q: "Armé mi BMX pieza por pieza con ellos y la asesoría fue real. Me ayudaron a elegir cada parte según mi nivel y presupuesto.", n: "Andrés M.", r: "Street · Venecia", i: "AM" },
       { q: "Pedí repuestos un martes y el jueves ya estaba rodando. Envío rápido a toda Colombia y todo original.", n: "Laura G.", r: "Park · Bogotá", i: "LG" },
       { q: "El parche más sólido de la ciudad. Más que una tienda, es la comunidad BMX de Bogotá. Recomendados.", n: "Sebastián R.", r: "Dirt · Soacha", i: "SR" }
     ];

@@ -6,13 +6,6 @@
 /* ----------------------- Categorías y subcategorías --------------------- */
 const STIKE_CATEGORIES = [
   {
-    slug: "bicicletas",
-    name: "Bicicletas",
-    blurb: "Completas listas para rodar",
-    color: "c1",
-    subs: ["Pro / Expert", "Street", "Park", "Principiantes", "Niños"]
-  },
-  {
     slug: "repuestos",
     name: "Repuestos",
     blurb: "Cada parte de tu BMX",
@@ -57,34 +50,13 @@ const STIKE_CATEGORIES = [
 const STIKE_BRANDS = [
   "Total BMX", "Odyssey", "Shadow", "Cult", "Sunday", "Wethepeople",
   "Éclat", "Federal", "Kink", "BSD", "Fly Bikes", "Demolition",
-  "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia"
+  "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia",
+  "TSG", "KMC"
 ];
 
 /* ----------------------------- Productos -------------------------------- */
 /* color = paleta del placeholder grafiti (pink|cyan|yellow|lime|orange|purple) */
 const STIKE_PRODUCTS = [
-  // ---- Bicicletas completas ----
-  { id: "stk-pro20", name: "Stike Pro 20\" Completa", brand: "Stike", cat: "bicicletas", sub: "Pro / Expert", price: 1890000, old: 2150000, color: "pink", badge: "promo", stock: 6,
-    img: "assets/img/products/2943A084-3EAD-41A8-B2AA-A420EB120F64.jpeg",
-    desc: "Bicicleta BMX completa nivel pro. Marco cromoly 4130, ideal para street y park. Armada y revisada en nuestro taller en Bogotá.",
-    specs: ["Marco: Cromoly 4130 full", "Rin: 20\"", "Sistema: Freecoaster", "Peso: 11.2 kg", "Frenos: U-brake trasero"] },
-  { id: "stk-street20", name: "Cult Gateway Street 20\"", brand: "Cult", cat: "bicicletas", sub: "Street", price: 1650000, old: null, color: "cyan", badge: "new", stock: 4,
-    img: "assets/img/products/9066D51B-A8AE-48FE-AA72-34C2C19695FB.jpeg",
-    desc: "Completa Cult Gateway, perfecta para empezar en el street con componentes de calidad y geometría versátil.",
-    specs: ["Marco: Hi-Ten / Cromoly", "Rin: 20\"", "Top tube: 20.5\"", "Llantas: 2.4\"", "Tacos incluidos"] },
-  { id: "stk-park20", name: "Sunday Primer Park 20\"", brand: "Sunday", cat: "bicicletas", sub: "Park", price: 1780000, old: null, color: "lime", badge: null, stock: 3,
-    img: "assets/img/products/350D6F6D-D868-4E2C-B567-1CE804106646.jpeg",
-    desc: "Sunday Primer, ágil y ligera para rampas y bowls. Respuesta inmediata y mucho estilo.",
-    specs: ["Marco: Cromoly downtube", "Rin: 20\"", "Geometría park", "Manzana sellada", "Sprocket 25T"] },
-  { id: "stk-kids16", name: "Cult 20\" Completa Negra", brand: "Cult", cat: "bicicletas", sub: "Street", price: 1690000, old: 1850000, color: "yellow", badge: "promo", stock: 5,
-    img: "assets/img/products/226240AD-272F-415C-A74A-D77F85FABCF6.jpeg",
-    desc: "BMX completa Cult en negro total, cuadro cromoly lista para el street. Armada y ajustada en nuestro taller en Bogotá.",
-    specs: ["Marco: Cromoly 4130", "Rin: 20\"", "Color: Negro total", "Freno: U-brake trasero", "Lista para rodar"] },
-  { id: "stk-begin20", name: "Wethepeople Nova 20\"", brand: "Wethepeople", cat: "bicicletas", sub: "Principiantes", price: 1290000, old: null, color: "orange", badge: null, stock: 5,
-    img: "assets/img/products/6A8906E2-F138-4755-ABDC-B83AC8D2680A.jpeg",
-    desc: "Completa accesible y confiable para arrancar en el BMX sin complicaciones.",
-    specs: ["Marco: Hi-Ten", "Rin: 20\"", "Top tube: 20\"", "Freno U-brake"] },
-
   // ---- Repuestos: Marcos ----
   { id: "frame-total", name: "Marco Cult Americano", brand: "Cult", cat: "repuestos", sub: "Marcos", price: 980000, old: null, color: "cyan", badge: "new", stock: 4,
     img: "assets/img/products/IMG_7282.jpeg",
@@ -164,7 +136,7 @@ const STIKE_PRODUCTS = [
     specs: ["Material: Aluminio 6061", "Largo: 4.5\"", "Eje: 10/14mm", "Incluye par"] },
 
   // ---- Protecciones ----
-  { id: "helmet-tsg", name: "Casco TSG Evolution Salmón", brand: "Stike", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "pink", badge: "new", stock: 12,
+  { id: "helmet-tsg", name: "Casco TSG Evolution Salmón", brand: "TSG", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "pink", badge: "new", stock: 12,
     img: "assets/img/products/IMG_7130.jpeg",
     desc: "Casco TSG Evolution, certificado CE para street y park. Forro extraíble y ajuste de carraca.",
     specs: ["Certificación: CE EN1078", "Tallas: S/M/L/XL", "10 ventilaciones", "Forro lavable"] },
@@ -226,7 +198,7 @@ const STIKE_PRODUCTS = [
     specs: ["12 stickers", "Vinilo resistente", "Anti-agua / anti-UV"] },
 
   // ---- Nuevos productos (imágenes reales) ----
-  { id: "chain-silver", name: "Cadena KMC Z410 Plata", brand: "Kink", cat: "repuestos", sub: "Cadenas", price: 75000, old: null, color: "cyan", badge: "new", stock: 18,
+  { id: "chain-silver", name: "Cadena KMC Z410 Plata", brand: "KMC", cat: "repuestos", sub: "Cadenas", price: 75000, old: null, color: "cyan", badge: "new", stock: 18,
     img: "assets/img/products/IMG_7165.jpeg",
     desc: "Cadena KMC Z410 niquelada, resistente y de fácil mantenimiento. Ideal para armar o reponer.",
     specs: ["Tipo: 1/8\"", "Color: plateado", "Eslabón estándar", "Compatible BMX"] },
@@ -287,7 +259,7 @@ const STIKE_PRODUCTS = [
     desc: "Timón Kink Williams de 4 tornillos, mecanizado CNC, robusto y perfectamente equilibrado.",
     specs: ["Tipo: Front load", "Material: 6061 CNC", "4 tornillos", "Reach: 52mm"] },
 
-  { id: "helmet-tsg-white", name: "Casco TSG Evolution Blanco", brand: "Stike", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "cyan", badge: null, stock: 9,
+  { id: "helmet-tsg-white", name: "Casco TSG Evolution Blanco", brand: "TSG", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "cyan", badge: null, stock: 9,
     img: "assets/img/products/IMG_7131.jpeg",
     desc: "Casco TSG Evolution en blanco mate, ligero y certificado. El favorito de los riders urbanos.",
     specs: ["Certificación: CE EN1078", "Tallas: S/M/L/XL", "10 ventilaciones", "Forro lavable"] },

@@ -360,7 +360,7 @@ function stikeRenderFooter() {
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="brand">${stikeLogoSVG(40)} <span class="name">Stike<small>${C.tagline}</small></span></div>
-          <p style="margin-top:14px">La tienda BMX de Bogotá. Bicicletas, repuestos, ropa y la comunidad más activa de la ciudad.</p>
+          <p style="margin-top:14px">La tienda BMX de Bogotá. Repuestos, ropa, protecciones y la comunidad más activa de la ciudad. Te armamos la BMX a tu medida.</p>
           <div class="foot-social">
             <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
             <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>
