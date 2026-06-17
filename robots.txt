@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://daniel666674.github.io/bmxstore/sitemap.xml

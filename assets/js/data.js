@@ -6,13 +6,6 @@
 /* ----------------------- Categorías y subcategorías --------------------- */
 const STIKE_CATEGORIES = [
   {
-    slug: "bicicletas",
-    name: "Bicicletas",
-    blurb: "Completas listas para rodar",
-    color: "c1",
-    subs: ["Pro / Expert", "Street", "Park", "Principiantes", "Niños"]
-  },
-  {
     slug: "repuestos",
     name: "Repuestos",
     blurb: "Cada parte de tu BMX",
@@ -57,48 +50,27 @@ const STIKE_CATEGORIES = [
 const STIKE_BRANDS = [
   "Total BMX", "Odyssey", "Shadow", "Cult", "Sunday", "Wethepeople",
   "Éclat", "Federal", "Kink", "BSD", "Fly Bikes", "Demolition",
-  "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia"
+  "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia",
+  "TSG", "KMC"
 ];
 
 /* ----------------------------- Productos -------------------------------- */
 /* color = paleta del placeholder grafiti (pink|cyan|yellow|lime|orange|purple) */
 const STIKE_PRODUCTS = [
-  // ---- Bicicletas completas ----
-  { id: "stk-pro20", name: "Stike Pro 20\" Completa", brand: "Stike", cat: "bicicletas", sub: "Pro / Expert", price: 1890000, old: 2150000, color: "pink", badge: "promo", stock: 6,
-    img: "assets/img/products/2943A084-3EAD-41A8-B2AA-A420EB120F64.jpeg",
-    desc: "Bicicleta BMX completa nivel pro. Marco cromoly 4130, ideal para street y park. Armada y revisada en nuestro taller en Bogotá.",
-    specs: ["Marco: Cromoly 4130 full", "Rin: 20\"", "Sistema: Freecoaster", "Peso: 11.2 kg", "Frenos: U-brake trasero"] },
-  { id: "stk-street20", name: "Cult Gateway Street 20\"", brand: "Cult", cat: "bicicletas", sub: "Street", price: 1650000, old: null, color: "cyan", badge: "new", stock: 4,
-    img: "assets/img/products/9066D51B-A8AE-48FE-AA72-34C2C19695FB.jpeg",
-    desc: "Completa Cult Gateway, perfecta para empezar en el street con componentes de calidad y geometría versátil.",
-    specs: ["Marco: Hi-Ten / Cromoly", "Rin: 20\"", "Top tube: 20.5\"", "Llantas: 2.4\"", "Tacos incluidos"] },
-  { id: "stk-park20", name: "Sunday Primer Park 20\"", brand: "Sunday", cat: "bicicletas", sub: "Park", price: 1780000, old: null, color: "lime", badge: null, stock: 3,
-    img: "assets/img/products/350D6F6D-D868-4E2C-B567-1CE804106646.jpeg",
-    desc: "Sunday Primer, ágil y ligera para rampas y bowls. Respuesta inmediata y mucho estilo.",
-    specs: ["Marco: Cromoly downtube", "Rin: 20\"", "Geometría park", "Manzana sellada", "Sprocket 25T"] },
-  { id: "stk-kids16", name: "Stike Mini 16\" Niños", brand: "Stike", cat: "bicicletas", sub: "Niños", price: 720000, old: 850000, color: "yellow", badge: "promo", stock: 8,
-    img: "assets/img/products/226240AD-272F-415C-A74A-D77F85FABCF6.jpeg",
-    desc: "La primera BMX ideal para los más pequeños riders. Resistente, segura y lista para el parque.",
-    specs: ["Rin: 16\"", "Edad: 5-8 años", "Freno trasero", "Ruedas de apoyo opcionales"] },
-  { id: "stk-begin20", name: "Wethepeople Nova 20\"", brand: "Wethepeople", cat: "bicicletas", sub: "Principiantes", price: 1290000, old: null, color: "orange", badge: null, stock: 5,
-    img: "assets/img/products/6A8906E2-F138-4755-ABDC-B83AC8D2680A.jpeg",
-    desc: "Completa accesible y confiable para arrancar en el BMX sin complicaciones.",
-    specs: ["Marco: Hi-Ten", "Rin: 20\"", "Top tube: 20\"", "Freno U-brake"] },
-
   // ---- Repuestos: Marcos ----
-  { id: "frame-total", name: "Marco Total Killabee K4", brand: "Total BMX", cat: "repuestos", sub: "Marcos", price: 980000, old: null, color: "cyan", badge: "new", stock: 4,
+  { id: "frame-total", name: "Marco Cult Americano", brand: "Cult", cat: "repuestos", sub: "Marcos", price: 980000, old: null, color: "cyan", badge: "new", stock: 4,
     img: "assets/img/products/IMG_7282.jpeg",
-    desc: "Marco insignia de Total BMX, full cromoly con butados y geometría afinada para street/park.",
+    desc: "Marco Cult Americano, full cromoly con butados y geometría afinada para street/park.",
     specs: ["Material: Cromoly 4130 full", "Top tube: 20.8\"", "Ángulo dirección: 75°", "Peso: 2.1 kg"] },
-  { id: "frame-fly", name: "Marco Fly Bikes Proton", brand: "Fly Bikes", cat: "repuestos", sub: "Marcos", price: 910000, old: 1040000, color: "purple", badge: "promo", stock: 2,
+  { id: "frame-fly", name: "Marco Sunday Cromoly", brand: "Sunday", cat: "repuestos", sub: "Marcos", price: 910000, old: 1040000, color: "purple", badge: "promo", stock: 2,
     img: "assets/img/products/IMG_7283.jpeg",
-    desc: "Marco Fly Bikes Proton, ligero y reactivo. Tubería butada y dropouts integrados.",
-    specs: ["Material: Cromoly", "Top tube: 21\"", "Chainstay: 13\"", "Made in Spain"] },
+    desc: "Marco Sunday en cromoly, ligero y reactivo. Tubería butada y dropouts integrados.",
+    specs: ["Material: Cromoly", "Top tube: 21\"", "Chainstay: 13\"", "Geometría street"] },
 
   // ---- Repuestos: Tenedores ----
-  { id: "fork-odyssey", name: "Tenedor Odyssey R32", brand: "Odyssey", cat: "repuestos", sub: "Tenedores", price: 360000, old: null, color: "pink", badge: null, stock: 7,
+  { id: "fork-odyssey", name: "Tenedor Federal", brand: "Federal", cat: "repuestos", sub: "Tenedores", price: 360000, old: null, color: "pink", badge: null, stock: 7,
     img: "assets/img/products/IMG_7181.jpeg",
-    desc: "Tenedor Odyssey R32, el estándar de la industria. Cromoly butado y peg-friendly.",
+    desc: "Tenedor Federal en cromoly butado, peg-friendly y resistente para street y park.",
     specs: ["Material: Cromoly 4130", "Offset: 32mm", "Eje: 10mm / 14mm", "Steerer butado"] },
   { id: "fork-shadow", name: "Tenedor Shadow Vultus", brand: "Shadow", cat: "repuestos", sub: "Tenedores", price: 330000, old: null, color: "lime", badge: null, stock: 5,
     img: "assets/img/products/IMG_7179.jpeg",
@@ -164,7 +136,7 @@ const STIKE_PRODUCTS = [
     specs: ["Material: Aluminio 6061", "Largo: 4.5\"", "Eje: 10/14mm", "Incluye par"] },
 
   // ---- Protecciones ----
-  { id: "helmet-tsg", name: "Casco TSG Evolution Salmón", brand: "Stike", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "pink", badge: "new", stock: 12,
+  { id: "helmet-tsg", name: "Casco TSG Evolution Salmón", brand: "TSG", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "pink", badge: "new", stock: 12,
     img: "assets/img/products/IMG_7130.jpeg",
     desc: "Casco TSG Evolution, certificado CE para street y park. Forro extraíble y ajuste de carraca.",
     specs: ["Certificación: CE EN1078", "Tallas: S/M/L/XL", "10 ventilaciones", "Forro lavable"] },
@@ -172,9 +144,9 @@ const STIKE_PRODUCTS = [
     img: "assets/img/products/IMG_7273.jpeg",
     desc: "Casco BMX negro mate, certificado para street y park. Calce firme y ventilación amplia.",
     specs: ["Certificación: CE EN1078", "Tallas: S/M/L/XL", "Negro mate", "Forro lavable"] },
-  { id: "knee-fuse", name: "Rodilleras Fuse Echo", brand: "Stike", cat: "protecciones", sub: "Rodilleras", price: 175000, old: 210000, color: "cyan", badge: "promo", stock: 9,
+  { id: "knee-fuse", name: "Rodilleras Shadow Riding Gear", brand: "Shadow", cat: "protecciones", sub: "Rodilleras", price: 175000, old: 210000, color: "cyan", badge: "promo", stock: 9,
     img: "assets/img/products/IMG_7272.jpeg",
-    desc: "Rodilleras ligeras con buena movilidad y protección sólida para caídas duras.",
+    desc: "Rodilleras Shadow Riding Gear, ligeras con buena movilidad y protección sólida para caídas duras.",
     specs: ["Tallas: S-XL", "Ventiladas", "Lavables", "Ajuste con velcro"] },
   { id: "gloves-stike", name: "Guantes Stike Grip", brand: "Stike", cat: "protecciones", sub: "Guantes", price: 65000, old: null, color: "lime", badge: null, stock: 18,
     img: "assets/img/products/IMG_7271.jpeg",
@@ -226,14 +198,14 @@ const STIKE_PRODUCTS = [
     specs: ["12 stickers", "Vinilo resistente", "Anti-agua / anti-UV"] },
 
   // ---- Nuevos productos (imágenes reales) ----
-  { id: "chain-silver", name: "Cadena KMC Z410 Plata", brand: "Kink", cat: "repuestos", sub: "Cadenas", price: 75000, old: null, color: "cyan", badge: "new", stock: 18,
+  { id: "chain-silver", name: "Cadena KMC Z410 Plata", brand: "KMC", cat: "repuestos", sub: "Cadenas", price: 75000, old: null, color: "cyan", badge: "new", stock: 18,
     img: "assets/img/products/IMG_7165.jpeg",
     desc: "Cadena KMC Z410 niquelada, resistente y de fácil mantenimiento. Ideal para armar o reponer.",
     specs: ["Tipo: 1/8\"", "Color: plateado", "Eslabón estándar", "Compatible BMX"] },
 
-  { id: "tire-street", name: "Llanta BMX Street 2.25\"", brand: "Federal", cat: "repuestos", sub: "Llantas", price: 95000, old: null, color: "lime", badge: null, stock: 12,
+  { id: "tire-street", name: "Llanta Wethepeople 2.25\"", brand: "Wethepeople", cat: "repuestos", sub: "Llantas", price: 95000, old: null, color: "lime", badge: null, stock: 12,
     img: "assets/img/products/IMG_7167.jpeg",
-    desc: "Llanta de perfil bajo para street y skatepark, con buen grip en concreto y asfalto.",
+    desc: "Llanta Wethepeople de perfil bajo para street y skatepark, con buen grip en concreto y asfalto.",
     specs: ["Medida: 20\" x 2.25\"", "Perfil bajo", "Wire bead", "90 PSI max"] },
 
   { id: "rim-eclat-2", name: "Rin Éclat Cortex 20H Negro", brand: "Éclat", cat: "repuestos", sub: "Rines", price: 195000, old: null, color: "purple", badge: null, stock: 5,
@@ -241,9 +213,9 @@ const STIKE_PRODUCTS = [
     desc: "Versión 20 huecos del Éclat Cortex, para riders que priorizan peso sin sacrificar resistencia.",
     specs: ["Huecos: 20", "Doble pared", "Material: 6061", "Pinned joint"] },
 
-  { id: "rim-fly", name: "Rin Fly Bikes Neutron 36H", brand: "Fly Bikes", cat: "repuestos", sub: "Rines", price: 205000, old: 240000, color: "orange", badge: "promo", stock: 4,
+  { id: "rim-fly", name: "Rin Shadow 36H", brand: "Shadow", cat: "repuestos", sub: "Rines", price: 205000, old: 240000, color: "orange", badge: "promo", stock: 4,
     img: "assets/img/products/IMG_7173.jpeg",
-    desc: "Rin Fly Bikes Neutron ultra reforzado con pinned joint y acabado anodizado negro.",
+    desc: "Rin Shadow ultra reforzado con pinned joint y acabado anodizado negro.",
     specs: ["Huecos: 36", "Doble pared", "Anodizado negro", "Pinned joint"] },
 
   { id: "bar-saltplus", name: "Manubrio SaltPlus Race 4pc", brand: "SaltPlus", cat: "repuestos", sub: "Manubrios", price: 235000, old: null, color: "cyan", badge: null, stock: 6,
@@ -256,9 +228,9 @@ const STIKE_PRODUCTS = [
     desc: "Manubrio Stranger Highrise, cromoly full con crossbar. Sensación rígida y gran control.",
     specs: ["Altura: 9.5\"", "Ancho: 29\"", "Material: Cromoly full", "Crossbar incluido"] },
 
-  { id: "fork-cruiser", name: "Tenedor Cruiser 26\" Negro", brand: "Federal", cat: "repuestos", sub: "Tenedores", price: 280000, old: null, color: "orange", badge: null, stock: 3,
+  { id: "fork-cruiser", name: "Tenedor BSD Cruiser 26\" Negro", brand: "BSD", cat: "repuestos", sub: "Tenedores", price: 280000, old: null, color: "orange", badge: null, stock: 3,
     img: "assets/img/products/IMG_7178.jpeg",
-    desc: "Tenedor cromoly para BMX cruiser 26\", pintado negro con acabado brillante.",
+    desc: "Tenedor BSD en cromoly para BMX cruiser 26\", pintado negro con acabado brillante.",
     specs: ["Rueda: 26\"", "Material: Cromoly", "Eje: 10mm", "Offset: 28mm"] },
 
   { id: "expander-mutanty", name: "Expander Mutanty M24", brand: "Mutanty", cat: "accesorios", sub: "Herramientas", price: 35000, old: null, color: "purple", badge: null, stock: 25,
@@ -287,7 +259,7 @@ const STIKE_PRODUCTS = [
     desc: "Timón Kink Williams de 4 tornillos, mecanizado CNC, robusto y perfectamente equilibrado.",
     specs: ["Tipo: Front load", "Material: 6061 CNC", "4 tornillos", "Reach: 52mm"] },
 
-  { id: "helmet-tsg-white", name: "Casco TSG Evolution Blanco", brand: "Stike", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "cyan", badge: null, stock: 9,
+  { id: "helmet-tsg-white", name: "Casco TSG Evolution Blanco", brand: "TSG", cat: "protecciones", sub: "Cascos", price: 230000, old: null, color: "cyan", badge: null, stock: 9,
     img: "assets/img/products/IMG_7131.jpeg",
     desc: "Casco TSG Evolution en blanco mate, ligero y certificado. El favorito de los riders urbanos.",
     specs: ["Certificación: CE EN1078", "Tallas: S/M/L/XL", "10 ventilaciones", "Forro lavable"] },
@@ -313,9 +285,9 @@ const STIKE_PRODUCTS = [
     specs: ["Tipo: Pivotal", "Material: Cuero negro", "Corte original", "Hecha en Colombia"] },
 
   // ---- Lote nuevo: marcos, mazas y pedales (fotos reales) ----
-  { id: "frame-cult-wb", name: "Marco Cult Control 20.75\" Blanco/Azul", brand: "Cult", cat: "repuestos", sub: "Marcos", price: 1050000, old: 1180000, color: "cyan", badge: "promo", stock: 3,
+  { id: "frame-cult-wb", name: "Marco Total BMX 20.75\" Blanco/Azul", brand: "Total BMX", cat: "repuestos", sub: "Marcos", price: 1050000, old: 1180000, color: "cyan", badge: "promo", stock: 3,
     img: "assets/img/products/IMG_7258.jpeg",
-    desc: "Marco Cult Control en cromoly 4130 con acabado fade blanco a azul y detalles rojos. Geometría street/park versátil.",
+    desc: "Marco Total BMX en cromoly 4130 con acabado fade blanco a azul y detalles rojos. Geometría street/park versátil.",
     specs: ["Material: Cromoly 4130 full", "Top tube: 20.75\"", "Trasero: 13.2\" - 13.6\"", "Mounts: removibles", "Color: Blanco/Azul"] },
 
   { id: "frame-federal-white", name: "Marco Federal Bruno LT Blanco", brand: "Federal", cat: "repuestos", sub: "Marcos", price: 980000, old: null, color: "lime", badge: "new", stock: 4,
@@ -333,9 +305,9 @@ const STIKE_PRODUCTS = [
     desc: "Maza trasera cassette Shadow en negro, engrane rápido y sellado para uso intensivo.",
     specs: ["Tipo: Cassette", "Driver: 9T", "Engrane: 60 puntos", "Eje: 14mm", "Color: Negro"] },
 
-  { id: "hub-rear-eclat", name: "Maza Trasera Éclat Negra", brand: "Éclat", cat: "repuestos", sub: "Manzanas", price: 540000, old: 620000, color: "cyan", badge: "promo", stock: 4,
+  { id: "hub-rear-eclat", name: "Maza Trasera Odyssey Negra", brand: "Odyssey", cat: "repuestos", sub: "Manzanas", price: 540000, old: 620000, color: "cyan", badge: "promo", stock: 4,
     img: "assets/img/products/IMG_7265.jpeg",
-    desc: "Maza trasera Éclat sellada en negro mate. Confiable, suave y de fácil mantenimiento.",
+    desc: "Maza trasera Odyssey sellada en negro mate. Confiable, suave y de fácil mantenimiento.",
     specs: ["Tipo: Cassette", "Driver: 9T", "Rodamientos sellados", "Eje: 14mm", "Color: Negro"] },
 
   { id: "hub-chrome", name: "Maza Trasera Cassette Cromada", brand: "Éclat", cat: "repuestos", sub: "Manzanas", price: 600000, old: null, color: "yellow", badge: "new", stock: 3,
@@ -353,14 +325,14 @@ const STIKE_PRODUCTS = [
     desc: "Pedales de plástico reforzado con buen agarre y cuerpo ancho. Livianos y económicos.",
     specs: ["Material: Nylon reforzado", "Eje: 9/16\"", "Pines moldeados", "Cuerpo ancho", "Color: Negro"] },
 
-  { id: "pedal-alloy-blk", name: "Pedales Aluminio Pro Negros", brand: "Stranger", cat: "repuestos", sub: "Pedales", price: 130000, old: null, color: "orange", badge: "new", stock: 12,
+  { id: "pedal-alloy-blk", name: "Pedales Federal Negros", brand: "Federal", cat: "repuestos", sub: "Pedales", price: 130000, old: null, color: "orange", badge: "new", stock: 12,
     img: "assets/img/products/IMG_7269.jpeg",
-    desc: "Pedales de aluminio CNC con pines reemplazables y plataforma sólida para street agresivo.",
-    specs: ["Material: Aluminio CNC", "Eje: 9/16\" cromoly", "Pines reemplazables", "Sellados", "Color: Negro"] },
+    desc: "Pedales Federal con cuerpo de nylon reforzado, pines moldeados y buen grip. Livianos y resistentes.",
+    specs: ["Material: Nylon reforzado", "Eje: 9/16\"", "Pines moldeados", "Plataforma ancha", "Color: Negro"] },
 
-  { id: "pedal-grip-blk", name: "Pedales SaltPlus AM Negros", brand: "SaltPlus", cat: "repuestos", sub: "Pedales", price: 78000, old: null, color: "cyan", badge: null, stock: 20,
+  { id: "pedal-grip-blk", name: "Pedales Wethepeople Negros", brand: "Wethepeople", cat: "repuestos", sub: "Pedales", price: 78000, old: null, color: "cyan", badge: null, stock: 20,
     img: "assets/img/products/IMG_7270.jpeg",
-    desc: "Pedales SaltPlus AM de plataforma plana con excelente grip. Perfectos para el día a día.",
+    desc: "Pedales Wethepeople de plataforma plana con excelente grip. Perfectos para el día a día.",
     specs: ["Material: Compuesto", "Eje: 9/16\"", "Pines integrados", "Plataforma plana", "Color: Negro"] }
 ];
 
@@ -429,4 +401,19 @@ function stikeCategory(slug) { return STIKE_CATEGORIES.find(c => c.slug === slug
 /* Formato de precio COP */
 function stikePrice(n) {
   return "$" + n.toLocaleString("es-CO");
+}
+
+/* --------- Tallas seleccionables por producto -----------------------------
+   Devuelve un array de tallas si el producto las requiere (ropa, tenis,
+   protecciones que se usan en el cuerpo). Permite override por p.sizes.   */
+function stikeSizesFor(p) {
+  if (!p) return null;
+  if (p.sizes) return p.sizes;
+  const sub = (p.sub || "").toLowerCase();
+  if (sub.includes("tenis")) return ["38", "39", "40", "41", "42", "43", "44"];
+  if (p.cat === "ropa" && (sub.includes("camiseta") || sub.includes("buso") || sub.includes("chaqueta")))
+    return ["S", "M", "L", "XL", "XXL"];
+  if (p.cat === "protecciones" && (sub.includes("casco") || sub.includes("rodiller") || sub.includes("coder") || sub.includes("guante") || sub.includes("espiniller")))
+    return ["S", "M", "L", "XL"];
+  return null;
 }

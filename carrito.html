@@ -38,7 +38,7 @@
         <div class="cart-empty">
           <div class="big"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
           <h2 style="font-size:34px;margin:10px 0">Tu carrito está vacío</h2>
-          <p style="color:var(--muted)">Agrega bicicletas, repuestos o ropa y vuelve aquí para terminar tu compra.</p>
+          <p style="color:var(--muted)">Agrega repuestos, ropa o protecciones y vuelve aquí para terminar tu compra.</p>
           <a class="btn cyan" href="tienda.html" style="margin-top:14px">Ir a la tienda</a>
         </div>`;
         return;
@@ -47,21 +47,24 @@
       const rows = cart.map(r => {
         const p = stikeFindProduct(r.id);
         if (!p) return "";
+        const key = stikeLineKey(r);
+        const sizeTag = r.size ? `<span class="ci-size">Talla: ${r.size}</span>` : "";
         return `
-        <div class="cart-row" data-row="${p.id}">
+        <div class="cart-row" data-row="${key}">
           <div class="ci-img"><a href="producto.html?id=${p.id}"><img src="${stikeProductImage(p,200)}" alt="${p.name}"></a></div>
           <div>
             <div class="ci-brand">${p.brand}</div>
             <a href="producto.html?id=${p.id}" class="ci-title">${p.name}</a>
+            ${sizeTag}
             <div class="ci-price">${stikePrice(p.price)}</div>
           </div>
           <div class="ci-right">
             <div class="qty">
-              <button data-dec="${p.id}" aria-label="Menos">−</button>
-              <input type="text" value="${r.qty}" data-qty="${p.id}" inputmode="numeric" aria-label="Cantidad">
-              <button data-inc="${p.id}" aria-label="Más">+</button>
+              <button data-dec="${key}" aria-label="Menos">−</button>
+              <input type="text" value="${r.qty}" data-qty="${key}" inputmode="numeric" aria-label="Cantidad">
+              <button data-inc="${key}" aria-label="Más">+</button>
             </div>
-            <button class="remove" data-remove="${p.id}">✕ Quitar</button>
+            <button class="remove" data-remove="${key}">✕ Quitar</button>
           </div>
         </div>`;
       }).join("");
@@ -70,7 +73,7 @@
       const shipping = subtotal >= FREE_SHIP ? 0 : SHIP_COST;
       const total = subtotal + shipping;
       const missing = FREE_SHIP - subtotal;
-      const waLines = cart.map(r => { const p = stikeFindProduct(r.id); return p ? `• ${r.qty}x ${p.name} — ${stikePrice(p.price * r.qty)}` : ""; }).join("%0A");
+      const waLines = cart.map(r => { const p = stikeFindProduct(r.id); return p ? `• ${r.qty}x ${p.name}${r.size ? ` (Talla ${r.size})` : ""} — ${stikePrice(p.price * r.qty)}` : ""; }).join("%0A");
       const waMsg = `Hola Stike! Quiero hacer este pedido:%0A${waLines}%0A%0ASubtotal: ${stikePrice(subtotal)}%0ATotal: ${stikePrice(total)}`;
 
       mount.innerHTML = `
@@ -96,9 +99,9 @@
       </div>`;
 
       // Eventos
-      mount.querySelectorAll("[data-inc]").forEach(b => b.addEventListener("click", () => { const id=b.getAttribute("data-inc"); const c=stikeGetCart().find(x=>x.id===id); stikeUpdateQty(id,(c?c.qty:1)+1); render(); }));
-      mount.querySelectorAll("[data-dec]").forEach(b => b.addEventListener("click", () => { const id=b.getAttribute("data-dec"); const c=stikeGetCart().find(x=>x.id===id); stikeUpdateQty(id,(c?c.qty:1)-1); render(); }));
-      mount.querySelectorAll("[data-qty]").forEach(inp => inp.addEventListener("change", () => { const id=inp.getAttribute("data-qty"); stikeUpdateQty(id, Math.max(1, parseInt(inp.value)||1)); render(); }));
+      mount.querySelectorAll("[data-inc]").forEach(b => b.addEventListener("click", () => { const k=b.getAttribute("data-inc"); const c=stikeGetCart().find(x=>stikeLineKey(x)===k); stikeUpdateQty(k,(c?c.qty:1)+1); render(); }));
+      mount.querySelectorAll("[data-dec]").forEach(b => b.addEventListener("click", () => { const k=b.getAttribute("data-dec"); const c=stikeGetCart().find(x=>stikeLineKey(x)===k); stikeUpdateQty(k,(c?c.qty:1)-1); render(); }));
+      mount.querySelectorAll("[data-qty]").forEach(inp => inp.addEventListener("change", () => { const k=inp.getAttribute("data-qty"); stikeUpdateQty(k, Math.max(1, parseInt(inp.value)||1)); render(); }));
       mount.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => { stikeRemoveFromCart(b.getAttribute("data-remove")); render(); }));
     }
     render();

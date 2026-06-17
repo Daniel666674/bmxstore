@@ -22,10 +22,10 @@ fichas de producto, carrito) está inspirada en tiendas BMX como
   - `nosotros.html` — Historia y comunidad
 - **Navegación funcional** con mega-menú de repuestos y menú móvil.
 - **Carrito persistente** (localStorage) con badge de cantidad en todo el sitio.
-- **Categorías** estilo Sabotage: Bicicletas, Repuestos (Marcos, Tenedores,
+- **Categorías**: Repuestos (Marcos, Tenedores,
   Timones, Manubrios, Bielas, Platos, Cadenas, Frenos, Manzanas, Rines, Llantas,
   Pedales, Sillas y Postes, Tacos y Hubguards…), Protecciones, Ropa, Accesorios,
-  Promo y Marcas.
+  Promo y Marcas. Las BMX se arman a medida (sin completas en catálogo).
 - **Imágenes generadas** con SVG (sin dependencias externas ni imágenes rotas).
 - **Responsive** y sin frameworks (HTML + CSS + JS puro).
 
