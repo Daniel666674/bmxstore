@@ -509,7 +509,7 @@ body::after {
   .header-actions a[title="Contacto"] { display: none; }
   .icon-btn { width: 38px; height: 38px; font-size: 16px; }
   .header-actions { gap: 5px; }
-  .header-main { gap: 12px; }
+  .header-main { gap: 12px; position: relative; z-index: 90; }
   .brand .logo { height: 40px; }
   .brand .name { font-size: 22px; letter-spacing: 2px; }
   .nav-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 70; }
