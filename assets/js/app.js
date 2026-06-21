@@ -15,7 +15,11 @@ const STIKE_CONFIG = {
   ig: "https://www.instagram.com/stikebikeshop?igsh=emVzZXc0NWVlNmcy",
   fb: "https://www.facebook.com/share/1Cz3ezfUvL/?mibextid=wwXIfr",
   tiktok: "https://tiktok.com/@stikebikeshop",
-  igHandle: "@stikebikeshop"
+  igHandle: "@stikebikeshop",
+  /* --- Datos legales: COMPLETAR con la información real de la empresa --- */
+  legalName: "[Razón social — completar]",   // p. ej. "Stike Bike Shop S.A.S."
+  nit: "[NIT — completar]",
+  legalUpdated: "21 de junio de 2026"
 };
 
 const STIKE_BASE = "";
@@ -380,7 +384,8 @@ function stikeRenderFooter() {
           <h5>Ayuda</h5>
           <a href="contacto.html">Contacto</a>
           <a href="nosotros.html">Nosotros</a>
-          <a href="contacto.html#envios">Envíos y entregas</a>
+          <a href="envios.html">Envíos y entregas</a>
+          <a href="devoluciones.html">Cambios y devoluciones</a>
           <a href="contacto.html#faq">Preguntas frecuentes</a>
           <a href="carrito.html">Mi carrito</a>
         </div>
@@ -395,7 +400,14 @@ function stikeRenderFooter() {
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© ${new Date().getFullYear()} ${C.full} — Bogotá, Colombia. Mockup de demostración.</span>
+        <span>© ${new Date().getFullYear()} ${C.full} — Bogotá, Colombia.</span>
+        <nav class="footer-legal" aria-label="Enlaces legales">
+          <a href="privacidad.html">Privacidad</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="terminos.html">Términos</a>
+          <a href="envios.html">Envíos</a>
+          <a href="devoluciones.html">Devoluciones</a>
+        </nav>
         <div class="pay-icons">
           <span>VISA</span><span>MASTERCARD</span><span>PSE</span><span>NEQUI</span><span>EFECTY</span>
         </div>
@@ -437,10 +449,64 @@ function stikeFloatingWA() {
   document.body.appendChild(a);
 }
 
+/* ------------------------- COOKIES / CONSENTIMIENTO -------------------- */
+const STIKE_COOKIE_KEY = "stike_cookie_consent_v1";
+function stikeCookieConsent() {
+  try { return JSON.parse(localStorage.getItem(STIKE_COOKIE_KEY)); } catch (e) { return null; }
+}
+function stikeSetCookieConsent(choice) {
+  try { localStorage.setItem(STIKE_COOKIE_KEY, JSON.stringify({ choice, ts: Date.now() })); } catch (e) {}
+  /* Las analíticas/marketing deben escuchar este evento antes de cargar (consent mode) */
+  document.dispatchEvent(new CustomEvent("stike:consent", { detail: { choice } }));
+}
+function stikeCookieBanner() {
+  if (stikeCookieConsent()) return;            // el usuario ya decidió
+  const el = document.createElement("div");
+  el.className = "cookie-banner";
+  el.setAttribute("role", "dialog");
+  el.setAttribute("aria-label", "Aviso de cookies");
+  el.innerHTML = `
+    <div class="cookie-inner">
+      <div class="cookie-text">
+        <strong>Cookies en Stike</strong>
+        <p>Usamos cookies propias y de terceros para que la tienda funcione, recordar tu carrito y entender el tráfico del sitio. Acepta o rechaza las opcionales. Lee nuestra <a href="cookies.html">Política de Cookies</a> y de <a href="privacidad.html">Privacidad</a>.</p>
+      </div>
+      <div class="cookie-actions">
+        <button class="btn ghost sm" data-cookie="reject" type="button">Rechazar opcionales</button>
+        <button class="btn sm" data-cookie="accept" type="button">Aceptar todas</button>
+      </div>
+    </div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("show"));
+  el.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-cookie]");
+    if (!btn) return;
+    stikeSetCookieConsent(btn.getAttribute("data-cookie"));
+    el.classList.remove("show");
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 350);
+  });
+}
+
+/* Rellena elementos con [data-cfg] desde STIKE_CONFIG (páginas legales) */
+function stikeFillConfig(root) {
+  const C = STIKE_CONFIG;
+  const map = {
+    site: C.full, legalName: C.legalName, nit: C.nit,
+    email: C.email, whatsapp: C.whatsappPretty, phone: C.phone,
+    address: C.address, hours: C.hours, updated: C.legalUpdated, igHandle: C.igHandle
+  };
+  (root || document).querySelectorAll("[data-cfg]").forEach(el => {
+    const k = el.getAttribute("data-cfg");
+    if (map[k] != null) el.textContent = map[k];
+  });
+}
+
 /* Init común para todas las páginas */
 function stikeInit(active) {
   stikeRenderHeader(active);
   stikeRenderFooter();
   stikeFloatingWA();
   stikeRenderSearchOverlay();
+  stikeFillConfig();
+  stikeCookieBanner();
 }
