@@ -27,7 +27,7 @@
   <div class="wrap page-head">
     <nav class="breadcrumb"><a href="index.html">Inicio</a><span class="sep">/</span><span>Arma tu BMX</span></nav>
     <h1>Arma tu BMX <span class="spray">a tu medida</span></h1>
-    <div class="count">No vendemos completas: te ayudamos a construir la tuya, perfecta para tu estilo y tu estatura. Geometría, ángulos y componentes con asesoría de riders. Armado y ajuste gratis.</div>
+    <div class="count">No vendemos completas: te ayudamos a armar la tuya, perfecta para tu estilo y tu estatura. Geometría, ángulos y componentes con asesoría de riders que sí montan. Armado y ajuste gratis — el parche te guía.</div>
   </div>
 
   <!-- PASO 1 — ESTILO -->
@@ -64,11 +64,22 @@
       <div class="section-head"><div><span class="kicker">Paso 3</span><h2>Arma por componentes</h2></div></div>
       <div class="builder-layout">
         <div class="builder-main">
+          <!-- SVG Bike Diagram -->
+          <div class="bike-diagram-wrap" id="bike-diagram-wrap"></div>
+          <!-- Build Progress Bar -->
+          <div class="build-progress-wrap" id="build-progress-wrap"></div>
+          <!-- Random Build Button -->
+          <div class="btn-random-wrap">
+            <button class="btn-random" id="btn-random" title="Seleccionar componentes al azar">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="16" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+              Arma al azar
+            </button>
+          </div>
           <div class="builder-steps" id="builder-steps"></div>
           <div class="builder-stepwrap" id="builder-stepwrap"></div>
           <div class="builder-nav">
-            <button class="btn ghost" id="prev-step">← Anterior</button>
-            <button class="btn" id="next-step">Siguiente →</button>
+            <button class="btn ghost" id="prev-step">&larr; Anterior</button>
+            <button class="btn" id="next-step">Siguiente &rarr;</button>
           </div>
         </div>
         <aside class="builder-summary">
@@ -76,9 +87,10 @@
           <div class="builder-profile" id="builder-profile"></div>
           <div id="build-list"></div>
           <div class="line total"><span>Total</span><span id="build-total">$0</span></div>
+          <div id="builder-tip"></div>
           <button class="btn block" id="add-build">Agregar todo al carrito</button>
           <a class="btn wa block" id="wa-build" target="_blank" rel="noopener" style="margin-top:10px">Cotizar por WhatsApp</a>
-          <p class="builder-note">Armado y ajuste gratis · Asesoría de riders · Envíos a toda Colombia</p>
+          <p class="builder-note">Armado y ajuste gratis &middot; Asesor&iacute;a de riders &middot; Env&iacute;os a toda Colombia</p>
         </aside>
       </div>
     </div>
@@ -97,21 +109,21 @@
         label: "Street",
         tag: "Ledges, rieles, gaps",
         desc: "Para todo lo urbano: ledges, rieles, gaps y manuals. Buscas una bici resistente, maniobrable y con buen peso para aguantar impactos.",
-        geo: { "Top tube": "20.5\" – 21\"", "Ángulo de dirección": "75°", "Vainas (chainstay)": "13\" – 13.5\"", "Altura de eje (BB)": "Media (~11.6\")", "Transmisión": "25/9 ó 28/9", "Horquilla (offset)": "28 – 30 mm" },
+        geo: { "Top tube": "20.5\" – 21\"", "Ángulo de dirección": "75°", "Vainas (chainstay)": "13\" – 13.5\"", "Altura de eje (BB)": "Media (~11.6\")", "Transmisión": "25/9 ó 28/9", "Tenedor (offset)": "28 – 30 mm" },
         tips: ["Tacos en los 4 ejes para grinds", "Freecoaster o cassette, según preferencia", "Llantas 2.3\"–2.4\" para más agarre", "Manubrio alto (9.4\"+) para control"]
       },
       park: {
         label: "Park",
         tag: "Rampas, bowls, cajón",
         desc: "Para rampas, bowls y skatepark. Geometría corta y reactiva que responde rápido en transiciones, aéreos y combos.",
-        geo: { "Top tube": "20.5\" – 20.75\"", "Ángulo de dirección": "75.5°", "Vainas (chainstay)": "12.8\" – 13.2\"", "Altura de eje (BB)": "Media–alta", "Transmisión": "28/9", "Horquilla (offset)": "30 – 32 mm" },
+        geo: { "Top tube": "20.5\" – 20.75\"", "Ángulo de dirección": "75.5°", "Vainas (chainstay)": "12.8\" – 13.2\"", "Altura de eje (BB)": "Media–alta", "Transmisión": "28/9", "Tenedor (offset)": "30 – 32 mm" },
         tips: ["Cassette ligero para acelerar rápido", "Sin frenos o freno trasero limpio", "Llantas 2.2\"–2.35\" infladas duro", "La bici lo más liviana posible"]
       },
       dirt: {
         label: "Dirt / Trails",
         tag: "Saltos de tierra",
         desc: "Para saltos de tierra y trails. Bici más larga y estable para mantener velocidad entre saltos y aterrizar firme.",
-        geo: { "Top tube": "20.75\" – 21.25\"", "Ángulo de dirección": "74.5° – 75°", "Vainas (chainstay)": "13.5\" – 13.75\"", "Altura de eje (BB)": "Alta", "Transmisión": "28/9 ó 30/9", "Horquilla (offset)": "32 – 35 mm" },
+        geo: { "Top tube": "20.75\" – 21.25\"", "Ángulo de dirección": "74.5° – 75°", "Vainas (chainstay)": "13.5\" – 13.75\"", "Altura de eje (BB)": "Alta", "Transmisión": "28/9 ó 30/9", "Tenedor (offset)": "32 – 35 mm" },
         tips: ["Vainas largas = más estabilidad en el aire", "Transmisión más grande para velocidad", "Llantas con taco para agarre en tierra", "Freno trasero recomendado"]
       }
     };
@@ -176,18 +188,186 @@
 
     /* ---------------- Configurador por componentes ---------------- */
     const STEPS = [
-      { key: "cuadro",     label: "Cuadro",      subs: ["Marcos"] },
-      { key: "horquilla",  label: "Horquilla",   subs: ["Tenedores"] },
-      { key: "transmision",label: "Transmisión", subs: ["Bielas", "Platos"] },
-      { key: "ruedas",     label: "Ruedas",      subs: ["Rines", "Manzanas", "Llantas"] },
-      { key: "direccion",  label: "Dirección",   subs: ["Manubrios", "Timones"] }
+      { key: "marco",      label: "Marco",       subs: ["Marcos"], icon: "frame" },
+      { key: "tenedor",    label: "Tenedor",     subs: ["Tenedores"], icon: "fork" },
+      { key: "transmision",label: "Transmisión", subs: ["Bielas", "Platos"], icon: "crank" },
+      { key: "ruedas",     label: "Ruedas",      subs: ["Rines", "Manzanas", "Llantas"], icon: "wheel" },
+      { key: "direccion",  label: "Dirección",   subs: ["Manubrios", "Timones"], icon: "bars" }
     ];
     let current = 0;
     const build = {};
+    let celebrationShown = false;
+
+    const BUILDER_TIPS = {
+      marco: {
+        street: "Para street busca un marco cromoly 4130 con vainas cortas (13\"-13.5\") — aguanta más los grinds.",
+        park: "En park prioriza peso bajo y vainas cortas. Un marco liviano te da más control en los aéreos.",
+        dirt: "Para dirt/trails busca vainas largas (13.5\"+) y un top tube más grande para estabilidad."
+      },
+      tenedor: {
+        street: "Offset de 28-30mm te da dirección estable para manuals y grinds. Busca cromoly butado.",
+        park: "Un tenedor con offset de 30-32mm responde rápido en transiciones. Lo más liviano posible.",
+        dirt: "Offset de 32-35mm da estabilidad en el aire. Cromoly es clave para aguantar aterrizajes."
+      },
+      transmision: {
+        street: "25/9 ó 28/9 es lo más común en street. Bielas de 3 piezas cromoly son las más resistentes.",
+        park: "28/9 es el estándar en park. Bielas livianas y un plato con guard protegen en las caídas.",
+        dirt: "28/9 ó 30/9 para más velocidad entre saltos. Transmisión más grande = más velocidad."
+      },
+      ruedas: {
+        street: "Rines de doble pared 36H y llantas 2.3\"-2.4\" para máximo agarre. Manzanas selladas siempre.",
+        park: "Llantas 2.2\"-2.35\" infladas duro ruedan más rápido. Cassette liviano para acelerar.",
+        dirt: "Llantas con taco para agarre en tierra. Manzanas selladas que aguanten impactos de aterrizaje."
+      },
+      direccion: {
+        street: "Manubrio 9.4\"+ de alto para control en manuals. Un timón front load aguanta más los impactos.",
+        park: "Manubrio a tu gusto de altura. Timón liviano y con buen clamp. Sin frenos o freno limpio.",
+        dirt: "Manubrio alto para control en el aire. Buen timón front load y grips firmes que no resbalen."
+      }
+    };
 
     function optionsFor(step) {
       return STIKE_PRODUCTS.filter(p => p.cat === "repuestos" && step.subs.includes(p.sub));
     }
+
+    function renderBikeDiagram() {
+      const el = document.getElementById("bike-diagram-wrap");
+      if (!el) return;
+      const step = STEPS[current];
+      el.innerHTML = `
+        <svg class="bike-diagram" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Rear wheel -->
+          <g class="bike-part${step.key === 'ruedas' ? ' active' : ''}" data-part="ruedas">
+            <circle cx="80" cy="160" r="48" stroke-width="3"/>
+            <circle cx="80" cy="160" r="6"/>
+            <line x1="80" y1="112" x2="80" y2="208"/>
+            <line x1="32" y1="160" x2="128" y2="160"/>
+            <line x1="47" y1="127" x2="113" y2="193"/>
+            <line x1="113" y1="127" x2="47" y2="193"/>
+          </g>
+          <!-- Front wheel -->
+          <g class="bike-part${step.key === 'ruedas' ? ' active' : ''}" data-part="ruedas">
+            <circle cx="260" cy="160" r="48" stroke-width="3"/>
+            <circle cx="260" cy="160" r="6"/>
+            <line x1="260" y1="112" x2="260" y2="208"/>
+            <line x1="212" y1="160" x2="308" y2="160"/>
+            <line x1="227" y1="127" x2="293" y2="193"/>
+            <line x1="293" y1="127" x2="227" y2="193"/>
+          </g>
+          <!-- Frame (Marco) -->
+          <g class="bike-part${step.key === 'marco' ? ' active' : ''}" data-part="marco">
+            <path d="M80 160 L160 80 L245 95 L170 160 Z" stroke-width="4"/>
+            <line x1="160" y1="80" x2="170" y2="160" stroke-width="3"/>
+            <line x1="80" y1="160" x2="170" y2="160" stroke-width="3"/>
+          </g>
+          <!-- Fork (Tenedor) -->
+          <g class="bike-part${step.key === 'tenedor' ? ' active' : ''}" data-part="tenedor">
+            <path d="M245 95 L252 110 L260 160" stroke-width="4"/>
+            <path d="M245 95 L238 110 L260 160" stroke-width="3" stroke-dasharray="0"/>
+          </g>
+          <!-- Handlebars/Stem (Dirección) -->
+          <g class="bike-part${step.key === 'direccion' ? ' active' : ''}" data-part="direccion">
+            <path d="M245 95 L250 68" stroke-width="4"/>
+            <path d="M232 64 L268 72" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="232" cy="64" r="4"/>
+            <circle cx="268" cy="72" r="4"/>
+          </g>
+          <!-- Cranks/Sprocket (Transmisión) -->
+          <g class="bike-part${step.key === 'transmision' ? ' active' : ''}" data-part="transmision">
+            <circle cx="170" cy="160" r="16" stroke-width="3"/>
+            <circle cx="170" cy="160" r="4"/>
+            <line x1="170" y1="160" x2="155" y2="185" stroke-width="4" stroke-linecap="round"/>
+            <line x1="170" y1="160" x2="185" y2="135" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="155" cy="185" r="5"/>
+            <circle cx="185" cy="135" r="5"/>
+          </g>
+          <!-- Seat -->
+          <g class="bike-part" style="opacity:.35">
+            <line x1="140" y1="62" x2="160" y2="80" stroke-width="3"/>
+            <path d="M128 60 L152 60" stroke-width="5" stroke-linecap="round"/>
+          </g>
+          <!-- Chain line -->
+          <line x1="80" y1="160" x2="170" y2="160" class="bike-part" style="opacity:.2" stroke-dasharray="3 3"/>
+          <!-- Labels -->
+          <text class="bike-label${step.key === 'marco' ? ' active' : ''}" x="120" y="30">Marco</text>
+          <text class="bike-label${step.key === 'tenedor' ? ' active' : ''}" x="272" y="100">Tenedor</text>
+          <text class="bike-label${step.key === 'transmision' ? ' active' : ''}" x="148" y="210">Transmisión</text>
+          <text class="bike-label${step.key === 'ruedas' ? ' active' : ''}" x="50" y="30">Ruedas</text>
+          <text class="bike-label${step.key === 'direccion' ? ' active' : ''}" x="248" y="46">Dirección</text>
+        </svg>`;
+      el.querySelectorAll("[data-part]").forEach(g => {
+        g.style.cursor = "pointer";
+        g.addEventListener("click", () => {
+          const partKey = g.getAttribute("data-part");
+          const idx = STEPS.findIndex(s => s.key === partKey);
+          if (idx >= 0) { current = idx; renderAll(); }
+        });
+      });
+    }
+
+    function renderProgressBar() {
+      const el = document.getElementById("build-progress-wrap");
+      if (!el) return;
+      const count = STEPS.filter(s => build[s.key]).length;
+      const pct = Math.round((count / STEPS.length) * 100);
+      el.innerHTML = `
+        <div class="build-progress-header">
+          <span class="build-progress-text"><b>${count}</b> / ${STEPS.length} componentes</span>
+          <span class="build-progress-pct">${pct}%</span>
+        </div>
+        <div class="build-progress-bar">
+          <div class="build-progress-fill" style="width:${pct}%"></div>
+        </div>`;
+    }
+
+    function renderBuilderTip() {
+      const el = document.getElementById("builder-tip");
+      if (!el) return;
+      const step = STEPS[current];
+      const tips = BUILDER_TIPS[step.key];
+      const tip = tips ? tips[selectedStyle] : null;
+      if (!tip) { el.innerHTML = ""; return; }
+      el.innerHTML = `
+        <div class="builder-tip">
+          <div class="builder-tip-head">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            Tip ${STYLES[selectedStyle].label}
+          </div>
+          <p>${tip}</p>
+        </div>`;
+    }
+
+    function specsTooltip(p) {
+      if (!p.specs || !p.specs.length) return "";
+      const items = p.specs.map(s => `<li>${s}</li>`).join("");
+      return `<div class="specs-tooltip"><span class="specs-tooltip-title">Specs</span><ul>${items}</ul></div>`;
+    }
+
+    function triggerCelebration() {
+      if (celebrationShown) return;
+      const count = STEPS.filter(s => build[s.key]).length;
+      if (count < STEPS.length) return;
+      celebrationShown = true;
+      const colors = ["#ffffff", "#c7c7cf", "#ededf0", "#9a9aa3", "#f4f4f5"];
+      for (let i = 0; i < 50; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.top = "-20px";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+        piece.style.animationDelay = (Math.random() * .5) + "s";
+        piece.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 4000);
+      }
+      const ov = document.createElement("div");
+      ov.className = "celebration-overlay";
+      ov.innerHTML = `<div class="celebration-msg"><h2>BUILD COMPLETO</h2><p>Tu BMX está lista — agrega todo al carrito o cotiza por WhatsApp.</p></div>`;
+      document.body.appendChild(ov);
+      setTimeout(() => { ov.style.opacity = "0"; ov.style.transition = "opacity .5s"; setTimeout(() => ov.remove(), 600); }, 3000);
+    }
+
     function renderSteps() {
       document.getElementById("builder-steps").innerHTML = STEPS.map((s, i) => {
         const done = build[s.key] ? " done" : "";
@@ -201,19 +381,23 @@
       const opts = optionsFor(step);
       const wrap = document.getElementById("builder-stepwrap");
       wrap.innerHTML = `
+        <div class="step-content">
         <div class="bstep-head"><span class="kicker">Componente ${current + 1} de ${STEPS.length}</span><h2>Elige tu ${step.label}</h2></div>
         <div class="boption-grid">
           <button class="boption skip ${!build[step.key] ? "active" : ""}" data-pick=""><span class="bopt-skip">Sin ${step.label.toLowerCase()}<small>Lo elijo después / lo tengo</small></span></button>
           ${opts.map(p => `<button class="boption ${build[step.key] === p.id ? "active" : ""}" data-pick="${p.id}">
+            ${specsTooltip(p)}
             <span class="bopt-img"><img src="${stikeProductImage(p, 300)}" alt="${p.name}" loading="lazy"></span>
             <span class="bopt-info"><span class="bopt-brand">${p.brand}</span><span class="bopt-name">${p.name}</span><span class="bopt-price">${stikePrice(p.price)}</span></span>
           </button>`).join("")}
+        </div>
         </div>`;
       wrap.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => {
         const id = b.getAttribute("data-pick");
         if (id) build[step.key] = id; else delete build[step.key];
         if (current < STEPS.length - 1) current++;
         renderAll(); scrollBuilder();
+        triggerCelebration();
       }));
     }
     function renderSummary() {
@@ -221,7 +405,9 @@
       const html = STEPS.map(s => {
         const id = build[s.key]; const p = id ? stikeFindProduct(id) : null;
         if (p) total += p.price;
-        return `<div class="build-row ${p ? "" : "empty"}"><span class="br-label">${s.label}</span><span class="br-val">${p ? p.name : "—"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
+        const thumb = p ? `<span class="br-thumb"><img src="${stikeProductImage(p, 80)}" alt="${p.name}" loading="lazy"></span>` : "";
+        const hasThumb = p ? " has-thumb" : "";
+        return `<div class="build-row${hasThumb} ${p ? "" : "empty"}">${thumb}<span class="br-label">${s.label}</span><span class="br-val">${p ? p.name : "—"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
       }).join("");
       document.getElementById("build-list").innerHTML = html;
       document.getElementById("build-total").textContent = stikePrice(total);
@@ -242,7 +428,13 @@
       if (el) { const y = el.getBoundingClientRect().top + window.scrollY - 120; window.scrollTo({ top: Math.max(0, y), behavior: "smooth" }); }
     }
     function renderBuilder() { renderSteps(); renderStep(); renderNav(); }
-    function renderAll() { renderBuilder(); renderSummary(); }
+    function renderAll() {
+      renderBikeDiagram();
+      renderProgressBar();
+      renderBuilder();
+      renderSummary();
+      renderBuilderTip();
+    }
 
     document.getElementById("prev-step").addEventListener("click", () => { if (current > 0) { current--; renderAll(); scrollBuilder(); } });
     document.getElementById("next-step").addEventListener("click", () => { if (current < STEPS.length - 1) { current++; renderAll(); scrollBuilder(); } });
@@ -252,6 +444,25 @@
       chosen.forEach(s => stikeAddToCart(build[s.key], 1));
       stikeToast("Build agregado al carrito");
       setTimeout(() => window.location.href = "carrito.html", 750);
+    });
+
+    document.getElementById("btn-random").addEventListener("click", function() {
+      const btn = this;
+      btn.classList.add("spinning");
+      setTimeout(() => {
+        STEPS.forEach(step => {
+          const opts = optionsFor(step);
+          if (opts.length) {
+            build[step.key] = opts[Math.floor(Math.random() * opts.length)].id;
+          }
+        });
+        current = STEPS.length - 1;
+        btn.classList.remove("spinning");
+        renderAll();
+        scrollBuilder();
+        stikeToast("Build aleatorio listo");
+        triggerCelebration();
+      }, 700);
     });
 
     renderStyleCards();

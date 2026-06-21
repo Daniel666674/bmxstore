@@ -385,6 +385,12 @@ function stikeRenderFooter() {
           <a href="carrito.html">Mi carrito</a>
         </div>
         <div>
+          <h5>Legal</h5>
+          <a href="politica-privacidad.html">Política de privacidad</a>
+          <a href="terminos-condiciones.html">Términos y condiciones</a>
+          <a href="politica-cookies.html">Política de cookies</a>
+        </div>
+        <div>
           <h5>Newsletter</h5>
           <p>Recibe drops, ofertas y eventos de la comunidad.</p>
           <form class="newsletter" onsubmit="stikeNewsletter(event)">
@@ -437,10 +443,33 @@ function stikeFloatingWA() {
   document.body.appendChild(a);
 }
 
+/* ------------------------------ COOKIE CONSENT -------------------------- */
+function stikeCookieConsent() {
+  if (localStorage.getItem("stike_cookie_consent")) return;
+  const banner = document.createElement("div");
+  banner.className = "cookie-banner";
+  banner.innerHTML = `
+    <div class="cookie-inner wrap">
+      <p class="cookie-text">Usamos cookies para mejorar tu experiencia en nuestro sitio. Al continuar navegando, aceptas nuestra <a href="politica-cookies.html">política de cookies</a>.</p>
+      <div class="cookie-actions">
+        <button class="btn sm cookie-accept" onclick="stikeAcceptCookies()">Aceptar</button>
+        <a class="btn ghost sm cookie-config" href="politica-cookies.html">Configurar</a>
+      </div>
+    </div>`;
+  document.body.appendChild(banner);
+  requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add("show")));
+}
+function stikeAcceptCookies() {
+  localStorage.setItem("stike_cookie_consent", "accepted");
+  const banner = document.querySelector(".cookie-banner");
+  if (banner) { banner.classList.remove("show"); setTimeout(() => banner.remove(), 400); }
+}
+
 /* Init común para todas las páginas */
 function stikeInit(active) {
   stikeRenderHeader(active);
   stikeRenderFooter();
   stikeFloatingWA();
   stikeRenderSearchOverlay();
+  stikeCookieConsent();
 }
