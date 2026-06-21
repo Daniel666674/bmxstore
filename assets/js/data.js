@@ -51,7 +51,7 @@ const STIKE_BRANDS = [
   "Total BMX", "Odyssey", "Shadow", "Cult", "Sunday", "Wethepeople",
   "Éclat", "Federal", "Kink", "BSD", "Fly Bikes", "Demolition",
   "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia",
-  "TSG", "KMC"
+  "TSG", "KMC", "Cinema", "GW", "Fade"
 ];
 
 /* ----------------------------- Productos -------------------------------- */
@@ -73,19 +73,19 @@ const STIKE_PRODUCTS = [
     desc: "Tenedor Federal en cromoly butado, peg-friendly y resistente para street y park.",
     specs: ["Material: Cromoly 4130", "Offset: 32mm", "Eje: 10mm / 14mm", "Steerer butado"] },
   { id: "fork-shadow", name: "Tenedor Shadow Vultus", brand: "Shadow", cat: "repuestos", sub: "Tenedores", price: 330000, old: null, color: "lime", badge: null, stock: 5,
-    img: "assets/img/products/IMG_7179.jpeg",
+    img: "assets/img/products/prod-fork-shadow.png",
     desc: "Shadow Vultus, ultraligero con tecnología SST para máxima resistencia y poco peso.",
     specs: ["Material: SST Cromoly", "Offset: 30mm", "Peso: 0.85 kg"] },
 
   // ---- Repuestos: Timones / Manubrios ----
   { id: "bar-cult", name: "Manubrio Cult Crew 4pc", brand: "Cult", cat: "repuestos", sub: "Manubrios", price: 240000, old: null, color: "orange", badge: null, stock: 9,
-    img: "assets/img/products/IMG_7175.jpeg",
+    img: "assets/img/products/prod-bar-cult.png",
     desc: "Manubrio 4 piezas Cult Crew, altura 9\", curva clásica y sensación sólida.",
     specs: ["Altura: 9.5\"", "Ancho: 29\"", "Material: Cromoly", "Backsweep: 12°"] },
-  { id: "stem-eclat", name: "Timón Éclat Dynamic", brand: "Éclat", cat: "repuestos", sub: "Timones", price: 210000, old: 260000, color: "yellow", badge: "promo", stock: 6,
-    img: "assets/img/products/IMG_7185.jpeg",
-    desc: "Timón frontal Éclat Dynamic, mecanizado CNC y perfil bajo para mejor control.",
-    specs: ["Tipo: Front load", "Material: 6061-T6", "Reach: 50mm", "Peso: 285g"] },
+  { id: "stem-eclat", name: "Manubrio Éclat", brand: "Éclat", cat: "repuestos", sub: "Manubrios", price: 210000, old: 260000, color: "yellow", badge: "promo", stock: 6,
+    img: "assets/img/products/prod-bar-eclat.png",
+    desc: "Manubrio Éclat en cromoly con crossbar, geometría equilibrada para buen control.",
+    specs: ["Altura: 9.5\"", "Ancho: 29\"", "Material: Cromoly", "Backsweep: 11°"] },
 
   // ---- Repuestos: Bielas / Platos ----
   { id: "crank-bsd", name: "Bielas BSD Substance XL", brand: "BSD", cat: "repuestos", sub: "Bielas", price: 540000, old: null, color: "cyan", badge: null, stock: 4,
@@ -117,13 +117,13 @@ const STIKE_PRODUCTS = [
     desc: "Rin doble pared Éclat Bondi, 36 huecos, ligero y resistente para impactos fuertes.",
     specs: ["Huecos: 36", "Doble pared", "Material: 6061", "Pinned joint"] },
   { id: "tire-total", name: "Llanta Total Killabee 2.4\"", brand: "Total BMX", cat: "repuestos", sub: "Llantas", price: 120000, old: null, color: "yellow", badge: null, stock: 20,
-    img: "assets/img/products/IMG_7170.jpeg",
+    img: "assets/img/products/prod-tire-total.png",
     desc: "Llanta Total Killabee 2.4\", buen agarre y baja resistencia para rodar rápido.",
     specs: ["Medida: 20\" x 2.4\"", "100 PSI", "Dual compound", "Folding bead"] },
 
   // ---- Repuestos: Pedales / Sillas / Tacos ----
   { id: "pedal-odyssey", name: "Pedales Plataforma BMX Negro", brand: "Odyssey", cat: "repuestos", sub: "Pedales", price: 85000, old: null, color: "pink", badge: null, stock: 25,
-    img: "assets/img/products/IMG_7143.jpeg",
+    img: "assets/img/products/prod-pedals-odyssey.webp",
     desc: "Pedales plataforma de nylon/fibra reforzada, excelente grip y eje sellado de acero.",
     specs: ["Material: Nylon/Fibra", "Eje: sellado acero", "Plataforma ancha", "9/16\""] },
   { id: "seat-cult", name: "Silla Fate Pivotal Pana Negro", brand: "Fate BMX Colombia", cat: "repuestos", sub: "Sillas y Postes", price: 130000, old: null, color: "lime", badge: "new", stock: 10,
@@ -172,9 +172,9 @@ const STIKE_PRODUCTS = [
     img: "assets/img/products/IMG_7152.jpeg",
     desc: "Tenis de suela vulcanizada con buen grip en los pedales. Colorway blanco/rojo/azul resistente al desgaste.",
     specs: ["Suela: vulcanizada", "Tallas: 38-44", "Refuerzo en empeine"] },
-  { id: "shoes-black", name: "Tenis Stike Classic Negro", brand: "Stike", cat: "ropa", sub: "Tenis", price: 235000, old: null, color: "cyan", badge: null, stock: 13,
-    img: "assets/img/products/IMG_7159.jpeg",
-    desc: "Tenis clásicos negros de caña media, suela vulcanizada con agarre fuerte en el pedal.",
+  { id: "shoes-black", name: "Tenis Fade Negro", brand: "Fade", cat: "ropa", sub: "Tenis", price: 235000, old: null, color: "cyan", badge: null, stock: 13,
+    img: "assets/img/products/prod-shoes-fade.webp",
+    desc: "Tenis Fade negros de caña media, suela vulcanizada con agarre fuerte en el pedal.",
     specs: ["Suela: vulcanizada", "Caña: media", "Tallas: 38-44", "Refuerzo lateral"] },
 
   // ---- Accesorios ----
@@ -189,10 +189,10 @@ const STIKE_PRODUCTS = [
     img: "assets/img/products/IMG_7182.jpeg",
     desc: "Grips Wethepeople Flow XL, textura acanalada y compound firme para máximo control.",
     specs: ["Largo: 160mm", "Sin flange", "Compound firm", "Tapones incluidos"] },
-  { id: "pump-stike", name: "Bomba de piso Stike Pro", brand: "Stike", cat: "accesorios", sub: "Bombas", price: 110000, old: 135000, color: "orange", badge: "promo", stock: 13,
-    img: "assets/img/products/IMG_7274.webp",
-    desc: "Bomba de piso con manómetro, válvula Presta/Schrader. Infla rápido y preciso.",
-    specs: ["Presión: 160 PSI", "Manómetro análogo", "Doble válvula"] },
+  { id: "pump-stike", name: "Bomba de piso GW", brand: "GW", cat: "accesorios", sub: "Bombas", price: 110000, old: 135000, color: "orange", badge: "promo", stock: 13,
+    img: "assets/img/products/prod-pump-gw.png",
+    desc: "Bomba de piso GW, compacta y resistente. Válvula compatible Presta/Schrader. Infla rápido.",
+    specs: ["Compacta", "Válvula doble", "Base plegable", "Manguera flexible"] },
   { id: "stickers-stike", name: "Sticker Pack Stike Graffiti", brand: "Stike", cat: "accesorios", sub: "Pegatinas", price: 25000, old: null, color: "yellow", badge: null, stock: 50,
     desc: "Pack de 12 calcomanías resistentes al agua con los diseños grafiti de la marca.",
     specs: ["12 stickers", "Vinilo resistente", "Anti-agua / anti-UV"] },
@@ -301,7 +301,7 @@ const STIKE_PRODUCTS = [
     specs: ["Material: Cromoly 4130 full", "Top tube: 20.85\"", "Mid BB", "Verde lima", "Made for park/dirt"] },
 
   { id: "hub-cassette-black", name: "Maza Trasera Cassette Shadow Negra", brand: "Shadow", cat: "repuestos", sub: "Manzanas", price: 560000, old: null, color: "pink", badge: null, stock: 5,
-    img: "assets/img/products/IMG_7264.jpeg",
+    img: "assets/img/products/prod-hub-shadow.png",
     desc: "Maza trasera cassette Shadow en negro, engrane rápido y sellado para uso intensivo.",
     specs: ["Tipo: Cassette", "Driver: 9T", "Engrane: 60 puntos", "Eje: 14mm", "Color: Negro"] },
 
@@ -315,14 +315,14 @@ const STIKE_PRODUCTS = [
     desc: "Maza trasera cassette en acabado cromado pulido. Brillo impecable y rendimiento de gama alta.",
     specs: ["Tipo: Cassette", "Driver: 9T", "Acabado: Cromado", "Eje: 14mm", "Rodamientos sellados"] },
 
-  { id: "hub-front-fed", name: "Maza Delantera Federal Negra", brand: "Federal", cat: "repuestos", sub: "Manzanas", price: 280000, old: null, color: "purple", badge: null, stock: 8,
-    img: "assets/img/products/IMG_7267.jpeg",
-    desc: "Maza delantera Federal sellada en negro. Ligera y resistente para cualquier setup.",
-    specs: ["Tipo: Delantera", "Eje: 3/8\"", "Rodamientos sellados", "Female axle", "Color: Negro"] },
+  { id: "hub-front-fed", name: "Maza Cassette Federal Negra", brand: "Federal", cat: "repuestos", sub: "Manzanas", price: 480000, old: null, color: "purple", badge: null, stock: 8,
+    img: "assets/img/products/prod-hub-federal.png",
+    desc: "Maza trasera cassette Federal sellada en negro. Engrane rápido y resistente para uso intensivo.",
+    specs: ["Tipo: Cassette", "Driver: 9T", "Rodamientos sellados", "Eje: 14mm", "Color: Negro"] },
 
-  { id: "pedal-plastic-blk", name: "Pedales Plástico Platform Negros", brand: "Odyssey", cat: "repuestos", sub: "Pedales", price: 90000, old: null, color: "lime", badge: null, stock: 22,
-    img: "assets/img/products/IMG_7268.jpeg",
-    desc: "Pedales de plástico reforzado con buen agarre y cuerpo ancho. Livianos y económicos.",
+  { id: "pedal-plastic-blk", name: "Pedales Cinema Negros", brand: "Cinema", cat: "repuestos", sub: "Pedales", price: 90000, old: null, color: "lime", badge: null, stock: 22,
+    img: "assets/img/products/prod-pedals-cinema.png",
+    desc: "Pedales Cinema de plástico reforzado con buen agarre y cuerpo ancho. Livianos y resistentes.",
     specs: ["Material: Nylon reforzado", "Eje: 9/16\"", "Pines moldeados", "Cuerpo ancho", "Color: Negro"] },
 
   { id: "pedal-alloy-blk", name: "Pedales Federal Negros", brand: "Federal", cat: "repuestos", sub: "Pedales", price: 130000, old: null, color: "orange", badge: "new", stock: 12,

@@ -228,11 +228,13 @@ function stikeBindHeader() {
     toggle.addEventListener("click", () => {
       nav.classList.toggle("open");
       if (backdrop) backdrop.classList.toggle("show");
+      document.body.style.overflow = nav.classList.contains("open") ? "hidden" : "";
     });
   }
   if (backdrop) backdrop.addEventListener("click", () => {
     nav.classList.remove("open");
     backdrop.classList.remove("show");
+    document.body.style.overflow = "";
   });
   nav && nav.querySelectorAll(".nav-list > li").forEach(li => {
     const caret = li.querySelector(".caret");
