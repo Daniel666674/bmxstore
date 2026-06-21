@@ -906,3 +906,39 @@ body::after {
   .cookie-actions { width: 100%; }
   .cookie-actions .btn { flex: 1; }
 }
+
+/* ===================== BUILDER · VISTA PREVIA EN VIVO ================== */
+.bike-stage { position: relative; display: grid; grid-template-columns: 1.45fr 1fr; gap: 22px; align-items: center; background: linear-gradient(135deg, var(--bg-2), var(--panel)); border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; margin-bottom: 24px; overflow: hidden; }
+.bike-stage.complete { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow); }
+.bike-canvas { position: relative; }
+.bike-canvas svg { width: 100%; height: auto; display: block; }
+.bpart { fill: none; stroke: #34343b; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; transition: stroke .45s var(--ease), filter .45s var(--ease), opacity .3s var(--ease); }
+.bpart.wheel { stroke-width: 7; }
+.bpart.on { stroke: #ffffff; filter: drop-shadow(0 0 7px rgba(255,255,255,.5)); }
+.bpart.active:not(.on) { stroke: var(--accent); animation: bppulse 1.2s ease-in-out infinite; }
+@keyframes bppulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+.seat-static { fill: none; stroke: #2a2a30; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.bike-complete-badge { position: absolute; top: 6px; left: 6px; z-index: 2; background: var(--accent); color: #09090a; font-family: var(--display); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 999px; opacity: 0; transform: translateY(-6px); transition: opacity .3s ease, transform .3s ease; }
+.bike-stage.complete .bike-complete-badge { opacity: 1; transform: translateY(0); }
+.bike-readout { display: flex; flex-direction: column; gap: 15px; }
+.ro-item { display: flex; flex-direction: column; gap: 6px; }
+.ro-k { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+.ro-v { font-family: var(--display); font-size: 21px; line-height: 1; }
+.ro-v.big { font-size: 32px; }
+.ro-bar { height: 8px; background: var(--bg-3); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.ro-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 999px; transition: width .5s var(--ease); }
+.bike-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.confetti-bit { position: absolute; top: 6px; width: 9px; height: 14px; border-radius: 2px; opacity: .9; pointer-events: none; animation: confetti-fall 1.6s ease-in forwards; }
+@keyframes confetti-fall { to { transform: translateY(280px) rotate(540deg); opacity: 0; } }
+.budget-box { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+.budget-box label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px; }
+.budget-status { margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.budget-status.ok { color: #2bd07a; }
+.budget-status.over { color: #f59e0b; }
+@media (prefers-reduced-motion: reduce) {
+  .bpart.active:not(.on) { animation: none; }
+  .confetti-bit { display: none; }
+}
+@media (max-width: 760px) {
+  .bike-stage { grid-template-columns: 1fr; }
+}
