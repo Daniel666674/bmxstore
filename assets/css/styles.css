@@ -915,7 +915,7 @@ body::after {
 .bpart { fill: none; stroke: #34343b; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; transition: stroke .45s var(--ease), filter .45s var(--ease), opacity .3s var(--ease); }
 .bpart.wheel { stroke-width: 7; }
 .bpart.on { stroke: #ffffff; filter: drop-shadow(0 0 7px rgba(255,255,255,.5)); }
-.bpart.active:not(.on) { stroke: var(--accent); animation: bppulse 1.2s ease-in-out infinite; }
+.bpart.active:not(.on) { stroke: var(--muted); animation: bppulse 1.2s ease-in-out infinite; }
 @keyframes bppulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
 .seat-static { fill: none; stroke: #2a2a30; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
 .bike-complete-badge { position: absolute; top: 6px; left: 6px; z-index: 2; background: var(--accent); color: #09090a; font-family: var(--display); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 999px; opacity: 0; transform: translateY(-6px); transition: opacity .3s ease, transform .3s ease; }
@@ -933,8 +933,9 @@ body::after {
 .budget-box { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
 .budget-box label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px; }
 .budget-status { margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
-.budget-status.ok { color: #2bd07a; }
-.budget-status.over { color: #f59e0b; }
+.budget-status.ok { color: var(--muted); }
+.budget-status.over { color: var(--ink); font-weight: 800; }
+.budget-status.over::before { content: "⚠ "; }
 @media (prefers-reduced-motion: reduce) {
   .bpart.active:not(.on) { animation: none; }
   .confetti-bit { display: none; }
