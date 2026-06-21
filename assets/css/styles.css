@@ -354,7 +354,7 @@ body::after {
 .soc-sm svg { width: 15px; height: 15px; }
 .topbar .soc-sm { opacity: .85; transition: opacity .15s, transform .18s cubic-bezier(.34,1.56,.64,1), background .18s; }
 .topbar .soc-sm:hover { opacity: 1; transform: scale(1.15); }
-.newsletter { display: flex; gap: 8px; margin-top: 8px; }
+.newsletter { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
 .newsletter input { flex: 1; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 10px 12px; font-family: var(--body); }
 .newsletter input:focus { outline: none; border-color: var(--accent); }
 .footer-bottom { border-top: 1px solid var(--line); margin-top: 36px; padding-top: 20px; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
@@ -455,6 +455,10 @@ body::after {
   border-radius: 10px; padding: 12px 14px; font-family: var(--body); font-size: 14px;
 }
 .form-field input:focus, .form-field textarea:focus, .form-field select:focus { outline: none; border-color: var(--accent); }
+.form-consent { display: flex; gap: 9px; align-items: flex-start; margin: 4px 0 16px; font-size: 13px; line-height: 1.45; color: var(--muted); cursor: pointer; }
+.form-consent input[type="checkbox"] { margin-top: 2px; width: 16px; height: 16px; flex: 0 0 auto; accent-color: var(--accent); cursor: pointer; }
+.form-consent a { color: var(--cyan); text-decoration: underline; }
+.newsletter .form-consent { flex-basis: 100%; margin: 4px 0 0; }
 .map-embed { aspect-ratio: 16/10; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); margin-top: 18px; background: #0e0e12; position: relative; }
 .map-embed .pin { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--muted); }
 

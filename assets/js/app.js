@@ -19,7 +19,10 @@ const STIKE_CONFIG = {
   /* --- Datos legales: COMPLETAR con la información real de la empresa --- */
   legalName: "[Razón social — completar]",   // p. ej. "Stike Bike Shop S.A.S."
   nit: "[NIT — completar]",
-  legalUpdated: "21 de junio de 2026"
+  legalUpdated: "21 de junio de 2026",
+  /* Endpoint para enviar formularios (p. ej. Formspree: https://formspree.io/f/xxxxxxx).
+     Si se deja vacío, el formulario de contacto cae a WhatsApp y el boletín solo confirma. */
+  formEndpoint: ""
 };
 
 const STIKE_BASE = "";
@@ -393,8 +396,12 @@ function stikeRenderFooter() {
           <h5>Newsletter</h5>
           <p>Recibe drops, ofertas y eventos de la comunidad.</p>
           <form class="newsletter" onsubmit="stikeNewsletter(event)">
-            <input type="email" placeholder="Tu correo" required>
+            <input type="email" name="email" placeholder="Tu correo" required>
             <button class="btn sm" type="submit">Unirme</button>
+            <label class="form-consent">
+              <input type="checkbox" name="consent" required>
+              <span>Acepto la <a href="privacidad.html">Política de Privacidad</a> y el tratamiento de mis datos.</span>
+            </label>
           </form>
           <p style="margin-top:14px">${C.address}<br>${C.hours}<br>${C.whatsappPretty}</p>
         </div>
@@ -418,10 +425,58 @@ function stikeRenderFooter() {
   if (mount) mount.innerHTML = footer;
 }
 
-function stikeNewsletter(e) {
+/* --------------------------- ENVÍO DE FORMULARIOS ---------------------- */
+function stikeFormEndpoint() {
+  const e = STIKE_CONFIG.formEndpoint;
+  return (e && /^https?:\/\//.test(e)) ? e : null;
+}
+/* Envía `data` al endpoint configurado (Formspree, etc.). Si no hay endpoint,
+   ejecuta `fallback` (o confirma con un toast). `submit` es el evento del form. */
+function stikeSubmitForm(e, data, successMsg, fallback) {
   e.preventDefault();
-  e.target.reset();
-  stikeToast("Bienvenido a la comunidad Stike");
+  const form = e.target;
+  const endpoint = stikeFormEndpoint();
+  if (!endpoint) {
+    if (typeof fallback === "function") fallback();
+    else { form.reset(); stikeToast(successMsg); }
+    return;
+  }
+  const btn = form.querySelector('[type="submit"]');
+  const prev = btn ? btn.textContent : "";
+  if (btn) { btn.disabled = true; btn.textContent = "Enviando…"; }
+  fetch(endpoint, {
+    method: "POST",
+    headers: { "Accept": "application/json" },
+    body: new URLSearchParams(data)
+  })
+    .then(r => { if (!r.ok) throw new Error("bad status"); form.reset(); stikeToast(successMsg); })
+    .catch(() => stikeToast("No pudimos enviar. Escríbenos por WhatsApp."))
+    .finally(() => { if (btn) { btn.disabled = false; btn.textContent = prev; } });
+}
+
+function stikeNewsletter(e) {
+  const email = (e.target.querySelector('input[type="email"]').value || "").trim();
+  stikeSubmitForm(e,
+    { email, _subject: "Nuevo suscriptor — boletín Stike", origen: "newsletter" },
+    "¡Bienvenido a la comunidad Stike!");
+}
+
+function stikeContact(e) {
+  const form = e.target;
+  const val = sel => (form.querySelector(sel)?.value || "").trim();
+  const nombre = val('input[type="text"]');
+  const tel = val('input[type="tel"]');
+  const tema = val('select');
+  const mensaje = val('textarea');
+  stikeSubmitForm(e,
+    { nombre, telefono: tel, tema, mensaje, _subject: "Contacto web — " + tema },
+    "Mensaje enviado, te contactamos pronto",
+    () => {  // sin endpoint: abrimos WhatsApp con el mensaje ya escrito
+      const text = `Hola Stike! Soy ${nombre}.\nTema: ${tema}\n${mensaje}\nMi WhatsApp/Tel: ${tel}`;
+      window.open("https://wa.me/" + STIKE_CONFIG.whatsapp + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+      form.reset();
+      stikeToast("Te llevamos a WhatsApp para enviar tu mensaje");
+    });
 }
 
 /* --------------------- Delegación global de eventos -------------------- */

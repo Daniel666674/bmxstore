@@ -49,10 +49,10 @@
       <h2 style="font-size:28px;margin-bottom:6px">Escríbenos</h2>
       <p style="color:var(--muted);margin-bottom:18px">¿Dudas con un repuesto o quieres armar tu BMX? Cuéntanos.</p>
       <form onsubmit="stikeContact(event)">
-        <div class="form-field"><label>Nombre</label><input type="text" required placeholder="Tu nombre"></div>
-        <div class="form-field"><label>WhatsApp / Teléfono</label><input type="tel" required placeholder="3xx xxx xxxx"></div>
+        <div class="form-field"><label>Nombre</label><input type="text" name="nombre" required placeholder="Tu nombre"></div>
+        <div class="form-field"><label>WhatsApp / Teléfono</label><input type="tel" name="telefono" required placeholder="3xx xxx xxxx"></div>
         <div class="form-field"><label>Tema</label>
-          <select>
+          <select name="tema">
             <option>Asesoría para comprar BMX</option>
             <option>Disponibilidad de repuesto</option>
             <option>Estado de mi pedido</option>
@@ -60,7 +60,11 @@
             <option>Eventos / comunidad</option>
           </select>
         </div>
-        <div class="form-field"><label>Mensaje</label><textarea rows="4" required placeholder="¿En qué te ayudamos?"></textarea></div>
+        <div class="form-field"><label>Mensaje</label><textarea name="mensaje" rows="4" required placeholder="¿En qué te ayudamos?"></textarea></div>
+        <label class="form-consent">
+          <input type="checkbox" name="consent" required>
+          <span>Acepto la <a href="privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a> y el tratamiento de mis datos personales conforme a la Ley 1581 de 2012.</span>
+        </label>
         <button class="btn block" type="submit">Enviar mensaje</button>
       </form>
     </div>
@@ -93,7 +97,6 @@
       `<a href="${C.ig}" target="_blank" rel="noopener" style="color:var(--cyan)">${C.igHandle}</a> · ` +
       `<a href="${C.fb}" target="_blank" rel="noopener" style="color:var(--cyan)">Facebook</a> · ` +
       `<a href="${C.tiktok}" target="_blank" rel="noopener" style="color:var(--cyan)">TikTok</a>`;
-    function stikeContact(e){ e.preventDefault(); e.target.reset(); stikeToast("Mensaje enviado, te contactamos pronto"); }
   </script>
   <script src="assets/js/animations.js"></script>
 </body>
