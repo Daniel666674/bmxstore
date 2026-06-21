@@ -235,7 +235,7 @@ const STIKE_PRODUCTS = [
 
   { id: "expander-mutanty", name: "Expander Mutanty M24", brand: "Mutanty", cat: "accesorios", sub: "Herramientas", price: 35000, old: null, color: "purple", badge: null, stock: 25,
     img: "assets/img/products/IMG_7180.jpeg",
-    desc: "Expander de aluminio anodizado M24 para horquillas sin rosca. Fácil instalación.",
+    desc: "Expander de aluminio anodizado M24 para tenedores sin rosca. Fácil instalación.",
     specs: ["Tamaño: M24", "Material: Aluminio 6061", "Llave Allen 6mm"] },
 
   { id: "grip-kink", name: "Grips Kink Form Flangeless", brand: "Kink", cat: "accesorios", sub: "Grips", price: 48000, old: null, color: "cyan", badge: null, stock: 22,
