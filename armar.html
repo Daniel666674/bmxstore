@@ -63,47 +63,10 @@
     <div class="wrap">
       <div class="section-head"><div><span class="kicker">Paso 3</span><h2>Arma por componentes</h2></div></div>
 
-      <!-- VISTA PREVIA EN VIVO -->
+      <!-- DASHBOARD EN VIVO -->
       <div class="bike-stage" id="bike-stage">
-        <div class="bike-canvas">
-          <span class="bike-complete-badge" id="bike-badge">¡Build completa!</span>
-          <svg viewBox="0 0 440 300" id="bike-svg" role="img" aria-label="Vista previa de tu BMX en vivo">
-            <g id="bp-ruedas" class="bpart wheel">
-              <circle cx="138" cy="210" r="58"/>
-              <circle cx="322" cy="210" r="58"/>
-            </g>
-            <g id="bp-marco" class="bpart">
-              <line x1="196" y1="130" x2="300" y2="132"/>
-              <line x1="208" y1="212" x2="307" y2="152"/>
-              <line x1="208" y1="212" x2="197" y2="132"/>
-              <line x1="208" y1="212" x2="138" y2="210"/>
-              <line x1="198" y1="134" x2="138" y2="210"/>
-            </g>
-            <g id="bp-tenedor" class="bpart">
-              <line x1="307" y1="152" x2="322" y2="208"/>
-              <line x1="305" y1="150" x2="301" y2="132"/>
-            </g>
-            <g id="bp-transmision" class="bpart">
-              <circle cx="208" cy="212" r="15"/>
-              <line x1="208" y1="212" x2="192" y2="236"/>
-              <line x1="183" y1="235" x2="200" y2="240"/>
-              <circle cx="138" cy="210" r="8"/>
-              <line x1="194" y1="216" x2="138" y2="212"/>
-              <line x1="206" y1="199" x2="138" y2="203"/>
-            </g>
-            <g id="bp-timon" class="bpart">
-              <line x1="301" y1="132" x2="303" y2="110"/>
-              <path d="M303 110 C306 80 303 68 286 64"/>
-              <line x1="303" y1="88" x2="288" y2="86"/>
-              <line x1="286" y1="64" x2="268" y2="62"/>
-            </g>
-            <g class="seat-static">
-              <line x1="197" y1="131" x2="186" y2="72"/>
-              <path d="M168 71 Q186 63 204 70"/>
-            </g>
-          </svg>
-        </div>
-        <div class="bike-readout">
+        <span class="bike-complete-badge" id="bike-badge">¡Build completa!</span>
+        <div class="stage-grid">
           <div class="ro-item">
             <span class="ro-k">Progreso de tu build</span>
             <div class="ro-bar"><i id="ro-progress"></i></div>
@@ -111,11 +74,11 @@
           </div>
           <div class="ro-item"><span class="ro-k">Precio en vivo</span><span class="ro-v big" id="ro-price">$0</span></div>
           <div class="ro-item"><span class="ro-k">Peso estimado</span><span class="ro-v" id="ro-weight">— kg</span></div>
-          <div class="bike-actions">
-            <button class="btn ghost sm" id="b-random" type="button">Arma al azar</button>
-            <button class="btn ghost sm" id="b-share" type="button">Copiar link</button>
-            <button class="btn ghost sm" id="b-reset" type="button">Reiniciar</button>
-          </div>
+        </div>
+        <div class="bike-actions">
+          <button class="btn ghost sm" id="b-random" type="button">Arma al azar</button>
+          <button class="btn ghost sm" id="b-share" type="button">Copiar link</button>
+          <button class="btn ghost sm" id="b-reset" type="button">Reiniciar</button>
         </div>
       </div>
 
@@ -238,11 +201,11 @@
 
     /* ---------------- Configurador por componentes ---------------- */
     const STEPS = [
-      { key: "marco",       label: "Marco",       svg: "bp-marco",       subs: ["Marcos"] },
-      { key: "tenedor",     label: "Tenedor",     svg: "bp-tenedor",     subs: ["Tenedores"] },
-      { key: "transmision", label: "Transmisión", svg: "bp-transmision", subs: ["Bielas", "Platos", "Cadenas", "Pedales"] },
-      { key: "ruedas",      label: "Ruedas",      svg: "bp-ruedas",      subs: ["Rines", "Manzanas", "Llantas"] },
-      { key: "timon",       label: "Timón",       svg: "bp-timon",       subs: ["Timones", "Manubrios", "Grips"] }
+      { key: "marco",       label: "Marco",       subs: ["Marcos"] },
+      { key: "tenedor",     label: "Tenedor",     subs: ["Tenedores"] },
+      { key: "transmision", label: "Transmisión", subs: ["Bielas", "Platos", "Cadenas", "Pedales"] },
+      { key: "ruedas",      label: "Ruedas",      subs: ["Rines", "Manzanas", "Llantas"] },
+      { key: "timon",       label: "Timón",       subs: ["Timones", "Manubrios", "Grips"] }
     ];
     let current = 0;
     let build = {};
@@ -345,12 +308,6 @@
       document.getElementById("ro-count").textContent = chosen + " / " + STEPS.length;
       document.getElementById("ro-price").textContent = stikePrice(buildTotal());
       document.getElementById("ro-weight").textContent = (buildWeight() / 1000).toFixed(1) + " kg";
-      STEPS.forEach(s => {
-        const g = document.getElementById(s.svg);
-        if (!g) return;
-        g.classList.toggle("on", !!build[s.key]);
-        g.classList.toggle("active", STEPS[current] && STEPS[current].key === s.key);
-      });
       const complete = chosen === STEPS.length;
       const stage = document.getElementById("bike-stage");
       stage.classList.toggle("complete", complete);
