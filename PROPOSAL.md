@@ -142,9 +142,9 @@ coordinando por WhatsApp/transferencia manual — **todavía no hay pasarela**.
 
 ### 🔺 Avanzado — $3.500.000 COP — *"Autónomo y cobrando solo"*
 Todo lo del Premium, más el motor transaccional real y la independencia operativa.
-- **Pasarela de pago colombiana real** (Wompi o equivalente: tarjeta, PSE,
-  Nequi) con confirmación automática de pago — el checkout deja de depender
-  de WhatsApp para cobrar
+- **Pasarela de pago real con Bold** (tarjeta débito/crédito, PSE, Nequi) con
+  confirmación automática de pago — el checkout deja de depender de WhatsApp
+  para cobrar estos tres métodos
 - Panel/CMS básico para que el equipo de Stike administre productos, precios
   y stock sin tocar código
 - Captura de leads del evento: formulario/pop-up de newsletter + lista de
@@ -153,10 +153,19 @@ Todo lo del Premium, más el motor transaccional real y la independencia operati
 - 1 mes de soporte + una ronda de iteración basada en datos reales del evento
   (qué productos se vieron más, de dónde vino el tráfico)
 
+> **Efecty, Addi y Sistecrédito quedan fuera de la pasarela automática** en
+> los tres paquetes — no aparecen como botón de pago en el sitio. Efecty se
+> puede seguir coordinando manualmente por WhatsApp (instrucciones de pago en
+> efectivo + comprobante). Addi y Sistecrédito son productos de crédito: solo
+> se pueden ofrecer si Stike **ya tiene convenio directo** con ellos desde la
+> tienda física, porque es el proveedor quien aprueba el crédito, no algo que
+> se resuelva por chat. Si ya tienen esos convenios, se puede evaluar una
+> integración aparte más adelante.
+
 > **No incluido en ningún paquete** (van por cuenta de la tienda):
-> costo de registro/renovación del dominio, comisiones por transacción de la
-> pasarela de pago (solo aplica en Avanzado), y presupuesto de pauta paga si
-> se decide invertir en anuncios.
+> costo de registro/renovación del dominio, comisiones por transacción de
+> Bold (solo aplica en Avanzado), y presupuesto de pauta paga si se decide
+> invertir en anuncios.
 
 ---
 
