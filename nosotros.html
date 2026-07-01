@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nosotros — Stike Bike Shop</title>
+  <title>Nosotros: Stike Bike Shop</title>
   <meta name="description" content="Stike Bike Shop nació de la comunidad BMX de Bogotá. Riders activos con trayectoria internacional. Conoce nuestra historia.">
   <link rel="canonical" href="https://daniel666674.github.io/bmxstore/nosotros.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Stike Bike Shop">
   <meta property="og:locale" content="es_CO">
-  <meta property="og:title" content="Nosotros — Riders de Bogotá | Stike Bike Shop">
+  <meta property="og:title" content="Nosotros: Riders de Bogotá | Stike Bike Shop">
   <meta property="og:description" content="Riders activos con trayectoria internacional, levantando la comunidad BMX de Bogotá desde Venecia.">
   <meta property="og:url" content="https://daniel666674.github.io/bmxstore/nosotros.html">
   <meta property="og:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
@@ -44,7 +44,7 @@
         <span class="blob a"></span><span class="blob b"></span><span class="blob c"></span>
         <span class="ring-glow"></span>
         <span class="sticker" style="top:20px;left:18px">BOGOTÁ</span>
-        <span class="sticker" style="bottom:24px;right:18px">RIDE OR DIE</span>
+        <span class="sticker" style="bottom:24px;right:18px">RUEDA O MUERE</span>
         <img class="hero-logo" src="assets/img/logo-stike.svg" alt="Stike Bike Shop" style="max-width:300px">
       </div>
     </div>
@@ -88,7 +88,7 @@
     stikeInit();
     const cols = ["pink","cyan","lime","yellow","orange","purple"];
     document.getElementById("ig").innerHTML = cols.concat(cols).slice(0,12).map((c,i) => {
-      const fake = { brand:"#STIKE", name:"SESSION "+(i+1), color:c };
+      const fake = { brand:"#STIKE", name:"SESIÓN "+(i+1), color:c };
       return `<a class="ig-cell" href="${STIKE_CONFIG.ig}" target="_blank" rel="noopener"><img src="${stikeProductImage(fake,300)}" alt="Comunidad Stike"><span class="ig-ico">ver en IG</span></a>`;
     }).join("");
   </script>

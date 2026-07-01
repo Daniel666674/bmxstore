@@ -1,11 +1,11 @@
 /* =========================================================================
-   STIKE BIKE SHOP — Bogotá BMX Store
-   Aesthetic: Bogotá graffiti — dark base + street-art multicolor accents
+   STIKE BIKE SHOP: Bogotá BMX Store
+   Aesthetic: Bogotá graffiti, dark base + street-art multicolor accents
    ========================================================================= */
 
 /* ----------------------------- Design tokens ---------------------------- */
 :root {
-  /* Base — premium black & white */
+  /* Base: premium black & white */
   --bg:        #09090a;
   --bg-2:      #0f0f11;
   --bg-3:      #161619;
@@ -14,7 +14,7 @@
   --muted:     #8e8e96;
   --line:      #232327;
 
-  /* Monochrome ramp (B&W theme — legacy color names kept as grayscale) */
+  /* Monochrome ramp (B&W theme, legacy color names kept as grayscale) */
   --pink:   #ffffff;
   --cyan:   #c7c7cf;
   --yellow: #ededf0;
@@ -115,7 +115,7 @@ body::after {
 .btn:hover { color: var(--ink); border-color: var(--ink); transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,.5); }
 .btn:hover::before { transform: translateY(0); }
 .btn:active { transform: translateY(-1px); }
-/* Outline variant (product CTA, ghost) — fills white on hover */
+/* Outline variant (product CTA, ghost), fills white on hover */
 .btn.ghost, .btn.cyan { background: transparent; color: var(--ink); border-color: var(--ink); }
 .btn.ghost::before, .btn.cyan::before { background: var(--ink); }
 .btn.ghost:hover, .btn.cyan:hover { color: #09090a; }
@@ -140,7 +140,9 @@ body::after {
 @keyframes ticker { from { transform: translateX(40%); } to { transform: translateX(-100%); } }
 .topbar .social { display: flex; align-items: center; gap: 4px; }
 
-.site-header { position: sticky; top: 0; z-index: 50; background: rgba(11,11,13,.92); backdrop-filter: blur(10px); border-bottom: 2px solid var(--line); }
+/* El wrapper que monta el header por JS no debe limitar el rango del sticky al alto del topbar */
+#site-header { display: contents; }
+.site-header { position: sticky; top: 0; z-index: 100; background: rgba(11,11,13,.92); backdrop-filter: blur(10px); border-bottom: 2px solid var(--line); }
 .header-main { display: flex; align-items: center; gap: 22px; height: 78px; }
 .brand { display: flex; align-items: center; gap: 13px; flex-shrink: 0; }
 .brand .logo { height: 52px; width: auto; display: block; }
@@ -243,7 +245,7 @@ body::after {
   border: 1px solid var(--line); backdrop-filter: blur(4px); transform: none !important; z-index: 3;
 }
 
-/* Marquee strip — subtle premium ticker */
+/* Marquee strip: subtle premium ticker */
 .marquee { background: transparent; color: var(--muted); overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .marquee .track { display: flex; gap: 44px; white-space: nowrap; padding: 16px 0; animation: marq 40s linear infinite; font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 5px; font-size: 13px; }
 .marquee .track span { display: inline-flex; align-items: center; gap: 44px; }
@@ -481,6 +483,18 @@ body::after {
 .wa-float:hover { transform: scale(1.14); box-shadow: 0 14px 40px rgba(255,255,255,.4); }
 .wa-float svg { width: 30px; height: 30px; fill: #0b0b0d; }
 
+/* Volver arriba */
+.back-to-top {
+  position: fixed; bottom: 22px; left: 22px; width: 48px; height: 48px; border-radius: 50%;
+  background: var(--bg-3); border: 1px solid var(--line); color: var(--ink);
+  display: grid; place-items: center; box-shadow: var(--shadow); z-index: 90;
+  opacity: 0; visibility: hidden; transform: translateY(12px);
+  transition: opacity .22s var(--ease), transform .22s var(--ease), visibility .22s, background .15s, border-color .15s;
+}
+.back-to-top.show { opacity: 1; visibility: visible; transform: none; }
+.back-to-top:hover { background: var(--ink); color: #09090a; border-color: var(--ink); }
+@media (max-width: 760px) { .back-to-top { width: 42px; height: 42px; bottom: 16px; left: 16px; } }
+
 /* =============================== RESPONSIVE =========================== */
 @media (max-width: 1080px) {
   .cat-grid { grid-template-columns: repeat(2,1fr); }
@@ -498,14 +512,33 @@ body::after {
 @media (max-width: 760px) {
   :root { --header-h: 64px; }
   .search { display: none; }
-  .site-nav { display: none; position: fixed; top: 0; right: 0; width: min(86vw, 360px); height: 100vh; background: var(--bg-2); border-left: 2px solid var(--accent); z-index: 80; overflow-y: auto; padding: 80px 0 40px; }
-  .site-nav.open { display: block; }
-  .nav-list { flex-direction: column; align-items: stretch; gap: 0; }
-  .nav-list > li > a { height: auto; padding: 15px 24px; border-bottom: 1px solid var(--line); }
-  .dropdown, .dropdown.mega { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; width: auto; display: none; grid-template-columns: 1fr; background: var(--bg-3); border-radius: 0; }
+  .hide-mobile { display: none; }
+  .header-main { gap: 12px; height: 64px; }
+  .brand .logo { height: 38px; }
+  .brand .name { font-size: 18px; letter-spacing: 2px; }
+  .brand .name small { font-size: 8px; letter-spacing: 2px; }
+  .header-actions { gap: 6px; }
+  .icon-btn { width: 40px; height: 40px; }
+  .site-nav {
+    position: fixed; right: 14px; top: 74px; width: min(84vw, 300px); max-height: min(72vh, 560px);
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow);
+    z-index: 80; overflow-y: auto; padding: 14px 0 10px;
+    opacity: 0; visibility: hidden; transform: translateY(-10px) scale(.96); transform-origin: top right;
+    transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
+  }
+  .site-nav::before { content: ""; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 34px; height: 4px; border-radius: 999px; background: var(--line); }
+  .site-nav.open { opacity: 1; visibility: visible; transform: none; }
+  .nav-list { flex-direction: column; align-items: stretch; gap: 0; padding-top: 6px; }
+  .site-nav .nav-list > li { padding: 0 10px; }
+  .site-nav .nav-list > li > a { height: auto; padding: 13px 14px; margin: 2px 0; border-radius: 12px; }
+  .site-nav .nav-list > li > a::after { display: none; }
+  .site-nav .nav-list > li > a:hover { background: var(--bg-3); }
+  .site-nav .nav-list > li.active > a { background: var(--ink); color: #09090a; }
+  .site-nav .nav-list > li.active > a .caret { color: #09090a; }
+  .dropdown, .dropdown.mega { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; width: auto; display: none; grid-template-columns: 1fr; background: var(--bg-3); border-radius: 12px; margin: 2px 0 8px; padding: 6px; }
   .nav-list > li.open-sub .dropdown { display: block; }
   .menu-toggle { display: grid; }
-  .nav-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 70; }
+  .nav-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(2px); z-index: 70; }
   .nav-backdrop.show { display: block; }
   .shop-layout { grid-template-columns: 1fr; }
   .filters { position: static; }
@@ -550,7 +583,7 @@ body::after {
 /* Scroll progress bar */
 .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 9998; background: var(--ink); box-shadow: 0 0 12px rgba(255,255,255,.5); transition: width .1s linear; }
 
-/* Scroll reveal — stronger entrance */
+/* Scroll reveal: stronger entrance */
 .reveal {
   opacity: 0;
   transform: translateY(54px) scale(.98);
@@ -560,7 +593,7 @@ body::after {
 }
 .reveal.in { opacity: 1; transform: none; filter: none; }
 
-/* Stagger children — stronger entrance */
+/* Stagger children: stronger entrance */
 .stagger > * {
   opacity: 0;
   transform: translateY(40px) scale(.97);
@@ -625,7 +658,7 @@ body::after {
 }
 
 /* =========================================================================
-   FEATURES — buscador, tallas, stock, compartir, mapa, build, testimonios
+   FEATURES: buscador, tallas, stock, compartir, mapa, build, testimonios
    ========================================================================= */
 
 /* ----------------------- Buscador en vivo (overlay) -------------------- */
@@ -665,6 +698,37 @@ body::after {
 .sr-all:hover { color: var(--accent); }
 .sr-empty { text-align: center; padding: 34px 16px; color: var(--muted); }
 .sr-empty a { color: var(--accent); }
+
+/* ------------------------- Boletín (popup) ------------------------------ */
+.newsletter-overlay {
+  position: fixed; inset: 0; z-index: 250; display: none;
+  background: rgba(6,6,8,.72); backdrop-filter: blur(8px);
+  padding: 20px; justify-content: center; align-items: center;
+}
+.newsletter-overlay.open { display: flex; animation: ov-fade .2s var(--ease); }
+.newsletter-modal {
+  position: relative; width: 100%; max-width: 420px; background: var(--panel); border: 1px solid var(--line);
+  border-top: 3px solid var(--accent); border-radius: 18px; box-shadow: var(--shadow);
+  padding: 34px 28px 28px; text-align: center; animation: ov-rise .28s var(--ease);
+}
+.newsletter-modal .logo { margin: 0 auto 14px; }
+.newsletter-modal .nl-close {
+  position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--bg-3); border: 1px solid var(--line); color: var(--muted);
+  display: grid; place-items: center; font-size: 15px; transition: color .15s, border-color .15s;
+}
+.newsletter-modal .nl-close:hover { color: var(--ink); border-color: var(--accent); }
+.newsletter-modal h3 { font-size: 23px; margin: 6px 0 10px; }
+.newsletter-modal p { color: var(--muted); font-size: 14px; margin: 0 0 20px; max-width: 32ch; margin-left: auto; margin-right: auto; }
+.newsletter-modal form { display: flex; flex-direction: column; gap: 10px; }
+.newsletter-modal input[type=email] {
+  background: var(--bg-3); border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px;
+  color: var(--ink); font-family: var(--body); font-size: 15px; text-align: center;
+}
+.newsletter-modal input[type=email]:focus { outline: none; border-color: var(--accent); }
+.newsletter-modal .nl-skip { display: inline-block; margin-top: 16px; font-size: 12.5px; color: var(--muted); }
+.newsletter-modal .nl-skip:hover { color: var(--ink); }
+@media (max-width: 480px) { .newsletter-modal { padding: 28px 20px 22px; } }
 
 /* --------------------------- Nav: Arma tu BMX -------------------------- */
 .nav-list > li.nav-build > a { color: var(--ink); gap: 7px; }
@@ -779,7 +843,7 @@ body::after {
 }
 
 /* =========================================================================
-   ARMA TU BMX — estilo, geometría, talla + CREW band + blog
+   ARMA TU BMX: estilo, geometría, talla + CREW band + blog
    ========================================================================= */
 .style-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
 .style-card { text-align: left; background: var(--panel); border: 1.5px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; transition: transform .35s var(--ease), border-color .25s var(--ease); }

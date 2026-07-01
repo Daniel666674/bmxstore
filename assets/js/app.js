@@ -1,5 +1,5 @@
 /* =========================================================================
-   STIKE BIKE SHOP — App / UI compartida
+   STIKE BIKE SHOP: App / UI compartida
    ========================================================================= */
 
 const STIKE_CONFIG = {
@@ -190,8 +190,8 @@ function stikeRenderHeader(active) {
         </form>
         <div class="header-actions">
           <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
-          <a class="icon-btn" href="nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
-          <a class="icon-btn" href="contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
+          <a class="icon-btn hide-mobile" href="nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
+          <a class="icon-btn hide-mobile" href="contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
           <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             <span class="cart-count">0</span>
@@ -220,20 +220,42 @@ function stikeRenderHeader(active) {
   stikeUpdateCartBadge();
 }
 
+function stikeFloatNavPosition() {
+  const nav = document.getElementById("site-nav");
+  const header = document.querySelector(".site-header");
+  if (!nav || !header) return;
+  const bottom = header.getBoundingClientRect().bottom;
+  nav.style.top = (bottom + 10) + "px";
+  nav.style.maxHeight = Math.min(560, window.innerHeight - bottom - 24) + "px";
+}
+
+function stikeCloseNav() {
+  const nav = document.getElementById("site-nav");
+  const backdrop = document.getElementById("nav-backdrop");
+  if (nav) nav.classList.remove("open");
+  if (backdrop) backdrop.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
 function stikeBindHeader() {
   const toggle = document.getElementById("menu-toggle");
   const nav = document.getElementById("site-nav");
   const backdrop = document.getElementById("nav-backdrop");
   if (toggle && nav) {
     toggle.addEventListener("click", () => {
-      nav.classList.toggle("open");
-      if (backdrop) backdrop.classList.toggle("show");
+      const willOpen = !nav.classList.contains("open");
+      if (willOpen) {
+        stikeFloatNavPosition();
+        nav.classList.add("open");
+        if (backdrop) backdrop.classList.add("show");
+        document.body.style.overflow = "hidden";
+      } else {
+        stikeCloseNav();
+      }
     });
   }
-  if (backdrop) backdrop.addEventListener("click", () => {
-    nav.classList.remove("open");
-    backdrop.classList.remove("show");
-  });
+  if (backdrop) backdrop.addEventListener("click", stikeCloseNav);
+  window.addEventListener("resize", () => { if (nav && nav.classList.contains("open")) stikeFloatNavPosition(); });
   nav && nav.querySelectorAll(".nav-list > li").forEach(li => {
     const caret = li.querySelector(".caret");
     if (!caret) return;
@@ -241,6 +263,7 @@ function stikeBindHeader() {
       if (window.innerWidth <= 760 && li.querySelector(".dropdown")) {
         e.preventDefault();
         li.classList.toggle("open-sub");
+        stikeFloatNavPosition();
       }
     });
   });
@@ -385,8 +408,8 @@ function stikeRenderFooter() {
           <a href="carrito.html">Mi carrito</a>
         </div>
         <div>
-          <h5>Newsletter</h5>
-          <p>Recibe drops, ofertas y eventos de la comunidad.</p>
+          <h5>Boletín</h5>
+          <p>Recibe lanzamientos, ofertas y eventos de la comunidad.</p>
           <form class="newsletter" onsubmit="stikeNewsletter(event)">
             <input type="email" placeholder="Tu correo" required>
             <button class="btn sm" type="submit">Unirme</button>
@@ -395,7 +418,7 @@ function stikeRenderFooter() {
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© ${new Date().getFullYear()} ${C.full} — Bogotá, Colombia. Mockup de demostración.</span>
+        <span>© ${new Date().getFullYear()} ${C.full}, Bogotá, Colombia. Maqueta de demostración.</span>
         <div class="pay-icons">
           <span>VISA</span><span>MASTERCARD</span><span>PSE</span><span>NEQUI</span><span>EFECTY</span>
         </div>
@@ -406,10 +429,55 @@ function stikeRenderFooter() {
   if (mount) mount.innerHTML = footer;
 }
 
+/* ------------------------- Boletín (footer + popup) ---------------------- */
+const NEWSLETTER_KEY = "stike_newsletter_v1";
+
+function stikeMarkNewsletterSubscribed() {
+  localStorage.setItem(NEWSLETTER_KEY, "subscribed");
+  const overlay = document.getElementById("newsletter-overlay");
+  if (overlay) overlay.classList.remove("open");
+  stikeToast("Bienvenido a la comunidad Stike");
+}
+
 function stikeNewsletter(e) {
   e.preventDefault();
   e.target.reset();
-  stikeToast("Bienvenido a la comunidad Stike");
+  stikeMarkNewsletterSubscribed();
+}
+
+function stikeDismissNewsletter(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  localStorage.setItem(NEWSLETTER_KEY, "dismissed");
+  const overlay = document.getElementById("newsletter-overlay");
+  if (overlay) overlay.classList.remove("open");
+}
+
+function stikeSubscribeFromPopup(e) {
+  e.preventDefault();
+  stikeMarkNewsletterSubscribed();
+}
+
+function stikeRenderNewsletterPopup() {
+  if (localStorage.getItem(NEWSLETTER_KEY)) return;
+  if (document.getElementById("newsletter-overlay")) return;
+  const el = document.createElement("div");
+  el.id = "newsletter-overlay";
+  el.className = "newsletter-overlay";
+  el.innerHTML = `
+    <div class="newsletter-modal" role="dialog" aria-modal="true" aria-label="Únete a la comunidad Stike">
+      <button type="button" class="nl-close" aria-label="Cerrar" onclick="stikeDismissNewsletter()">✕</button>
+      ${stikeLogoSVG(44)}
+      <h3>Únete a la comunidad Stike</h3>
+      <p>Entérate primero de lanzamientos, ofertas y eventos de la comunidad BMX en Bogotá.</p>
+      <form onsubmit="stikeSubscribeFromPopup(event)">
+        <input type="email" placeholder="Tu correo" required autocomplete="email">
+        <button class="btn block" type="submit">Quiero unirme</button>
+      </form>
+      <a href="#" class="nl-skip" onclick="stikeDismissNewsletter(event)">Ahora no</a>
+    </div>`;
+  document.body.appendChild(el);
+  el.addEventListener("click", (e) => { if (e.target === el) stikeDismissNewsletter(); });
+  setTimeout(() => el.classList.add("open"), 2200);
 }
 
 /* --------------------- Delegación global de eventos -------------------- */
@@ -443,4 +511,5 @@ function stikeInit(active) {
   stikeRenderFooter();
   stikeFloatingWA();
   stikeRenderSearchOverlay();
+  stikeRenderNewsletterPopup();
 }
