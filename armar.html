@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arma tu BMX a tu medida — Stike Bike Shop</title>
+  <title>Arma tu BMX a tu medida: Stike Bike Shop</title>
   <meta name="description" content="Arma tu BMX a tu medida: geometría y ángulos recomendados por estilo (street, park, dirt), calculadora de talla por estatura y armado por componentes. Asesoría de riders en Bogotá.">
   <link rel="canonical" href="https://daniel666674.github.io/bmxstore/armar.html">
   <meta property="og:type" content="website">
@@ -30,7 +30,7 @@
     <div class="count">No vendemos completas: te ayudamos a construir la tuya, perfecta para tu estilo y tu estatura. Geometría, ángulos y componentes con asesoría de riders. Armado y ajuste gratis.</div>
   </div>
 
-  <!-- PASO 1 — ESTILO -->
+  <!-- PASO 1: ESTILO -->
   <section class="section" style="padding-top:24px">
     <div class="wrap">
       <div class="section-head"><div><span class="kicker">Paso 1</span><h2>Elige tu estilo</h2></div></div>
@@ -39,17 +39,17 @@
     </div>
   </section>
 
-  <!-- PASO 2 — MEDIDA -->
+  <!-- PASO 2: MEDIDA -->
   <section class="section" style="padding-top:0">
     <div class="wrap">
       <div class="section-head"><div><span class="kicker">Paso 2</span><h2>Encuentra tu medida</h2></div></div>
-      <p style="color:var(--muted);max-width:60ch;margin:-12px 0 22px">El <b>top tube (TT)</b> es la medida que define cómo te queda la BMX. Guíate por tu estatura — y recuerda: en street se suele bajar media pulgada para más maniobra, en dirt se sube para más estabilidad.</p>
+      <p style="color:var(--muted);max-width:60ch;margin:-12px 0 22px">El <b>tubo superior (TS)</b> es la medida que define cómo te queda la BMX. Guíate por tu estatura, y recuerda: en street se suele bajar media pulgada para más maniobra, en dirt se sube para más estabilidad.</p>
       <div class="sizing-wrap">
         <div class="sizing-widget">
           <label for="height" class="sizing-label">Tu estatura: <b id="height-val">175 cm</b></label>
           <input id="height" class="sizing-range" type="range" min="140" max="200" value="175" step="1">
           <div class="sizing-out">
-            <span>Top tube recomendado</span>
+            <span>Tubo superior recomendado</span>
             <strong id="tt-out">20.75" – 21.0"</strong>
           </div>
         </div>
@@ -58,7 +58,7 @@
     </div>
   </section>
 
-  <!-- PASO 3 — COMPONENTES -->
+  <!-- PASO 3: COMPONENTES -->
   <section class="section" style="padding-top:0">
     <div class="wrap">
       <div class="section-head"><div><span class="kicker">Paso 3</span><h2>Arma por componentes</h2></div></div>
@@ -72,7 +72,7 @@
           </div>
         </div>
         <aside class="builder-summary">
-          <h3>Tu build</h3>
+          <h3>Tu armado</h3>
           <div class="builder-profile" id="builder-profile"></div>
           <div id="build-list"></div>
           <div class="line total"><span>Total</span><span id="build-total">$0</span></div>
@@ -97,21 +97,21 @@
         label: "Street",
         tag: "Ledges, rieles, gaps",
         desc: "Para todo lo urbano: ledges, rieles, gaps y manuals. Buscas una bici resistente, maniobrable y con buen peso para aguantar impactos.",
-        geo: { "Top tube": "20.5\" – 21\"", "Ángulo de dirección": "75°", "Vainas (chainstay)": "13\" – 13.5\"", "Altura de eje (BB)": "Media (~11.6\")", "Transmisión": "25/9 ó 28/9", "Horquilla (offset)": "28 – 30 mm" },
+        geo: { "Tubo superior": "20.5\" – 21\"", "Ángulo de dirección": "75°", "Vainas": "13\" – 13.5\"", "Altura de eje": "Media (~11.6\")", "Transmisión": "25/9 ó 28/9", "Horquilla (avance)": "28 – 30 mm" },
         tips: ["Tacos en los 4 ejes para grinds", "Freecoaster o cassette, según preferencia", "Llantas 2.3\"–2.4\" para más agarre", "Manubrio alto (9.4\"+) para control"]
       },
       park: {
         label: "Park",
         tag: "Rampas, bowls, cajón",
         desc: "Para rampas, bowls y skatepark. Geometría corta y reactiva que responde rápido en transiciones, aéreos y combos.",
-        geo: { "Top tube": "20.5\" – 20.75\"", "Ángulo de dirección": "75.5°", "Vainas (chainstay)": "12.8\" – 13.2\"", "Altura de eje (BB)": "Media–alta", "Transmisión": "28/9", "Horquilla (offset)": "30 – 32 mm" },
+        geo: { "Tubo superior": "20.5\" – 20.75\"", "Ángulo de dirección": "75.5°", "Vainas": "12.8\" – 13.2\"", "Altura de eje": "Media a alta", "Transmisión": "28/9", "Horquilla (avance)": "30 – 32 mm" },
         tips: ["Cassette ligero para acelerar rápido", "Sin frenos o freno trasero limpio", "Llantas 2.2\"–2.35\" infladas duro", "La bici lo más liviana posible"]
       },
       dirt: {
         label: "Dirt / Trails",
         tag: "Saltos de tierra",
         desc: "Para saltos de tierra y trails. Bici más larga y estable para mantener velocidad entre saltos y aterrizar firme.",
-        geo: { "Top tube": "20.75\" – 21.25\"", "Ángulo de dirección": "74.5° – 75°", "Vainas (chainstay)": "13.5\" – 13.75\"", "Altura de eje (BB)": "Alta", "Transmisión": "28/9 ó 30/9", "Horquilla (offset)": "32 – 35 mm" },
+        geo: { "Tubo superior": "20.75\" – 21.25\"", "Ángulo de dirección": "74.5° – 75°", "Vainas": "13.5\" – 13.75\"", "Altura de eje": "Alta", "Transmisión": "28/9 ó 30/9", "Horquilla (avance)": "32 – 35 mm" },
         tips: ["Vainas largas = más estabilidad en el aire", "Transmisión más grande para velocidad", "Llantas con taco para agarre en tierra", "Freno trasero recomendado"]
       }
     };
@@ -137,7 +137,7 @@
       const tips = s.tips.map(t => `<li>${t}</li>`).join("");
       document.getElementById("style-panel").innerHTML = `
         <div class="style-panel-head">
-          <h3>Setup ${s.label}</h3>
+          <h3>Configuración ${s.label}</h3>
           <p>${s.desc}</p>
         </div>
         <div class="geo-grid">${geo}</div>
@@ -160,7 +160,7 @@
     let recommendedTT = ttForHeight(175);
     function renderSizing() {
       document.getElementById("sizing-table").innerHTML =
-        `<thead><tr><th>Estatura</th><th>Top tube</th></tr></thead><tbody>` +
+        `<thead><tr><th>Estatura</th><th>Tubo superior</th></tr></thead><tbody>` +
         SIZING.map(r => `<tr><td>${r.h}</td><td>${r.tt}</td></tr>`).join("") + `</tbody>`;
       const range = document.getElementById("height");
       const sync = () => {
@@ -221,15 +221,15 @@
       const html = STEPS.map(s => {
         const id = build[s.key]; const p = id ? stikeFindProduct(id) : null;
         if (p) total += p.price;
-        return `<div class="build-row ${p ? "" : "empty"}"><span class="br-label">${s.label}</span><span class="br-val">${p ? p.name : "—"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
+        return `<div class="build-row ${p ? "" : "empty"}"><span class="br-label">${s.label}</span><span class="br-val">${p ? p.name : "Sin elegir"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
       }).join("");
       document.getElementById("build-list").innerHTML = html;
       document.getElementById("build-total").textContent = stikePrice(total);
       document.getElementById("builder-profile").innerHTML =
-        `<span class="bp-chip">Estilo: ${STYLES[selectedStyle].label}</span><span class="bp-chip">Top tube: ${recommendedTT}</span>`;
+        `<span class="bp-chip">Estilo: ${STYLES[selectedStyle].label}</span><span class="bp-chip">Tubo superior: ${recommendedTT}</span>`;
 
-      const chosen = STEPS.filter(s => build[s.key]).map(s => { const p = stikeFindProduct(build[s.key]); return `• ${s.label}: ${p.name} — ${stikePrice(p.price)}`; });
-      const head = `Estilo: ${STYLES[selectedStyle].label} · Top tube ${recommendedTT}`;
+      const chosen = STEPS.filter(s => build[s.key]).map(s => { const p = stikeFindProduct(build[s.key]); return `• ${s.label}: ${p.name}, ${stikePrice(p.price)}`; });
+      const head = `Estilo: ${STYLES[selectedStyle].label} · Tubo superior ${recommendedTT}`;
       const msg = `Hola Stike! Quiero armar esta BMX:%0A${head}%0A%0A${chosen.join("%0A") || "(aún sin componentes)"}%0A%0ATotal estimado: ${stikePrice(total)}%0A%0A¿Me asesoran para completarla?`;
       document.getElementById("wa-build").href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${msg}`;
     }
@@ -250,7 +250,7 @@
       const chosen = STEPS.filter(s => build[s.key]);
       if (!chosen.length) { stikeToast("Elige al menos un componente"); return; }
       chosen.forEach(s => stikeAddToCart(build[s.key], 1));
-      stikeToast("Build agregado al carrito");
+      stikeToast("Armado agregado al carrito");
       setTimeout(() => window.location.href = "carrito.html", 750);
     });
 

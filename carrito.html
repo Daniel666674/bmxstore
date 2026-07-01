@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carrito — Stike Bike Shop</title>
+  <title>Carrito: Stike Bike Shop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -73,7 +73,7 @@
       const shipping = subtotal >= FREE_SHIP ? 0 : SHIP_COST;
       const total = subtotal + shipping;
       const missing = FREE_SHIP - subtotal;
-      const waLines = cart.map(r => { const p = stikeFindProduct(r.id); return p ? `• ${r.qty}x ${p.name}${r.size ? ` (Talla ${r.size})` : ""} — ${stikePrice(p.price * r.qty)}` : ""; }).join("%0A");
+      const waLines = cart.map(r => { const p = stikeFindProduct(r.id); return p ? `• ${r.qty}x ${p.name}${r.size ? ` (Talla ${r.size})` : ""}, ${stikePrice(p.price * r.qty)}` : ""; }).join("%0A");
       const waMsg = `Hola Stike! Quiero hacer este pedido:%0A${waLines}%0A%0ASubtotal: ${stikePrice(subtotal)}%0ATotal: ${stikePrice(total)}`;
 
       mount.innerHTML = `
@@ -89,11 +89,11 @@
           <div class="line"><span>Envío</span><span>${shipping === 0 ? "Gratis" : stikePrice(shipping)}</span></div>
           <div class="promo-input">
             <input type="text" placeholder="Código promo" id="promo">
-            <button class="btn sm" onclick="stikeToast('Código aplicado en el checkout')">Aplicar</button>
+            <button class="btn sm" onclick="stikeToast('Código aplicado en el pago')">Aplicar</button>
           </div>
           <div class="line total"><span>Total</span><span>${stikePrice(total)}</span></div>
           <a class="btn wa block" style="margin-top:16px" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Finalizar por WhatsApp</a>
-          <button class="btn block" style="margin-top:10px" onclick="stikeToast('Checkout demo — conecta tu pasarela de pago')">Pagar ahora</button>
+          <button class="btn block" style="margin-top:10px" onclick="stikeToast('Simulación de pago: aquí se conecta la pasarela real')">Pagar ahora</button>
           <p style="color:var(--muted);font-size:12px;margin-top:14px;text-align:center">Pagos: Tarjeta · PSE · Nequi · Efecty</p>
         </aside>
       </div>`;

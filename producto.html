@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Producto — Stike Bike Shop</title>
+  <title>Producto: Stike Bike Shop</title>
   <meta name="description" id="meta-desc" content="Producto BMX en Stike Bike Shop, tu tienda BMX en Bogotá.">
   <link rel="canonical" id="meta-canonical" href="https://daniel666674.github.io/bmxstore/producto.html">
   <meta property="og:type" content="product">
   <meta property="og:site_name" content="Stike Bike Shop">
   <meta property="og:locale" content="es_CO">
-  <meta property="og:title" id="og-title" content="Producto — Stike Bike Shop">
+  <meta property="og:title" id="og-title" content="Producto: Stike Bike Shop">
   <meta property="og:description" id="og-desc" content="Producto BMX en Stike Bike Shop, Bogotá.">
   <meta property="og:image" id="og-image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -51,12 +51,12 @@
       mount.innerHTML = `<div class="empty"><h3 style="font-size:30px">Producto no encontrado</h3><p>Es posible que ya no esté disponible.</p><a class="btn cyan" href="tienda.html">Volver a la tienda</a></div>`;
     } else {
       const cat = stikeCategory(p.cat);
-      document.title = p.name + " — Stike Bike Shop";
+      document.title = p.name + ": Stike Bike Shop";
       (function () {
         const setMeta = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
         setMeta("meta-desc", "content", p.desc);
         setMeta("meta-canonical", "href", location.href);
-        setMeta("og-title", "content", p.name + " — Stike Bike Shop");
+        setMeta("og-title", "content", p.name + ": Stike Bike Shop");
         setMeta("og-desc", "content", p.desc);
         if (p.img) setMeta("og-image", "content", new URL(p.img, location.href).href);
       })();
@@ -68,7 +68,7 @@
       const low = p.stock > 0 && p.stock <= 5;
       const stockHtml = p.stock > 0
         ? `<span class="stock${low ? " low" : ""}">● ${low ? `¡Solo ${p.stock} disponible${p.stock === 1 ? "" : "s"}!` : `En stock (${p.stock} disponibles)`}</span>`
-        : `<span class="stock out">● Agotado — consúltanos por WhatsApp</span>`;
+        : `<span class="stock out">● Agotado. Consúltanos por WhatsApp</span>`;
       const sizes = stikeSizesFor(p);
       const sizesHtml = sizes ? `
             <div class="size-select">
@@ -85,7 +85,7 @@
       const img = stikeProductImage(p, 800);
       const waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.name} (${stikePrice(p.price)}). ¿Está disponible?`);
       const shareUrl = location.href;
-      const shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.name} — ${stikePrice(p.price)}\n${shareUrl}`);
+      const shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.name}, ${stikePrice(p.price)}\n${shareUrl}`);
 
       mount.innerHTML = `
       <div class="pdp">
@@ -159,7 +159,7 @@
       const addBtn = document.getElementById("add-btn");
       if (addBtn && p.stock > 0) addBtn.addEventListener("click", () => {
         if (sizes && !selectedSize) {
-          const req = document.getElementById("size-req"); if (req) req.textContent = "— elige una talla";
+          const req = document.getElementById("size-req"); if (req) req.textContent = "(elige una talla)";
           const opts = document.getElementById("size-options");
           if (opts) { opts.classList.add("shake"); setTimeout(() => opts.classList.remove("shake"), 450); }
           stikeToast("Elige una talla primero");
@@ -168,14 +168,14 @@
         stikeAddToCart(p.id, Math.max(1, parseInt(qtyEl.value) || 1), selectedSize);
       });
 
-      // Compartir — copiar enlace
+      // Compartir: copiar enlace
       const copyBtn = document.getElementById("share-copy");
       if (copyBtn) copyBtn.addEventListener("click", () => {
         if (navigator.clipboard) navigator.clipboard.writeText(shareUrl).then(() => stikeToast("Enlace copiado")).catch(() => stikeToast("Copia: " + shareUrl));
         else stikeToast("Copia: " + shareUrl);
       });
 
-      // Thumbs — swap main image
+      // Miniaturas: cambiar imagen principal
       const mainImg = document.getElementById("main-img");
       document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
         document.querySelectorAll("[data-thumb]").forEach(o => o.classList.remove("active"));

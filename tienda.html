@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda — Stike Bike Shop</title>
+  <title>Tienda: Stike Bike Shop</title>
   <meta name="description" content="Catálogo Stike Bike Shop: repuestos, protecciones, ropa y accesorios BMX en Bogotá.">
   <link rel="canonical" href="https://daniel666674.github.io/bmxstore/tienda.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Stike Bike Shop">
   <meta property="og:locale" content="es_CO">
-  <meta property="og:title" content="Tienda BMX — Repuestos, protección y ropa | Stike Bike Shop">
+  <meta property="og:title" content="Tienda BMX: Repuestos, protección y ropa | Stike Bike Shop">
   <meta property="og:description" content="Catálogo BMX en Bogotá: repuestos, protecciones, ropa y accesorios.">
   <meta property="og:url" content="https://daniel666674.github.io/bmxstore/tienda.html">
   <meta property="og:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
@@ -132,7 +132,7 @@
       document.getElementById("filter-brands").innerHTML = STIKE_BRANDS.map(b => `
         <label><input type="checkbox" class="brand-cb" value="${b}" ${state.brand === b ? "checked" : ""}> ${b}</label>`).join("");
       document.querySelectorAll(".brand-cb").forEach(cb => cb.addEventListener("change", (e) => {
-        // single brand toggle behaviour for simplicity
+        // alterna una sola marca a la vez, por simplicidad
         document.querySelectorAll(".brand-cb").forEach(o => { if (o !== e.target) o.checked = false; });
         state.brand = e.target.checked ? e.target.value : null;
         render();
