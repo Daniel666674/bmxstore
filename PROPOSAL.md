@@ -129,18 +129,22 @@ Deja el sitio público, legal y medible a tiempo para el 19 de julio.
 - Revisión de rendimiento y mobile antes del lanzamiento
 - 1 semana de soporte post-lanzamiento
 
-### 🔸 Premium — $2.500.000 COP — *"Cobra en línea"*
-Todo lo del Básico, más el motor transaccional real.
-- Pasarela de pago colombiana (Wompi o equivalente: tarjeta, PSE, Nequi) —
-  el checkout deja de depender solo de WhatsApp
-- Registro de pedidos con notificación automática a la tienda y confirmación al cliente
+### 🔸 Premium — $2.500.000 COP — *"Pedidos organizados"*
+Todo lo del Básico, más una operación más ordenada. El pago se sigue
+coordinando por WhatsApp/transferencia manual — **todavía no hay pasarela**.
 - Reglas de envío (zonas Bogotá / resto del país, tarifas y umbral de envío gratis)
+- Registro estructurado de pedidos (el pedido queda guardado, no solo vive en
+  un chat de WhatsApp) con notificación automática a la tienda
+- Confirmación automática al cliente de que su pedido fue recibido
 - Cobertura de blog/redes post-evento ("así vivimos el BMX Day") para SEO fresco
   y contenido reutilizable en Instagram/Facebook
 - 2 semanas de soporte post-lanzamiento
 
-### 🔺 Avanzado — $3.500.000 COP — *"Autónomo y en crecimiento"*
-Todo lo del Premium, más independencia operativa y aprovechamiento de datos.
+### 🔺 Avanzado — $3.500.000 COP — *"Autónomo y cobrando solo"*
+Todo lo del Premium, más el motor transaccional real y la independencia operativa.
+- **Pasarela de pago colombiana real** (Wompi o equivalente: tarjeta, PSE,
+  Nequi) con confirmación automática de pago — el checkout deja de depender
+  de WhatsApp para cobrar
 - Panel/CMS básico para que el equipo de Stike administre productos, precios
   y stock sin tocar código
 - Captura de leads del evento: formulario/pop-up de newsletter + lista de
@@ -151,36 +155,71 @@ Todo lo del Premium, más independencia operativa y aprovechamiento de datos.
 
 > **No incluido en ningún paquete** (van por cuenta de la tienda):
 > costo de registro/renovación del dominio, comisiones por transacción de la
-> pasarela de pago, y presupuesto de pauta paga si se decide invertir en anuncios.
+> pasarela de pago (solo aplica en Avanzado), y presupuesto de pauta paga si
+> se decide invertir en anuncios.
 
 ---
 
-## 6. Cronograma hacia el 19 de julio
+## 6. Mantenimiento mensual (opcional, después del lanzamiento)
 
-Hoy es **1 de julio** — quedan **18 días**. El alcance del Básico (dominio,
-legal, analítica, página del evento, QR) es realista para esa fecha si se
-arranca de inmediato. Para Premium y Avanzado hay un riesgo fuera de nuestro
-control: la aprobación de cuenta comercial con la pasarela de pago (KYC) la
-hace el proveedor externo y puede tardar días. Recomendación:
+Un sitio publicado necesita mantenerse: productos nuevos, precios que cambian,
+respaldos, y — sobre todo después del BMX Day — aprovechar el impulso en vez
+de dejar el sitio quieto otra vez. Esto es un servicio aparte, mes a mes, sin
+permanencia mínima obligatoria.
 
-- **Semana 1–2 (1–14 jul):** trabajo de Básico + inicio en paralelo del
-  trámite de cuenta comercial con la pasarela elegida (si se va por Premium/Avanzado).
+### 🔹 Esencial — $180.000 COP/mes — *"Que no se caiga"*
+- Monitoreo de disponibilidad y respaldo del código/contenido
+- Hasta 2 cambios pequeños al mes (precios, textos, fotos)
+- Revisión mensual de que enlaces, formularios y WhatsApp funcionen
+- Soporte por WhatsApp/correo, respuesta en 48 h
+
+### 🔸 Crecimiento — $380.000 COP/mes — *"Que siga vendiendo"*
+Todo lo de Esencial, más:
+- Hasta 6 actualizaciones al mes (productos nuevos, stock, precios, promos)
+- Reporte mensual de analítica (visitas, productos más vistos, origen del tráfico)
+- Revisión SEO mensual (sitemap, metadatos, velocidad)
+- Soporte con respuesta en 24 h
+
+### 🔺 Pro — $650.000 COP/mes — *"Que crezca cada mes"*
+Todo lo de Crecimiento, más:
+- Actualizaciones ilimitadas (dentro de uso razonable)
+- 1 pieza de contenido nueva al mes (artículo de blog o campaña estacional) para SEO
+- Si se tiene pasarela de pago (plan Avanzado): monitoreo y conciliación de pagos
+- Llamada mensual de estrategia (qué está funcionando, qué mejorar)
+- Soporte prioritario, respuesta el mismo día
+
+---
+
+## 7. Cronograma hacia el 19 de julio
+
+Hoy es **1 de julio** — quedan **18 días**. El alcance de Básico y Premium
+(dominio, legal, analítica, página del evento, QR, envíos, registro de
+pedidos) no depende de terceros, así que es realista tenerlo listo para esa
+fecha sin riesgo. El único riesgo fuera de nuestro control está en
+**Avanzado**: la aprobación de cuenta comercial con la pasarela de pago (KYC)
+la hace el proveedor externo y puede tardar días o semanas. Recomendación:
+
+- **Semana 1–2 (1–14 jul):** trabajo de Básico/Premium +, si se eligió
+  Avanzado, inicio inmediato en paralelo del trámite de cuenta comercial con
+  la pasarela elegida (para no perder tiempo con el KYC).
 - **15–18 jul:** publicación en dominio propio, pruebas finales, impresión de QR.
 - **19 jul:** BMX Day — sitio en vivo, QR circulando, analítica capturando.
-- **Después del evento:** integración de pagos y CMS se completan/afinan con
-  datos reales de lo que trajo el evento (si se eligió Premium/Avanzado).
+- **Después del evento:** si se eligió Avanzado, la pasarela de pago y el CMS
+  se activan/afinan apenas el proveedor aprueba la cuenta, con datos reales
+  de lo que trajo el evento.
 
 ---
 
-## 7. Próximos pasos
+## 8. Próximos pasos
 
 Para arrancar necesitamos que la tienda defina:
 1. **Qué paquete** (Básico, Premium o Avanzado).
-2. **Pasarela de pago preferida** (Wompi, PayU, Mercado Pago, u otra) y si ya
+2. **Si quieren mantenimiento mensual** (Esencial, Crecimiento o Pro) desde el lanzamiento o más adelante.
+3. **Pasarela de pago preferida** (Wompi, PayU, Mercado Pago, u otra) y si ya
    tienen cuenta comercial con alguna — esto es lo más sensible al tiempo.
-3. **Datos legales del negocio** (razón social, NIT) requeridos para los
+4. **Datos legales del negocio** (razón social, NIT) requeridos para los
    documentos de términos y política de privacidad.
-4. **Dominio deseado** (o confirmar si ya tienen uno comprado).
+5. **Dominio deseado** (o confirmar si ya tienen uno comprado).
 
 Con esas respuestas arrancamos de inmediato, dado lo ajustado del plazo hasta
 el 19 de julio.
