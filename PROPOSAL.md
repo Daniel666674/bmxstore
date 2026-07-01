@@ -2,7 +2,7 @@
 
 **Preparado para:** Stike Bike Shop (Bogotá, D.C.)
 **Estado del proyecto:** Mockup funcional desplegado en GitHub Pages
-**Fecha:** Julio 2026
+**Fecha:** 1 de julio de 2026
 
 ---
 
@@ -85,46 +85,102 @@ construye el motor transaccional detrás.
 
 ---
 
-## 4. Propuesta de fases
+## 4. Oportunidad: BMX Day Bogotá — 19 de julio
 
-### Fase 1 — Confianza y cumplimiento legal (fundación antes de vender)
-- Publicar política de privacidad, términos y condiciones, y política de cookies
-  ajustadas a Colombia (Ley 1581/2012, Ley 1480/2011).
-- Banner de consentimiento de cookies y checkbox de datos en formularios.
-- Dominio propio + correo corporativo.
-- **Por qué primero:** es la base legal para poder cobrar y para que Google/Meta
-  confíen en el sitio para anuncios pagados.
+El **19 de julio** se realiza el **BMX Day** en Bogotá: un jam grande donde
+riders de toda la ciudad se reúnen y ruedan juntos por varios puntos. Es
+tráfico real, concentrado, ya interesado en BMX — exactamente la audiencia de
+Stike — y una oportunidad puntual que no se repite todos los meses.
 
-### Fase 2 — Pagos y pedidos reales
-- Integración de pasarela de pago colombiana (tarjeta, PSE, Nequi).
-- Registro de pedidos y notificación automática a la tienda (WhatsApp/correo/panel).
-- Confirmación de compra al cliente (correo o WhatsApp automatizado).
-- **Por qué segundo:** convierte el sitio de "vitrina" a "tienda que cobra sola".
+Usarlo bien significa dos cosas:
 
-### Fase 3 — Gestión de catálogo (CMS)
-- Panel simple para que el equipo de Stike suba productos, fotos, precios y
-  stock sin depender de un desarrollador.
-- Sincronización de stock entre catálogo web y lo que hay físicamente en tienda.
-- **Por qué tercero:** reduce dependencia técnica y permite escalar el catálogo.
+- **Flujo real el día del evento**: códigos QR en stickers/volantes que
+  lleven directo al sitio (a la tienda, o a una página del evento), para
+  convertir gente que ya está en la calle con su bici en visitas medibles.
+- **Señal para Google**: un pico real de visitas + una página nueva optimizada
+  para "BMX Day Bogotá" + el sitemap ya enviado a Search Console **antes** del
+  evento ayuda a que Google indexe y asocie el sitio con búsquedas locales de
+  BMX en Bogotá — algo que normalmente toma meses de SEO orgánico lento.
 
-### Fase 4 — Crecimiento
-- Analítica de visitas/conversión y embudo de compra.
-- Expansión del blog y SEO local (Bogotá, BMX Colombia) apalancando lo ya construido.
-- Programa de fidelidad / newsletter, ya que la base de comunidad en Instagram/Facebook es fuerte.
+Para aprovecharlo, el sitio necesita estar **públicamente listo (dominio
+propio, sin errores, con analítica activa) antes del 19 de julio**, no
+después. Eso fija la fecha límite realista para la Fase 1 del trabajo,
+sin importar qué paquete se elija.
 
 ---
 
-## 5. Próximos pasos
+## 5. Oferta — 3 paquetes
 
-Para avanzar necesitamos que la tienda defina:
-1. **Pasarela de pago preferida** (Wompi, PayU, Mercado Pago, u otra) y si ya
-   tienen cuenta comercial con alguna.
-2. **Presupuesto y plazo** objetivo para pasar a producción, para dimensionar
-   qué fases entran en la primera entrega.
+Precios en pesos colombianos, mercado Bogotá. Cada paquete **incluye todo lo
+del paquete anterior**. Lo ya construido (catálogo, carrito, "Arma tu BMX",
+blog, SEO base, deploy automático) es la base de los tres — no se vuelve a
+cobrar, se termina de pulir y se pone a producción.
+
+### 🔹 Básico — $1.500.000 COP — *"Listo para el Jam"*
+Deja el sitio público, legal y medible a tiempo para el 19 de julio.
+- Auditoría y pulido final de contenido, fotos y precios reales
+- Dominio propio conectado (ej. `stikebikeshop.com`) + 1 correo corporativo
+- Páginas legales Colombia: privacidad (Ley 1581/2012), términos (Ley 1480/2011),
+  cookies, con banner de consentimiento
+- Google Analytics 4 + Search Console conectados y sitemap enviado
+- Página/sección **"BMX Day Bogotá 19 de julio"** con SEO local, enlazada
+  desde el home y el blog
+- Set de códigos QR listos para imprimir en stickers/volantes para repartir en el evento
+- Revisión de rendimiento y mobile antes del lanzamiento
+- 1 semana de soporte post-lanzamiento
+
+### 🔸 Premium — $2.500.000 COP — *"Cobra en línea"*
+Todo lo del Básico, más el motor transaccional real.
+- Pasarela de pago colombiana (Wompi o equivalente: tarjeta, PSE, Nequi) —
+  el checkout deja de depender solo de WhatsApp
+- Registro de pedidos con notificación automática a la tienda y confirmación al cliente
+- Reglas de envío (zonas Bogotá / resto del país, tarifas y umbral de envío gratis)
+- Cobertura de blog/redes post-evento ("así vivimos el BMX Day") para SEO fresco
+  y contenido reutilizable en Instagram/Facebook
+- 2 semanas de soporte post-lanzamiento
+
+### 🔺 Avanzado — $3.500.000 COP — *"Autónomo y en crecimiento"*
+Todo lo del Premium, más independencia operativa y aprovechamiento de datos.
+- Panel/CMS básico para que el equipo de Stike administre productos, precios
+  y stock sin tocar código
+- Captura de leads del evento: formulario/pop-up de newsletter + lista de
+  WhatsApp, para convertir el flujo del BMX Day en clientes recurrentes
+- Dashboard de conversión (embudo carrito → checkout/pago)
+- 1 mes de soporte + una ronda de iteración basada en datos reales del evento
+  (qué productos se vieron más, de dónde vino el tráfico)
+
+> **No incluido en ningún paquete** (van por cuenta de la tienda):
+> costo de registro/renovación del dominio, comisiones por transacción de la
+> pasarela de pago, y presupuesto de pauta paga si se decide invertir en anuncios.
+
+---
+
+## 6. Cronograma hacia el 19 de julio
+
+Hoy es **1 de julio** — quedan **18 días**. El alcance del Básico (dominio,
+legal, analítica, página del evento, QR) es realista para esa fecha si se
+arranca de inmediato. Para Premium y Avanzado hay un riesgo fuera de nuestro
+control: la aprobación de cuenta comercial con la pasarela de pago (KYC) la
+hace el proveedor externo y puede tardar días. Recomendación:
+
+- **Semana 1–2 (1–14 jul):** trabajo de Básico + inicio en paralelo del
+  trámite de cuenta comercial con la pasarela elegida (si se va por Premium/Avanzado).
+- **15–18 jul:** publicación en dominio propio, pruebas finales, impresión de QR.
+- **19 jul:** BMX Day — sitio en vivo, QR circulando, analítica capturando.
+- **Después del evento:** integración de pagos y CMS se completan/afinan con
+  datos reales de lo que trajo el evento (si se eligió Premium/Avanzado).
+
+---
+
+## 7. Próximos pasos
+
+Para arrancar necesitamos que la tienda defina:
+1. **Qué paquete** (Básico, Premium o Avanzado).
+2. **Pasarela de pago preferida** (Wompi, PayU, Mercado Pago, u otra) y si ya
+   tienen cuenta comercial con alguna — esto es lo más sensible al tiempo.
 3. **Datos legales del negocio** (razón social, NIT) requeridos para los
    documentos de términos y política de privacidad.
-4. **Prioridad**: ¿lo más urgente es cobrar en línea (Fase 2) o primero
-   publicar con respaldo legal y dominio propio (Fase 1)?
+4. **Dominio deseado** (o confirmar si ya tienen uno comprado).
 
-Con esas respuestas se puede convertir esta propuesta en un plan de trabajo
-con fechas y entregables concretos.
+Con esas respuestas arrancamos de inmediato, dado lo ajustado del plazo hasta
+el 19 de julio.
