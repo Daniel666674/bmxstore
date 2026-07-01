@@ -184,7 +184,29 @@
 
 <section>
   <div class="wrap">
-    <div class="section-label">02 — Qué está implementado hoy</div>
+    <div class="section-label">02 — Diferenciales</div>
+    <h2 class="section-title">Por qué esto y no una agencia tradicional</h2>
+    <p>Antes de los números, tres cosas que cambian frente a cómo suelen trabajar las agencias en Bogotá:</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Todo es de Stike</h3>
+        <p>Código fuente, dominio, contenido y fotos se entregan 100%. No hay una plataforma propietaria de por medio ni necesidad de seguir pagando a esta agencia para poder moverse a otro proveedor el día de mañana.</p>
+      </div>
+      <div class="card">
+        <h3>Sin marca de agencia en el sitio</h3>
+        <p>Muchas agencias, sobre todo en proyectos de entrada, dejan su logo o crédito visible en el pie de página del cliente. Acá no — el sitio es 100% Stike Bike Shop, de principio a fin.</p>
+      </div>
+      <div class="card" style="grid-column:1 / -1;">
+        <h3>Precio por debajo del mercado de agencias en Bogotá</h3>
+        <p>Cotizaciones públicas de 2026 ubican un e-commerce básico en agencias locales entre $4.500.000 y $12.000.000 COP (sin pasarela de pago ni SEO incluidos), y su mantenimiento mensual entre $350.000 y $1.500.000 COP. Los paquetes de esta propuesta van de $1.500.000 a $3.500.000 COP con más incluido (SEO, blog, configurador, cumplimiento legal), y el mantenimiento arranca en $180.000/mes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-label">03 — Qué está implementado hoy</div>
     <h2 class="section-title">Cuatro frentes ya construidos</h2>
     <div class="grid">
       <div class="card">
@@ -229,7 +251,7 @@
 
 <section>
   <div class="wrap">
-    <div class="section-label">03 — La brecha</div>
+    <div class="section-label">04 — La brecha</div>
     <h2 class="section-title">Qué falta para producción</h2>
     <table>
       <thead>
@@ -251,7 +273,7 @@
 
 <section>
   <div class="wrap">
-    <div class="section-label">04 — Oportunidad</div>
+    <div class="section-label">05 — Oportunidad</div>
     <h2 class="section-title">BMX Day Bogotá — 19 de julio</h2>
     <div class="event-banner">
       <div class="event-date">19<br>JUL<span>BMX DAY BOGOTÁ</span></div>
@@ -268,7 +290,7 @@
 
 <section>
   <div class="wrap">
-    <div class="section-label">05 — Oferta</div>
+    <div class="section-label">06 — Oferta</div>
     <h2 class="section-title">Tres paquetes</h2>
     <p>Precios en pesos colombianos, mercado Bogotá. Cada paquete incluye todo lo del anterior. Lo ya construido (catálogo, carrito, "Arma tu BMX", blog, SEO base, deploy automático) es la base de los tres — no se vuelve a cobrar, se termina de pulir y se pone a producción.</p>
 
@@ -320,19 +342,29 @@
       </div>
     </div>
 
-    <div class="not-included" style="margin-top:16px;">
-      <b style="color:var(--ink);">Efecty, Addi y Sistecrédito quedan fuera de la pasarela automática</b> en los tres paquetes — no aparecen como botón de pago. Efecty se puede coordinar manualmente por WhatsApp (instrucciones de pago en efectivo + comprobante). Addi y Sistecrédito son productos de crédito: solo se pueden ofrecer si Stike ya tiene convenio directo con ellos desde la tienda física, porque es el proveedor quien aprueba el crédito, no algo que se resuelva por chat.
+    <div class="card" style="margin-top:24px; border-color:#4a4a52;">
+      <h3>➕ Complemento — Addi + Sistecrédito en línea — $800.000 COP (única vez)</h3>
+      <p style="margin-bottom:12px;">Como Stike <b style="color:var(--ink);">ya está autorizado como comercio</b> con Addi y Sistecrédito en la tienda física, aquí no hay que esperar aprobación de nadie — es trabajo técnico puro: conectar el checkout de cada uno (cada uno con su propio widget/API, independiente de Bold) sobre la base de pedidos que ya construye Avanzado.</p>
+      <ul>
+        <li>Botón de pago Addi y botón de pago Sistecrédito en el checkout</li>
+        <li>Confirmación automática del crédito aprobado, igual que con Bold</li>
+        <li>Solo disponible como complemento de Avanzado (reutiliza su backend de pedidos)</li>
+      </ul>
+    </div>
+
+    <div class="not-included" style="margin-top:24px;">
+      <b style="color:var(--ink);">Efecty sigue fuera de la pasarela automática</b> en los tres paquetes — no aparece como botón de pago. Se puede coordinar manualmente por WhatsApp (instrucciones de pago en efectivo + comprobante); automatizarlo requeriría sumar un agregador adicional (PayU/ePayco) y no se justifica salvo que sea un método pedido con frecuencia.
     </div>
 
     <div class="not-included">
-      <b style="color:var(--ink);">No incluido en ningún paquete</b> (van por cuenta de la tienda): registro/renovación del dominio, comisiones por transacción de Bold (solo aplica en Avanzado), y presupuesto de pauta paga.
+      <b style="color:var(--ink);">No incluido en ningún paquete</b> (van por cuenta de la tienda): registro/renovación del dominio, comisiones por transacción de Bold/Addi/Sistecrédito (solo aplica en Avanzado y su complemento), y presupuesto de pauta paga.
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="section-label">06 — Después del lanzamiento</div>
+    <div class="section-label">07 — Después del lanzamiento</div>
     <h2 class="section-title">Mantenimiento mensual (opcional)</h2>
     <p>Un sitio publicado necesita mantenerse: productos nuevos, precios que cambian, respaldos, y — sobre todo después del BMX Day — aprovechar el impulso en vez de dejar el sitio quieto otra vez. Es un servicio aparte, mes a mes, sin permanencia mínima obligatoria.</p>
 
@@ -381,13 +413,32 @@
 
 <section>
   <div class="wrap">
-    <div class="section-label">07 — Cronograma</div>
+    <div class="section-label">08 — Crecimiento</div>
+    <h2 class="section-title">Más allá del sitio: CRM, facturación y automatización</h2>
+    <p>Cuando la tienda ya esté vendiendo en línea, el siguiente cuello de botella no es el sitio — es todo lo operativo detrás: inventario, facturación, clientes que compran una vez y no vuelven. Esto se puede sumar como una fase aparte, modular, cotizada según lo que se necesite:</p>
+    <div class="card" style="margin-top:16px;">
+      <ul style="font-size:14.5px; color:#d6d6db;">
+        <li><b style="color:var(--ink);">Inventario avanzado</b> — sincronización automática de stock entre la tienda física y la web, alertas de bajo inventario</li>
+        <li><b style="color:var(--ink);">Facturación electrónica (DIAN)</b> — integración con un proveedor autorizado para generar la factura electrónica automáticamente en cada venta</li>
+        <li><b style="color:var(--ink);">CRM de clientes</b> — historial de compras, segmentación, notas internas del equipo</li>
+        <li><b style="color:var(--ink);">Campañas de reactivación por WhatsApp</b> — mensajes automáticos a clientes inactivos o con carritos abandonados, para recuperar ventas que hoy se pierden</li>
+        <li><b style="color:var(--ink);">Dashboard unificado de tráfico + ventas</b> — visitas, conversión e ingresos en un solo lugar</li>
+        <li><b style="color:var(--ink);">Atribución con UTM y códigos promocionales</b> — saber exactamente qué canal, campaña o promoción trajo cada venta, incluido el impulso del BMX Day</li>
+      </ul>
+    </div>
+    <p style="margin-top:16px; font-size:14px; color:var(--muted);">Esto es un alcance más grande que el lanzamiento del 19 de julio y se cotiza aparte según los módulos que interesen — no hace falta decidirlo ahora, queda sobre la mesa para cuando el negocio esté listo para escalar.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-label">09 — Cronograma</div>
     <h2 class="section-title">Camino hacia el 19 de julio</h2>
-    <p>El alcance de Básico y Premium no depende de terceros, así que es realista tenerlo listo para esa fecha sin riesgo. El único riesgo fuera de nuestro control está en Avanzado: la aprobación de cuenta comercial con la pasarela de pago (KYC) la hace el proveedor externo y puede tardar días o semanas.</p>
+    <p>El alcance de Básico y Premium no depende de terceros, así que es realista tenerlo listo para esa fecha sin riesgo. Para Avanzado, el único riesgo fuera de nuestro control es la aprobación de cuenta comercial con Bold (KYC), que hace el proveedor y puede tardar días. El complemento de Addi + Sistecrédito no tiene ese riesgo — como Stike ya está autorizado con ambos, es solo trabajo técnico y puede avanzar en paralelo sin esperar a nadie.</p>
     <div class="timeline">
       <div class="tl-item">
         <div class="tl-date">1 – 14 JUL</div>
-        <p>Trabajo de Básico/Premium + si se eligió Avanzado, inicio inmediato en paralelo del trámite de cuenta comercial con la pasarela elegida.</p>
+        <p>Trabajo de Básico/Premium + si se eligió Avanzado, inicio inmediato del trámite de cuenta comercial con Bold (único paso con tiempo de espera externo) mientras se integra Addi/Sistecrédito en paralelo.</p>
       </div>
       <div class="tl-item">
         <div class="tl-date">15 – 18 JUL</div>
@@ -399,7 +450,7 @@
       </div>
       <div class="tl-item">
         <div class="tl-date">Después del evento</div>
-        <p>Si se eligió Avanzado, la pasarela de pago y el CMS se activan/afinan apenas el proveedor aprueba la cuenta, con datos reales de lo que trajo el evento.</p>
+        <p>Si Bold no alcanza a aprobarse antes del 19, se activa apenas el proveedor confirme la cuenta; el resto de Avanzado (CMS, Addi/Sistecrédito, dashboard) no depende de esa aprobación y puede estar listo desde el lanzamiento.</p>
       </div>
     </div>
   </div>
@@ -407,15 +458,15 @@
 
 <section>
   <div class="wrap">
-    <div class="section-label">08 — Próximos pasos</div>
+    <div class="section-label">10 — Próximos pasos</div>
     <h2 class="section-title">Lo que necesitamos definir juntos</h2>
     <p>Para arrancar necesitamos que la tienda defina:</p>
     <ol class="steps">
-      <li><b>Qué paquete</b> — Básico, Premium o Avanzado.</li>
+      <li><b>Qué paquete</b> — Básico, Premium o Avanzado, y si suman el complemento Addi + Sistecrédito.</li>
       <li><b>Si quieren mantenimiento mensual</b> — Esencial, Crecimiento o Pro, desde el lanzamiento o más adelante.</li>
-      <li><b>Pasarela de pago preferida</b> (Wompi, PayU, Mercado Pago, u otra) y si ya tienen cuenta comercial con alguna — esto es lo más sensible al tiempo.</li>
       <li><b>Datos legales del negocio</b> (razón social, NIT) requeridos para los documentos de términos y política de privacidad.</li>
       <li><b>Dominio deseado</b> (o confirmar si ya tienen uno comprado).</li>
+      <li><b>Si les interesa el módulo de CRM/facturación/automatización</b>, para agendar esa conversación aparte, sin que bloquee el lanzamiento del 19 de julio.</li>
     </ol>
     <p style="margin-top:20px;">Con esas respuestas arrancamos de inmediato, dado lo ajustado del plazo hasta el 19 de julio.</p>
   </div>

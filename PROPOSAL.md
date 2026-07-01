@@ -21,7 +21,27 @@ recomendamos cerrar esa brecha.
 
 ---
 
-## 2. Qué está implementado hoy
+## 2. Por qué esto y no una agencia tradicional
+
+Antes de los números, tres cosas que cambian frente a cómo suelen trabajar
+las agencias en Bogotá:
+
+- **Todo es de Stike.** Código fuente, dominio, contenido y fotos se entregan
+  100% — no hay una plataforma propietaria de por medio ni necesidad de
+  seguir pagando a esta agencia para poder moverse a otro proveedor el día de mañana.
+- **Sin marca de agencia en el sitio.** Muchas agencias, sobre todo en
+  proyectos de entrada, dejan su logo o crédito visible en el pie de página
+  del cliente. Acá no — el sitio es 100% Stike Bike Shop, de principio a fin.
+- **Precio por debajo del mercado de agencias en Bogotá.** Cotizaciones
+  públicas de 2026 ubican un e-commerce básico en agencias locales entre
+  $4.500.000 y $12.000.000 COP (sin pasarela de pago ni SEO incluidos), y su
+  mantenimiento mensual entre $350.000 y $1.500.000 COP. Los paquetes de esta
+  propuesta van de $1.500.000 a $3.500.000 COP con más incluido (SEO, blog,
+  configurador, cumplimiento legal), y el mantenimiento arranca en $180.000/mes.
+
+---
+
+## 3. Qué está implementado hoy
 
 ### 2.1 Catálogo y navegación
 - **10 páginas funcionales**: Home, Tienda, Producto, Carrito, Marcas,
@@ -67,7 +87,7 @@ recomendamos cerrar esa brecha.
 
 ---
 
-## 3. Brecha entre el mockup y una tienda real
+## 4. Brecha entre el mockup y una tienda real
 
 | Área | Hoy | Lo que falta para producción |
 |---|---|---|
@@ -85,7 +105,7 @@ construye el motor transaccional detrás.
 
 ---
 
-## 4. Oportunidad: BMX Day Bogotá — 19 de julio
+## 5. Oportunidad: BMX Day Bogotá — 19 de julio
 
 El **19 de julio** se realiza el **BMX Day** en Bogotá: un jam grande donde
 riders de toda la ciudad se reúnen y ruedan juntos por varios puntos. Es
@@ -109,7 +129,7 @@ sin importar qué paquete se elija.
 
 ---
 
-## 5. Oferta — 3 paquetes
+## 6. Oferta — 3 paquetes
 
 Precios en pesos colombianos, mercado Bogotá. Cada paquete **incluye todo lo
 del paquete anterior**. Lo ya construido (catálogo, carrito, "Arma tu BMX",
@@ -153,23 +173,31 @@ Todo lo del Premium, más el motor transaccional real y la independencia operati
 - 1 mes de soporte + una ronda de iteración basada en datos reales del evento
   (qué productos se vieron más, de dónde vino el tráfico)
 
-> **Efecty, Addi y Sistecrédito quedan fuera de la pasarela automática** en
-> los tres paquetes — no aparecen como botón de pago en el sitio. Efecty se
-> puede seguir coordinando manualmente por WhatsApp (instrucciones de pago en
-> efectivo + comprobante). Addi y Sistecrédito son productos de crédito: solo
-> se pueden ofrecer si Stike **ya tiene convenio directo** con ellos desde la
-> tienda física, porque es el proveedor quien aprueba el crédito, no algo que
-> se resuelva por chat. Si ya tienen esos convenios, se puede evaluar una
-> integración aparte más adelante.
+### ➕ Complemento — Addi + Sistecrédito en línea — $800.000 COP (única vez)
+Como Stike **ya está autorizado como comercio** con Addi y Sistecrédito en la
+tienda física, aquí no hay que esperar aprobación de nadie — es trabajo
+técnico puro: conectar el checkout de cada uno (cada uno tiene su propio
+widget/API, independiente de Bold) sobre la base de pedidos que ya construye
+Avanzado.
+- Botón de pago Addi y botón de pago Sistecrédito en el checkout
+- Confirmación automática del crédito aprobado, igual que con Bold
+- Solo disponible como complemento de **Avanzado** (reutiliza el backend de
+  pedidos que ese paquete ya construye)
+
+> **Efecty sigue fuera de la pasarela automática** en los tres paquetes — no
+> aparece como botón de pago en el sitio. Se puede seguir coordinando
+> manualmente por WhatsApp (instrucciones de pago en efectivo + comprobante);
+> automatizarlo requeriría sumar un agregador adicional (PayU/ePayco) y no se
+> justifica salvo que Efecty sea un método pedido con frecuencia.
 
 > **No incluido en ningún paquete** (van por cuenta de la tienda):
 > costo de registro/renovación del dominio, comisiones por transacción de
-> Bold (solo aplica en Avanzado), y presupuesto de pauta paga si se decide
-> invertir en anuncios.
+> Bold/Addi/Sistecrédito (solo aplica en Avanzado y su complemento), y
+> presupuesto de pauta paga si se decide invertir en anuncios.
 
 ---
 
-## 6. Mantenimiento mensual (opcional, después del lanzamiento)
+## 7. Mantenimiento mensual (opcional, después del lanzamiento)
 
 Un sitio publicado necesita mantenerse: productos nuevos, precios que cambian,
 respaldos, y — sobre todo después del BMX Day — aprovechar el impulso en vez
@@ -199,36 +227,64 @@ Todo lo de Crecimiento, más:
 
 ---
 
-## 7. Cronograma hacia el 19 de julio
+## 8. Más allá del sitio: CRM, facturación y automatización (a la medida)
+
+Cuando la tienda ya esté vendiendo en línea, el siguiente cuello de botella
+no es el sitio — es todo lo operativo detrás: inventario, facturación,
+clientes que compran una vez y no vuelven. Esto se puede sumar como una fase
+aparte, modular, cotizada según lo que se necesite:
+
+- **Inventario avanzado**: sincronización automática de stock entre la tienda
+  física y la web, alertas de bajo inventario.
+- **Facturación electrónica (DIAN)**: integración con un proveedor autorizado
+  para generar la factura electrónica automáticamente en cada venta.
+- **CRM de clientes**: historial de compras, segmentación, notas internas del equipo.
+- **Campañas de reactivación por WhatsApp**: mensajes automáticos a clientes
+  inactivos o con carritos abandonados, para recuperar ventas que hoy se pierden.
+- **Dashboard unificado de tráfico + ventas**: visitas, conversión e ingresos
+  en un solo lugar, en vez de repartidos entre varias herramientas.
+- **Atribución con UTM y códigos promocionales**: saber exactamente qué
+  canal, campaña o promoción trajo cada venta — útil para medir el retorno
+  de cualquier pauta paga o del mismo impulso del BMX Day.
+
+> Esto es un alcance más grande que el lanzamiento del 19 de julio y se
+> cotiza aparte según los módulos que interesen — no hace falta decidirlo
+> ahora, queda sobre la mesa para cuando el negocio esté listo para escalar.
+
+---
+
+## 9. Cronograma hacia el 19 de julio
 
 Hoy es **1 de julio** — quedan **18 días**. El alcance de Básico y Premium
 (dominio, legal, analítica, página del evento, QR, envíos, registro de
 pedidos) no depende de terceros, así que es realista tenerlo listo para esa
-fecha sin riesgo. El único riesgo fuera de nuestro control está en
-**Avanzado**: la aprobación de cuenta comercial con la pasarela de pago (KYC)
-la hace el proveedor externo y puede tardar días o semanas. Recomendación:
+fecha sin riesgo. Para **Avanzado**, el único riesgo fuera de nuestro control
+es la aprobación de cuenta comercial con **Bold** (KYC), que hace el
+proveedor y puede tardar días. El complemento de **Addi + Sistecrédito no
+tiene ese riesgo** — como Stike ya está autorizado con ambos, es solo trabajo
+técnico y puede avanzar en paralelo sin esperar a nadie. Recomendación:
 
-- **Semana 1–2 (1–14 jul):** trabajo de Básico/Premium +, si se eligió
-  Avanzado, inicio inmediato en paralelo del trámite de cuenta comercial con
-  la pasarela elegida (para no perder tiempo con el KYC).
+- **Semana 1–2 (1–14 jul):** trabajo de Básico/Premium + si se eligió
+  Avanzado, inicio inmediato del trámite de cuenta comercial con Bold (único
+  paso con tiempo de espera externo) mientras se integra Addi/Sistecrédito en paralelo.
 - **15–18 jul:** publicación en dominio propio, pruebas finales, impresión de QR.
 - **19 jul:** BMX Day — sitio en vivo, QR circulando, analítica capturando.
-- **Después del evento:** si se eligió Avanzado, la pasarela de pago y el CMS
-  se activan/afinan apenas el proveedor aprueba la cuenta, con datos reales
-  de lo que trajo el evento.
+- **Después del evento:** si Bold no alcanza a aprobarse antes del 19, se
+  activa apenas el proveedor confirme la cuenta; el resto de Avanzado (CMS,
+  Addi/Sistecrédito, dashboard) no depende de esa aprobación y puede estar
+  listo desde el lanzamiento.
 
 ---
 
-## 8. Próximos pasos
+## 10. Próximos pasos
 
 Para arrancar necesitamos que la tienda defina:
-1. **Qué paquete** (Básico, Premium o Avanzado).
+1. **Qué paquete** (Básico, Premium o Avanzado) y si suman el complemento Addi + Sistecrédito.
 2. **Si quieren mantenimiento mensual** (Esencial, Crecimiento o Pro) desde el lanzamiento o más adelante.
-3. **Pasarela de pago preferida** (Wompi, PayU, Mercado Pago, u otra) y si ya
-   tienen cuenta comercial con alguna — esto es lo más sensible al tiempo.
-4. **Datos legales del negocio** (razón social, NIT) requeridos para los
+3. **Datos legales del negocio** (razón social, NIT) requeridos para los
    documentos de términos y política de privacidad.
-5. **Dominio deseado** (o confirmar si ya tienen uno comprado).
+4. **Dominio deseado** (o confirmar si ya tienen uno comprado).
+5. **Si les interesa el módulo de CRM/facturación/automatización** para agendar esa conversación aparte, sin que bloquee el lanzamiento del 19 de julio.
 
 Con esas respuestas arrancamos de inmediato, dado lo ajustado del plazo hasta
 el 19 de julio.
