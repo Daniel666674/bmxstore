@@ -1,4 +1,4 @@
-# Propuesta — De mockup a tienda en línea real: Stike Bike Shop
+# Propuesta para Stike Bike Shop: de mockup a tienda en línea real
 
 **Preparado para:** Stike Bike Shop (Bogotá, D.C.)
 **Estado del proyecto:** Mockup funcional desplegado en GitHub Pages
@@ -27,11 +27,11 @@ Antes de los números, tres cosas que cambian frente a cómo suelen trabajar
 las agencias en Bogotá:
 
 - **Todo es de Stike.** Código fuente, dominio, contenido y fotos se entregan
-  100% — no hay una plataforma propietaria de por medio ni necesidad de
+  100%; no hay una plataforma propietaria de por medio ni necesidad de
   seguir pagando a esta agencia para poder moverse a otro proveedor el día de mañana.
 - **Sin marca de agencia en el sitio.** Muchas agencias, sobre todo en
   proyectos de entrada, dejan su logo o crédito visible en el pie de página
-  del cliente. Acá no — el sitio es 100% Stike Bike Shop, de principio a fin.
+  del cliente. Acá no: el sitio es 100% Stike Bike Shop, de principio a fin.
 - **Precio por debajo del mercado de agencias en Bogotá.** Cotizaciones
   públicas de 2026 ubican un e-commerce básico en agencias locales entre
   $4.500.000 y $12.000.000 COP (sin pasarela de pago ni SEO incluidos), y su
@@ -58,7 +58,7 @@ las agencias en Bogotá:
 ### 2.2 Experiencia de compra (simulada)
 - **Carrito persistente** (`localStorage`) con badge de cantidad en todo el sitio.
 - **Checkout vía WhatsApp**: el pedido arma un mensaje pre-llenado y abre
-  WhatsApp Business de la tienda — no hay pasarela de pago real.
+  WhatsApp Business de la tienda; no hay pasarela de pago real.
 - **"Arma tu BMX"**: configurador guiado de 5 pasos (marco, tenedor,
   transmisión, ruedas, timón) con vista previa SVG en vivo, precio y peso
   estimado, presupuesto con feedback, build compartible por link, y cotización
@@ -91,7 +91,7 @@ las agencias en Bogotá:
 
 | Área | Hoy | Lo que falta para producción |
 |---|---|---|
-| **Pagos** | Ninguno — el "checkout" abre WhatsApp | Pasarela real (ej. Wompi, PayU, Mercado Pago) con confirmación automática de pago |
+| **Pagos** | Ninguno (el "checkout" abre WhatsApp) | Pasarela real (ej. Wompi, PayU, Mercado Pago) con confirmación automática de pago |
 | **Inventario** | Catálogo fijo en un archivo JS, editado a mano | Panel/CMS donde la tienda agregue, edite y dé de baja productos sin tocar código |
 | **Pedidos** | No quedan registrados en ningún lado | Registro de órdenes (base de datos), notificación al dueño, historial para el cliente |
 | **Legal (Colombia)** | No hay políticas publicadas | Política de privacidad (Ley 1581/2012), términos y condiciones (Ley 1480/2011), política de cookies, y aviso de datos en formularios |
@@ -99,18 +99,18 @@ las agencias en Bogotá:
 | **Analítica** | Ninguna | Medición de visitas/conversión (ej. GA4 o Plausible) para decisiones de marketing |
 | **Envíos** | Mencionado en texto, sin lógica real | Reglas de tarifas/zonas de envío o integración con transportadora |
 
-Nada de esto invalida el trabajo hecho — es exactamente el flujo esperado: primero
+Nada de esto invalida el trabajo hecho. Es exactamente el flujo esperado: primero
 se valida la experiencia (lo que ya se hizo y se puede mostrar hoy), después se
 construye el motor transaccional detrás.
 
 ---
 
-## 5. Oportunidad: BMX Day Bogotá — 19 de julio
+## 5. Oportunidad: BMX Day Bogotá, 19 de julio
 
 El **19 de julio** se realiza el **BMX Day** en Bogotá: un jam grande donde
 riders de toda la ciudad se reúnen y ruedan juntos por varios puntos. Es
-tráfico real, concentrado, ya interesado en BMX — exactamente la audiencia de
-Stike — y una oportunidad puntual que no se repite todos los meses.
+tráfico real, concentrado, ya interesado en BMX: exactamente la audiencia de
+Stike, y una oportunidad puntual que no se repite todos los meses.
 
 Usarlo bien significa dos cosas:
 
@@ -120,7 +120,7 @@ Usarlo bien significa dos cosas:
 - **Señal para Google**: un pico real de visitas + una página nueva optimizada
   para "BMX Day Bogotá" + el sitemap ya enviado a Search Console **antes** del
   evento ayuda a que Google indexe y asocie el sitio con búsquedas locales de
-  BMX en Bogotá — algo que normalmente toma meses de SEO orgánico lento.
+  BMX en Bogotá, algo que normalmente toma meses de SEO orgánico lento.
 
 Para aprovecharlo, el sitio necesita estar **públicamente listo (dominio
 propio, sin errores, con analítica activa) antes del 19 de julio**, no
@@ -129,14 +129,14 @@ sin importar qué paquete se elija.
 
 ---
 
-## 6. Oferta — 3 paquetes
+## 6. Oferta: 3 paquetes
 
 Precios en pesos colombianos, mercado Bogotá. Cada paquete **incluye todo lo
 del paquete anterior**. Lo ya construido (catálogo, carrito, "Arma tu BMX",
-blog, SEO base, deploy automático) es la base de los tres — no se vuelve a
+blog, SEO base, deploy automático) es la base de los tres: no se vuelve a
 cobrar, se termina de pulir y se pone a producción.
 
-### 🔹 Básico — $1.500.000 COP — *"Listo para el Jam"*
+### 🔹 Básico ($1.500.000 COP): *"Listo para el Jam"*
 Deja el sitio público, legal y medible a tiempo para el 19 de julio.
 - Auditoría y pulido final de contenido, fotos y precios reales
 - Dominio propio conectado (ej. `stikebikeshop.com`) + 1 correo corporativo
@@ -149,9 +149,9 @@ Deja el sitio público, legal y medible a tiempo para el 19 de julio.
 - Revisión de rendimiento y mobile antes del lanzamiento
 - 1 semana de soporte post-lanzamiento
 
-### 🔸 Premium — $2.500.000 COP — *"Pedidos organizados"*
+### 🔸 Premium ($2.500.000 COP): *"Pedidos organizados"*
 Todo lo del Básico, más una operación más ordenada. El pago se sigue
-coordinando por WhatsApp/transferencia manual — **todavía no hay pasarela**.
+coordinando por WhatsApp/transferencia manual: **todavía no hay pasarela**.
 - Reglas de envío (zonas Bogotá / resto del país, tarifas y umbral de envío gratis)
 - Registro estructurado de pedidos (el pedido queda guardado, no solo vive en
   un chat de WhatsApp) con notificación automática a la tienda
@@ -160,10 +160,10 @@ coordinando por WhatsApp/transferencia manual — **todavía no hay pasarela**.
   y contenido reutilizable en Instagram/Facebook
 - 2 semanas de soporte post-lanzamiento
 
-### 🔺 Avanzado — $3.500.000 COP — *"Autónomo y cobrando solo"*
+### 🔺 Avanzado ($3.500.000 COP): *"Autónomo y cobrando solo"*
 Todo lo del Premium, más el motor transaccional real y la independencia operativa.
 - **Pasarela de pago real con Bold** (tarjeta débito/crédito, PSE, Nequi) con
-  confirmación automática de pago — el checkout deja de depender de WhatsApp
+  confirmación automática de pago; el checkout deja de depender de WhatsApp
   para cobrar estos tres métodos
 - Panel/CMS básico para que el equipo de Stike administre productos, precios
   y stock sin tocar código
@@ -173,10 +173,10 @@ Todo lo del Premium, más el motor transaccional real y la independencia operati
 - 1 mes de soporte + una ronda de iteración basada en datos reales del evento
   (qué productos se vieron más, de dónde vino el tráfico)
 
-### ➕ Complemento — Addi + Sistecrédito en línea — $800.000 COP (única vez)
+### ➕ Complemento: Addi + Sistecrédito en línea ($800.000 COP, única vez)
 Como Stike **ya está autorizado como comercio** con Addi y Sistecrédito en la
-tienda física, aquí no hay que esperar aprobación de nadie — es trabajo
-técnico puro: conectar el checkout de cada uno (cada uno tiene su propio
+tienda física, aquí no hay que esperar aprobación de nadie: es trabajo
+técnico puro, conectar el checkout de cada uno (cada uno tiene su propio
 widget/API, independiente de Bold) sobre la base de pedidos que ya construye
 Avanzado.
 - Botón de pago Addi y botón de pago Sistecrédito en el checkout
@@ -184,7 +184,7 @@ Avanzado.
 - Solo disponible como complemento de **Avanzado** (reutiliza el backend de
   pedidos que ese paquete ya construye)
 
-> **Efecty sigue fuera de la pasarela automática** en los tres paquetes — no
+> **Efecty sigue fuera de la pasarela automática** en los tres paquetes: no
 > aparece como botón de pago en el sitio. Se puede seguir coordinando
 > manualmente por WhatsApp (instrucciones de pago en efectivo + comprobante);
 > automatizarlo requeriría sumar un agregador adicional (PayU/ePayco) y no se
@@ -200,24 +200,24 @@ Avanzado.
 ## 7. Mantenimiento mensual (opcional, después del lanzamiento)
 
 Un sitio publicado necesita mantenerse: productos nuevos, precios que cambian,
-respaldos, y — sobre todo después del BMX Day — aprovechar el impulso en vez
+respaldos, y, sobre todo después del BMX Day, aprovechar el impulso en vez
 de dejar el sitio quieto otra vez. Esto es un servicio aparte, mes a mes, sin
 permanencia mínima obligatoria.
 
-### 🔹 Esencial — $180.000 COP/mes — *"Que no se caiga"*
+### 🔹 Esencial ($180.000 COP/mes): *"Que no se caiga"*
 - Monitoreo de disponibilidad y respaldo del código/contenido
 - Hasta 2 cambios pequeños al mes (precios, textos, fotos)
 - Revisión mensual de que enlaces, formularios y WhatsApp funcionen
 - Soporte por WhatsApp/correo, respuesta en 48 h
 
-### 🔸 Crecimiento — $380.000 COP/mes — *"Que siga vendiendo"*
+### 🔸 Crecimiento ($380.000 COP/mes): *"Que siga vendiendo"*
 Todo lo de Esencial, más:
 - Hasta 6 actualizaciones al mes (productos nuevos, stock, precios, promos)
 - Reporte mensual de analítica (visitas, productos más vistos, origen del tráfico)
 - Revisión SEO mensual (sitemap, metadatos, velocidad)
 - Soporte con respuesta en 24 h
 
-### 🔺 Pro — $650.000 COP/mes — *"Que crezca cada mes"*
+### 🔺 Pro ($650.000 COP/mes): *"Que crezca cada mes"*
 Todo lo de Crecimiento, más:
 - Actualizaciones ilimitadas (dentro de uso razonable)
 - 1 pieza de contenido nueva al mes (artículo de blog o campaña estacional) para SEO
@@ -230,7 +230,7 @@ Todo lo de Crecimiento, más:
 ## 8. Más allá del sitio: CRM, facturación y automatización (a la medida)
 
 Cuando la tienda ya esté vendiendo en línea, el siguiente cuello de botella
-no es el sitio — es todo lo operativo detrás: inventario, facturación,
+no es el sitio, es todo lo operativo detrás: inventario, facturación,
 clientes que compran una vez y no vuelven. Esto se puede sumar como una fase
 aparte, modular, cotizada según lo que se necesite:
 
@@ -244,31 +244,31 @@ aparte, modular, cotizada según lo que se necesite:
 - **Dashboard unificado de tráfico + ventas**: visitas, conversión e ingresos
   en un solo lugar, en vez de repartidos entre varias herramientas.
 - **Atribución con UTM y códigos promocionales**: saber exactamente qué
-  canal, campaña o promoción trajo cada venta — útil para medir el retorno
+  canal, campaña o promoción trajo cada venta, útil para medir el retorno
   de cualquier pauta paga o del mismo impulso del BMX Day.
 
 > Esto es un alcance más grande que el lanzamiento del 19 de julio y se
-> cotiza aparte según los módulos que interesen — no hace falta decidirlo
+> cotiza aparte según los módulos que interesen. No hace falta decidirlo
 > ahora, queda sobre la mesa para cuando el negocio esté listo para escalar.
 
 ---
 
 ## 9. Cronograma hacia el 19 de julio
 
-Hoy es **1 de julio** — quedan **18 días**. El alcance de Básico y Premium
+Hoy es **1 de julio**, quedan **18 días**. El alcance de Básico y Premium
 (dominio, legal, analítica, página del evento, QR, envíos, registro de
 pedidos) no depende de terceros, así que es realista tenerlo listo para esa
 fecha sin riesgo. Para **Avanzado**, el único riesgo fuera de nuestro control
 es la aprobación de cuenta comercial con **Bold** (KYC), que hace el
 proveedor y puede tardar días. El complemento de **Addi + Sistecrédito no
-tiene ese riesgo** — como Stike ya está autorizado con ambos, es solo trabajo
+tiene ese riesgo**: como Stike ya está autorizado con ambos, es solo trabajo
 técnico y puede avanzar en paralelo sin esperar a nadie. Recomendación:
 
-- **Semana 1–2 (1–14 jul):** trabajo de Básico/Premium + si se eligió
+- **Semana 1 a 2 (1 al 14 de jul):** trabajo de Básico/Premium + si se eligió
   Avanzado, inicio inmediato del trámite de cuenta comercial con Bold (único
   paso con tiempo de espera externo) mientras se integra Addi/Sistecrédito en paralelo.
-- **15–18 jul:** publicación en dominio propio, pruebas finales, impresión de QR.
-- **19 jul:** BMX Day — sitio en vivo, QR circulando, analítica capturando.
+- **15 al 18 de jul:** publicación en dominio propio, pruebas finales, impresión de QR.
+- **19 de jul:** BMX Day, sitio en vivo, QR circulando, analítica capturando.
 - **Después del evento:** si Bold no alcanza a aprobarse antes del 19, se
   activa apenas el proveedor confirme la cuenta; el resto de Avanzado (CMS,
   Addi/Sistecrédito, dashboard) no depende de esa aprobación y puede estar
