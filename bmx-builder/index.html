@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMX Builder · Asset Calibration Studio (PoC v0.1)</title>
+
+<!-- ==========================================================================
+     BMX BUILDER · ASSET CALIBRATION STUDIO  —  Proof of Concept v0.1
+     ==========================================================================
+     Internal development tool. NOT ecommerce. NOT production.
+
+     Idea: every BMX component is just an ordinary side-view product image.
+     The "bike" is those images stacked as absolutely-positioned layers. Each
+     layer carries independent calibration data (x, y, scale, rotation,
+     opacity, z, flips, visibility). The engine only ever swaps image paths and
+     applies calibration transforms — it never hardcodes a position.
+
+     Stack: plain HTML + CSS + vanilla JS. No frameworks, no canvas, no SVG
+     rendering engine (the placeholder art happens to be .svg files, but to the
+     engine they are just <img src> like any webp/png). Open index.html — done.
+     ========================================================================== -->
+
+<style>
+/* ==========================================================================
+   1. THEME / GLOBAL
+   ========================================================================== */
+:root{
+  --bg:#0e1013; --panel:#171a1f; --panel-2:#1e232a; --line:#2a2f37;
+  --text:#e6e9ee; --muted:#8a92a0; --accent:#3d8bff; --accent-2:#2166a8;
+  --good:#3ecf8e; --warn:#e0b341; --danger:#e0574b;
+  --stage:#f4f5f7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:var(--bg); color:var(--text);
+  font:13px/1.4 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+button{
+  font:inherit; color:var(--text); background:var(--panel-2);
+  border:1px solid var(--line); border-radius:6px; padding:6px 9px;
+  cursor:pointer; user-select:none;
+}
+button:hover{border-color:var(--accent); background:#242a32}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--accent-2); border-color:var(--accent)}
+button.good{background:#1c3a2c; border-color:var(--good)}
+button.warn{background:#3a2f14; border-color:var(--warn)}
+button.on{background:var(--accent-2); border-color:var(--accent); color:#fff}
+select,input[type=text]{
+  font:inherit; color:var(--text); background:var(--panel-2);
+  border:1px solid var(--line); border-radius:6px; padding:6px; width:100%;
+}
+input[type=range]{width:100%}
+label.field{display:block; margin:8px 0 3px; color:var(--muted); font-size:11px;
+  text-transform:uppercase; letter-spacing:.4px}
+hr{border:none; border-top:1px solid var(--line); margin:14px 0}
+.row{display:flex; gap:6px; flex-wrap:wrap}
+.row > *{flex:1}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.small{font-size:11px; color:var(--muted)}
+.pill{display:inline-block; padding:1px 7px; border-radius:20px; font-size:11px;
+  background:var(--panel-2); border:1px solid var(--line)}
+
+/* ==========================================================================
+   2. TOP TOOLBAR
+   ========================================================================== */
+#toolbar{
+  display:flex; align-items:center; gap:8px; padding:8px 12px;
+  background:var(--panel); border-bottom:1px solid var(--line); flex-wrap:wrap;
+}
+#toolbar h1{font-size:14px; margin:0 8px 0 0; font-weight:700; letter-spacing:.3px}
+#toolbar .sep{width:1px; height:22px; background:var(--line); margin:0 4px}
+#toolbar .spacer{flex:1}
+
+/* ==========================================================================
+   3. MAIN LAYOUT
+   ========================================================================== */
+#main{flex:1; display:flex; min-height:0}
+#stageWrap{
+  flex:1; display:flex; align-items:center; justify-content:center;
+  padding:24px; overflow:auto; background:
+    linear-gradient(45deg,#0b0d10 25%,transparent 25%,transparent 75%,#0b0d10 75%) 0 0/28px 28px,
+    linear-gradient(45deg,#0b0d10 25%,#0e1013 25%,#0e1013 75%,#0b0d10 75%) 14px 14px/28px 28px;
+}
+#sidebar{
+  width:320px; background:var(--panel); border-left:1px solid var(--line);
+  overflow-y:auto; padding:12px;
+}
+
+/* ==========================================================================
+   4. THE BUILDER STAGE  (fixed aspect ratio)
+   ========================================================================== */
+#stage{
+  position:relative; width:1200px; max-width:100%; aspect-ratio:1200/760;
+  background:var(--stage); border-radius:10px; box-shadow:0 10px 40px #0008;
+  overflow:hidden; flex:none;
+}
+/* Every component layer. Centered on the stage; calibration moves it from there. */
+#builder img.layer{
+  position:absolute; left:50%; top:50%; transform-origin:center center;
+  pointer-events:none; -webkit-user-drag:none; user-select:none;
+  max-width:none; will-change:transform;
+}
+/* In calibration mode, layers become clickable for direct selection. */
+#stage.calibrating #builder img.layer{pointer-events:auto; cursor:pointer}
+#stage.calibrating #builder img.layer:hover{outline:2px dashed #3d8bff88; outline-offset:2px}
+
+/* Reference bike image (loaded behind everything) */
+#reference{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  max-width:100%; max-height:100%; pointer-events:none; z-index:0; opacity:0; display:none}
+
+/* --- Selection visualization ------------------------------------------- */
+#selBox{position:absolute; pointer-events:none; display:none; z-index:9998;
+  border:1.5px solid var(--accent); box-shadow:0 0 0 1px #0006, 0 0 18px #3d8bff88;}
+#selBox .handle{position:absolute; width:8px; height:8px; background:#fff;
+  border:1.5px solid var(--accent); border-radius:2px}
+#selBox .tl{left:-4px;top:-4px}#selBox .tr{right:-4px;top:-4px}
+#selBox .bl{left:-4px;bottom:-4px}#selBox .br{right:-4px;bottom:-4px}
+#selBox .center{position:absolute; left:50%; top:50%; width:14px; height:14px;
+  margin:-7px 0 0 -7px; border-radius:50%;
+  background:radial-gradient(circle,#3d8bff 0 3px,transparent 4px);
+  box-shadow:0 0 0 1px #3d8bff}
+#selBox .coord{position:absolute; left:0; top:-22px; white-space:nowrap;
+  background:var(--accent); color:#fff; font-size:11px; padding:1px 6px;
+  border-radius:4px; font-family:ui-monospace,monospace}
+
+/* --- Debug overlay ------------------------------------------------------ */
+#stage.debug #builder img.layer{outline:1px solid #ff4d7d99}
+#debugLayer{position:absolute; inset:0; pointer-events:none; z-index:9990; display:none}
+#stage.debug #debugLayer{display:block}
+#debugLayer .badge{position:absolute; background:#ff4d7dcc; color:#fff;
+  font-size:10px; padding:0 4px; border-radius:3px; font-family:ui-monospace,monospace;
+  transform:translateY(-100%); white-space:nowrap}
+#debugLayer .dot{position:absolute; width:6px; height:6px; margin:-3px; border-radius:50%;
+  background:#ff4d7d; box-shadow:0 0 0 1px #fff}
+
+/* --- Visual guides ------------------------------------------------------ */
+#guides{position:absolute; inset:0; pointer-events:none; z-index:9992}
+#guides .g{position:absolute; display:none}
+#guides .g.on{display:block}
+.gV{top:0;bottom:0;width:1px;background:#3d8bff88}
+.gH{left:0;right:0;height:1px;background:#3d8bff88}
+.gGround{left:0;right:0;height:2px;background:#e0574b99}
+.gWheelbase{height:2px;background:#3ecf8e99}
+.gSafe{border:2px dashed #ffffff55; inset:24px}
+#guides .marker{position:absolute; width:12px; height:12px; margin:-6px;
+  border:1.5px solid var(--warn); border-radius:50%}
+#guides .marker span{position:absolute; left:14px; top:-4px; font-size:10px;
+  color:var(--warn); white-space:nowrap; font-family:ui-monospace,monospace}
+
+/* ==========================================================================
+   5. SIDEBAR SECTIONS
+   ========================================================================== */
+.section{border:1px solid var(--line); border-radius:8px; margin-bottom:10px;
+  background:var(--panel-2); overflow:hidden}
+.section > h2{margin:0; font-size:12px; padding:9px 11px; background:#20252d;
+  cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+  text-transform:uppercase; letter-spacing:.5px; color:var(--muted)}
+.section > .body{padding:11px; display:block}
+.section.collapsed > .body{display:none}
+.section > h2 .chev{transition:transform .15s}
+.section.collapsed > h2 .chev{transform:rotate(-90deg)}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:6px}
+.grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px}
+.kv{display:flex; justify-content:space-between; padding:2px 0; border-bottom:1px dotted var(--line)}
+.kv b{font-weight:600; color:var(--text)}
+textarea{width:100%; height:160px; background:#0c0e11; color:#b9e3c8;
+  border:1px solid var(--line); border-radius:6px; font-family:ui-monospace,monospace;
+  font-size:11px; padding:8px; resize:vertical}
+.hint{background:#12151a; border:1px dashed var(--line); border-radius:6px;
+  padding:8px; color:var(--muted); font-size:11px; margin-bottom:10px}
+.badge-cal{color:var(--warn)}
+.selname{font-weight:700; color:var(--accent)}
+.chk{display:flex; align-items:center; gap:6px; margin:4px 0; font-size:12px}
+.chk input{margin:0}
+</style>
+</head>
+<body>
+
+<!-- ======================================================================
+     TOP TOOLBAR
+     ====================================================================== -->
+<div id="toolbar">
+  <h1>🚲 BMX Builder</h1>
+  <span class="pill">Asset Calibration Studio · v0.1 (PoC)</span>
+  <span class="sep"></span>
+  <button id="btnSmoke" class="good" title="Assemble a known-good demo bike">🧪 Smoke Test</button>
+  <button id="btnRandom" title="Random part from every category">🎲 Random Build</button>
+  <button id="btnReset" class="warn" title="Reset every layer + calibration">↺ Reset</button>
+  <span class="sep"></span>
+  <button id="btnCalib" title="Toggle calibration studio (C)">🎯 Calibration: OFF</button>
+  <button id="btnDebug" title="Toggle debug overlay (D)">🐞 Debug</button>
+  <span class="spacer"></span>
+  <span id="fpsReadout" class="small mono">–</span>
+</div>
+
+<!-- ======================================================================
+     MAIN: STAGE + SIDEBAR
+     ====================================================================== -->
+<div id="main">
+
+  <!-- ------- Builder stage ------- -->
+  <div id="stageWrap">
+    <div id="stage">
+      <img id="reference" alt="">
+      <div id="builder"><!-- layer <img>s injected by JS --></div>
+      <div id="guides"><!-- guide lines injected by JS --></div>
+      <div id="debugLayer"></div>
+      <div id="selBox">
+        <div class="handle tl"></div><div class="handle tr"></div>
+        <div class="handle bl"></div><div class="handle br"></div>
+        <div class="center"></div><div class="coord mono"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ------- Right sidebar ------- -->
+  <div id="sidebar">
+
+    <!-- ASSET SWITCHING -->
+    <div class="section" data-sec="assets">
+      <h2>Assets <span class="chev">▾</span></h2>
+      <div class="body" id="assetPanel"><!-- dropdowns injected --></div>
+    </div>
+
+    <!-- CALIBRATION STUDIO (only meaningful while calibration mode is on) -->
+    <div class="section collapsed" data-sec="calib">
+      <h2>Calibration Studio <span class="chev">▾</span></h2>
+      <div class="body">
+        <div class="hint">Turn on <b>Calibration</b>, then click a part on the
+          bike to select it (like Photoshop layers). Double-click = isolate.</div>
+        <div>Selected: <span id="selName" class="selname">none</span></div>
+
+        <label class="field">Nudge</label>
+        <div class="grid3">
+          <button data-nudge="0,-1">▲ Up</button>
+          <button data-nudge="-1,0">◀ Left</button>
+          <button data-nudge="1,0">Right ▶</button>
+        </div>
+        <div class="grid3" style="margin-top:6px">
+          <button data-nudge="0,1">▼ Down</button>
+          <button id="scaleUp">Scale +</button>
+          <button id="scaleDown">Scale −</button>
+        </div>
+        <div class="grid3" style="margin-top:6px">
+          <button id="rotL">⟲ Rot −</button>
+          <button id="rotR">⟳ Rot +</button>
+          <button id="rotReset">Rot 0</button>
+        </div>
+        <div class="grid2" style="margin-top:6px">
+          <button id="zUp">⬆ Forward</button>
+          <button id="zDown">⬇ Backward</button>
+        </div>
+        <div class="grid2" style="margin-top:6px">
+          <button id="flipH">⇄ Flip H</button>
+          <button id="flipV">⇅ Flip V</button>
+        </div>
+        <div class="grid2" style="margin-top:6px">
+          <button id="visToggle">👁 Visibility</button>
+          <button id="isoToggle">🔦 Isolate</button>
+        </div>
+
+        <label class="field">Opacity <span id="opacityVal" class="mono">1.00</span></label>
+        <input type="range" id="opacity" min="0" max="1" step="0.01" value="1">
+
+        <label class="field">Scale <span id="scaleVal" class="mono">1.00</span></label>
+        <input type="range" id="scale" min="0.05" max="4" step="0.01" value="1">
+
+        <label class="field">Rotation <span id="rotVal" class="mono">0°</span></label>
+        <input type="range" id="rotation" min="-180" max="180" step="0.5" value="0">
+      </div>
+    </div>
+
+    <!-- SNAP -->
+    <div class="section collapsed" data-sec="snap">
+      <h2>Snapping <span class="chev">▾</span></h2>
+      <div class="body">
+        <label class="field">Position snap (px)</label>
+        <div class="grid3">
+          <button class="snapMove on" data-move="1">1</button>
+          <button class="snapMove" data-move="5">5</button>
+          <button class="snapMove" data-move="10">10</button>
+        </div>
+        <label class="field">Rotation snap (°)</label>
+        <div class="grid3">
+          <button class="snapRot on" data-rot="1">1°</button>
+          <button class="snapRot" data-rot="5">5°</button>
+          <button class="snapRot" data-rot="15">15°</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GUIDES -->
+    <div class="section collapsed" data-sec="guides">
+      <h2>Visual Guides <span class="chev">▾</span></h2>
+      <div class="body" id="guidePanel"><!-- checkboxes injected --></div>
+    </div>
+
+    <!-- REFERENCE IMAGE -->
+    <div class="section collapsed" data-sec="ref">
+      <h2>Reference Image <span class="chev">▾</span></h2>
+      <div class="body">
+        <div class="hint">Load a real BMX photo behind the build and fade the
+          layers to match it.</div>
+        <input type="file" id="refFile" accept="image/*">
+        <label class="field">Reference opacity <span id="refOpVal" class="mono">0.50</span></label>
+        <input type="range" id="refOpacity" min="0" max="1" step="0.01" value="0.5">
+        <button id="refClear" style="margin-top:8px">Clear reference</button>
+      </div>
+    </div>
+
+    <!-- IMAGE INSPECTOR -->
+    <div class="section collapsed" data-sec="inspect">
+      <h2>Image Inspector <span class="chev">▾</span></h2>
+      <div class="body" id="inspector"><span class="small">Select a layer.</span></div>
+    </div>
+
+    <!-- IMPORT / EXPORT -->
+    <div class="section collapsed" data-sec="io">
+      <h2>Export / Import <span class="chev">▾</span></h2>
+      <div class="body">
+        <div class="row">
+          <button id="btnExport" class="primary">⤓ Build JSON</button>
+          <button id="btnDownload">Download</button>
+        </div>
+        <label class="field">builder-config.json</label>
+        <textarea id="jsonOut" spellcheck="false"></textarea>
+        <div class="row" style="margin-top:6px">
+          <button id="btnApplyJson">Apply from textarea</button>
+          <button id="btnImportFile">Import file…</button>
+        </div>
+        <input type="file" id="importFile" accept="application/json,.json" hidden>
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+</div><!-- /main -->
+
+<!-- The manifest lists every registered image per category. -->
+<script src="assets/manifest.js"></script>
+
+<script>
+/* ==========================================================================
+   ENGINE
+   ==========================================================================
+   Sections:
+     A. Layer catalogue + default calibration
+     B. State
+     C. Build DOM (layers, dropdowns, guides)
+     D. Render (apply calibration -> transforms)
+     E. Selection / overlays
+     F. Calibration operations (nudge, scale, rotate, z, flip, etc.)
+     G. Interaction (mouse hit-test, keyboard)
+     H. Snap, guides, reference, inspector, debug
+     I. Smoke test / random / reset
+     J. Import / export
+     K. Boot
+   ========================================================================== */
+
+/* ---- A. LAYER CATALOGUE --------------------------------------------------
+   Array ORDER == default paint order (back -> front). Each entry's default
+   z equals its index so the initial stack is sane. All positions are just
+   defaults; the whole point of this tool is to recalibrate them visually.
+   x / y are pixel offsets from the STAGE CENTER (layers are centered by CSS,
+   then translated). Stage is 1200 x 760.                                   */
+const LAYERS = [
+  { id:"rearWheel",  label:"Rear Wheel",  folder:"rear-wheels",  def:{x:-260,y:92} },
+  { id:"rearTire",   label:"Rear Tire",   folder:"rear-tires",   def:{x:-260,y:92} },
+  { id:"frontWheel", label:"Front Wheel", folder:"front-wheels", def:{x:260, y:92} },
+  { id:"frontTire",  label:"Front Tire",  folder:"front-tires",  def:{x:260, y:92} },
+  { id:"frame",      label:"Frame",       folder:"frames",       def:{x:-30, y:35} },
+  { id:"fork",       label:"Fork",        folder:"forks",        def:{x:250, y:20} },
+  { id:"sprocket",   label:"Sprocket",    folder:"sprockets",    def:{x:20,  y:120} },
+  { id:"chain",      label:"Chain",       folder:"chains",       def:{x:150, y:128} },
+  { id:"cranks",     label:"Cranks",      folder:"cranks",       def:{x:-5,  y:120} },
+  { id:"pedals",     label:"Pedals",      folder:"pedals",       def:{x:55,  y:172} },
+  { id:"headset",    label:"Headset",     folder:"headsets",     def:{x:172, y:-42} },
+  { id:"seatpost",   label:"Seatpost",    folder:"seatposts",    def:{x:-42, y:-120} },
+  { id:"seat",       label:"Seat",        folder:"seats",        def:{x:-45, y:-192} },
+  { id:"stem",       label:"Stem",        folder:"stems",        def:{x:200, y:-96} },
+  { id:"bars",       label:"Bars",        folder:"bars",         def:{x:250, y:-190} },
+  { id:"grips",      label:"Grips",       folder:"grips",        def:{x:335, y:-215} },
+  { id:"rearPeg",    label:"Rear Peg",    folder:"rear-pegs",    def:{x:-262,y:92} },
+  { id:"frontPeg",   label:"Front Peg",   folder:"front-pegs",   def:{x:262, y:92} },
+];
+const LAYER_BY_ID = Object.fromEntries(LAYERS.map(l => [l.id, l]));
+
+// Default calibration applied to every layer (merged with per-layer def).
+function defaultCfg(layer, i){
+  return Object.assign(
+    { asset:null, x:0, y:0, scale:1, rotation:0, opacity:1, z:i+1,
+      flipH:false, flipV:false, visible:true },
+    layer.def
+  );
+}
+
+/* ---- B. STATE ------------------------------------------------------------ */
+const state = {
+  calibration:false,
+  debug:false,
+  selected:null,      // layer id
+  isolate:null,       // layer id being isolated (or null)
+  snapMove:1,
+  snapRotate:1,
+  cfg:{},             // id -> calibration object
+};
+
+const els = {};       // id -> <img> layer element
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const stage    = $("#stage");
+const builder  = $("#builder");
+const selBox   = $("#selBox");
+const debugEl  = $("#debugLayer");
+
+const assetPath = (folder, file) => `assets/${folder}/${file}`;
+
+/* ---- C. BUILD DOM -------------------------------------------------------- */
+function buildLayers(){
+  LAYERS.forEach((layer, i) => {
+    state.cfg[layer.id] = defaultCfg(layer, i);
+    const img = document.createElement("img");
+    img.className = "layer";
+    img.id = "L_" + layer.id;
+    img.dataset.layer = layer.id;
+    img.alt = layer.label;
+    img.addEventListener("error", () => console.warn("[asset missing]", img.src));
+    els[layer.id] = img;
+    builder.appendChild(img);
+  });
+  console.log("[boot] built", LAYERS.length, "layers");
+}
+
+// Asset dropdowns (Frame, Fork, Bars, Seat, Cranks... one per category).
+function buildDropdowns(){
+  const panel = $("#assetPanel");
+  panel.innerHTML = "";
+  LAYERS.forEach(layer => {
+    const files = (window.ASSET_MANIFEST[layer.folder] || []);
+    const wrap = document.createElement("div");
+    const lab = document.createElement("label");
+    lab.className = "field"; lab.textContent = layer.label;
+    const sel = document.createElement("select");
+    sel.dataset.layer = layer.id;
+    sel.innerHTML = `<option value="">— none —</option>` +
+      files.map(f => `<option value="${f}">${f}</option>`).join("");
+    sel.addEventListener("change", () => setAsset(layer.id, sel.value || null));
+    wrap.appendChild(lab); wrap.appendChild(sel);
+    panel.appendChild(wrap);
+  });
+}
+
+// Guides: build toggle checkboxes + the guide DOM elements.
+const GUIDES = [
+  { id:"centerV",  label:"Center Vertical",     cls:"gV",   style:{left:"50%"} },
+  { id:"centerH",  label:"Center Horizontal",   cls:"gH",   style:{top:"50%"} },
+  { id:"ground",   label:"Ground Line",         cls:"gGround", style:{top:"85%"} },
+  { id:"bb",       label:"Bottom Bracket",      marker:{x:600,y:495} },
+  { id:"headtube", label:"Head Tube",           marker:{x:840,y:300} },
+  { id:"seattube", label:"Seat Tube",           marker:{x:560,y:300} },
+  { id:"frontAxle",label:"Front Axle",          marker:{x:860,y:472} },
+  { id:"rearAxle", label:"Rear Axle",           marker:{x:340,y:472} },
+  { id:"wheelbase",label:"Wheelbase Line",      cls:"gWheelbase", wheelbase:true },
+  { id:"safe",     label:"Safe Area",           cls:"gSafe" },
+];
+function buildGuides(){
+  const g = $("#guides");
+  const panel = $("#guidePanel");
+  GUIDES.forEach(gd => {
+    const el = document.createElement("div");
+    el.className = "g " + (gd.cls || "");
+    el.dataset.guide = gd.id;
+    if(gd.style) Object.assign(el.style, gd.style);
+    if(gd.marker){
+      el.className = "g marker"; el.dataset.guide = gd.id;
+      el.style.left = (gd.marker.x/1200*100) + "%";
+      el.style.top  = (gd.marker.y/760*100) + "%";
+      el.innerHTML = `<span>${gd.label}</span>`;
+    }
+    if(gd.wheelbase){
+      // positioned between the two axle markers dynamically
+      el.style.left = (340/1200*100)+"%"; el.style.top=(472/760*100)+"%";
+      el.style.width = ((860-340)/1200*100)+"%";
+    }
+    g.appendChild(el);
+
+    const row = document.createElement("label");
+    row.className = "chk";
+    row.innerHTML = `<input type="checkbox" data-guide="${gd.id}"> ${gd.label}`;
+    row.querySelector("input").addEventListener("change", e => {
+      el.classList.toggle("on", e.target.checked);
+    });
+    panel.appendChild(row);
+  });
+}
+
+/* ---- D. RENDER ----------------------------------------------------------- */
+// Apply one layer's calibration to its <img>. This is the whole "engine".
+function renderLayer(id){
+  const c = state.cfg[id], img = els[id];
+  if(!c.asset){ img.style.display="none"; return; }
+  const folder = LAYER_BY_ID[id].folder;
+  const wantSrc = assetPath(folder, c.asset);
+  if(img.getAttribute("src") !== wantSrc) img.src = wantSrc;   // only swap path
+  img.style.display = "block";
+  img.style.zIndex = c.z;
+
+  const sx = c.scale * (c.flipH ? -1 : 1);
+  const sy = c.scale * (c.flipV ? -1 : 1);
+  img.style.transform =
+    `translate(-50%,-50%) translate(${c.x}px,${c.y}px) rotate(${c.rotation}deg) scale(${sx},${sy})`;
+
+  // Visibility + isolation both fold into effective opacity.
+  let op = c.visible ? c.opacity : 0;
+  if(state.isolate && state.isolate !== id) op *= 0.2;
+  img.style.opacity = op;
+  img.style.visibility = c.visible ? "visible" : "hidden";
+}
+function renderAll(){ LAYERS.forEach(l => renderLayer(l.id)); updateOverlays(); }
+
+/* ---- E. SELECTION / OVERLAYS -------------------------------------------- */
+function selectLayer(id){
+  state.selected = id;
+  $("#selName").textContent = id ? LAYER_BY_ID[id].label : "none";
+  syncControls();
+  updateOverlays();
+  updateInspector();
+  // reflect in the dropdown highlight is not needed; keep simple.
+}
+
+function updateOverlays(){
+  updateSelBox();
+  if(state.debug) updateDebug();
+}
+
+function updateSelBox(){
+  const id = state.selected;
+  if(!id || !state.calibration || !state.cfg[id].asset || !state.cfg[id].visible){
+    selBox.style.display = "none"; return;
+  }
+  const img = els[id];
+  const r = img.getBoundingClientRect();
+  const s = stage.getBoundingClientRect();
+  if(r.width === 0){ selBox.style.display="none"; return; }
+  selBox.style.display = "block";
+  selBox.style.left   = (r.left - s.left) + "px";
+  selBox.style.top    = (r.top  - s.top ) + "px";
+  selBox.style.width  = r.width + "px";
+  selBox.style.height = r.height + "px";
+  const c = state.cfg[id];
+  selBox.querySelector(".coord").textContent =
+    `${LAYER_BY_ID[id].label}  x:${c.x} y:${c.y} s:${c.scale.toFixed(2)} r:${c.rotation}°`;
+}
+
+function updateDebug(){
+  debugEl.innerHTML = "";
+  const s = stage.getBoundingClientRect();
+  LAYERS.forEach(l => {
+    const c = state.cfg[l.id]; if(!c.asset || !c.visible) return;
+    const r = els[l.id].getBoundingClientRect();
+    const badge = document.createElement("div");
+    badge.className = "badge";
+    badge.textContent = `${l.label}  z${c.z}  (${c.x},${c.y})`;
+    badge.style.left = (r.left - s.left) + "px";
+    badge.style.top  = (r.top - s.top) + "px";
+    debugEl.appendChild(badge);
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    dot.style.left = (r.left - s.left + r.width/2) + "px";
+    dot.style.top  = (r.top - s.top + r.height/2) + "px";
+    debugEl.appendChild(dot);
+  });
+}
+
+/* ---- F. CALIBRATION OPERATIONS ------------------------------------------ */
+function needSel(){ if(!state.selected){ flash("Select a layer first"); return false; } return true; }
+function cur(){ return state.cfg[state.selected]; }
+
+function snap(v, step){ return Math.round(v/step)*step; }
+
+function nudge(dx, dy, fast){
+  if(!needSel()) return;
+  const step = state.snapMove * (fast ? 10 : 1);
+  const c = cur();
+  c.x = snap(c.x + dx*step, state.snapMove);
+  c.y = snap(c.y + dy*step, state.snapMove);
+  renderLayer(state.selected); updateOverlays(); syncControls(); updateInspector();
+}
+function scaleBy(d){
+  if(!needSel()) return;
+  const c = cur(); c.scale = Math.max(0.05, +(c.scale + d).toFixed(3));
+  renderLayer(state.selected); updateOverlays(); syncControls(); updateInspector();
+}
+function rotateBy(d){
+  if(!needSel()) return;
+  const c = cur();
+  let r = c.rotation + d;
+  r = snap(r, state.snapRotate);
+  while(r > 180) r -= 360; while(r < -180) r += 360;
+  c.rotation = r;
+  renderLayer(state.selected); updateOverlays(); syncControls(); updateInspector();
+}
+function zBy(d){
+  if(!needSel()) return;
+  cur().z = Math.max(0, cur().z + d);
+  renderLayer(state.selected); updateOverlays(); updateInspector();
+}
+function flip(axis){
+  if(!needSel()) return;
+  const c = cur();
+  if(axis === "h") c.flipH = !c.flipH; else c.flipV = !c.flipV;
+  renderLayer(state.selected); updateOverlays(); updateInspector();
+}
+function toggleVisible(){
+  if(!needSel()) return;
+  cur().visible = !cur().visible;
+  renderLayer(state.selected); updateOverlays(); updateInspector();
+}
+function toggleIsolate(id){
+  id = id || state.selected; if(!id) return;
+  state.isolate = (state.isolate === id) ? null : id;
+  flash(state.isolate ? "Isolated · Esc to exit" : "Isolation off");
+  renderAll();
+}
+function setAsset(id, file){
+  state.cfg[id].asset = file;
+  renderLayer(id); updateOverlays();
+  if(state.selected === id) updateInspector();
+  const dd = document.querySelector(`select[data-layer="${id}"]`);
+  if(dd) dd.value = file || "";
+}
+
+/* ---- G. INTERACTION ----------------------------------------------------- */
+// Direct layer selection: topmost layer image under the cursor.
+stage.addEventListener("click", e => {
+  if(!state.calibration) return;
+  const img = e.target.closest("img.layer");
+  if(img) selectLayer(img.dataset.layer);
+});
+stage.addEventListener("dblclick", e => {
+  if(!state.calibration) return;
+  const img = e.target.closest("img.layer");
+  if(img){ selectLayer(img.dataset.layer); toggleIsolate(img.dataset.layer); }
+});
+
+// Keyboard shortcuts.
+document.addEventListener("keydown", e => {
+  // Global toggles that work anywhere (avoid when typing in a field).
+  const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+  if(!typing && (e.key === "c" || e.key === "C")){ toggleCalibration(); return; }
+  if(!typing && (e.key === "d" || e.key === "D")){ toggleDebug(); return; }
+  if(e.key === "Escape"){ if(state.isolate){ state.isolate=null; renderAll(); flash("Isolation off"); } return; }
+
+  if(!state.calibration || !state.selected || typing) return;
+  const fast = e.shiftKey;
+  switch(e.key){
+    case "ArrowLeft":  nudge(-1,0,fast); e.preventDefault(); break;
+    case "ArrowRight": nudge(1,0,fast);  e.preventDefault(); break;
+    case "ArrowUp":    nudge(0,-1,fast); e.preventDefault(); break;
+    case "ArrowDown":  nudge(0,1,fast);  e.preventDefault(); break;
+    case "+": case "=": scaleBy(fast?0.1:0.02); break;
+    case "-": case "_": scaleBy(fast?-0.1:-0.02); break;
+    case "r": rotateBy(fast?-state.snapRotate:state.snapRotate); break;
+    case "R": rotateBy(fast? state.snapRotate:-state.snapRotate); break;
+    case "Delete": case "Backspace": toggleVisible(); e.preventDefault(); break;
+  }
+});
+
+/* ---- H. SNAP / GUIDES / REFERENCE / INSPECTOR --------------------------- */
+// Snap buttons
+$$(".snapMove").forEach(b => b.addEventListener("click", () => {
+  state.snapMove = +b.dataset.move;
+  $$(".snapMove").forEach(x => x.classList.toggle("on", x === b));
+}));
+$$(".snapRot").forEach(b => b.addEventListener("click", () => {
+  state.snapRotate = +b.dataset.rot;
+  $$(".snapRot").forEach(x => x.classList.toggle("on", x === b));
+}));
+
+// Reference image
+$("#refFile").addEventListener("change", e => {
+  const f = e.target.files[0]; if(!f) return;
+  const ref = $("#reference");
+  ref.src = URL.createObjectURL(f);
+  ref.style.display = "block";
+  ref.style.opacity = $("#refOpacity").value;
+  console.log("[reference] loaded", f.name);
+});
+$("#refOpacity").addEventListener("input", e => {
+  $("#reference").style.opacity = e.target.value;
+  $("#refOpVal").textContent =ToFixed2(e.target.value);
+});
+$("#refClear").addEventListener("click", () => {
+  const ref = $("#reference"); ref.src=""; ref.style.display="none";
+  $("#refFile").value="";
+});
+
+// Sliders in calibration studio
+$("#opacity").addEventListener("input", e => {
+  if(!needSel()) return; cur().opacity = +e.target.value;
+  $("#opacityVal").textContent = ToFixed2(e.target.value);
+  renderLayer(state.selected); updateInspector();
+});
+$("#scale").addEventListener("input", e => {
+  if(!needSel()) return; cur().scale = +e.target.value;
+  $("#scaleVal").textContent = ToFixed2(e.target.value);
+  renderLayer(state.selected); updateOverlays(); updateInspector();
+});
+$("#rotation").addEventListener("input", e => {
+  if(!needSel()) return; cur().rotation = +e.target.value;
+  $("#rotVal").textContent = Math.round(e.target.value)+"°";
+  renderLayer(state.selected); updateOverlays(); updateInspector();
+});
+
+// Reflect selected layer's values back into the studio controls.
+function syncControls(){
+  const c = state.selected ? cur() : null;
+  const set = (id,v) => { const el=$(id); if(el) el.value = v; };
+  if(!c) return;
+  set("#opacity", c.opacity); $("#opacityVal").textContent = ToFixed2(c.opacity);
+  set("#scale", c.scale);     $("#scaleVal").textContent   = ToFixed2(c.scale);
+  set("#rotation", c.rotation); $("#rotVal").textContent   = Math.round(c.rotation)+"°";
+}
+
+// Inspector
+function updateInspector(){
+  const box = $("#inspector");
+  const id = state.selected;
+  if(!id){ box.innerHTML = `<span class="small">Select a layer.</span>`; return; }
+  const c = state.cfg[id], img = els[id];
+  const res = (c.asset && img.naturalWidth) ? `${img.naturalWidth}×${img.naturalHeight}` : "—";
+  const kv = (k,v) => `<div class="kv"><span>${k}</span><b class="mono">${v}</b></div>`;
+  box.innerHTML =
+    kv("Layer", LAYER_BY_ID[id].label) +
+    kv("Filename", c.asset || "—") +
+    kv("Resolution", res) +
+    kv("X", c.x) + kv("Y", c.y) + kv("Z", c.z) +
+    kv("Scale", c.scale.toFixed(3)) +
+    kv("Rotation", c.rotation + "°") +
+    kv("Opacity", c.opacity.toFixed(2)) +
+    kv("Flip H / V", (c.flipH?"yes":"no")+" / "+(c.flipV?"yes":"no")) +
+    kv("Visible", c.visible ? "yes" : "no");
+}
+
+/* ---- I. SMOKE TEST / RANDOM / RESET ------------------------------------- */
+// Load the first (canonical) asset in every category -> known-good bike.
+function smokeTest(){
+  console.log("[smoke] assembling demo bike…");
+  LAYERS.forEach((l,i) => {
+    const files = window.ASSET_MANIFEST[l.folder] || [];
+    const c = defaultCfg(l, i);
+    c.asset = files[0] || null;
+    state.cfg[l.id] = c;
+  });
+  refreshDropdowns(); renderAll();
+  flash("Smoke test: demo bike assembled ✔");
+}
+function randomBuild(){
+  LAYERS.forEach(l => {
+    const files = window.ASSET_MANIFEST[l.folder] || [];
+    if(files.length) setAsset(l.id, files[Math.floor(Math.random()*files.length)]);
+  });
+  flash("Random build 🎲");
+}
+// Reset every layer: calibration back to defaults, keep current asset choices? -> full reset.
+function resetAll(){
+  state.isolate = null; state.selected = null;
+  LAYERS.forEach((l,i) => { state.cfg[l.id] = defaultCfg(l,i); });
+  // Re-load default (first) asset so a bike is visible, matching initial boot.
+  LAYERS.forEach(l => {
+    const files = window.ASSET_MANIFEST[l.folder] || [];
+    state.cfg[l.id].asset = files[0] || null;
+  });
+  $("#selName").textContent = "none";
+  refreshDropdowns(); renderAll(); updateInspector();
+  flash("Reset ↺");
+}
+function refreshDropdowns(){
+  LAYERS.forEach(l => {
+    const dd = document.querySelector(`select[data-layer="${l.id}"]`);
+    if(dd) dd.value = state.cfg[l.id].asset || "";
+  });
+}
+
+/* ---- J. IMPORT / EXPORT -------------------------------------------------- */
+function buildConfigObject(){
+  return {
+    meta:{ tool:"BMX Builder", version:"0.1", stage:{w:1200,h:760},
+           exported:new Date().toISOString() },
+    layers: LAYERS.map(l => Object.assign({ id:l.id, folder:l.folder }, state.cfg[l.id]))
+  };
+}
+function exportJSON(){
+  const json = JSON.stringify(buildConfigObject(), null, 2);
+  $("#jsonOut").value = json;
+  console.log("[export] builder-config.json ready");
+  return json;
+}
+function downloadJSON(){
+  const json = exportJSON();
+  const blob = new Blob([json], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "builder-config.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function applyConfig(obj){
+  try{
+    if(!obj || !Array.isArray(obj.layers)) throw new Error("no layers array");
+    obj.layers.forEach(rec => {
+      if(!state.cfg[rec.id]) return;
+      Object.assign(state.cfg[rec.id], rec);
+    });
+    refreshDropdowns(); renderAll();
+    if(state.selected){ syncControls(); updateInspector(); }
+    flash("Config applied ✔");
+    console.log("[import] applied config for", obj.layers.length, "layers");
+  }catch(err){
+    flash("Import failed: " + err.message);
+    console.error("[import] failed", err);
+  }
+}
+
+/* ---- MODE TOGGLES -------------------------------------------------------- */
+function toggleCalibration(){
+  state.calibration = !state.calibration;
+  stage.classList.toggle("calibrating", state.calibration);
+  const b = $("#btnCalib");
+  b.textContent = "🎯 Calibration: " + (state.calibration ? "ON" : "OFF");
+  b.classList.toggle("on", state.calibration);
+  // Auto-open the calibration + related sections for convenience.
+  ["calib","snap","guides","ref","inspect"].forEach(sec => {
+    const s = document.querySelector(`.section[data-sec="${sec}"]`);
+    if(s) s.classList.toggle("collapsed", !state.calibration);
+  });
+  if(!state.calibration){ state.isolate=null; }
+  renderAll();
+  flash(state.calibration ? "Calibration mode ON — click a part" : "Calibration mode OFF");
+}
+function toggleDebug(){
+  state.debug = !state.debug;
+  stage.classList.toggle("debug", state.debug);
+  $("#btnDebug").classList.toggle("on", state.debug);
+  updateOverlays();
+}
+
+/* ---- TOOLBAR / SECTION WIRING ------------------------------------------- */
+$("#btnSmoke").onclick  = smokeTest;
+$("#btnRandom").onclick = randomBuild;
+$("#btnReset").onclick  = resetAll;
+$("#btnCalib").onclick  = toggleCalibration;
+$("#btnDebug").onclick  = toggleDebug;
+$("#btnExport").onclick   = exportJSON;
+$("#btnDownload").onclick = downloadJSON;
+$("#btnApplyJson").onclick= () => { try{ applyConfig(JSON.parse($("#jsonOut").value)); }catch(e){ flash("Bad JSON"); } };
+$("#btnImportFile").onclick = () => $("#importFile").click();
+$("#importFile").addEventListener("change", e => {
+  const f = e.target.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = () => { try{ applyConfig(JSON.parse(rd.result)); }catch(err){ flash("Bad JSON file"); } };
+  rd.readAsText(f);
+});
+
+// Calibration studio buttons
+$$("[data-nudge]").forEach(b => b.onclick = () => {
+  const [dx,dy] = b.dataset.nudge.split(",").map(Number); nudge(dx,dy,false);
+});
+$("#scaleUp").onclick   = () => scaleBy(0.02);
+$("#scaleDown").onclick = () => scaleBy(-0.02);
+$("#rotL").onclick      = () => rotateBy(-state.snapRotate);
+$("#rotR").onclick      = () => rotateBy(state.snapRotate);
+$("#rotReset").onclick  = () => { if(needSel()){ cur().rotation=0; renderLayer(state.selected); updateOverlays(); syncControls(); updateInspector(); } };
+$("#zUp").onclick       = () => zBy(1);
+$("#zDown").onclick     = () => zBy(-1);
+$("#flipH").onclick     = () => flip("h");
+$("#flipV").onclick     = () => flip("v");
+$("#visToggle").onclick = toggleVisible;
+$("#isoToggle").onclick = () => toggleIsolate();
+
+// Collapsible sidebar sections
+$$(".section > h2").forEach(h => h.onclick = () => h.parentElement.classList.toggle("collapsed"));
+
+/* ---- HELPERS ------------------------------------------------------------- */
+function ToFixed2(v){ return (+v).toFixed(2); }
+let flashTimer;
+function flash(msg){
+  const r = $("#fpsReadout");
+  r.textContent = msg;
+  r.style.color = "var(--good)";
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => { r.style.color=""; startFps(); }, 1400);
+}
+
+// Keep overlays glued to layers on resize/scroll.
+window.addEventListener("resize", updateOverlays);
+$("#stageWrap").addEventListener("scroll", updateOverlays);
+// Naturaldimensions arrive async -> refresh inspector/overlays on image load.
+Object.values(els).length; // noop guard
+
+/* ---- Lightweight FPS meter (perf sanity for the "1000+ images" claim) --- */
+let fpsFrames=0, fpsLast=performance.now(), fpsShow=true;
+function startFps(){ fpsShow=true; }
+function fpsLoop(now){
+  fpsFrames++;
+  if(now - fpsLast >= 1000){
+    if(fpsShow && $("#fpsReadout").style.color===""){
+      $("#fpsReadout").textContent = fpsFrames + " fps · " + LAYERS.length + " layers";
+    }
+    fpsFrames=0; fpsLast=now;
+  }
+  requestAnimationFrame(fpsLoop);
+}
+
+/* ---- K. BOOT ------------------------------------------------------------- */
+function boot(){
+  if(!window.ASSET_MANIFEST){ alert("assets/manifest.js failed to load"); return; }
+  buildLayers();
+  buildDropdowns();
+  buildGuides();
+  // Attach load listeners so inspector resolution + overlays update.
+  Object.values(els).forEach(img => img.addEventListener("load", () => {
+    if(state.selected && els[state.selected]===img){ updateInspector(); }
+    updateOverlays();
+  }));
+  // Initial bike = first asset in each category (so the stage isn't empty).
+  LAYERS.forEach(l => {
+    const files = window.ASSET_MANIFEST[l.folder] || [];
+    state.cfg[l.id].asset = files[0] || null;
+  });
+  refreshDropdowns();
+  renderAll();
+  requestAnimationFrame(fpsLoop);
+  console.log("[boot] BMX Builder ready. Press C for calibration, D for debug.");
+}
+boot();
+</script>
+</body>
+</html>
