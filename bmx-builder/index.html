@@ -29,7 +29,7 @@
   --bg:#0e1013; --panel:#171a1f; --panel-2:#1e232a; --line:#2a2f37;
   --text:#e6e9ee; --muted:#8a92a0; --accent:#3d8bff; --accent-2:#2166a8;
   --good:#3ecf8e; --warn:#e0b341; --danger:#e0574b;
-  --stage:#f4f5f7;
+  --stage:#ffffff;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
@@ -98,12 +98,15 @@ hr{border:none; border-top:1px solid var(--line); margin:14px 0}
   background:var(--stage); border-radius:10px; box-shadow:0 10px 40px #0008;
   overflow:hidden; flex:none;
 }
-/* Every component layer. Centered on the stage; calibration moves it from there. */
+/* Every component layer. Centered on the stage; calibration moves it from there.
+   Layers keep their WHITE product-photo background and composite with multiply,
+   so the white drops out on the white stage without any image editing.        */
 #builder img.layer{
   position:absolute; left:50%; top:50%; transform-origin:center center;
   pointer-events:none; -webkit-user-drag:none; user-select:none;
   max-width:none; will-change:transform;
 }
+#stage.blend-multiply #builder img.layer{ mix-blend-mode:multiply; }
 /* In calibration mode, layers become clickable for direct selection. */
 #stage.calibrating #builder img.layer{pointer-events:auto; cursor:pointer}
 #stage.calibrating #builder img.layer:hover{outline:2px dashed #3d8bff88; outline-offset:2px}
@@ -187,12 +190,15 @@ textarea{width:100%; height:160px; background:#0c0e11; color:#b9e3c8;
   <h1>🚲 BMX Builder</h1>
   <span class="pill">Asset Calibration Studio · v0.1 (PoC)</span>
   <span class="sep"></span>
-  <button id="btnSmoke" class="good" title="Assemble a known-good demo bike">🧪 Smoke Test</button>
+  <button id="btnLoad" class="primary" title="Pick your part images; each is auto-assigned to a layer by filename">📁 Load Assets</button>
+  <input type="file" id="loadInput" accept="image/*" multiple hidden>
+  <button id="btnSmoke" class="good" title="Arrange whatever images are loaded into the default bike geometry">🧪 Smoke Test</button>
   <button id="btnRandom" title="Random part from every category">🎲 Random Build</button>
   <button id="btnReset" class="warn" title="Reset every layer + calibration">↺ Reset</button>
   <span class="sep"></span>
   <button id="btnCalib" title="Toggle calibration studio (C)">🎯 Calibration: OFF</button>
   <button id="btnDebug" title="Toggle debug overlay (D)">🐞 Debug</button>
+  <button id="btnBlend" class="on" title="White-bg photos: multiply drops the white out; Normal shows raw boxes">🎨 Blend: Multiply</button>
   <span class="spacer"></span>
   <span id="fpsReadout" class="small mono">–</span>
 </div>
@@ -367,35 +373,45 @@ textarea{width:100%; height:160px; background:#0c0e11; color:#b9e3c8;
    x / y are pixel offsets from the STAGE CENTER (layers are centered by CSS,
    then translated). Stage is 1200 x 760.                                   */
 const LAYERS = [
-  { id:"rearWheel",  label:"Rear Wheel",  folder:"rear-wheels",  def:{x:-260,y:92} },
-  { id:"rearTire",   label:"Rear Tire",   folder:"rear-tires",   def:{x:-260,y:92} },
-  { id:"frontWheel", label:"Front Wheel", folder:"front-wheels", def:{x:260, y:92} },
-  { id:"frontTire",  label:"Front Tire",  folder:"front-tires",  def:{x:260, y:92} },
-  { id:"frame",      label:"Frame",       folder:"frames",       def:{x:-30, y:35} },
-  { id:"fork",       label:"Fork",        folder:"forks",        def:{x:250, y:20} },
-  { id:"sprocket",   label:"Sprocket",    folder:"sprockets",    def:{x:20,  y:120} },
-  { id:"chain",      label:"Chain",       folder:"chains",       def:{x:150, y:128} },
-  { id:"cranks",     label:"Cranks",      folder:"cranks",       def:{x:-5,  y:120} },
-  { id:"pedals",     label:"Pedals",      folder:"pedals",       def:{x:55,  y:172} },
-  { id:"headset",    label:"Headset",     folder:"headsets",     def:{x:172, y:-42} },
-  { id:"seatpost",   label:"Seatpost",    folder:"seatposts",    def:{x:-42, y:-120} },
-  { id:"seat",       label:"Seat",        folder:"seats",        def:{x:-45, y:-192} },
-  { id:"stem",       label:"Stem",        folder:"stems",        def:{x:200, y:-96} },
-  { id:"bars",       label:"Bars",        folder:"bars",         def:{x:250, y:-190} },
-  { id:"grips",      label:"Grips",       folder:"grips",        def:{x:335, y:-215} },
-  { id:"rearPeg",    label:"Rear Peg",    folder:"rear-pegs",    def:{x:-262,y:92} },
-  { id:"frontPeg",   label:"Front Peg",   folder:"front-pegs",   def:{x:262, y:92} },
+  { id:"rearWheel",  label:"Rear Wheel",  folder:"rear-wheels",  keywords:["rear-wheel","rearwheel","rear_wheel","rim"], def:{x:-258,y:96, scale:0.86} },
+  { id:"rearTire",   label:"Rear Tire",   folder:"rear-tires",   keywords:["rear-tire","reartire","tyre","tire"], def:{x:-258,y:96, scale:0.82} },
+  { id:"frontWheel", label:"Front Wheel", folder:"front-wheels", keywords:["front-wheel","frontwheel","wheel"], def:{x:258, y:96, scale:0.86} },
+  { id:"frontTire",  label:"Front Tire",  folder:"front-tires",  keywords:["front-tire","fronttire"], def:{x:258, y:96, scale:0.82} },
+  { id:"frame",      label:"Frame",       folder:"frames",       keywords:["frame","marco"], def:{x:-8,  y:60, scale:0.92} },
+  { id:"fork",       label:"Fork",        folder:"forks",        keywords:["fork","tenedor"], def:{x:250, y:34, scale:0.86} },
+  { id:"sprocket",   label:"Sprocket",    folder:"sprockets",    keywords:["sprocket","chainring","plato"], def:{x:35,  y:120,scale:0.62} },
+  { id:"chain",      label:"Chain",       folder:"chains",       keywords:["chain","cadena"], def:{x:150, y:120,scale:0.80} },
+  { id:"cranks",     label:"Cranks",      folder:"cranks",       keywords:["crank","biela"], def:{x:5,   y:120,scale:0.72} },
+  { id:"pedals",     label:"Pedals",      folder:"pedals",       keywords:["pedal"], def:{x:70,  y:172,scale:0.70} },
+  { id:"headset",    label:"Headset",     folder:"headsets",     keywords:["headset","direccion"], def:{x:150, y:-40,scale:0.70} },
+  { id:"seatpost",   label:"Seatpost",    folder:"seatposts",    keywords:["seatpost","post","tija"], def:{x:-52, y:-70,scale:0.80} },
+  { id:"seat",       label:"Seat",        folder:"seats",        keywords:["seat","saddle","sillin"], def:{x:-58, y:-140,scale:0.72} },
+  { id:"stem",       label:"Stem",        folder:"stems",        keywords:["stem","potencia"], def:{x:190, y:-88,scale:0.62} },
+  { id:"bars",       label:"Bars",        folder:"bars",         keywords:["bar","handlebar","manubrio"], def:{x:250, y:-180,scale:0.72} },
+  { id:"grips",      label:"Grips",       folder:"grips",        keywords:["grip","puno"], def:{x:340, y:-205,scale:0.60} },
+  { id:"rearPeg",    label:"Rear Peg",    folder:"rear-pegs",    keywords:["rear-peg","rearpeg"], def:{x:-262,y:96, scale:0.60} },
+  { id:"frontPeg",   label:"Front Peg",   folder:"front-pegs",   keywords:["front-peg","frontpeg","peg"], def:{x:262, y:96, scale:0.60} },
 ];
 const LAYER_BY_ID = Object.fromEntries(LAYERS.map(l => [l.id, l]));
 
 // Default calibration applied to every layer (merged with per-layer def).
 function defaultCfg(layer, i){
   return Object.assign(
-    { asset:null, x:0, y:0, scale:1, rotation:0, opacity:1, z:i+1,
+    { asset:null, src:null, x:0, y:0, scale:1, rotation:0, opacity:1, z:i+1,
       flipH:false, flipV:false, visible:true },
     layer.def
   );
 }
+
+// Resolve the actual <img> src for a layer: an uploaded data URL wins,
+// otherwise a manifest filename becomes assets/<folder>/<file>.
+function layerSrc(id){
+  const c = state.cfg[id];
+  if(c.src) return c.src;
+  if(c.asset) return assetPath(LAYER_BY_ID[id].folder, c.asset);
+  return null;
+}
+function hasImage(id){ return !!layerSrc(id); }
 
 /* ---- B. STATE ------------------------------------------------------------ */
 const state = {
@@ -405,6 +421,7 @@ const state = {
   isolate:null,       // layer id being isolated (or null)
   snapMove:1,
   snapRotate:1,
+  blend:"multiply",   // "multiply" (white drops out) | "normal" (raw boxes)
   cfg:{},             // id -> calibration object
 };
 
@@ -443,14 +460,62 @@ function buildDropdowns(){
     const wrap = document.createElement("div");
     const lab = document.createElement("label");
     lab.className = "field"; lab.textContent = layer.label;
+
+    const row = document.createElement("div");
+    row.className = "row";
+    // dropdown (for images registered in the manifest)
     const sel = document.createElement("select");
     sel.dataset.layer = layer.id;
+    sel.style.flex = "1";
     sel.innerHTML = `<option value="">— none —</option>` +
       files.map(f => `<option value="${f}">${f}</option>`).join("");
     sel.addEventListener("change", () => setAsset(layer.id, sel.value || null));
-    wrap.appendChild(lab); wrap.appendChild(sel);
+    // per-layer "Load" button -> opens a file picker, image used immediately
+    const loadBtn = document.createElement("button");
+    loadBtn.textContent = "Load";
+    loadBtn.style.flex = "0 0 auto";
+    loadBtn.title = "Load an image from your computer into this layer";
+    const fi = document.createElement("input");
+    fi.type = "file"; fi.accept = "image/*"; fi.hidden = true;
+    fi.addEventListener("change", e => {
+      const f = e.target.files[0]; if(f) loadLayerImage(layer.id, f);
+      fi.value = "";
+    });
+    loadBtn.addEventListener("click", () => fi.click());
+
+    row.appendChild(sel); row.appendChild(loadBtn); row.appendChild(fi);
+    wrap.appendChild(lab); wrap.appendChild(row);
     panel.appendChild(wrap);
   });
+}
+
+// Load an image file into a layer as a self-contained data URL (so it renders
+// immediately AND survives export/import inside builder-config.json).
+function loadLayerImage(id, file){
+  const rd = new FileReader();
+  rd.onload = () => {
+    state.cfg[id].src = rd.result;          // data URL
+    state.cfg[id].asset = file.name;        // for the inspector / display
+    renderLayer(id); updateOverlays();
+    if(state.selected === id) updateInspector();
+    console.log("[load]", LAYER_BY_ID[id].label, "<-", file.name);
+  };
+  rd.readAsDataURL(file);
+}
+
+// Multi-file loader: pick several images at once; each is auto-assigned to a
+// layer by matching a keyword in its filename (frame, fork, crank, sprocket…).
+function loadAssetsBatch(fileList){
+  const files = Array.from(fileList);
+  let matched = 0, unmatched = [];
+  files.forEach(f => {
+    const name = f.name.toLowerCase();
+    const layer = LAYERS.find(l => l.keywords.some(k => name.includes(k)));
+    if(layer){ loadLayerImage(layer.id, f); matched++; }
+    else unmatched.push(f.name);
+  });
+  flash(`Loaded ${matched} asset(s)` + (unmatched.length ? ` · unmatched: ${unmatched.join(", ")}` : ""));
+  console.log("[batch] matched", matched, "unmatched", unmatched);
 }
 
 // Guides: build toggle checkboxes + the guide DOM elements.
@@ -501,9 +566,8 @@ function buildGuides(){
 // Apply one layer's calibration to its <img>. This is the whole "engine".
 function renderLayer(id){
   const c = state.cfg[id], img = els[id];
-  if(!c.asset){ img.style.display="none"; return; }
-  const folder = LAYER_BY_ID[id].folder;
-  const wantSrc = assetPath(folder, c.asset);
+  const wantSrc = layerSrc(id);
+  if(!wantSrc){ img.style.display="none"; return; }
   if(img.getAttribute("src") !== wantSrc) img.src = wantSrc;   // only swap path
   img.style.display = "block";
   img.style.zIndex = c.z;
@@ -538,7 +602,7 @@ function updateOverlays(){
 
 function updateSelBox(){
   const id = state.selected;
-  if(!id || !state.calibration || !state.cfg[id].asset || !state.cfg[id].visible){
+  if(!id || !state.calibration || !hasImage(id) || !state.cfg[id].visible){
     selBox.style.display = "none"; return;
   }
   const img = els[id];
@@ -559,7 +623,7 @@ function updateDebug(){
   debugEl.innerHTML = "";
   const s = stage.getBoundingClientRect();
   LAYERS.forEach(l => {
-    const c = state.cfg[l.id]; if(!c.asset || !c.visible) return;
+    const c = state.cfg[l.id]; if(!hasImage(l.id) || !c.visible) return;
     const r = els[l.id].getBoundingClientRect();
     const badge = document.createElement("div");
     badge.className = "badge";
@@ -627,6 +691,7 @@ function toggleIsolate(id){
 }
 function setAsset(id, file){
   state.cfg[id].asset = file;
+  state.cfg[id].src = null;             // dropdown pick clears any uploaded image
   renderLayer(id); updateOverlays();
   if(state.selected === id) updateInspector();
   const dd = document.querySelector(`select[data-layer="${id}"]`);
@@ -746,37 +811,45 @@ function updateInspector(){
 }
 
 /* ---- I. SMOKE TEST / RANDOM / RESET ------------------------------------- */
-// Load the first (canonical) asset in every category -> known-good bike.
+// Arrange whatever images are currently loaded into the default bike geometry.
+// Manifest images (if any) take priority; uploaded images are kept.
 function smokeTest(){
-  console.log("[smoke] assembling demo bike…");
+  console.log("[smoke] arranging loaded parts into default geometry…");
   LAYERS.forEach((l,i) => {
     const files = window.ASSET_MANIFEST[l.folder] || [];
-    const c = defaultCfg(l, i);
-    c.asset = files[0] || null;
-    state.cfg[l.id] = c;
+    const c = state.cfg[l.id];
+    const keepSrc = c.src, keepAsset = c.asset;   // preserve whatever is loaded
+    const fresh = defaultCfg(l, i);
+    if(files.length){ fresh.asset = files[0]; fresh.src = null; }
+    else { fresh.asset = keepAsset; fresh.src = keepSrc; }
+    state.cfg[l.id] = fresh;
   });
   refreshDropdowns(); renderAll();
-  flash("Smoke test: demo bike assembled ✔");
+  const n = LAYERS.filter(l => hasImage(l.id)).length;
+  flash(n ? `Smoke test: ${n} part(s) arranged ✔` : "Load some part images first (📁 Load Assets)");
 }
 function randomBuild(){
+  let any = false;
   LAYERS.forEach(l => {
     const files = window.ASSET_MANIFEST[l.folder] || [];
-    if(files.length) setAsset(l.id, files[Math.floor(Math.random()*files.length)]);
+    if(files.length){ setAsset(l.id, files[Math.floor(Math.random()*files.length)]); any = true; }
   });
-  flash("Random build 🎲");
+  flash(any ? "Random build 🎲" : "Random build needs images registered in manifest.js");
 }
-// Reset every layer: calibration back to defaults, keep current asset choices? -> full reset.
+// Reset every layer's calibration to defaults. Keeps loaded images, drops
+// their transforms back to the default bike geometry.
 function resetAll(){
   state.isolate = null; state.selected = null;
-  LAYERS.forEach((l,i) => { state.cfg[l.id] = defaultCfg(l,i); });
-  // Re-load default (first) asset so a bike is visible, matching initial boot.
-  LAYERS.forEach(l => {
-    const files = window.ASSET_MANIFEST[l.folder] || [];
-    state.cfg[l.id].asset = files[0] || null;
+  LAYERS.forEach((l,i) => {
+    const c = state.cfg[l.id];
+    const keepSrc = c.src, keepAsset = c.asset;
+    const fresh = defaultCfg(l, i);
+    fresh.src = keepSrc; fresh.asset = keepAsset;
+    state.cfg[l.id] = fresh;
   });
   $("#selName").textContent = "none";
   refreshDropdowns(); renderAll(); updateInspector();
-  flash("Reset ↺");
+  flash("Reset ↺ (images kept, transforms reset)");
 }
 function refreshDropdowns(){
   LAYERS.forEach(l => {
@@ -847,13 +920,25 @@ function toggleDebug(){
   $("#btnDebug").classList.toggle("on", state.debug);
   updateOverlays();
 }
+// Blend toggle: multiply drops the white photo background out (default);
+// normal shows the raw white boxes (useful to see what the source images are).
+function toggleBlend(){
+  state.blend = state.blend === "multiply" ? "normal" : "multiply";
+  stage.classList.toggle("blend-multiply", state.blend === "multiply");
+  const b = $("#btnBlend");
+  b.textContent = "🎨 Blend: " + (state.blend === "multiply" ? "Multiply" : "Normal");
+  b.classList.toggle("on", state.blend === "multiply");
+}
 
 /* ---- TOOLBAR / SECTION WIRING ------------------------------------------- */
+$("#btnLoad").onclick = () => $("#loadInput").click();
+$("#loadInput").addEventListener("change", e => { if(e.target.files.length) loadAssetsBatch(e.target.files); e.target.value=""; });
 $("#btnSmoke").onclick  = smokeTest;
 $("#btnRandom").onclick = randomBuild;
 $("#btnReset").onclick  = resetAll;
 $("#btnCalib").onclick  = toggleCalibration;
 $("#btnDebug").onclick  = toggleDebug;
+$("#btnBlend").onclick  = toggleBlend;
 $("#btnExport").onclick   = exportJSON;
 $("#btnDownload").onclick = downloadJSON;
 $("#btnApplyJson").onclick= () => { try{ applyConfig(JSON.parse($("#jsonOut").value)); }catch(e){ flash("Bad JSON"); } };
@@ -918,6 +1003,7 @@ function fpsLoop(now){
 /* ---- K. BOOT ------------------------------------------------------------- */
 function boot(){
   if(!window.ASSET_MANIFEST){ alert("assets/manifest.js failed to load"); return; }
+  stage.classList.add("blend-multiply");   // white photo backgrounds drop out
   buildLayers();
   buildDropdowns();
   buildGuides();
@@ -926,15 +1012,17 @@ function boot(){
     if(state.selected && els[state.selected]===img){ updateInspector(); }
     updateOverlays();
   }));
-  // Initial bike = first asset in each category (so the stage isn't empty).
+  // Pre-select any images registered in the manifest (none bundled by default).
   LAYERS.forEach(l => {
     const files = window.ASSET_MANIFEST[l.folder] || [];
-    state.cfg[l.id].asset = files[0] || null;
+    if(files.length) state.cfg[l.id].asset = files[0];
   });
   refreshDropdowns();
   renderAll();
   requestAnimationFrame(fpsLoop);
-  console.log("[boot] BMX Builder ready. Press C for calibration, D for debug.");
+  const loaded = LAYERS.filter(l => hasImage(l.id)).length;
+  if(!loaded) flash("Click 📁 Load Assets to load your part images");
+  console.log("[boot] BMX Builder ready. Load assets, press C for calibration, D for debug.");
 }
 boot();
 </script>

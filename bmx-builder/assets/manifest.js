@@ -1,36 +1,36 @@
 /* ==========================================================================
    ASSET MANIFEST
    ==========================================================================
-   Browsers cannot list a folder's contents over file://, so every image that
-   lives under /assets/<category>/ must be registered here.
+   Two ways to get a part image into the builder:
 
-   HOW TO ADD A NEW BMX PART
-   -------------------------
-   1. Drop the side-view image into the matching folder, e.g.
-        assets/frames/frame-sunday-black.webp
-   2. Add its filename to the array below under the same folder key.
-   3. Reload index.html -> it appears in the dropdown and in Random Build.
-   4. Calibrate it once in Calibration Mode, then Export the config.
+   A) FASTEST — load it in the browser (no files to place):
+      In the builder, use the "📁 Load Assets" button (top bar) to pick your
+      images at once, or the "Load" button next to any part dropdown. The image
+      is used immediately and is saved inside the exported builder-config.json.
 
-   The rendering engine never hardcodes any of this -- it only reads paths.
+   B) Bundle it in the repo:
+      Drop the image into the matching assets/<category>/ folder and register
+      its filename in the array below, then reload.
+
+   Nothing is bundled by default -- load your own authorized images.
    ========================================================================== */
 window.ASSET_MANIFEST = {
-  "frames":       ["frames-black.svg", "frames-chrome.svg", "frames-red.svg"],
-  "forks":        ["forks-black.svg", "forks-chrome.svg"],
-  "bars":         ["bars-black.svg", "bars-chrome.svg", "bars-blue.svg"],
-  "stems":        ["stems-black.svg", "stems-red.svg"],
-  "grips":        ["grips-black.svg", "grips-gum.svg"],
-  "headsets":     ["headsets-black.svg", "headsets-chrome.svg"],
-  "seatposts":    ["seatposts-black.svg", "seatposts-chrome.svg"],
-  "seats":        ["seats-black.svg", "seats-red.svg", "seats-white.svg"],
-  "cranks":       ["cranks-black.svg", "cranks-chrome.svg"],
-  "sprockets":    ["sprockets-black.svg", "sprockets-red.svg"],
-  "chains":       ["chains-black.svg", "chains-chrome.svg"],
-  "front-wheels": ["front-wheels-black.svg", "front-wheels-chrome.svg"],
-  "rear-wheels":  ["rear-wheels-black.svg", "rear-wheels-chrome.svg"],
-  "front-tires":  ["front-tires-black.svg", "front-tires-gum.svg"],
-  "rear-tires":   ["rear-tires-black.svg", "rear-tires-gum.svg"],
-  "pedals":       ["pedals-black.svg", "pedals-red.svg"],
-  "front-pegs":   ["front-pegs-black.svg", "front-pegs-chrome.svg"],
-  "rear-pegs":    ["rear-pegs-black.svg", "rear-pegs-chrome.svg"]
+  "frames":       [],
+  "forks":        [],
+  "bars":         [],
+  "stems":        [],
+  "grips":        [],
+  "headsets":     [],
+  "seatposts":    [],
+  "seats":        [],
+  "cranks":       [],
+  "sprockets":    [],
+  "chains":       [],
+  "front-wheels": [],
+  "rear-wheels":  [],
+  "front-tires":  [],
+  "rear-tires":   [],
+  "pedals":       [],
+  "front-pegs":   [],
+  "rear-pegs":    []
 };

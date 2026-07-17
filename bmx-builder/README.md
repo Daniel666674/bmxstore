@@ -38,27 +38,41 @@ no dependencies. Everything (HTML + CSS + vanilla JS) lives in that one file.
   coordinates, center points and render order.
 - **Export / Import** — save all calibration as `builder-config.json` (shown in
   a textarea and downloadable); import re-applies every value instantly.
-- **Smoke Test** — assembles a known-good demo bike (verifies order, rendering,
-  calibration, performance).
-- **Random Build** — one random image per category.
+- **Smoke Test** — arranges whatever images are loaded into the default bike
+  geometry (verifies order, rendering, calibration, performance).
+- **Random Build** — one random image per category (needs images registered in
+  `manifest.js`).
 - **Reset** — every layer, calibration and transform back to defaults.
+
+## Loading your images
+
+No images are bundled. Use your own side-view product photos (white background
+is fine — they layer with a `multiply` blend so the white drops out; toggle
+**Blend: Normal** to see the raw boxes).
+
+Two ways:
+
+- **📁 Load Assets** (top bar) — pick several images at once. Each is
+  auto-assigned to a layer by a keyword in its filename (`frame`, `fork`,
+  `crank`, `sprocket`, `wheel`, `tire`, `bar`, `seat`, `stem`, `chain`,
+  `pedal`, `peg`, `grip`, `headset`, `post`).
+- **Load** button next to any part dropdown — load one image into that layer.
+
+Loaded images are embedded into the exported `builder-config.json`, so a build
+is fully self-contained: export it, import it later, everything comes back.
 
 ## Folder structure
 
 ```
 index.html
 assets/
-  manifest.js          <- registry of every image, per category
+  manifest.js          <- optional registry, for images you bundle in the repo
   frames/  forks/  bars/  stems/  grips/  headsets/  seatposts/  seats/
   cranks/  sprockets/  chains/  front-wheels/  rear-wheels/
   front-tires/  rear-tires/  pedals/  front-pegs/  rear-pegs/
 ```
 
-The `.svg` files currently in the folders are **placeholder art** so the tool
-has something to layer, switch, smoke-test and randomize. To the engine they
-are just `<img src>` — swap in real `.webp`/`.png` product shots any time.
-
-## Adding a new BMX product
+## Adding a bundled BMX product (optional)
 
 1. Drop the side-view image into the correct `assets/<category>/` folder.
 2. Register its filename in `assets/manifest.js` (browsers can't list folders
