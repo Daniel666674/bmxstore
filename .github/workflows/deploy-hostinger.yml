@@ -1,0 +1,33 @@
+name: Deploy to Hostinger
+
+# Runs on every push to the working branch, and can also be triggered
+# manually from the Actions tab (useful for the first deploy / re-deploys
+# without a new commit).
+on:
+  push:
+    branches: ["claude/sweet-albattani-ti0w0e"]
+  workflow_dispatch:
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Leave FTP_SERVER_DIR unset (defaults to "/") if the FTP account's
+          # home directory is already public_html. Set the secret if you need
+          # to target a subfolder, e.g. "/public_html/" or "/public_html/sub/".
+          server-dir: ${{ secrets.FTP_SERVER_DIR || '/' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/README.md
+            **/PROPOSAL.md
