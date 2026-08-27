@@ -247,7 +247,11 @@ tr:hover td{background:var(--bg-2)}
     <!-- ---------------- Productos ---------------- -->
     <section class="panel active" id="panel-productos">
       <div class="toolbar">
-        <input type="search" id="p-search" placeholder="Buscar por nombre, marca, SKU...">
+        <!-- Sin autocompletado: el navegador no debe rellenar ni recordar el
+             filtro (ver disableAutofill/resetSearchFilter en admin.js). -->
+        <input type="search" id="p-search" placeholder="Buscar por nombre, marca, SKU..."
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+               data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other">
         <select id="p-filter-cat"><option value="">Todas las categorías</option></select>
         <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px"><input type="checkbox" id="p-filter-low"> Solo bajo/agotado</label>
         <div class="right">
@@ -347,7 +351,9 @@ tr:hover td{background:var(--bg-2)}
       <div class="card">
         <h3 style="margin-bottom:10px">Token de GitHub</h3>
         <p class="hint muted">Personal Access Token (fine-grained) con permiso <b>Contents: Read and write</b> sobre <span class="mono" id="cfg-repo"></span>, rama <span class="mono" id="cfg-branch"></span>. Se guarda solo en este navegador (localStorage), nunca se publica.</p>
-        <div class="field" style="margin-top:10px"><input id="pat-input" type="password" placeholder="ghp_..."></div>
+        <div class="field" style="margin-top:10px"><input id="pat-input" type="password" placeholder="ghp_..."
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other"></div>
         <button class="btn cyan sm" id="btn-save-pat">Guardar token</button>
         <button class="btn ghost sm" id="btn-clear-pat">Borrar token</button>
         <p class="hint" id="pat-status"></p>
@@ -362,7 +368,7 @@ tr:hover td{background:var(--bg-2)}
 <script src="assets/js/products-data.js?v=2"></script>
 <script src="assets/js/data.js?v=2"></script>
 <script src="assets/js/pdp-render.js?v=2"></script>
-<script src="admin.js?v=7"></script>
+<script src="admin.js?v=8"></script>
 <script>
   // Service worker propio del panel: solo cachea el logo del shell, nunca
   // admin.html/admin.js (ver admin-sw.js).

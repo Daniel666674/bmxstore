@@ -912,6 +912,7 @@ function renderEditor() {
   renderPhotoGrid();
   validateSlugField();
   validateSkuField();
+  disableAutofill($("#editor-drawer")); // el drawer se genera por JS en cada apertura
 }
 
 function escAttr(s) { return String(s == null ? "" : s).replace(/"/g, "&quot;"); }
@@ -1498,6 +1499,46 @@ $("#btn-clear-pat").addEventListener("click", () => {
   $("#pat-status").textContent = "Token borrado.";
 });
 
+/* ============================== ANTI-AUTOFILL ===============================
+   El panel es una herramienta interna: ningun campo debe autocompletarse ni
+   conservar lo que se escribio antes. Chrome ignora autocomplete="off" en
+   varios casos y ademas restaura valores al recargar (form restoration) y al
+   volver con atras (bfcache), asi que no alcanza con el atributo en el HTML:
+   1) se marcan todos los inputs (incluye los del drawer, que se generan por JS),
+   2) al filtro se le pone un name aleatorio en cada carga, para que no haya
+      historial guardado que el navegador pueda asociar a ese campo, y
+   3) se limpia el filtro activamente en el arranque, en el siguiente frame y
+      al volver desde bfcache.
+   ========================================================================= */
+function disableAutofill(root) {
+  (root || document).querySelectorAll("input, textarea").forEach(el => {
+    if (el.type === "file") return;
+    el.setAttribute("autocomplete", "off");
+    el.setAttribute("autocorrect", "off");
+    el.setAttribute("autocapitalize", "off");
+    el.setAttribute("spellcheck", "false");
+    el.setAttribute("data-lpignore", "true");   // LastPass
+    el.setAttribute("data-1p-ignore", "");      // 1Password
+    el.setAttribute("data-bwignore", "");       // Bitwarden
+    el.setAttribute("data-form-type", "other"); // Dashlane
+  });
+}
+
+function resetSearchFilter(rerender) {
+  const el = $("#p-search");
+  if (!el) return;
+  // name aleatorio: sin nombre estable, el navegador no tiene con que
+  // emparejar lo que se escribio en cargas anteriores.
+  el.setAttribute("name", "f" + Math.random().toString(36).slice(2, 10));
+  if (el.value) {
+    el.value = "";
+    if (rerender && catalogLoaded) renderProductGrid();
+  }
+}
+
+// bfcache / boton atras: el navegador reinyecta el valor viejo despues de load.
+window.addEventListener("pageshow", () => resetSearchFilter(true));
+
 /* ============================== NAV / PANELES ================================ */
 function switchPanel(name) {
   $$(".navbtn").forEach(b => b.classList.toggle("active", b.getAttribute("data-panel") === name));
@@ -1530,9 +1571,15 @@ $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "edito
 
 /* ============================== INIT =========================================== */
 (function init() {
+  disableAutofill();
+  resetSearchFilter(false);          // antes del primer render: filtro siempre vacio
   populateCategoryFilter();
   renderProductGrid();
   session.pat = localStorage.getItem("stike_admin_pat") || "";
   showApp();
+  // Chrome restaura valores DESPUES del load: se vuelve a limpiar en el
+  // siguiente frame y un instante despues, por si llega tarde.
+  requestAnimationFrame(() => resetSearchFilter(true));
+  setTimeout(() => resetSearchFilter(true), 250);
   window.STIKE_ADMIN_BOOTED = true;
 })();
