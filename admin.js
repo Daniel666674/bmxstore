@@ -779,7 +779,10 @@ function renderProductGrid() {
           <span class="stockline">${stockTxt}</span>
         </div>
         <div class="subline mono">${p.sku}</div>
-        <div class="foot"><button class="btn ghost sm" data-edit="${p.slug}">Editar</button></div>
+        <div class="foot">
+          <button class="btn ghost sm" data-edit="${p.slug}">Editar</button>
+          <button class="btn cyan sm" data-sell="${p.slug}" ${out ? "disabled title=\"Sin stock\"" : ""}>Vender</button>
+        </div>
       </div>
     </article>`;
   }).join("");
@@ -792,6 +795,7 @@ function renderProductGrid() {
     ? `${visible.length} de ${workingCatalog.length} producto${workingCatalog.length === 1 ? "" : "s"}`
     : "";
   $$("#product-grid [data-edit]").forEach(b => b.addEventListener("click", () => openEditor(b.getAttribute("data-edit"))));
+  $$("#product-grid [data-sell]").forEach(b => b.addEventListener("click", () => openQuickSale(b.getAttribute("data-sell"))));
   populateSaleProductSelect();
 }
 const STIKE_LOW_STOCK_ADMIN = 5;
@@ -1134,15 +1138,18 @@ function updateSaleStockHint() {
   const stock = stikeStockFor(p, size, color);
   $("#sale-stock-hint").textContent = stock == null ? "Elige talla/color para ver el stock disponible." : `Stock disponible para esa combinación: ${stock}`;
 }
-async function registrarVenta() {
-  const p = workingCatalog.find(x => x.slug === $("#sale-product").value);
-  if (!p) return;
-  const size = p.sizes ? $("#sale-size").value : null;
-  const color = p.colors ? $("#sale-color").value : null;
-  const qty = Math.max(1, parseInt($("#sale-qty").value) || 1);
-  const unitPrice = Math.max(0, parseInt($("#sale-price").value) || p.price);
+/* Nucleo de "registrar venta": valida stock, lo descuenta, arma la entrada
+   del log y la persiste (o la deja solo en memoria en modo demo). Lo usan
+   las DOS entradas: el formulario del panel Ventas y el boton "Vender" de
+   cada tarjeta del inventario. Devuelve true si la venta se registro. */
+async function applySale(p, opts) {
+  if (!p) return false;
+  const size = (p.sizes && p.sizes.length) ? (opts.size || null) : null;
+  const color = (p.colors && p.colors.length) ? (opts.color || null) : null;
+  const qty = Math.max(1, parseInt(opts.qty) || 1);
+  const unitPrice = Math.max(0, parseInt(opts.unitPrice) || p.price);
   const stock = stikeStockFor(p, size, color);
-  if (stock != null && qty > stock) { alert(`Solo hay ${stock} unidades disponibles para esa combinación.`); return; }
+  if (stock != null && qty > stock) { alert(`Solo hay ${stock} unidades disponibles para esa combinación.`); return false; }
 
   if (p.sizes && size) { const row = p.sizes.find(s => s.v === size); row.u = Math.max(0, row.u - qty); }
   if (p.colors && color) { const row = p.colors.find(c => c.v === color); row.u = Math.max(0, row.u - qty); }
@@ -1172,7 +1179,111 @@ async function registrarVenta() {
   renderSalesTab();
   renderKpis();
   renderProductGrid();
+  return true;
 }
+
+/* Entrada 1: formulario completo del panel Ventas. */
+async function registrarVenta() {
+  const p = workingCatalog.find(x => x.slug === $("#sale-product").value);
+  if (!p) return;
+  await applySale(p, {
+    size: p.sizes ? $("#sale-size").value : null,
+    color: p.colors ? $("#sale-color").value : null,
+    qty: $("#sale-qty").value,
+    unitPrice: $("#sale-price").value,
+  });
+}
+
+/* ===================== Entrada 2: venta rapida desde la tarjeta ==============
+   Un boton "Vender" en cada producto del inventario abre este modal chico con
+   talla/color/cantidad/precio ya resueltos para ese producto: es el camino
+   corto para el dia a dia del mostrador, sin pasar por el panel Ventas.
+   ========================================================================= */
+let quickSaleSlug = null;
+
+function openQuickSale(slug) {
+  if (!workingCatalog.find(x => x.slug === slug)) return;
+  quickSaleSlug = slug;
+  renderQuickSale();
+  $("#sale-overlay").classList.add("open");
+}
+function closeQuickSale() {
+  $("#sale-overlay").classList.remove("open");
+  quickSaleSlug = null;
+}
+
+function renderQuickSale() {
+  const p = workingCatalog.find(x => x.slug === quickSaleSlug);
+  if (!p) return;
+  const sizes = p.sizes || [], colors = p.colors || [];
+  const img = (p.imgs && p.imgs[0]) ? previewSrcFor(p.imgs[0]) : stikeProductImage(p, 200);
+  const opt = (row, agotadoTxt) =>
+    `<option value="${escAttr(row.v)}" ${row.u <= 0 ? "disabled" : ""}>${row.v}${row.u <= 0 ? ` (${agotadoTxt})` : ` — ${row.u} disp.`}</option>`;
+
+  $("#sale-modal").innerHTML = `
+    <div class="qs-head">
+      <img src="${img}" alt="">
+      <div>
+        <div style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--cyan)">${p.brand}</div>
+        <h3>${p.n}</h3>
+        <div class="mono muted" style="font-size:11.5px">${p.sku}</div>
+      </div>
+    </div>
+    ${sizes.length ? `<div class="field"><label>Talla</label><select id="qs-size">${sizes.map(s => opt(s, "agotada")).join("")}</select></div>` : ""}
+    ${colors.length ? `<div class="field"><label>Color</label><select id="qs-color">${colors.map(c => opt(c, "agotado")).join("")}</select></div>` : ""}
+    <div class="grid-2">
+      <div class="field"><label>Cantidad</label><input id="qs-qty" type="number" min="1" value="1"></div>
+      <div class="field"><label>Precio unitario</label><input id="qs-price" type="number" min="0" step="1000" value="${p.price}"></div>
+    </div>
+    <p class="hint muted" id="qs-stock"></p>
+    <div class="qs-total"><span class="muted">Total</span><b id="qs-total">${money(p.price)}</b></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn ghost" id="qs-cancel" style="flex:1">Cancelar</button>
+      <button class="btn cyan" id="qs-confirm" style="flex:2">Registrar venta</button>
+    </div>`;
+
+  ["#qs-size", "#qs-color", "#qs-qty", "#qs-price"].forEach(sel => {
+    const el = $(sel);
+    if (el) { el.addEventListener("change", refreshQuickSale); el.addEventListener("input", refreshQuickSale); }
+  });
+  $("#qs-cancel").addEventListener("click", closeQuickSale);
+  $("#qs-confirm").addEventListener("click", confirmQuickSale);
+  disableAutofill($("#sale-modal"));
+  refreshQuickSale();
+}
+
+function refreshQuickSale() {
+  const p = workingCatalog.find(x => x.slug === quickSaleSlug);
+  if (!p) return;
+  const size = $("#qs-size") ? $("#qs-size").value : null;
+  const color = $("#qs-color") ? $("#qs-color").value : null;
+  const stock = stikeStockFor(p, size, color);
+  const qtyEl = $("#qs-qty");
+  let qty = Math.max(1, parseInt(qtyEl.value) || 1);
+  if (stock != null && qty > stock) { qty = Math.max(1, stock); qtyEl.value = qty; }  // nunca dejar pedir mas de lo que hay
+  if (stock != null) qtyEl.max = Math.max(1, stock);
+
+  const unitPrice = Math.max(0, parseInt($("#qs-price").value) || 0);
+  $("#qs-total").textContent = money(unitPrice * qty);
+  $("#qs-stock").textContent = stock == null ? "" :
+    stock <= 0 ? "Sin stock para esa combinación." : `Stock disponible: ${stock}`;
+  $("#qs-confirm").disabled = (stock != null && stock <= 0);
+}
+
+async function confirmQuickSale() {
+  const p = workingCatalog.find(x => x.slug === quickSaleSlug);
+  if (!p) return;
+  $("#qs-confirm").disabled = true;
+  const ok = await applySale(p, {
+    size: $("#qs-size") ? $("#qs-size").value : null,
+    color: $("#qs-color") ? $("#qs-color").value : null,
+    qty: $("#qs-qty").value,
+    unitPrice: $("#qs-price").value,
+  });
+  if (ok) closeQuickSale();
+  else $("#qs-confirm").disabled = false;
+}
+
 function renderSalesTab() {
   populateSaleProductSelect();
 
@@ -1568,6 +1679,8 @@ $("#sale-color").addEventListener("change", updateSaleStockHint);
 $("#btn-registrar-venta").addEventListener("click", registrarVenta);
 $("#btn-save-content").addEventListener("click", saveSiteContent);
 $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "editor-overlay") closeEditor(); });
+$("#sale-overlay").addEventListener("click", e => { if (e.target.id === "sale-overlay") closeQuickSale(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && quickSaleSlug) closeQuickSale(); });
 
 /* ============================== INIT =========================================== */
 (function init() {

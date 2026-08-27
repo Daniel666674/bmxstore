@@ -141,6 +141,15 @@ tr:hover td{background:var(--bg-2)}
 @media(max-width:1100px){.pgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.pgrid{grid-template-columns:1fr}}
 
+/* ---- venta rapida desde la tarjeta ---- */
+.overlay.center{align-items:center;justify-content:center}
+.modal{width:min(440px,calc(100% - 32px));background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px;max-height:90vh;overflow:auto}
+.qs-head{display:flex;gap:13px;align-items:center;margin-bottom:18px}
+.qs-head img{width:66px;height:66px;object-fit:contain;background:#f3f3f3;border-radius:10px;flex:none}
+.qs-head h3{font-size:17px;margin:2px 0 3px}
+.qs-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);margin-top:14px;padding-top:13px}
+.qs-total b{font-family:Oswald,Arial Narrow,sans-serif;font-size:25px}
+
 /* ---- banner modo demo ---- */
 .demo-banner{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(120deg,#1b1a10,#141417);border:1px solid #3a3320;border-left:3px solid var(--yellow);border-radius:var(--radius);padding:13px 16px;margin-bottom:18px}
 .demo-banner b{color:var(--yellow)}
@@ -363,12 +372,13 @@ tr:hover td{background:var(--bg-2)}
 </div>
 
 <div class="overlay" id="editor-overlay"><div class="drawer" id="editor-drawer"></div></div>
+<div class="overlay center" id="sale-overlay"><div class="modal" id="sale-modal"></div></div>
 <div class="status" id="status-box"></div>
 
 <script src="assets/js/products-data.js?v=2"></script>
 <script src="assets/js/data.js?v=2"></script>
 <script src="assets/js/pdp-render.js?v=2"></script>
-<script src="admin.js?v=8"></script>
+<script src="admin.js?v=9"></script>
 <script>
   // Service worker propio del panel: solo cachea el logo del shell, nunca
   // admin.html/admin.js (ver admin-sw.js).
