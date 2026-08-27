@@ -638,7 +638,7 @@ function renderProductTable() {
       const dirty = dirtySlugs.has(p.slug) ? `<span class="pill dirty">sin publicar</span>` : "";
       const img = (p.imgs && p.imgs[0]) ? previewSrcFor(p.imgs[0]) : stikeProductImage(p, 80);
       return `<tr data-slug="${p.slug}">
-        <td><div class="imgcell"><img src="${img}" loading="lazy" alt=""></div></td>
+        <td><div class="imgcell"><img src="${img}" alt=""></div></td>
         <td><b>${p.n}</b><div class="muted" style="font-size:11.5px">${p.brand}</div></td>
         <td>${p.cat}${p.sub ? " · " + p.sub : ""}</td>
         <td class="mono">${p.sku}</td>
@@ -1275,4 +1275,5 @@ $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "edito
   renderProductTable();
   session.pat = localStorage.getItem("stike_admin_pat") || "";
   showApp();
+  window.STIKE_ADMIN_BOOTED = true;
 })();
