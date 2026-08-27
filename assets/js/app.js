@@ -30,7 +30,7 @@ const SOCICO_WA = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.or
 /* Real Stike emblem, vector-traced from the brand artwork (white on transparent) */
 function stikeLogoSVG(size) {
   size = size || 46;
-  return `<img class="logo" src="assets/img/logo-stike.svg" alt="Stike Bike Shop" style="height:${size}px;width:auto" />`;
+  return `<img class="logo" src="/assets/img/logo-stike.svg" alt="Stike Bike Shop" style="height:${size}px;width:auto" />`;
 }
 
 /* ----------------------------- CARRITO --------------------------------- */
@@ -44,22 +44,29 @@ function stikeSaveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   stikeUpdateCartBadge();
 }
-/* Clave única de línea: mismo producto en distinta talla = línea distinta */
+/* Clave única de línea: mismo producto en distinta talla/color = línea distinta */
 function stikeLineKey(item) {
-  return item.id + (item.size ? "::" + item.size : "");
+  return item.slug + (item.size ? "::s:" + item.size : "") + (item.color ? "::c:" + item.color : "");
 }
-function stikeAddToCart(id, qty, size) {
+function stikeAddToCart(slug, qty, size, color) {
   qty = qty || 1;
   size = size || null;
+  color = color || null;
   const cart = stikeGetCart();
-  const row = cart.find(r => r.id === id && (r.size || null) === size);
+  const row = cart.find(r => r.slug === slug && (r.size || null) === size && (r.color || null) === color);
   if (row) row.qty += qty;
-  else cart.push(size ? { id, qty, size } : { id, qty });
+  else {
+    const item = { slug, qty };
+    if (size) item.size = size;
+    if (color) item.color = color;
+    cart.push(item);
+  }
   stikeSaveCart(cart);
-  const p = stikeFindProduct(id);
-  stikeToast((p ? p.name : "Producto") + (size ? " (" + size + ")" : "") + " agregado al carrito");
+  const p = stikeFindProduct(slug);
+  const variant = [size, color].filter(Boolean).join(" / ");
+  stikeToast((p ? p.n : "Producto") + (variant ? " (" + variant + ")" : "") + " agregado al carrito");
 }
-/* Actualizar / quitar operan por clave de línea (id o id::talla) */
+/* Actualizar / quitar operan por clave de línea (slug + talla + color) */
 function stikeUpdateQty(key, qty) {
   const cart = stikeGetCart();
   const row = cart.find(r => stikeLineKey(r) === key);
@@ -75,7 +82,7 @@ function stikeCartCount() {
 }
 function stikeCartTotal() {
   return stikeGetCart().reduce((sum, r) => {
-    const p = stikeFindProduct(r.id);
+    const p = stikeFindProduct(r.slug);
     return sum + (p ? p.price * r.qty : 0);
   }, 0);
 }
@@ -104,32 +111,37 @@ function stikeToast(msg) {
 
 /* ------------------------- TARJETA DE PRODUCTO ------------------------- */
 const STIKE_LOW_STOCK = 5;
+function stikeProductUrl(p) { return `/producto/${p.slug}.html`; }
 function stikeProductCard(p) {
-  const badge = p.badge === "promo" ? `<span class="badge promo">Oferta</span>`
-              : p.badge === "new" ? `<span class="badge new">Nuevo</span>`
-              : p.stock === 0 ? `<span class="badge sold">Agotado</span>` : "";
+  const total = stikeTotalStock(p);
+  const out = stikeIsOutOfStock(p);
+  const badge = out ? `<span class="badge sold">Agotado</span>`
+              : p.promo ? `<span class="badge promo">Oferta</span>`
+              : p.tag === "new" ? `<span class="badge new">Nuevo</span>` : "";
   const oldPrice = p.old ? `<span class="old">${stikePrice(p.old)}</span>` : "";
-  const lowStock = (p.stock > 0 && p.stock <= STIKE_LOW_STOCK)
-    ? `<span class="stock-low">Solo ${p.stock} ${p.stock === 1 ? "unidad" : "unidades"}</span>` : "";
-  const hasSizes = !!stikeSizesFor(p);
-  const cta = p.stock === 0
-    ? `<a class="btn cyan sm block" href="producto.html?id=${p.id}">Ver producto</a>`
-    : hasSizes
-      ? `<a class="btn cyan sm block" href="producto.html?id=${p.id}">Elegir talla</a>`
-      : `<button class="btn cyan sm add block" data-add="${p.id}">Agregar al carrito</button>`;
+  const lowStock = (!out && total > 0 && total <= STIKE_LOW_STOCK)
+    ? `<span class="stock-low">Solo ${total} ${total === 1 ? "unidad" : "unidades"}</span>` : "";
+  const hasVariants = !!(p.sizes || p.colors);
+  const url = stikeProductUrl(p);
+  const cta = out
+    ? `<a class="btn cyan sm block" href="${url}">Ver producto</a>`
+    : hasVariants
+      ? `<a class="btn cyan sm block" href="${url}">${p.sizes ? "Elegir talla" : "Elegir color"}</a>`
+      : `<button class="btn cyan sm add block" data-add="${p.slug}">Agregar al carrito</button>`;
   return `
   <article class="card">
     <div class="thumb">
       ${badge}
       <button class="fav" title="Guardar" aria-label="Guardar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
-      <a href="producto.html?id=${p.id}">
-        <img src="${stikeProductImage(p, 600)}" alt="${p.name}" loading="lazy">
+      <a href="${url}">
+        <img src="${stikeProductImage(p, 600)}" alt="${p.n}" loading="lazy">
       </a>
     </div>
     <div class="body">
       <span class="brandline">${p.brand}</span>
-      <div class="title"><a href="producto.html?id=${p.id}">${p.name}</a></div>
+      <div class="title"><a href="${url}">${p.n}</a></div>
       <div class="price">${stikePrice(p.price)} ${oldPrice}</div>
+      ${stikeVariantChips(p)}
       ${lowStock}
       ${cta}
     </div>
@@ -141,14 +153,14 @@ function stikeNavDropdown(cat) {
   if (!cat.subs.length) return "";
   if (cat.slug === "repuestos") {
     const items = cat.subs.map(s =>
-      `<a href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
+      `<a href="/tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
     return `<div class="dropdown mega">
-      <a href="tienda.html?cat=${cat.slug}" style="grid-column:1/-1" class="col-title">Ver todos los repuestos →</a>
+      <a href="/tienda.html?cat=${cat.slug}" style="grid-column:1/-1" class="col-title">Ver todos los repuestos →</a>
       ${items}
     </div>`;
   }
   const items = cat.subs.map(s =>
-    `<a href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
+    `<a href="/tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
   return `<div class="dropdown">${items}</div>`;
 }
 
@@ -161,7 +173,7 @@ function stikeRenderHeader(active) {
     const accent = cat.slug === "promo" ? ` data-accent="promo"` : "";
     const caret = cat.subs.length ? `<span class="caret"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>` : "";
     return `<li class="${isActive}${hasMega}">
-      <a href="tienda.html?cat=${cat.slug}"${accent}>${cat.name}${caret}</a>
+      <a href="/tienda.html?cat=${cat.slug}"${accent}>${cat.name}${caret}</a>
       ${stikeNavDropdown(cat)}
     </li>`;
   }).join("");
@@ -180,7 +192,7 @@ function stikeRenderHeader(active) {
   <header class="site-header">
     <div class="wrap">
       <div class="header-main">
-        <a class="brand" href="index.html">
+        <a class="brand" href="/index.html">
           ${stikeLogoSVG(52)}
           <span class="name">Stike<small>BIKE SHOP · BOGOTÁ</small></span>
         </a>
@@ -190,9 +202,9 @@ function stikeRenderHeader(active) {
         </form>
         <div class="header-actions">
           <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
-          <a class="icon-btn hide-mobile" href="nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
-          <a class="icon-btn hide-mobile" href="contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
-          <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
+          <a class="icon-btn hide-mobile" href="/nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
+          <a class="icon-btn hide-mobile" href="/contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
+          <a class="icon-btn" href="/carrito.html" title="Carrito" aria-label="Carrito">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             <span class="cart-count">0</span>
           </a>
@@ -203,11 +215,11 @@ function stikeRenderHeader(active) {
     <nav class="site-nav" id="site-nav">
       <div class="wrap">
         <ul class="nav-list">
-          <li class="${active === 'home' ? 'active' : ''}"><a href="index.html">Inicio</a></li>
+          <li class="${active === 'home' ? 'active' : ''}"><a href="/index.html">Inicio</a></li>
           ${navItems}
-          <li class="${active === 'marcas' ? 'active' : ''}"><a href="marcas.html">Marcas</a></li>
-          <li class="${active === 'blog' ? 'active' : ''}"><a href="blog.html">Blog</a></li>
-          <li class="nav-build ${active === 'armar' ? 'active' : ''}"><a href="armar.html"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Arma tu BMX</a></li>
+          <li class="${active === 'marcas' ? 'active' : ''}"><a href="/marcas.html">Marcas</a></li>
+          <li class="${active === 'blog' ? 'active' : ''}"><a href="/blog.html">Blog</a></li>
+          <li class="nav-build ${active === 'armar' ? 'active' : ''}"><a href="/armar.html"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Arma tu BMX</a></li>
         </ul>
       </div>
     </nav>
@@ -297,9 +309,9 @@ function stikeRenderSearchOverlay() {
   inp.addEventListener("keydown", stikeSearchKeydown);
 }
 function stikeSearchRow(p) {
-  return `<a class="sr-row" href="producto.html?id=${p.id}">
+  return `<a class="sr-row" href="${stikeProductUrl(p)}">
     <span class="sr-thumb"><img src="${stikeProductImage(p, 120)}" alt="" loading="lazy"></span>
-    <span class="sr-meta"><span class="sr-name">${p.name}</span><span class="sr-brand">${p.brand}</span></span>
+    <span class="sr-meta"><span class="sr-name">${p.n}</span><span class="sr-brand">${p.brand}</span></span>
     <span class="sr-price">${stikePrice(p.price)}</span>
   </a>`;
 }
@@ -308,28 +320,28 @@ function stikeSearchRender(q) {
   if (!box) return;
   q = (q || "").trim().toLowerCase();
   if (!q) {
-    const cats = STIKE_CATEGORIES.map(c => `<a class="sr-chip" href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
+    const cats = STIKE_CATEGORIES.map(c => `<a class="sr-chip" href="/tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
     const pop = STIKE_PRODUCTS.slice(0, 4).map(stikeSearchRow).join("");
     box.innerHTML = `<div class="sr-section"><div class="sr-head">Explora</div><div class="sr-chips">${cats}</div></div>
       <div class="sr-section"><div class="sr-head">Destacados</div>${pop}</div>`;
     return;
   }
   const prods = STIKE_PRODUCTS.filter(p =>
-    (p.name + " " + p.brand + " " + (p.sub || "") + " " + p.cat).toLowerCase().includes(q)).slice(0, 7);
+    (p.n + " " + p.brand + " " + (p.sub || "") + " " + p.cat).toLowerCase().includes(q)).slice(0, 7);
   const brands = STIKE_BRANDS.filter(b => b.toLowerCase().includes(q)).slice(0, 4);
   const cats = STIKE_CATEGORIES.filter(c => c.name.toLowerCase().includes(q));
   let html = "";
   if (cats.length || brands.length) {
     html += `<div class="sr-section"><div class="sr-head">Sugerencias</div><div class="sr-chips">` +
-      cats.map(c => `<a class="sr-chip" href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("") +
-      brands.map(b => `<a class="sr-chip" href="tienda.html?brand=${encodeURIComponent(b)}">${b}</a>`).join("") +
+      cats.map(c => `<a class="sr-chip" href="/tienda.html?cat=${c.slug}">${c.name}</a>`).join("") +
+      brands.map(b => `<a class="sr-chip" href="/tienda.html?brand=${encodeURIComponent(b)}">${b}</a>`).join("") +
       `</div></div>`;
   }
   if (prods.length) {
     html += `<div class="sr-section"><div class="sr-head">Productos</div>${prods.map(stikeSearchRow).join("")}</div>`;
-    html += `<a class="sr-all" href="tienda.html?q=${encodeURIComponent(q)}">Ver todos los resultados de “${q}” →</a>`;
+    html += `<a class="sr-all" href="/tienda.html?q=${encodeURIComponent(q)}">Ver todos los resultados de “${q}” →</a>`;
   } else if (!cats.length && !brands.length) {
-    html = `<div class="sr-empty">Sin resultados para “${q}”.<br><a href="tienda.html?q=${encodeURIComponent(q)}">Buscar en toda la tienda →</a></div>`;
+    html = `<div class="sr-empty">Sin resultados para “${q}”.<br><a href="/tienda.html?q=${encodeURIComponent(q)}">Buscar en toda la tienda →</a></div>`;
   }
   box.innerHTML = html;
 }
@@ -368,7 +380,7 @@ function stikeCloseSearch() {
 function stikeRenderFooter() {
   const C = STIKE_CONFIG;
   const catLinks = STIKE_CATEGORIES.map(c =>
-    `<a href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
+    `<a href="/tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
   const footer = `
   <section class="cta-band">
     <div class="wrap">
@@ -395,17 +407,17 @@ function stikeRenderFooter() {
         <div>
           <h5>Tienda</h5>
           ${catLinks}
-          <a href="marcas.html">Marcas</a>
-          <a href="armar.html">Arma tu BMX</a>
-          <a href="blog.html">Blog</a>
+          <a href="/marcas.html">Marcas</a>
+          <a href="/armar.html">Arma tu BMX</a>
+          <a href="/blog.html">Blog</a>
         </div>
         <div>
           <h5>Ayuda</h5>
-          <a href="contacto.html">Contacto</a>
-          <a href="nosotros.html">Nosotros</a>
-          <a href="contacto.html#envios">Envíos y entregas</a>
-          <a href="contacto.html#faq">Preguntas frecuentes</a>
-          <a href="carrito.html">Mi carrito</a>
+          <a href="/contacto.html">Contacto</a>
+          <a href="/nosotros.html">Nosotros</a>
+          <a href="/contacto.html#envios">Envíos y entregas</a>
+          <a href="/contacto.html#faq">Preguntas frecuentes</a>
+          <a href="/carrito.html">Mi carrito</a>
         </div>
         <div>
           <h5>Boletín</h5>
@@ -505,6 +517,26 @@ function stikeFloatingWA() {
   document.body.appendChild(a);
 }
 
+/* ------------------------- CONTENIDO EDITABLE --------------------------
+   Manifest plano (data/site-content.json) que el admin edita en la pestaña
+   "Contenido del sitio". Se aplica por PRESENCIA de clave: una clave que el
+   admin nunca toco no aparece en el archivo y el elemento se queda con su
+   texto por defecto (el que ya trae el HTML); una clave guardada en blanco
+   a proposito SI aparece (valor "") y el elemento se vacia. */
+function stikeApplyContent() {
+  const els = document.querySelectorAll("[data-content-key]");
+  if (!els.length) return;
+  fetch("/data/site-content.json", { cache: "no-store" })
+    .then(r => r.ok ? r.json() : {})
+    .catch(() => ({}))
+    .then(content => {
+      els.forEach(el => {
+        const key = el.getAttribute("data-content-key");
+        if (Object.prototype.hasOwnProperty.call(content, key)) el.textContent = content[key];
+      });
+    });
+}
+
 /* Init común para todas las páginas */
 function stikeInit(active) {
   stikeRenderHeader(active);
@@ -512,4 +544,5 @@ function stikeInit(active) {
   stikeFloatingWA();
   stikeRenderSearchOverlay();
   stikeRenderNewsletterPopup();
+  stikeApplyContent();
 }
