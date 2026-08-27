@@ -151,16 +151,14 @@ tr:hover td{background:var(--bg-2)}
     <h1>Panel Stike</h1>
     <p class="sub">Inventario &amp; ventas. Acceso interno.</p>
     <form id="gate-form">
-      <label for="g-name">Tu nombre</label>
-      <input id="g-name" type="text" autocomplete="name" required>
       <label for="g-email">Tu correo</label>
       <input id="g-email" type="email" autocomplete="email" required>
-      <label for="g-pass">Clave del equipo</label>
+      <label for="g-pass">Clave</label>
       <input id="g-pass" type="password" autocomplete="current-password" required>
       <div class="gate-err" id="gate-err"></div>
       <button class="btn cyan" type="submit" style="width:100%;margin-top:10px">Entrar</button>
     </form>
-    <p class="gate-note">Demo: acceso por clave compartida + tu correo (no es Google OAuth real). Tu correo queda en cada commit como firma de auditoría. Además necesitas un token personal de GitHub con permiso de escritura sobre este repo — te lo pide la app en "Configuración" la primera vez.</p>
+    <p class="gate-note">Demo: acceso por clave compartida. Tu correo queda como firma en cada commit y define si entrás como dueño o editor.</p>
   </div>
 </div>
 
@@ -292,7 +290,7 @@ tr:hover td{background:var(--bg-2)}
 <script src="/assets/js/products-data.js?v=1"></script>
 <script src="/assets/js/data.js?v=1"></script>
 <script src="/assets/js/pdp-render.js?v=1"></script>
-<script src="/admin.js?v=1"></script>
+<script src="/admin.js?v=2"></script>
 <script>
   // Service worker propio del panel: solo cachea el logo del shell, nunca
   // admin.html/admin.js (ver admin-sw.js).

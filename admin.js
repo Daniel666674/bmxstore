@@ -1201,9 +1201,10 @@ function showApp() {
 
 $("#gate-form").addEventListener("submit", e => {
   e.preventDefault();
-  const name = $("#g-name").value.trim(), email = $("#g-email").value.trim(), pass = $("#g-pass").value;
+  const email = $("#g-email").value.trim(), pass = $("#g-pass").value;
   if (pass !== CONFIG.passcode) { $("#gate-err").textContent = "Clave incorrecta."; return; }
-  if (!name || !email) { $("#gate-err").textContent = "Falta tu nombre o correo."; return; }
+  if (!email) { $("#gate-err").textContent = "Falta tu correo."; return; }
+  const name = email.split("@")[0];
   session = { name, email, role: roleFor(email), pat: localStorage.getItem("stike_admin_pat") || "" };
   saveSession(session);
   showApp();
