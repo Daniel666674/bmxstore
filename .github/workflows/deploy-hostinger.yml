@@ -8,6 +8,13 @@ on:
     branches: ["claude/sweet-albattani-ti0w0e"]
   workflow_dispatch:
 
+# Rapid admin edits (each "Publicar cambios" in admin.html is its own commit)
+# collapse into a single deploy of the final state instead of one deploy per
+# commit: a new push cancels whatever deploy is still running.
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: true
+
 jobs:
   ftp-deploy:
     runs-on: ubuntu-latest
@@ -31,3 +38,5 @@ jobs:
             **/.github/**
             **/README.md
             **/PROPOSAL.md
+            **/_template.html
+            **/bmx-builder/**

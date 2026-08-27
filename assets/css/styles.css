@@ -295,6 +295,9 @@ body::after {
 .card .price { font-family: var(--display); font-size: 22px; margin-top: auto; }
 .card .price .old { font-family: var(--body); font-size: 14px; color: var(--muted); text-decoration: line-through; margin-left: 8px; font-weight: 400; }
 .card .add { margin-top: 8px; }
+.swatch-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.swatch { font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); background: var(--bg-3); }
+.swatch.out { text-decoration: line-through; opacity: .45; }
 
 /* =============================== VALUE PROPS =========================== */
 .props { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
@@ -750,6 +753,8 @@ body::after {
 .size-opt { min-width: 46px; height: 44px; padding: 0 12px; border-radius: 10px; background: var(--bg-3); border: 1.5px solid var(--line); color: var(--ink); font-family: var(--display); font-size: 16px; letter-spacing: .5px; transition: border-color .18s, background .18s, transform .18s; }
 .size-opt:hover { border-color: var(--accent); transform: translateY(-2px); }
 .size-opt.active { background: var(--ink); color: #09090a; border-color: var(--ink); }
+.size-opt.out, .size-opt:disabled { opacity: .35; text-decoration: line-through; cursor: not-allowed; }
+.size-opt.out:hover, .size-opt:disabled:hover { transform: none; border-color: var(--line); }
 .size-options.shake { animation: shake .42s; }
 @keyframes shake { 10%,90% { transform: translateX(-1px); } 20%,80% { transform: translateX(2px); } 30%,50%,70% { transform: translateX(-5px); } 40%,60% { transform: translateX(5px); } }
 

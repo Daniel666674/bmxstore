@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=1">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -86,8 +86,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/products-data.js?v=1"></script>
+  <script src="assets/js/data.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
   <script>
     stikeInit("armar");
 
@@ -204,14 +205,14 @@
         <div class="bstep-head"><span class="kicker">Componente ${current + 1} de ${STEPS.length}</span><h2>Elige tu ${step.label}</h2></div>
         <div class="boption-grid">
           <button class="boption skip ${!build[step.key] ? "active" : ""}" data-pick=""><span class="bopt-skip">Sin ${step.label.toLowerCase()}<small>Lo elijo después / lo tengo</small></span></button>
-          ${opts.map(p => `<button class="boption ${build[step.key] === p.id ? "active" : ""}" data-pick="${p.id}">
-            <span class="bopt-img"><img src="${stikeProductImage(p, 300)}" alt="${p.name}" loading="lazy"></span>
-            <span class="bopt-info"><span class="bopt-brand">${p.brand}</span><span class="bopt-name">${p.name}</span><span class="bopt-price">${stikePrice(p.price)}</span></span>
+          ${opts.map(p => `<button class="boption ${build[step.key] === p.slug ? "active" : ""}" data-pick="${p.slug}">
+            <span class="bopt-img"><img src="${stikeProductImage(p, 300)}" alt="${p.n}" loading="lazy"></span>
+            <span class="bopt-info"><span class="bopt-brand">${p.brand}</span><span class="bopt-name">${p.n}</span><span class="bopt-price">${stikePrice(p.price)}</span></span>
           </button>`).join("")}
         </div>`;
       wrap.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => {
-        const id = b.getAttribute("data-pick");
-        if (id) build[step.key] = id; else delete build[step.key];
+        const slug = b.getAttribute("data-pick");
+        if (slug) build[step.key] = slug; else delete build[step.key];
         if (current < STEPS.length - 1) current++;
         renderAll(); scrollBuilder();
       }));
@@ -219,16 +220,16 @@
     function renderSummary() {
       let total = 0;
       const html = STEPS.map(s => {
-        const id = build[s.key]; const p = id ? stikeFindProduct(id) : null;
+        const slug = build[s.key]; const p = slug ? stikeFindProduct(slug) : null;
         if (p) total += p.price;
-        return `<div class="build-row ${p ? "" : "empty"}"><span class="br-label">${s.label}</span><span class="br-val">${p ? p.name : "Sin elegir"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
+        return `<div class="build-row ${p ? "" : "empty"}"><span class="br-label">${s.label}</span><span class="br-val">${p ? p.n : "Sin elegir"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
       }).join("");
       document.getElementById("build-list").innerHTML = html;
       document.getElementById("build-total").textContent = stikePrice(total);
       document.getElementById("builder-profile").innerHTML =
         `<span class="bp-chip">Estilo: ${STYLES[selectedStyle].label}</span><span class="bp-chip">Tubo superior: ${recommendedTT}</span>`;
 
-      const chosen = STEPS.filter(s => build[s.key]).map(s => { const p = stikeFindProduct(build[s.key]); return `• ${s.label}: ${p.name}, ${stikePrice(p.price)}`; });
+      const chosen = STEPS.filter(s => build[s.key]).map(s => { const p = stikeFindProduct(build[s.key]); return `• ${s.label}: ${p.n}, ${stikePrice(p.price)}`; });
       const head = `Estilo: ${STYLES[selectedStyle].label} · Tubo superior ${recommendedTT}`;
       const msg = `Hola Stike! Quiero armar esta BMX:%0A${head}%0A%0A${chosen.join("%0A") || "(aún sin componentes)"}%0A%0ATotal estimado: ${stikePrice(total)}%0A%0A¿Me asesoran para completarla?`;
       document.getElementById("wa-build").href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${msg}`;
@@ -259,6 +260,6 @@
     renderSizing();
     renderAll();
   </script>
-  <script src="assets/js/animations.js"></script>
+  <script src="assets/js/animations.js?v=1"></script>
 </body>
 </html>

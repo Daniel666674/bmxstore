@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Stike: Inventario</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+/* =========================================================================
+   Panel admin: app self-contenida, sin build step ni framework. No hereda
+   assets/css/styles.css a proposito (es una herramienta interna, no una
+   pagina de la tienda) pero comparte paleta e identidad visual Stike.
+   ========================================================================= */
+:root{
+  --bg:#09090a; --bg-2:#0f0f11; --panel:#141417; --line:#232327; --ink:#f4f4f5; --muted:#8e8e96;
+  --cyan:#33e0ff; --lime:#c6ff3d; --pink:#ff4d8d; --yellow:#ffd23f; --orange:#ff8a3d; --purple:#b98cff;
+  --good:#5ee08a; --bad:#ff5d6c; --radius:12px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,Inter,Segoe UI,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:Oswald,Arial Narrow,sans-serif;text-transform:uppercase;letter-spacing:.5px;margin:0}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+input,select,textarea{font:inherit;background:var(--bg-2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 11px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--cyan);outline-offset:1px}
+.btn{background:var(--ink);color:#09090a;border:none;border-radius:999px;padding:10px 18px;font-weight:700;letter-spacing:.3px;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.cyan{background:var(--cyan);color:#04262c}
+.btn.bad{background:var(--bad);color:#2a0508}
+.btn.sm{padding:6px 12px;font-size:12px;border-radius:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:999px;background:var(--bg-2);border:1px solid var(--line);color:var(--muted)}
+.pill.dot::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.owner{color:var(--yellow);border-color:#3a3320}
+.pill.editor{color:var(--cyan);border-color:#1c3238}
+.pill.dirty{color:var(--orange);border-color:#3a2a1c}
+.pill.low{color:var(--yellow)}
+.pill.out{color:var(--bad)}
+
+/* ---- gate ---- */
+#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-card{width:100%;max-width:380px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:32px}
+.gate-card h1{font-size:26px;margin-bottom:4px}
+.gate-card p.sub{color:var(--muted);margin:0 0 22px;font-size:13px}
+.gate-card label{display:block;font-size:12px;color:var(--muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.gate-card input{width:100%}
+.gate-err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
+.gate-note{color:var(--muted);font-size:11.5px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px;line-height:1.6}
+
+/* ---- shell ---- */
+#app{display:none;min-height:100vh;grid-template-columns:220px 1fr}
+#app.show{display:grid}
+.side{background:var(--panel);border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.side .brand{font-family:Oswald,sans-serif;font-size:20px;text-transform:uppercase;padding:6px 10px 18px}
+.side .brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:1px}
+.navbtn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;background:none;border:none;color:var(--muted);text-align:left;font-weight:600}
+.navbtn:hover{background:var(--bg-2);color:var(--ink)}
+.navbtn.active{background:var(--bg-2);color:var(--ink);box-shadow:inset 3px 0 0 var(--cyan)}
+.side .spacer{flex:1}
+.side-foot{padding:10px;border-top:1px solid var(--line);margin-top:8px;font-size:12px;color:var(--muted)}
+
+main{padding:22px 26px 80px;max-width:1280px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.topbar h2{font-size:24px}
+.topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+
+.panel{display:none}
+.panel.active{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.card+.card{margin-top:14px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.kpi .n{font-family:Oswald,sans-serif;font-size:30px}
+.kpi .l{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+tr:hover td{background:var(--bg-2)}
+.imgcell{width:44px;height:44px;border-radius:8px;overflow:hidden;background:#1c1c1f}
+.imgcell img{width:100%;height:100%;object-fit:cover}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.toolbar input[type=search]{min-width:220px}
+.right{margin-left:auto}
+.muted{color:var(--muted)}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+/* ---- modal / drawer product editor ---- */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:flex-end;z-index:100}
+.overlay.open{display:flex}
+.drawer{width:min(640px,100%);height:100vh;background:var(--bg);border-left:1px solid var(--line);overflow-y:auto;padding:24px}
+.drawer h3{font-size:20px;margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+.field input,.field select,.field textarea{width:100%}
+.field .hint{font-size:11.5px;color:var(--muted);margin-top:4px}
+.field .err{font-size:11.5px;color:var(--bad);margin-top:4px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.stockTable{width:100%;border-collapse:collapse;margin-top:6px}
+.stockTable td{padding:4px 6px;border:none}
+.stockTable input{width:100%}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg-2);font-size:12px;cursor:pointer}
+.chip.active{background:var(--ink);color:#09090a;border-color:var(--ink)}
+
+/* ---- photo manager ---- */
+.photogrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
+.pthumb{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;border:1.5px solid var(--line);background:#1c1c1f;cursor:grab}
+.pthumb img{width:100%;height:100%;object-fit:cover}
+.pthumb.cover{border-color:var(--cyan)}
+.pthumb .cov-badge{position:absolute;top:4px;left:4px;background:var(--cyan);color:#04262c;font-size:9px;font-weight:800;padding:2px 6px;border-radius:5px;text-transform:uppercase}
+.pthumb .rm{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;border:none;font-size:12px;line-height:1}
+.pthumb select{position:absolute;bottom:4px;left:4px;right:4px;font-size:10px;padding:2px 4px;border-radius:5px}
+.pthumb.dragover{outline:2px dashed var(--cyan)}
+.uploadbox{border:1.5px dashed var(--line);border-radius:10px;padding:16px;text-align:center;color:var(--muted);font-size:12.5px;cursor:pointer}
+.uploadbox:hover{border-color:var(--accent,var(--cyan))}
+.cropbox{display:flex;gap:14px;align-items:center;margin-top:10px}
+.crop-grid{display:grid;grid-template-columns:repeat(3,22px);gap:4px}
+.crop-grid button{width:22px;height:22px;border-radius:4px;border:1px solid var(--line);background:var(--bg-2)}
+.crop-grid button.active{background:var(--cyan)}
+
+.status{position:fixed;bottom:18px;right:18px;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:12.5px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:200;display:none}
+.status.show{display:block}
+.status .line{padding:2px 0;color:var(--muted)}
+.status .line.ok{color:var(--good)}
+.status .line.bad{color:var(--bad)}
+.status .line.now{color:var(--ink)}
+
+.errlist{background:#2a1416;border:1px solid #4a1f22;border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.errlist h4{color:var(--bad);font-size:13px;margin-bottom:6px}
+.errlist li{color:#ffb3b8;font-size:12.5px}
+
+.spark{display:block}
+@media (max-width:900px){
+  #app.show{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:row;overflow-x:auto}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== GATE ============================== -->
+<div id="gate">
+  <div class="gate-card">
+    <h1>Panel Stike</h1>
+    <p class="sub">Inventario &amp; ventas. Acceso interno.</p>
+    <form id="gate-form">
+      <label for="g-name">Tu nombre</label>
+      <input id="g-name" type="text" autocomplete="name" required>
+      <label for="g-email">Tu correo</label>
+      <input id="g-email" type="email" autocomplete="email" required>
+      <label for="g-pass">Clave del equipo</label>
+      <input id="g-pass" type="password" autocomplete="current-password" required>
+      <div class="gate-err" id="gate-err"></div>
+      <button class="btn cyan" type="submit" style="width:100%;margin-top:10px">Entrar</button>
+    </form>
+    <p class="gate-note">Demo: acceso por clave compartida + tu correo (no es Google OAuth real). Tu correo queda en cada commit como firma de auditoría. Además necesitas un token personal de GitHub con permiso de escritura sobre este repo — te lo pide la app en "Configuración" la primera vez.</p>
+  </div>
+</div>
+
+<!-- ============================== APP ============================== -->
+<div id="app">
+  <nav class="side">
+    <div class="brand">Stike<small>PANEL ADMIN</small></div>
+    <button class="navbtn active" data-panel="productos">📦 Productos</button>
+    <button class="navbtn" data-panel="ventas">🧾 Ventas</button>
+    <button class="navbtn" data-panel="kpis">📈 KPIs</button>
+    <button class="navbtn" data-panel="auditoria">🕒 Auditoría</button>
+    <button class="navbtn" data-panel="contenido">✏️ Contenido del sitio</button>
+    <button class="navbtn" data-panel="config">⚙️ Configuración</button>
+    <div class="spacer"></div>
+    <div class="side-foot" id="session-info"></div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <h2 id="panel-title">Productos</h2>
+      <div class="topbar-actions">
+        <span class="pill dirty" id="dirty-pill" style="display:none"></span>
+        <button class="btn ghost sm" id="btn-refresh">↻ Recargar de GitHub</button>
+        <button class="btn cyan" id="btn-publish" disabled>Publicar cambios</button>
+      </div>
+    </div>
+
+    <!-- ---------------- Productos ---------------- -->
+    <section class="panel active" id="panel-productos">
+      <div class="toolbar">
+        <input type="search" id="p-search" placeholder="Buscar por nombre, marca, SKU...">
+        <select id="p-filter-cat"><option value="">Todas las categorías</option></select>
+        <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px"><input type="checkbox" id="p-filter-low"> Solo bajo/agotado</label>
+        <div class="right">
+          <button class="btn ghost sm" id="btn-export-csv">Exportar CSV</button>
+          <button class="btn ghost sm" id="btn-export-json">Exportar JSON</button>
+          <button class="btn ghost sm" id="btn-import">Importar</button>
+          <button class="btn ghost sm" id="btn-bulk-price">Ajustar precios %</button>
+          <button class="btn cyan sm" id="btn-new-product">+ Nuevo producto</button>
+        </div>
+      </div>
+      <input type="file" id="import-file" accept=".csv,.json" style="display:none">
+      <div class="card" style="padding:0;overflow:auto">
+        <table id="product-table">
+          <thead><tr>
+            <th></th><th>Nombre</th><th>Categoría</th><th>SKU</th><th>Precio</th><th>Stock</th><th>Estado</th><th></th>
+          </tr></thead>
+          <tbody id="product-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------------- Ventas ---------------- -->
+    <section class="panel" id="panel-ventas">
+      <div class="card">
+        <h3 style="margin-bottom:12px">Registrar venta</h3>
+        <div class="row3">
+          <div class="field"><label>Producto</label><select id="sale-product"></select></div>
+          <div class="field" id="sale-size-field" style="display:none"><label>Talla</label><select id="sale-size"></select></div>
+          <div class="field" id="sale-color-field" style="display:none"><label>Color</label><select id="sale-color"></select></div>
+        </div>
+        <div class="row3">
+          <div class="field"><label>Cantidad</label><input id="sale-qty" type="number" min="1" value="1"></div>
+          <div class="field"><label>Precio unitario (COP)</label><input id="sale-price" type="number" min="0" step="1000"></div>
+          <div class="field" style="display:flex;align-items:flex-end"><button class="btn cyan" id="btn-registrar-venta" style="width:100%">Registrar venta</button></div>
+        </div>
+        <p class="hint muted" id="sale-stock-hint"></p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:10px">Historial de ventas</h3>
+        <table><thead><tr><th>Fecha</th><th>Producto</th><th>Variante</th><th>Cant.</th><th>Total</th><th>Vendedor</th></tr></thead>
+        <tbody id="sales-tbody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ---------------- KPIs ---------------- -->
+    <section class="panel" id="panel-kpis">
+      <div class="grid-4" id="kpi-cards"></div>
+      <div class="card">
+        <h3 style="margin-bottom:10px">Ventas por día (últimos 30 días)</h3>
+        <svg id="kpi-chart" class="spark" viewBox="0 0 600 160" width="100%" height="160"></svg>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:10px">Top productos</h3>
+        <table><thead><tr><th>Producto</th><th>Unidades</th><th>Ingresos</th></tr></thead><tbody id="top-products-tbody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ---------------- Auditoría ---------------- -->
+    <section class="panel" id="panel-auditoria">
+      <div class="card">
+        <h3 style="margin-bottom:10px">Historial de publicaciones</h3>
+        <table><thead><tr><th>Fecha</th><th>Admin</th><th>Resumen</th></tr></thead><tbody id="audit-tbody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ---------------- Contenido del sitio ---------------- -->
+    <section class="panel" id="panel-contenido">
+      <div class="card">
+        <h3 style="margin-bottom:6px">Textos editables</h3>
+        <p class="hint muted" style="margin-bottom:14px">Un campo que dejas vacío a propósito se publica vacío. Un campo que nunca tocas mantiene el texto por defecto del sitio.</p>
+        <div id="content-fields"></div>
+        <button class="btn cyan" id="btn-save-content" style="margin-top:10px">Guardar en el borrador</button>
+      </div>
+    </section>
+
+    <!-- ---------------- Config ---------------- -->
+    <section class="panel" id="panel-config">
+      <div class="card">
+        <h3 style="margin-bottom:10px">Token de GitHub</h3>
+        <p class="hint muted">Personal Access Token (fine-grained) con permiso <b>Contents: Read and write</b> sobre <span class="mono" id="cfg-repo"></span>, rama <span class="mono" id="cfg-branch"></span>. Se guarda solo en este navegador (localStorage), nunca se publica.</p>
+        <div class="field" style="margin-top:10px"><input id="pat-input" type="password" placeholder="ghp_..."></div>
+        <button class="btn cyan sm" id="btn-save-pat">Guardar token</button>
+        <button class="btn ghost sm" id="btn-clear-pat">Borrar token</button>
+        <p class="hint" id="pat-status"></p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:10px">Sesión</h3>
+        <p class="hint muted">Cerrar sesión no borra el token guardado en este navegador.</p>
+        <button class="btn ghost sm" id="btn-logout">Cerrar sesión</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="overlay" id="editor-overlay"><div class="drawer" id="editor-drawer"></div></div>
+<div class="status" id="status-box"></div>
+
+<script src="/assets/js/products-data.js?v=1"></script>
+<script src="/assets/js/data.js?v=1"></script>
+<script src="/assets/js/pdp-render.js?v=1"></script>
+<script src="/admin.js?v=1"></script>
+<script>
+  // Service worker propio del panel: solo cachea el logo del shell, nunca
+  // admin.html/admin.js (ver admin-sw.js).
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/admin-sw.js").catch(() => {});
+</script>
+</body>
+</html>
