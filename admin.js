@@ -12,7 +12,7 @@
 const CONFIG = {
   owner: "Daniel666674",
   repo: "bmxstore",
-  // Rama que despliega FTP-Deploy-Action a Hostinger (ver .github/workflows/deploy-hostinger.yml).
+  // Rama que despliega a GitHub Pages (ver .github/workflows/deploy.yml).
   branch: "claude/sweet-albattani-ti0w0e",
   paths: {
     catalog: "assets/js/products-data.js",

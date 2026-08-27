@@ -49,11 +49,10 @@ contenidos de GitHub (`assets/js/products-data.js`, `producto/*.html`,
   pestaña "Configuración". Se guarda solo en `localStorage` de ese
   navegador, nunca se publica.
 - **Rama de publicación**: `CONFIG.branch` en `admin.js` (hoy
-  `claude/sweet-albattani-ti0w0e`, la misma que dispara el deploy FTP —
-  ver `.github/workflows/deploy-hostinger.yml`).
+  `claude/sweet-albattani-ti0w0e`, la misma que dispara el deploy a GitHub
+  Pages — ver `.github/workflows/deploy.yml`).
 - **Costos internos**: `data/costs.json` (nunca se publica en
-  `products-data.js` ni llega al sitio en vivo — está en el `exclude` del
-  deploy FTP igual que este README).
+  `products-data.js` ni aparece en la ficha de ningún producto).
 - **Reglas de correctitud** (uniqueness de slug/SKU en dos pasadas, nombres
   de foto aleatorios, merge de 3 vías campo por campo al publicar,
   reintento con backoff en conflictos 409, validación completa antes de
@@ -85,14 +84,23 @@ un token de GitHub real con acceso de escritura a este repo.
 
 ## 🚀 Deploy
 
-GitHub Actions (`.github/workflows/deploy-hostinger.yml`) sube todo por FTP
-a Hostinger en cada push a la rama configurada, vía
-`SamKirkland/FTP-Deploy-Action`. Requiere los secrets `FTP_SERVER`,
-`FTP_USERNAME`, `FTP_PASSWORD` (y opcionalmente `FTP_SERVER_DIR`) en la
-configuración del repo. `.htaccess` cachea HTML en 0 segundos y
-JS/CSS/imágenes/video un año como immutable — el cache-busting es el query
-string `?v=N` en cada referencia; si editás el CONTENIDO de un archivo
-compartido acordate de subir el número en todos los HTML que lo referencian.
+Esto es una demo sin hosting propio: **GitHub Pages es el único deploy
+real**. `.github/workflows/deploy.yml` publica todo el repo en cada push a
+la rama configurada (hoy `claude/sweet-albattani-ti0w0e`) usando
+`actions/deploy-pages`; no hace falta ningún secret, solo que "GitHub
+Actions" esté seleccionado como fuente en Settings → Pages del repo (ya
+lo estaba, porque el sitio ya vivía en
+`https://daniel666674.github.io/bmxstore/` antes de este cambio).
+
+`.htaccess` queda en el repo como referencia de la configuración
+(cacheo de 1 año immutable en JS/CSS/imágenes/video, HTML sin cache, CSP)
+que aplicaría si algún día esto se muda a un hosting real tipo Apache —
+GitHub Pages no lee `.htaccess` ni permite headers custom, así que hoy no
+está activo. El cache-busting real que SÍ aplica en Pages es el query
+string `?v=N` en cada referencia a un archivo compartido; si editás el
+CONTENIDO de `styles.css`/`data.js`/`app.js`/etc. acordate de subir ese
+número en todos los HTML que lo referencian, si no los visitantes con
+cache del navegador siguen viendo la versión vieja.
 
 ## 🗂️ Estructura
 

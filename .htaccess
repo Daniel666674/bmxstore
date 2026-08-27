@@ -1,6 +1,11 @@
 # =============================================================================
-# Stike Bike Shop — configuracion de cacheo y seguridad para hosting compartido
-# (Hostinger, detras de Cloudflare). Sitio 100% estatico, sin backend.
+# Stike Bike Shop — configuracion de cacheo y seguridad para un hosting
+# compartido tipo Apache. Sitio 100% estatico, sin backend.
+#
+# NO esta activo hoy: esta demo se despliega solo en GitHub Pages (ver
+# .github/workflows/deploy.yml), que no lee .htaccess ni permite headers
+# custom. Este archivo queda como referencia de la config real que
+# aplicaria si el sitio se muda a un hosting propio.
 #
 # Regla de cacheo (ver correctness rule #5 del panel admin):
 #   - HTML: nunca se cachea, cada carga refleja la ultima publicacion.
