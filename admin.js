@@ -625,7 +625,10 @@ function renderProductTable() {
         <td><button class="btn ghost sm" data-edit="${p.slug}">Editar</button></td>
       </tr>`;
     }).join("");
-  $("#product-tbody").innerHTML = rows || `<tr><td colspan="8" class="muted" style="padding:20px;text-align:center">Sin resultados.</td></tr>`;
+  const emptyMsg = !catalogLoaded
+    ? `Todavía no se cargó el catálogo — guarda tu token de GitHub en <b>Configuración</b> para verlo.`
+    : "Sin resultados.";
+  $("#product-tbody").innerHTML = rows || `<tr><td colspan="8" class="muted" style="padding:20px;text-align:center">${emptyMsg}</td></tr>`;
   $$("#product-tbody [data-edit]").forEach(b => b.addEventListener("click", () => openEditor(b.getAttribute("data-edit"))));
   populateSaleProductSelect();
 }
@@ -1177,8 +1180,21 @@ function showApp() {
   $("#cfg-repo").textContent = `${CONFIG.owner}/${CONFIG.repo}`;
   $("#cfg-branch").textContent = CONFIG.branch;
   $("#pat-status").textContent = session.pat ? "Token guardado en este navegador." : "Falta guardar tu token de GitHub (pestaña Configuración) para poder cargar/publicar.";
-  if (session.pat) loadAll().catch(e => showStatus([{ text: "Error cargando catálogo: " + e.message, cls: "bad" }]));
+  if (session.pat) loadAll().catch(e => handleLoadError(e));
   else switchPanel("config");
+}
+
+function handleLoadError(e) {
+  const friendly = patErrorMessage(e);
+  $("#pat-status").innerHTML = `<span style="color:var(--bad)">${friendly}</span>`;
+  switchPanel("config");
+  showStatus([{ text: "Error cargando catálogo: " + e.message, cls: "bad" }]);
+}
+function patErrorMessage(e) {
+  if (/-> 401/.test(e.message)) return "Token inválido o expirado. Genera uno nuevo en GitHub y pégalo de nuevo.";
+  if (/-> 404/.test(e.message)) return `No se encontró ${CONFIG.owner}/${CONFIG.repo} (rama "${CONFIG.branch}") con ese token. Revisa que el token tenga acceso a este repo.`;
+  if (/-> 403/.test(e.message)) return "El token no tiene permiso de escritura sobre este repo (o se agotó el límite de la API). Revisa el scope Contents: Read and write.";
+  return "No se pudo cargar el catálogo: " + e.message;
 }
 
 $("#btn-save-pat").addEventListener("click", () => {
@@ -1191,7 +1207,7 @@ $("#btn-save-pat").addEventListener("click", () => {
   if (!catalogLoaded) {
     loadAll()
       .then(() => switchPanel("productos"))
-      .catch(e => showStatus([{ text: "Error cargando catálogo: " + e.message, cls: "bad" }]));
+      .catch(e => handleLoadError(e));
   }
 });
 $("#btn-clear-pat").addEventListener("click", () => {
@@ -1233,6 +1249,7 @@ $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "edito
 /* ============================== INIT =========================================== */
 (function init() {
   populateCategoryFilter();
+  renderProductTable();
   session.pat = localStorage.getItem("stike_admin_pat") || "";
   showApp();
 })();
