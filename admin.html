@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<base href="/bmxstore/">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Stike: Inventario</title>
 <meta name="robots" content="noindex, nofollow">
@@ -297,14 +298,14 @@ tr:hover td{background:var(--bg-2)}
 <div class="overlay" id="editor-overlay"><div class="drawer" id="editor-drawer"></div></div>
 <div class="status" id="status-box"></div>
 
-<script src="/assets/js/products-data.js?v=1"></script>
-<script src="/assets/js/data.js?v=1"></script>
-<script src="/assets/js/pdp-render.js?v=1"></script>
-<script src="/admin.js?v=6"></script>
+<script src="assets/js/products-data.js?v=1"></script>
+<script src="assets/js/data.js?v=1"></script>
+<script src="assets/js/pdp-render.js?v=1"></script>
+<script src="admin.js?v=6"></script>
 <script>
   // Service worker propio del panel: solo cachea el logo del shell, nunca
   // admin.html/admin.js (ver admin-sw.js).
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/admin-sw.js").catch(() => {});
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("admin-sw.js").catch(() => {});
 </script>
 </body>
 </html>

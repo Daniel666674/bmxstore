@@ -23,7 +23,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 4,
     "imgs": [
-      "/assets/img/products/IMG_7282.jpeg"
+      "assets/img/products/IMG_7282.jpeg"
     ],
     "published": true
   },
@@ -45,7 +45,7 @@ window.STIKE_PRODUCTS = [
     "promo": true,
     "units": 2,
     "imgs": [
-      "/assets/img/products/IMG_7283.jpeg"
+      "assets/img/products/IMG_7283.jpeg"
     ],
     "published": true
   },
@@ -66,7 +66,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 7,
     "imgs": [
-      "/assets/img/products/IMG_7181.jpeg"
+      "assets/img/products/IMG_7181.jpeg"
     ],
     "published": true
   },
@@ -86,7 +86,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 5,
     "imgs": [
-      "/assets/img/products/prod-fork-shadow.png"
+      "assets/img/products/prod-fork-shadow.png"
     ],
     "published": true
   },
@@ -107,7 +107,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 9,
     "imgs": [
-      "/assets/img/products/prod-bar-cult.png"
+      "assets/img/products/prod-bar-cult.png"
     ],
     "published": true
   },
@@ -129,7 +129,7 @@ window.STIKE_PRODUCTS = [
     "promo": true,
     "units": 6,
     "imgs": [
-      "/assets/img/products/prod-bar-eclat.png"
+      "assets/img/products/prod-bar-eclat.png"
     ],
     "published": true
   },
@@ -150,7 +150,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 4,
     "imgs": [
-      "/assets/img/products/IMG_7284.jpeg"
+      "assets/img/products/IMG_7284.jpeg"
     ],
     "published": true
   },
@@ -181,12 +181,12 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg",
-      "/assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg"
+      "assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg",
+      "assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg"
     ],
     "imgColorMap": {
-      "/assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg": "Negro",
-      "/assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg": "Cromado"
+      "assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg": "Negro",
+      "assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg": "Cromado"
     },
     "published": true
   },
@@ -207,7 +207,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 15,
     "imgs": [
-      "/assets/img/products/IMG_7166.jpeg"
+      "assets/img/products/IMG_7166.jpeg"
     ],
     "published": true
   },
@@ -228,7 +228,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 6,
     "imgs": [
-      "/assets/img/products/IMG_7285.jpeg"
+      "assets/img/products/IMG_7285.jpeg"
     ],
     "published": true
   },
@@ -250,7 +250,7 @@ window.STIKE_PRODUCTS = [
     "promo": true,
     "units": 3,
     "imgs": [
-      "/assets/img/products/IMG_7286.jpeg"
+      "assets/img/products/IMG_7286.jpeg"
     ],
     "published": true
   },
@@ -271,7 +271,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 8,
     "imgs": [
-      "/assets/img/products/IMG_7171.jpeg"
+      "assets/img/products/IMG_7171.jpeg"
     ],
     "published": true
   },
@@ -292,7 +292,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 20,
     "imgs": [
-      "/assets/img/products/prod-tire-total.png"
+      "assets/img/products/prod-tire-total.png"
     ],
     "published": true
   },
@@ -313,7 +313,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 25,
     "imgs": [
-      "/assets/img/products/prod-pedals-odyssey.webp"
+      "assets/img/products/prod-pedals-odyssey.webp"
     ],
     "published": true
   },
@@ -335,7 +335,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 10,
     "imgs": [
-      "/assets/img/products/3A06D926-2987-4488-AA12-28567FE35426.jpeg"
+      "assets/img/products/3A06D926-2987-4488-AA12-28567FE35426.jpeg"
     ],
     "published": true
   },
@@ -356,7 +356,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 14,
     "imgs": [
-      "/assets/img/products/IMG_7145.jpeg"
+      "assets/img/products/IMG_7145.jpeg"
     ],
     "published": true
   },
@@ -405,12 +405,12 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/assets/img/products/IMG_7130.jpeg",
-      "/assets/img/products/IMG_7131.jpeg"
+      "assets/img/products/IMG_7130.jpeg",
+      "assets/img/products/IMG_7131.jpeg"
     ],
     "imgColorMap": {
-      "/assets/img/products/IMG_7130.jpeg": "Salmón",
-      "/assets/img/products/IMG_7131.jpeg": "Blanco"
+      "assets/img/products/IMG_7130.jpeg": "Salmón",
+      "assets/img/products/IMG_7131.jpeg": "Blanco"
     },
     "published": true
   },
@@ -448,7 +448,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/assets/img/products/IMG_7273.jpeg"
+      "assets/img/products/IMG_7273.jpeg"
     ],
     "published": true
   },
@@ -487,7 +487,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/assets/img/products/IMG_7272.jpeg"
+      "assets/img/products/IMG_7272.jpeg"
     ],
     "published": true
   },
@@ -524,7 +524,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/assets/img/products/IMG_7271.jpeg"
+      "assets/img/products/IMG_7271.jpeg"
     ],
     "published": true
   },
@@ -628,7 +628,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 22,
     "imgs": [
-      "/assets/img/products/IMG_7138.jpeg"
+      "assets/img/products/IMG_7138.jpeg"
     ],
     "published": true
   },
@@ -650,7 +650,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 9,
     "imgs": [
-      "/assets/img/products/IMG_7275.jpeg"
+      "assets/img/products/IMG_7275.jpeg"
     ],
     "published": true
   },
@@ -699,7 +699,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/assets/img/products/IMG_7152.jpeg"
+      "assets/img/products/IMG_7152.jpeg"
     ],
     "published": true
   },
@@ -749,7 +749,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/assets/img/products/prod-shoes-fade.webp"
+      "assets/img/products/prod-shoes-fade.webp"
     ],
     "published": true
   },
@@ -789,7 +789,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 10,
     "imgs": [
-      "/assets/img/products/IMG_7276.webp"
+      "assets/img/products/IMG_7276.webp"
     ],
     "published": true
   },
@@ -810,7 +810,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 28,
     "imgs": [
-      "/assets/img/products/IMG_7182.jpeg"
+      "assets/img/products/IMG_7182.jpeg"
     ],
     "published": true
   },
@@ -832,7 +832,7 @@ window.STIKE_PRODUCTS = [
     "promo": true,
     "units": 13,
     "imgs": [
-      "/assets/img/products/prod-pump-gw.png"
+      "assets/img/products/prod-pump-gw.png"
     ],
     "published": true
   },
@@ -872,7 +872,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 18,
     "imgs": [
-      "/assets/img/products/IMG_7165.jpeg"
+      "assets/img/products/IMG_7165.jpeg"
     ],
     "published": true
   },
@@ -893,7 +893,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 12,
     "imgs": [
-      "/assets/img/products/IMG_7167.jpeg"
+      "assets/img/products/IMG_7167.jpeg"
     ],
     "published": true
   },
@@ -914,7 +914,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 5,
     "imgs": [
-      "/assets/img/products/IMG_7172.jpeg"
+      "assets/img/products/IMG_7172.jpeg"
     ],
     "published": true
   },
@@ -936,7 +936,7 @@ window.STIKE_PRODUCTS = [
     "promo": true,
     "units": 4,
     "imgs": [
-      "/assets/img/products/IMG_7173.jpeg"
+      "assets/img/products/IMG_7173.jpeg"
     ],
     "published": true
   },
@@ -957,7 +957,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 6,
     "imgs": [
-      "/assets/img/products/IMG_7176.jpeg"
+      "assets/img/products/IMG_7176.jpeg"
     ],
     "published": true
   },
@@ -979,7 +979,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 5,
     "imgs": [
-      "/assets/img/products/IMG_7177.jpeg"
+      "assets/img/products/IMG_7177.jpeg"
     ],
     "published": true
   },
@@ -1000,7 +1000,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 3,
     "imgs": [
-      "/assets/img/products/IMG_7178.jpeg"
+      "assets/img/products/IMG_7178.jpeg"
     ],
     "published": true
   },
@@ -1020,7 +1020,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 25,
     "imgs": [
-      "/assets/img/products/IMG_7180.jpeg"
+      "assets/img/products/IMG_7180.jpeg"
     ],
     "published": true
   },
@@ -1041,7 +1041,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 22,
     "imgs": [
-      "/assets/img/products/IMG_7183.jpeg"
+      "assets/img/products/IMG_7183.jpeg"
     ],
     "published": true
   },
@@ -1063,7 +1063,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 15,
     "imgs": [
-      "/assets/img/products/IMG_7184.jpeg"
+      "assets/img/products/IMG_7184.jpeg"
     ],
     "published": true
   },
@@ -1085,7 +1085,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 7,
     "imgs": [
-      "/assets/img/products/IMG_7186.jpeg"
+      "assets/img/products/IMG_7186.jpeg"
     ],
     "published": true
   },
@@ -1106,7 +1106,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 8,
     "imgs": [
-      "/assets/img/products/IMG_7122.jpeg"
+      "assets/img/products/IMG_7122.jpeg"
     ],
     "published": true
   },
@@ -1127,7 +1127,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 18,
     "imgs": [
-      "/assets/img/products/IMG_7137.jpeg"
+      "assets/img/products/IMG_7137.jpeg"
     ],
     "published": true
   },
@@ -1149,7 +1149,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 4,
     "imgs": [
-      "/assets/img/products/IMG_7139.jpeg"
+      "assets/img/products/IMG_7139.jpeg"
     ],
     "published": true
   },
@@ -1170,7 +1170,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 7,
     "imgs": [
-      "/assets/img/products/3B54281B-6080-4074-A754-4142F71ADBC2.jpeg"
+      "assets/img/products/3B54281B-6080-4074-A754-4142F71ADBC2.jpeg"
     ],
     "published": true
   },
@@ -1193,7 +1193,7 @@ window.STIKE_PRODUCTS = [
     "promo": true,
     "units": 3,
     "imgs": [
-      "/assets/img/products/IMG_7258.jpeg"
+      "assets/img/products/IMG_7258.jpeg"
     ],
     "published": true
   },
@@ -1216,7 +1216,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 4,
     "imgs": [
-      "/assets/img/products/IMG_7259.jpeg"
+      "assets/img/products/IMG_7259.jpeg"
     ],
     "published": true
   },
@@ -1239,7 +1239,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 3,
     "imgs": [
-      "/assets/img/products/IMG_7260.jpeg"
+      "assets/img/products/IMG_7260.jpeg"
     ],
     "published": true
   },
@@ -1261,7 +1261,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 5,
     "imgs": [
-      "/assets/img/products/prod-hub-shadow.png"
+      "assets/img/products/prod-hub-shadow.png"
     ],
     "published": true
   },
@@ -1284,7 +1284,7 @@ window.STIKE_PRODUCTS = [
     "promo": true,
     "units": 4,
     "imgs": [
-      "/assets/img/products/IMG_7265.jpeg"
+      "assets/img/products/IMG_7265.jpeg"
     ],
     "published": true
   },
@@ -1307,7 +1307,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 3,
     "imgs": [
-      "/assets/img/products/IMG_7266.jpeg"
+      "assets/img/products/IMG_7266.jpeg"
     ],
     "published": true
   },
@@ -1329,7 +1329,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 8,
     "imgs": [
-      "/assets/img/products/prod-hub-federal.png"
+      "assets/img/products/prod-hub-federal.png"
     ],
     "published": true
   },
@@ -1351,7 +1351,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 22,
     "imgs": [
-      "/assets/img/products/prod-pedals-cinema.png"
+      "assets/img/products/prod-pedals-cinema.png"
     ],
     "published": true
   },
@@ -1374,7 +1374,7 @@ window.STIKE_PRODUCTS = [
     "tag": "new",
     "units": 12,
     "imgs": [
-      "/assets/img/products/IMG_7269.jpeg"
+      "assets/img/products/IMG_7269.jpeg"
     ],
     "published": true
   },
@@ -1396,7 +1396,7 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 20,
     "imgs": [
-      "/assets/img/products/IMG_7270.jpeg"
+      "assets/img/products/IMG_7270.jpeg"
     ],
     "published": true
   }

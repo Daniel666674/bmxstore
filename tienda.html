@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+<base href="/bmxstore/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tienda: Stike Bike Shop</title>
   <meta name="description" content="Catálogo Stike Bike Shop: repuestos, protecciones, ropa y accesorios BMX en Bogotá.">
@@ -200,7 +201,7 @@
 
     buildFilters();
     render();
-    fetch("/data/site-content.json", { cache: "no-store" }).then(r => r.ok ? r.json() : {}).catch(() => ({})).then(c => { siteContentManifest = c; buildHeader(); });
+    fetch("data/site-content.json", { cache: "no-store" }).then(r => r.ok ? r.json() : {}).catch(() => ({})).then(c => { siteContentManifest = c; buildHeader(); });
   </script>
   <script src="assets/js/animations.js?v=1"></script>
 </body>
