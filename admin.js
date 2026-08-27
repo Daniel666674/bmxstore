@@ -23,12 +23,6 @@ const CONFIG = {
     sitemap: "sitemap.xml",
     template: "_template.html",
   },
-  // Demo: clave compartida en vez de Google OAuth real (ver nota en admin.html).
-  passcode: "stike2026",
-  // Correos con rol "owner": ven costo/margen, KPIs y auditoria completa.
-  // Cualquier otro correo que conozca la clave entra como "editor" (CRUD +
-  // ventas, sin datos financieros).
-  ownerAllowlist: ["hola@stikebikeshop.com", "daniel.f.acosta96@gmail.com"],
 };
 
 const $ = sel => document.querySelector(sel);
@@ -37,20 +31,13 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const backoffMs = attempt => [0, 400, 900, 1800, 3200][attempt] || 4000;
 const money = n => "$" + Math.round(n || 0).toLocaleString("es-CO");
 
-/* ============================== SESSION ================================= */
-let session = null; // { name, email, role, pat }
-
-function loadSession() {
-  try {
-    const s = JSON.parse(sessionStorage.getItem("stike_admin_session") || "null");
-    const pat = localStorage.getItem("stike_admin_pat") || "";
-    if (s) return { ...s, pat };
-  } catch {}
-  return null;
-}
-function saveSession(s) {
-  sessionStorage.setItem("stike_admin_session", JSON.stringify({ name: s.name, email: s.email, role: s.role }));
-}
+/* ============================== SESSION =================================
+   Demo: sin login. Todos entran directo como "owner" (ven costo/margen,
+   KPIs y auditoria); lo unico que realmente controla quien puede publicar
+   es el token de GitHub (pestaña Configuración). session.email queda solo
+   como firma de commits/ventas/auditoría.
+   ========================================================================= */
+let session = { name: "demo", email: "demo@stikebikeshop.com", role: "owner", pat: "" };
 
 /* ============================== BASE64 (UTF-8 y binario safe) =========== */
 function b64EncodeBytes(bytes) {
@@ -1184,31 +1171,15 @@ async function saveSiteContent() {
   setPublishing(false);
 }
 
-/* ============================== AUTH GATE ==================================== */
-function roleFor(email) { return CONFIG.ownerAllowlist.includes((email || "").toLowerCase().trim()) ? "owner" : "editor"; }
-
+/* ============================== APP SHELL ==================================== */
 function showApp() {
-  $("#gate").style.display = "none";
-  $("#app").classList.add("show");
-  $("#session-info").innerHTML = `<div>${session.name}</div><div class="mono" style="font-size:11px">${session.email}</div><span class="pill ${session.role}" style="margin-top:6px">${session.role === "owner" ? "Dueño" : "Editor"}</span>`;
-  $$(".navbtn[data-panel=kpis], .navbtn[data-panel=auditoria]").forEach(b => b.style.display = session.role === "owner" ? "" : "none");
+  $("#session-info").innerHTML = `<span class="pill owner">Modo demo</span>`;
   $("#cfg-repo").textContent = `${CONFIG.owner}/${CONFIG.repo}`;
   $("#cfg-branch").textContent = CONFIG.branch;
   $("#pat-status").textContent = session.pat ? "Token guardado en este navegador." : "Falta guardar tu token de GitHub (pestaña Configuración) para poder cargar/publicar.";
   if (session.pat) loadAll().catch(e => showStatus([{ text: "Error cargando catálogo: " + e.message, cls: "bad" }]));
   else switchPanel("config");
 }
-
-$("#gate-form").addEventListener("submit", e => {
-  e.preventDefault();
-  const email = $("#g-email").value.trim(), pass = $("#g-pass").value;
-  if (pass !== CONFIG.passcode) { $("#gate-err").textContent = "Clave incorrecta."; return; }
-  if (!email) { $("#gate-err").textContent = "Falta tu correo."; return; }
-  const name = email.split("@")[0];
-  session = { name, email, role: roleFor(email), pat: localStorage.getItem("stike_admin_pat") || "" };
-  saveSession(session);
-  showApp();
-});
 
 $("#btn-save-pat").addEventListener("click", () => {
   const v = $("#pat-input").value.trim();
@@ -1227,10 +1198,6 @@ $("#btn-clear-pat").addEventListener("click", () => {
   localStorage.removeItem("stike_admin_pat");
   if (session) session.pat = "";
   $("#pat-status").textContent = "Token borrado.";
-});
-$("#btn-logout").addEventListener("click", () => {
-  sessionStorage.removeItem("stike_admin_session");
-  location.reload();
 });
 
 /* ============================== NAV / PANELES ================================ */
@@ -1266,6 +1233,6 @@ $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "edito
 /* ============================== INIT =========================================== */
 (function init() {
   populateCategoryFilter();
-  session = loadSession();
-  if (session && session.email) showApp();
+  session.pat = localStorage.getItem("stike_admin_pat") || "";
+  showApp();
 })();
