@@ -122,8 +122,8 @@ function stikePdpInit(slug) {
   updateWaBuy();
 
   // Relacionados
-  const related = STIKE_PRODUCTS.filter(x => x.cat === p.cat && x.slug !== p.slug).slice(0, 4);
-  const fallback = STIKE_PRODUCTS.filter(x => x.slug !== p.slug).slice(0, 4);
+  const related = STIKE_PRODUCTS.filter(x => x.cat === p.cat && x.slug !== p.slug).slice(0, 3);
+  const fallback = STIKE_PRODUCTS.filter(x => x.slug !== p.slug).slice(0, 3);
   const relatedMount = document.getElementById("related");
   if (relatedMount) relatedMount.innerHTML = (related.length ? related : fallback).map(stikeProductCard).join("");
 }
