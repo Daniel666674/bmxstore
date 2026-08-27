@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda — Stike Bike Shop</title>
+  <title>Tienda: Stike Bike Shop</title>
   <meta name="description" content="Catálogo Stike Bike Shop: repuestos, protecciones, ropa y accesorios BMX en Bogotá.">
   <link rel="canonical" href="https://daniel666674.github.io/bmxstore/tienda.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Stike Bike Shop">
   <meta property="og:locale" content="es_CO">
-  <meta property="og:title" content="Tienda BMX — Repuestos, protección y ropa | Stike Bike Shop">
+  <meta property="og:title" content="Tienda BMX: Repuestos, protección y ropa | Stike Bike Shop">
   <meta property="og:description" content="Catálogo BMX en Bogotá: repuestos, protecciones, ropa y accesorios.">
   <meta property="og:url" content="https://daniel666674.github.io/bmxstore/tienda.html">
   <meta property="og:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=1">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -27,6 +27,7 @@
   <div class="wrap page-head">
     <nav class="breadcrumb" id="crumb"></nav>
     <h1 id="page-title">Tienda</h1>
+    <p class="muted" id="page-subtitle" style="display:none;margin:6px 0 0;font-size:15px"></p>
     <div class="count" id="result-count"></div>
   </div>
 
@@ -78,8 +79,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/products-data.js?v=1"></script>
+  <script src="assets/js/data.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
   <script>
     stikeInit();
 
@@ -94,13 +96,16 @@
     };
 
     const titleEl = document.getElementById("page-title");
+    const subtitleEl = document.getElementById("page-subtitle");
     const crumbEl = document.getElementById("crumb");
+    let siteContentManifest = {};
 
     function currentCat() { return state.cats.length === 1 ? stikeCategory(state.cats[0]) : null; }
 
     function buildHeader() {
       const cat = currentCat();
       let title = "Tienda", crumb = `<a href="index.html">Inicio</a><span class="sep">/</span><span>Tienda</span>`;
+      let subtitle = "";
       if (state.q) {
         title = `Resultados: “${state.q}”`;
         crumb = `<a href="index.html">Inicio</a><span class="sep">/</span><span>Búsqueda</span>`;
@@ -113,10 +118,17 @@
         if (state.sub) {
           title = state.sub;
           crumb += `<span class="sep">/</span><span>${state.sub}</span>`;
+        } else {
+          // Banner de categoria editable desde el admin (por presencia de clave).
+          const titleKey = `cat.${cat.slug}.title`, subKey = `cat.${cat.slug}.subtitle`;
+          if (Object.prototype.hasOwnProperty.call(siteContentManifest, titleKey)) title = siteContentManifest[titleKey];
+          if (Object.prototype.hasOwnProperty.call(siteContentManifest, subKey)) subtitle = siteContentManifest[subKey];
         }
       }
       titleEl.textContent = title;
       crumbEl.innerHTML = crumb;
+      subtitleEl.textContent = subtitle;
+      subtitleEl.style.display = subtitle ? "" : "none";
     }
 
     function buildFilters() {
@@ -132,7 +144,7 @@
       document.getElementById("filter-brands").innerHTML = STIKE_BRANDS.map(b => `
         <label><input type="checkbox" class="brand-cb" value="${b}" ${state.brand === b ? "checked" : ""}> ${b}</label>`).join("");
       document.querySelectorAll(".brand-cb").forEach(cb => cb.addEventListener("change", (e) => {
-        // single brand toggle behaviour for simplicity
+        // alterna una sola marca a la vez, por simplicidad
         document.querySelectorAll(".brand-cb").forEach(o => { if (o !== e.target) o.checked = false; });
         state.brand = e.target.checked ? e.target.value : null;
         render();
@@ -158,18 +170,18 @@
 
     function filtered() {
       let list = STIKE_PRODUCTS.slice();
-      if (state.cats.length) list = list.filter(p => state.cats.includes(p.cat) || (state.cats.includes("promo") && p.old));
+      if (state.cats.length) list = list.filter(p => state.cats.includes(p.cat) || (state.cats.includes("promo") && p.promo));
       if (state.sub) list = list.filter(p => p.sub === state.sub);
       if (state.brand) list = list.filter(p => p.brand === state.brand);
       if (state.q) list = list.filter(p =>
-        (p.name + " " + p.brand + " " + p.sub + " " + p.cat).toLowerCase().includes(state.q));
+        (p.n + " " + p.brand + " " + p.sub + " " + p.cat).toLowerCase().includes(state.q));
       if (state.price !== "all") {
         const [lo, hi] = state.price.split("-").map(Number);
         list = list.filter(p => p.price >= lo && p.price <= hi);
       }
       if (state.sort === "price-asc") list.sort((a,b) => a.price - b.price);
       else if (state.sort === "price-desc") list.sort((a,b) => b.price - a.price);
-      else if (state.sort === "name") list.sort((a,b) => a.name.localeCompare(b.name));
+      else if (state.sort === "name") list.sort((a,b) => a.n.localeCompare(b.n));
       return list;
     }
 
@@ -188,7 +200,8 @@
 
     buildFilters();
     render();
+    fetch("/data/site-content.json", { cache: "no-store" }).then(r => r.ok ? r.json() : {}).catch(() => ({})).then(c => { siteContentManifest = c; buildHeader(); });
   </script>
-  <script src="assets/js/animations.js"></script>
+  <script src="assets/js/animations.js?v=1"></script>
 </body>
 </html>

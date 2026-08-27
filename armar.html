@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=1">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -111,8 +111,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="/assets/js/products-data.js?v=1"></script>
+  <script src="/assets/js/data.js?v=1"></script>
+  <script src="/assets/js/app.js?v=1"></script>
   <script>
     stikeInit("armar");
 
@@ -215,7 +216,7 @@
     const STEP_WEIGHT = { marco: 2300, tenedor: 1000, transmision: 1500, ruedas: 3200, timon: 1100 };
     const BASE_WEIGHT = 1200; /* silla, frenos, caja de centro, caja de frente, etc. */
     function parseWeight(p) {
-      const specs = (p && p.specs ? p.specs : []).join(" ");
+      const specs = (p && p.spec ? p.spec : []).join(" ");
       let m = specs.match(/Peso:\s*([\d.]+)\s*kg/i); if (m) return parseFloat(m[1]) * 1000;
       m = specs.match(/Peso:\s*([\d.]+)\s*g/i); if (m) return parseFloat(m[1]);
       return null;
@@ -268,7 +269,7 @@
       if (data.h) { const r = document.getElementById("height"); if (r) r.value = data.h; }
       if (data.build) STEPS.forEach(s => {
         const id = data.build[s.key];
-        if (id && optionsFor(s).some(p => p.id === id)) build[s.key] = id;
+        if (id && optionsFor(s).some(p => p.slug === id)) build[s.key] = id;
       });
     }
     function copyShare() {
@@ -289,7 +290,7 @@
 
     /* ---------------- Aleatorio / reiniciar ---------------- */
     function randomBuild() {
-      STEPS.forEach(s => { const o = optionsFor(s); if (o.length) build[s.key] = o[Math.floor(Math.random() * o.length)].id; });
+      STEPS.forEach(s => { const o = optionsFor(s); if (o.length) build[s.key] = o[Math.floor(Math.random() * o.length)].slug; });
       current = STEPS.length - 1;
       renderAll(); scrollBuilder();
       stikeToast("Te armamos una al azar, parce — ajústala a tu gusto");
@@ -356,9 +357,9 @@
         <div class="bstep-head"><span class="kicker">Componente ${current + 1} de ${STEPS.length}</span><h2>Elige tu ${step.label}</h2></div>
         <div class="boption-grid">
           <button class="boption skip ${!build[step.key] ? "active" : ""}" data-pick=""><span class="bopt-skip">Sin ${step.label.toLowerCase()}<small>Lo elijo después / lo tengo</small></span></button>
-          ${opts.map(p => `<button class="boption ${build[step.key] === p.id ? "active" : ""}" data-pick="${p.id}">
-            <span class="bopt-img"><img src="${stikeProductImage(p, 300)}" alt="${p.name}" loading="lazy"></span>
-            <span class="bopt-info"><span class="bopt-brand">${p.brand}</span><span class="bopt-name">${p.name}</span><span class="bopt-price">${stikePrice(p.price)}</span></span>
+          ${opts.map(p => `<button class="boption ${build[step.key] === p.slug ? "active" : ""}" data-pick="${p.slug}">
+            <span class="bopt-img"><img src="${stikeProductImage(p, 300)}" alt="${p.n}" loading="lazy"></span>
+            <span class="bopt-info"><span class="bopt-brand">${p.brand}</span><span class="bopt-name">${p.n}</span><span class="bopt-price">${stikePrice(p.price)}</span></span>
           </button>`).join("")}
         </div>`;
       wrap.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => {
@@ -371,14 +372,14 @@
     function renderSummary() {
       const html = STEPS.map(s => {
         const id = build[s.key]; const p = id ? stikeFindProduct(id) : null;
-        return `<div class="build-row ${p ? "" : "empty"}"><span class="br-label">${s.label}</span><span class="br-val">${p ? p.name : "—"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
+        return `<div class="build-row ${p ? "" : "empty"}"><span class="br-label">${s.label}</span><span class="br-val">${p ? p.n : "—"}</span><span class="br-price">${p ? stikePrice(p.price) : ""}</span></div>`;
       }).join("");
       document.getElementById("build-list").innerHTML = html;
       document.getElementById("build-total").textContent = stikePrice(buildTotal());
       document.getElementById("builder-profile").innerHTML =
         `<span class="bp-chip">Estilo: ${STYLES[selectedStyle].label}</span><span class="bp-chip">Top tube: ${recommendedTT}</span><span class="bp-chip">~${(buildWeight() / 1000).toFixed(1)} kg</span>`;
 
-      const chosen = STEPS.filter(s => build[s.key]).map(s => { const p = stikeFindProduct(build[s.key]); return `• ${s.label}: ${p.name} — ${stikePrice(p.price)}`; });
+      const chosen = STEPS.filter(s => build[s.key]).map(s => { const p = stikeFindProduct(build[s.key]); return `• ${s.label}: ${p.n} — ${stikePrice(p.price)}`; });
       const head = `Estilo: ${STYLES[selectedStyle].label} · Top tube ${recommendedTT} · ~${(buildWeight() / 1000).toFixed(1)} kg`;
       const msg = `Hola Stike! Quiero armar esta BMX:%0A${head}%0A%0A${chosen.join("%0A") || "(aún sin componentes)"}%0A%0ATotal estimado: ${stikePrice(buildTotal())}%0A%0A¿Me asesoran para completarla?`;
       document.getElementById("wa-build").href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${msg}`;
@@ -418,5 +419,5 @@
     document.getElementById("budget-val").textContent = stikePrice(parseInt(document.getElementById("budget").value, 10));
     renderAll();
   </script>
-  <script src="assets/js/animations.js"></script>
+  <script src="/assets/js/animations.js?v=1"></script>
 </body></html>

@@ -1,5 +1,8 @@
 name: Deploy to GitHub Pages
 
+# This is a demo with no real hosting account behind it: GitHub Pages is
+# the actual (and only) deploy target. Runs on every push to main, and can
+# be triggered manually from the Actions tab.
 on:
   push:
     branches: ["main"]
@@ -10,6 +13,9 @@ permissions:
   pages: write
   id-token: write
 
+# Rapid admin edits (each "Publicar cambios" in admin.html is its own commit)
+# collapse into a single deploy of the final state instead of one deploy per
+# commit.
 concurrency:
   group: "pages"
   cancel-in-progress: false

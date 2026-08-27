@@ -3,193 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Producto — Stike Bike Shop</title>
-  <meta name="description" id="meta-desc" content="Producto BMX en Stike Bike Shop, tu tienda BMX en Bogotá.">
-  <link rel="canonical" id="meta-canonical" href="https://daniel666674.github.io/bmxstore/producto.html">
-  <meta property="og:type" content="product">
-  <meta property="og:site_name" content="Stike Bike Shop">
-  <meta property="og:locale" content="es_CO">
-  <meta property="og:title" id="og-title" content="Producto — Stike Bike Shop">
-  <meta property="og:description" id="og-desc" content="Producto BMX en Stike Bike Shop, Bogotá.">
-  <meta property="og:image" id="og-image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
+  <title>Redirigiendo: Stike Bike Shop</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://daniel666674.github.io/bmxstore/tienda.html">
 </head>
 <body>
-  <div id="site-header"></div>
-
-  <div class="wrap page-head" style="padding-bottom:0">
-    <nav class="breadcrumb" id="crumb"></nav>
-  </div>
-
-  <div class="wrap" id="pdp-mount"></div>
-
-  <section class="section" style="padding-top:20px">
-    <div class="wrap">
-      <div class="section-head"><h2>También te puede gustar</h2></div>
-      <div class="product-grid" id="related"></div>
-    </div>
-  </section>
-
-  <div id="site-footer"></div>
-
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js"></script>
   <script>
-    stikeInit();
-    const id = new URLSearchParams(location.search).get("id");
-    const p = stikeFindProduct(id);
-    const mount = document.getElementById("pdp-mount");
-
-    if (!p) {
-      document.getElementById("crumb").innerHTML = `<a href="index.html">Inicio</a><span class="sep">/</span><span>Producto</span>`;
-      mount.innerHTML = `<div class="empty"><h3 style="font-size:30px">Producto no encontrado</h3><p>Es posible que ya no esté disponible.</p><a class="btn cyan" href="tienda.html">Volver a la tienda</a></div>`;
-    } else {
-      const cat = stikeCategory(p.cat);
-      document.title = p.name + " — Stike Bike Shop";
-      (function () {
-        const setMeta = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
-        setMeta("meta-desc", "content", p.desc);
-        setMeta("meta-canonical", "href", location.href);
-        setMeta("og-title", "content", p.name + " — Stike Bike Shop");
-        setMeta("og-desc", "content", p.desc);
-        if (p.img) setMeta("og-image", "content", new URL(p.img, location.href).href);
-      })();
-      document.getElementById("crumb").innerHTML =
-        `<a href="index.html">Inicio</a><span class="sep">/</span><a href="tienda.html?cat=${p.cat}">${cat ? cat.name : "Tienda"}</a><span class="sep">/</span><span>${p.name}</span>`;
-
-      const oldPrice = p.old ? `<span class="old">${stikePrice(p.old)}</span>` : "";
-      const discount = p.old ? `<span class="tag-pill" style="background:var(--yellow);color:#0b0b0d;margin-left:10px">-${Math.round((1 - p.price / p.old) * 100)}%</span>` : "";
-      const low = p.stock > 0 && p.stock <= 5;
-      const stockHtml = p.stock > 0
-        ? `<span class="stock${low ? " low" : ""}">● ${low ? `¡Solo ${p.stock} disponible${p.stock === 1 ? "" : "s"}!` : `En stock (${p.stock} disponibles)`}</span>`
-        : `<span class="stock out">● Agotado — consúltanos por WhatsApp</span>`;
-      const sizes = stikeSizesFor(p);
-      const sizesHtml = sizes ? `
-            <div class="size-select">
-              <div class="size-label">Talla <span class="size-req" id="size-req"></span></div>
-              <div class="size-options" id="size-options">
-                ${sizes.map(s => `<button type="button" class="size-opt" data-size="${s}">${s}</button>`).join("")}
-              </div>
-            </div>` : "";
-      const specs = (p.specs || []).map(s => {
-        const idx = s.indexOf(":");
-        if (idx === -1) return `<div class="spec-row"><span class="k">·</span><span class="v">${s}</span></div>`;
-        return `<div class="spec-row"><span class="k">${s.slice(0, idx)}</span><span class="v">${s.slice(idx + 1).trim()}</span></div>`;
-      }).join("");
-      const img = stikeProductImage(p, 800);
-      const waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.name} (${stikePrice(p.price)}). ¿Está disponible?`);
-      const shareUrl = location.href;
-      const shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.name} — ${stikePrice(p.price)}\n${shareUrl}`);
-
-      mount.innerHTML = `
-      <div class="pdp">
-        <div class="pdp-gallery">
-          <div class="main"><img id="main-img" src="${img}" alt="${p.name}"></div>
-          <div class="pdp-thumbs">
-            ${[0,1,2,3].map(i => `<button class="${i===0?"active":""}" data-thumb data-src="${img}" aria-label="Vista ${i+1}"><img src="${img}" alt="${p.name} vista ${i+1}"></button>`).join("")}
-          </div>
-        </div>
-        <div class="pdp-info">
-          <span class="brandline">${p.brand}</span>
-          <h1>${p.name}</h1>
-          <div class="buy-box">
-            <div class="price">${stikePrice(p.price)} ${oldPrice}${discount}</div>
-            <div style="margin-top:12px">${stockHtml}</div>
-            ${sizesHtml}
-            <div class="pdp-actions">
-              <div class="qty">
-                <button data-q="-1" aria-label="Menos">−</button>
-                <input id="qty" type="text" value="1" inputmode="numeric" aria-label="Cantidad">
-                <button data-q="1" aria-label="Más">+</button>
-              </div>
-              <button class="btn" id="add-btn" ${p.stock===0?"disabled style=opacity:.5":""}>Agregar al carrito</button>
-            </div>
-            <a class="btn wa block" id="wa-buy" style="margin-top:12px" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Comprar por WhatsApp</a>
-          </div>
-          <div class="pdp-share">
-            <span class="share-label">Compartir</span>
-            <a class="share-btn" id="share-wa" href="https://wa.me/?text=${shareMsg}" target="_blank" rel="noopener" aria-label="Compartir por WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.08L2 22l4.92-1.36A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.97 13.47c-.21.59-.96 1.07-1.62 1.21-.43.09-.99.16-2.88-.62-2.43-1-3.96-3.47-4.08-3.63-.12-.17-.99-1.32-.99-2.51 0-1.2.63-1.78.85-2.03.22-.24.48-.3.64-.3h.46c.14 0 .33-.05.51.39.19.46.64 1.57.7 1.68.06.11.1.24.02.39l-.24.37c-.12.13-.25.29-.36.39-.12.1-.24.21-.1.41.14.2.62.91 1.33 1.47.92.73 1.69.96 1.93 1.07.24.1.38.09.52-.06.14-.14.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.38.65 1.62.77.24.12.4.18.46.28.06.1.06.57-.15 1.17z"/></svg>WhatsApp</a>
-            <button class="share-btn" id="share-copy" type="button"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copiar enlace</button>
-          </div>
-          <p class="desc">${p.desc}</p>
-          <div class="pdp-info-specs">
-            <h3 style="font-size:20px;margin-bottom:10px">Especificaciones</h3>
-            <div class="spec-table">${specs}</div>
-          </div>
-          <div class="pdp-meta">
-            <div><b>Categoría:</b> <a href="tienda.html?cat=${p.cat}" style="color:var(--ink)">${cat ? cat.name : ""}</a>${p.sub ? ` · <a href="tienda.html?cat=${p.cat}&sub=${encodeURIComponent(p.sub)}" style="color:var(--ink)">${p.sub}</a>` : ""}</div>
-            <div><b>Marca:</b> ${p.brand}</div>
-            <div><b>SKU:</b> ${p.id.toUpperCase()}</div>
-            <div>Envíos a toda Colombia · Armado y ajuste gratis</div>
-          </div>
-        </div>
-      </div>`;
-
-      // Cantidad
-      const qtyEl = document.getElementById("qty");
-      document.querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => {
-        let v = parseInt(qtyEl.value) || 1;
-        v = Math.max(1, v + parseInt(b.getAttribute("data-q")));
-        qtyEl.value = v;
-      }));
-      qtyEl.addEventListener("input", () => { qtyEl.value = qtyEl.value.replace(/[^0-9]/g, ""); });
-
-      // Talla
-      let selectedSize = null;
-      const waBuy = document.getElementById("wa-buy");
-      function updateWaBuy() {
-        const sz = selectedSize ? ` talla ${selectedSize}` : "";
-        const msg = encodeURIComponent(`Hola Stike! Me interesa: ${p.name}${sz} (${stikePrice(p.price)}). ¿Está disponible?`);
-        if (waBuy) waBuy.href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${msg}`;
-      }
-      document.querySelectorAll(".size-opt").forEach(b => b.addEventListener("click", () => {
-        document.querySelectorAll(".size-opt").forEach(o => o.classList.remove("active"));
-        b.classList.add("active");
-        selectedSize = b.getAttribute("data-size");
-        const req = document.getElementById("size-req"); if (req) req.textContent = "";
-        updateWaBuy();
-      }));
-
-      const addBtn = document.getElementById("add-btn");
-      if (addBtn && p.stock > 0) addBtn.addEventListener("click", () => {
-        if (sizes && !selectedSize) {
-          const req = document.getElementById("size-req"); if (req) req.textContent = "— elige una talla";
-          const opts = document.getElementById("size-options");
-          if (opts) { opts.classList.add("shake"); setTimeout(() => opts.classList.remove("shake"), 450); }
-          stikeToast("Elige una talla primero");
-          return;
-        }
-        stikeAddToCart(p.id, Math.max(1, parseInt(qtyEl.value) || 1), selectedSize);
-      });
-
-      // Compartir — copiar enlace
-      const copyBtn = document.getElementById("share-copy");
-      if (copyBtn) copyBtn.addEventListener("click", () => {
-        if (navigator.clipboard) navigator.clipboard.writeText(shareUrl).then(() => stikeToast("Enlace copiado")).catch(() => stikeToast("Copia: " + shareUrl));
-        else stikeToast("Copia: " + shareUrl);
-      });
-
-      // Thumbs — swap main image
-      const mainImg = document.getElementById("main-img");
-      document.querySelectorAll("[data-thumb]").forEach(t => t.addEventListener("click", () => {
-        document.querySelectorAll("[data-thumb]").forEach(o => o.classList.remove("active"));
-        t.classList.add("active");
-        const src = t.getAttribute("data-src");
-        if (src && mainImg) mainImg.src = src;
-      }));
-
-      // Relacionados
-      const related = STIKE_PRODUCTS.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4);
-      const fallback = STIKE_PRODUCTS.filter(x => x.id !== p.id).slice(0, 4);
-      document.getElementById("related").innerHTML = (related.length ? related : fallback).map(stikeProductCard).join("");
-    }
+    /* Enlace heredado: producto.html?id=<id-viejo> -> producto/<slug>.html.
+       Las fichas de producto ahora son paginas estaticas generadas
+       (ver /producto/*.html), una por producto, no esta pagina con query string. */
+    var LEGACY_ID_TO_SLUG = {"frame-total":"marco-cult-americano","frame-fly":"marco-sunday-cromoly","fork-odyssey":"tenedor-federal","fork-shadow":"tenedor-shadow-vultus","bar-cult":"manubrio-cult-crew-4pc","stem-eclat":"manubrio-eclat","crank-bsd":"bielas-bsd-substance-xl","sprk-shadow":"plato-fate-garuda-25t","chain-kmc":"cadena-shadow-interlock-v2","brake-odyssey":"freno-odyssey-springfield","hub-fed":"manzana-federal-stance-fc","rim-eclat":"rin-eclat-bondi-36h","tire-total":"llanta-total-killabee-2-4","pedal-odyssey":"pedales-plataforma-bmx-negro","seat-cult":"silla-fate-pivotal-pana-negro","peg-shadow":"tacos-fate-bmx-par","helmet-tsg":"casco-tsg-evolution","helmet-black":"casco-stike-pro-negro","knee-fuse":"rodilleras-shadow-riding-gear","gloves-stike":"guantes-stike-grip","tee-stike":"camiseta-stike-graffiti-tee","hoodie-stike":"buso-stike-box-logo","cap-stike":"gorra-fate-bmx-colombia","sunnies-stike":"gafas-smith-street","shoes-vans":"tenis-stike-x-street-rojo","shoes-black":"tenis-fade-negro","tool-stike":"multiherramienta-stike-18-en-1","tool-cult":"llave-de-pedal-hexagonal-cult","grip-odi":"grips-wethepeople-flow-xl","pump-stike":"bomba-de-piso-gw","stickers-stike":"pack-de-calcomanias-stike-graffiti","chain-silver":"cadena-kmc-z410-plata","tire-street":"llanta-wethepeople-2-25","rim-eclat-2":"rin-eclat-cortex-20h-negro","rim-fly":"rin-shadow-36h","bar-saltplus":"manubrio-saltplus-race-4pc","bar-stranger":"manubrio-stranger-highrise-9-5","fork-cruiser":"tenedor-bsd-cruiser-26-negro","expander-mutanty":"expander-mutanty-m24","grip-kink":"grips-kink-form-flangeless","grip-eclat-red":"grips-eclat-recoil-rojo","stem-trueno":"timon-trueno-carga-frontal","stem-kink":"timon-kink-williams-carga-frontal","helmet-tsg-white":"casco-tsg-evolution","cap-federal":"gorra-federal-script-cap","frame-fate":"marco-fate-bmx-colombia","sprk-fate-chrome":"plato-fate-garuda-25t","seat-fate-leather":"silla-fate-pivotal-cuero-negro","frame-cult-wb":"marco-total-bmx-20-75-blanco-azul","frame-federal-white":"marco-federal-bruno-lt-blanco","frame-wtp-green":"marco-wethepeople-battleship-verde","hub-cassette-black":"maza-trasera-cassette-shadow-negra","hub-rear-eclat":"maza-trasera-odyssey-negra","hub-chrome":"maza-trasera-cassette-cromada","hub-front-fed":"maza-cassette-federal-negra","pedal-plastic-blk":"pedales-cinema-negros","pedal-alloy-blk":"pedales-federal-negros","pedal-grip-blk":"pedales-wethepeople-negros"};
+    var id = new URLSearchParams(location.search).get("id");
+    var slug = id && LEGACY_ID_TO_SLUG[id];
+    location.replace(slug ? "producto/" + slug + ".html" : "tienda.html");
   </script>
-  <script src="assets/js/animations.js"></script>
+  <noscript><meta http-equiv="refresh" content="0; url=tienda.html"></noscript>
+  <p>Redirigiendo… <a href="tienda.html">Ir a la tienda</a></p>
 </body>
 </html>

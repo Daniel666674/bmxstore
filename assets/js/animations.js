@@ -29,6 +29,26 @@
     });
   }, { passive: true });
 
+  /* ---- Volver arriba ---- */
+  var backToTop = document.createElement('button');
+  backToTop.className = 'back-to-top';
+  backToTop.type = 'button';
+  backToTop.setAttribute('aria-label', 'Volver arriba');
+  backToTop.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+  if (document.body) document.body.appendChild(backToTop);
+  backToTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+  var backToTopTick = false;
+  window.addEventListener('scroll', function () {
+    if (backToTopTick) return;
+    backToTopTick = true;
+    requestAnimationFrame(function () {
+      backToTop.classList.toggle('show', window.scrollY > 600);
+      backToTopTick = false;
+    });
+  }, { passive: true });
+
   /* ---- Auto-tag more elements so the whole site animates ---- */
   document.querySelectorAll('.section-head, .cta-band .wrap, .tl-item, .map-embed, .contact-card, .about-hero > div, .pdp-info, .pdp-gallery')
     .forEach(function (el) { el.classList.add('reveal'); });

@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stike Bike Shop — Tienda BMX en Bogotá</title>
+  <title>Stike Bike Shop: Tienda BMX en Bogotá</title>
   <meta name="description" content="Stike Bike Shop: la tienda BMX de Bogotá. Repuestos, protecciones, ropa y la comunidad más activa de la ciudad. Te armamos la BMX a tu medida y enviamos a toda Colombia.">
   <link rel="canonical" href="https://daniel666674.github.io/bmxstore/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Stike Bike Shop">
   <meta property="og:locale" content="es_CO">
-  <meta property="og:title" content="Stike Bike Shop — Tienda BMX en Bogotá">
+  <meta property="og:title" content="Stike Bike Shop: Tienda BMX en Bogotá">
   <meta property="og:description" content="Repuestos, protecciones y ropa BMX. Te armamos la BMX a tu medida. Riders de verdad en Venecia, Bogotá.">
   <meta property="og:url" content="https://daniel666674.github.io/bmxstore/">
   <meta property="og:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Stike Bike Shop — Tienda BMX en Bogotá">
+  <meta name="twitter:title" content="Stike Bike Shop: Tienda BMX en Bogotá">
   <meta name="twitter:description" content="Repuestos, protecciones y ropa BMX. Arma tu BMX a la medida. Venecia, Bogotá.">
   <meta name="twitter:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
   <script type="application/ld+json">
@@ -44,7 +44,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=1">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -62,9 +62,9 @@
         <h1>Rueda <span class="o1 glitch">duro</span>,<br>vive <span class="o2">BMX</span></h1>
         <div class="hero-lockup">
           <span class="rule"></span>
-          <span>The house of all who come</span>
+          <span data-content-key="home.heroTagline">La casa de todo el que rueda</span>
         </div>
-        <p class="lead">Repuestos de las mejores marcas, ropa y protecciones — y te armamos la BMX a tu medida. Asesoría real de riders reconocidos a nivel internacional, con envíos a toda Colombia.</p>
+        <p class="lead" data-content-key="home.heroSubtitle">Repuestos de las mejores marcas, ropa y protecciones, y te armamos la BMX a tu medida. Asesoría real de riders reconocidos a nivel internacional, con envíos a toda Colombia.</p>
         <div class="hero-cta">
           <a class="btn" href="armar.html">Arma tu BMX</a>
           <a class="btn ghost" href="tienda.html?cat=repuestos">Ver repuestos</a>
@@ -126,7 +126,7 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="kicker">Lo más vendido</span>
+          <span class="kicker" data-content-key="home.featuredKicker">Lo más vendido</span>
           <h2>Destacados <span class="spray">de la semana</span></h2>
         </div>
         <a class="link-more" href="tienda.html">Ver catálogo →</a>
@@ -173,7 +173,7 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="kicker" style="color:var(--yellow)">Precios de calle</span>
+          <span class="kicker" style="color:var(--yellow)" data-content-key="home.promoKicker">Precios de calle</span>
           <h2>Zona <span class="mark">Promo</span></h2>
         </div>
         <a class="link-more" href="tienda.html?cat=promo">Ver ofertas →</a>
@@ -225,8 +225,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/products-data.js?v=1"></script>
+  <script src="assets/js/data.js?v=1"></script>
+  <script src="assets/js/app.js?v=1"></script>
   <script>
     stikeInit("home");
 
@@ -240,13 +241,13 @@
       </a>`).join("");
 
     // Destacados (primeros productos variados)
-    const featured = ["frame-fate","frame-total","helmet-tsg","tee-stike","sprk-shadow","fork-odyssey","hoodie-stike","pedal-odyssey"]
+    const featured = ["marco-fate-bmx-colombia","marco-cult-americano","casco-tsg-evolution","camiseta-stike-graffiti-tee","plato-fate-garuda-25t","tenedor-federal","buso-stike-box-logo","pedales-plataforma-bmx-negro"]
       .map(stikeFindProduct).filter(Boolean);
     document.getElementById("home-featured").innerHTML = featured.map(stikeProductCard).join("");
 
     // Promo
     document.getElementById("home-promo").innerHTML =
-      STIKE_PRODUCTS.filter(p => p.old).slice(0,4).map(stikeProductCard).join("");
+      STIKE_PRODUCTS.filter(p => p.promo).slice(0,4).map(stikeProductCard).join("");
 
     // Marcas
     document.getElementById("home-brands").innerHTML =
@@ -277,6 +278,6 @@
         </a>`;
       }).join("");
   </script>
-  <script src="assets/js/animations.js"></script>
+  <script src="assets/js/animations.js?v=1"></script>
 </body>
 </html>
