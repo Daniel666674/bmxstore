@@ -31,6 +31,29 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const backoffMs = attempt => [0, 400, 900, 1800, 3200][attempt] || 4000;
 const money = n => "$" + Math.round(n || 0).toLocaleString("es-CO");
 
+/* ============================== CRASH BANNER =============================
+   Si algo revienta (un error de red raro, un bug), que se vea en pantalla
+   en vez de dejar la app muerta en silencio (botones que "no hacen nada").
+   No depende de ninguna otra funcion del archivo para que nunca falle ella
+   misma, ni siquiera si revento antes de que $()/$$() esten disponibles.
+   ========================================================================= */
+(function () {
+  function showCrash(msg) {
+    try {
+      let box = document.getElementById("crash-banner");
+      if (!box) {
+        box = document.createElement("div");
+        box.id = "crash-banner";
+        box.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#4a1216;color:#ffd7da;padding:12px 16px;font:13px/1.5 system-ui,sans-serif;border-bottom:2px solid #ff4d5e;white-space:pre-wrap";
+        (document.body || document.documentElement).appendChild(box);
+      }
+      box.textContent = "⚠ Error en el panel (avísale a soporte con este texto): " + msg;
+    } catch {}
+  }
+  window.addEventListener("error", e => showCrash(e.message + (e.filename ? ` (${e.filename}:${e.lineno})` : "")));
+  window.addEventListener("unhandledrejection", e => showCrash((e.reason && e.reason.message) || String(e.reason)));
+})();
+
 /* ============================== SESSION =================================
    Demo: sin login. Todos entran directo como "owner" (ven costo/margen,
    KPIs y auditoria); lo unico que realmente controla quien puede publicar
