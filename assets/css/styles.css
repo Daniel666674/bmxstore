@@ -30,7 +30,7 @@
   --ink-contrast: #ffffff;
 
   /* Type */
-  --display: "Oswald", "Arial Narrow", sans-serif;
+  --display: "Poppins", "Helvetica Neue", Arial, sans-serif;
   --body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
   /* Layout */
@@ -118,22 +118,29 @@ body::before {
 .btn.block { width: 100%; }
 
 /* =============================== HEADER ================================= */
+/* The header band (topbar + main bar + nav) is a fixed pitch-black surface
+   on purpose, independent of the storefront's light theme tokens below it,
+   so every color in here is spelled out explicitly instead of reusing
+   --ink/--muted/--line (which are tuned for text on white and would go
+   near-invisible on black). */
 .topbar {
-  background: var(--bg-2);
-  border-bottom: 1px solid var(--line);
-  font-size: 13px; color: var(--muted);
+  background: #0b0b0d;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: 13px; color: rgba(255,255,255,.6);
 }
 .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 38px; gap: 14px; }
-.topbar a:hover { color: var(--cyan); }
+.topbar a:hover { color: #ffffff; }
 .topbar .ticker { overflow: hidden; white-space: nowrap; flex: 1; }
 .topbar .ticker span { display: inline-block; animation: ticker 22s linear infinite; }
-.topbar .ticker b { color: var(--yellow); font-weight: 800; }
+.topbar .ticker b { color: #ffffff; font-weight: 800; }
 @keyframes ticker { from { transform: translateX(40%); } to { transform: translateX(-100%); } }
 .topbar .social { display: flex; align-items: center; gap: 4px; }
 
 /* El wrapper que monta el header por JS no debe limitar el rango del sticky al alto del topbar */
 #site-header { display: contents; }
-.site-header { position: sticky; top: 0; z-index: 100; background: rgba(11,11,13,.92); backdrop-filter: blur(10px); border-bottom: 2px solid var(--line); }
+.site-header { position: sticky; top: 0; z-index: 100; background: rgba(11,11,13,.96); backdrop-filter: blur(10px); border-bottom: 2px solid rgba(255,255,255,.08); color: #fff; }
+.brand .name { color: #ffffff; }
+.brand .name small { color: rgba(255,255,255,.5); }
 .header-main { display: flex; align-items: center; gap: 22px; height: 78px; }
 .brand { display: flex; align-items: center; gap: 13px; flex-shrink: 0; }
 .brand .logo { height: 52px; width: auto; display: block; }
@@ -163,27 +170,29 @@ body::before {
 }
 .menu-toggle { display: none; }
 
-/* Nav */
-.site-nav { border-top: 1px solid var(--line); }
+/* Nav (desktop bar lives on the black header, so it keeps its own fixed
+   light-on-dark palette; the mobile dropdown panel further down is a
+   separate light popup and uses the regular light tokens instead). */
+.site-nav { border-top: 1px solid rgba(255,255,255,.08); }
 .nav-list { display: flex; align-items: stretch; gap: 2px; }
 .nav-list > li { position: relative; }
 .nav-list > li > a {
   position: relative; display: flex; align-items: center; height: 48px; padding: 0 18px;
   font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 1.8px; font-size: 14px;
-  color: var(--muted); transition: color .25s var(--ease);
+  color: rgba(255,255,255,.62); transition: color .25s var(--ease);
 }
 .nav-list > li > a::after {
   content: ""; position: absolute; left: 18px; right: 18px; bottom: 8px; height: 1.5px;
-  background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease);
+  background: #ffffff; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease);
 }
-.nav-list > li > a:hover, .nav-list > li.active > a { color: var(--ink); }
+.nav-list > li > a:hover, .nav-list > li.active > a { color: #ffffff; }
 .nav-list > li > a:hover::after, .nav-list > li.active > a::after { transform: scaleX(1); }
-.nav-list > li > a .caret { display: inline-flex; align-items: center; margin-left: 6px; color: var(--muted); transition: transform .2s var(--ease); }
-.nav-list > li:hover > a .caret { transform: rotate(180deg); color: var(--ink); }
+.nav-list > li > a .caret { display: inline-flex; align-items: center; margin-left: 6px; color: rgba(255,255,255,.45); transition: transform .2s var(--ease); }
+.nav-list > li:hover > a .caret { transform: rotate(180deg); color: #ffffff; }
 .nav-list > li.has-mega > a::after,
 .nav-list > li > a[data-accent]::after { }
-.nav-list > li > a[data-accent="promo"] { color: var(--yellow); }
-.nav-list > li > a[data-accent="promo"]:hover { color: var(--orange); }
+.nav-list > li > a[data-accent="promo"] { color: #ffffff; font-weight: 700; }
+.nav-list > li > a[data-accent="promo"]:hover { color: rgba(255,255,255,.75); }
 
 /* Mega / dropdown */
 .dropdown {
@@ -199,26 +208,40 @@ body::before {
 .dropdown .col-title { font-family: var(--display); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; color: var(--cyan); padding: 6px 12px 2px; }
 
 /* =============================== HERO ================================== */
-.hero { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: min(88vh, 820px); padding: 90px 0; }
-.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; animation: hero-kenburns 24s ease-in-out infinite alternate; }
+/* Desktop/tablet: the hero keeps the storefront's normal light background,
+   with a small video panel as an accent on the right (same pattern as
+   .hero-art on the About page). Mobile swaps to a full-bleed background
+   video with the classic dark scrim + white text — see the responsive
+   overrides further down, which are the only place this section goes dark. */
+.hero { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: min(82vh, 720px); padding: 80px 0; background: var(--bg); }
+.hero .wrap { position: relative; z-index: 2; width: 100%; }
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+
+/* Small video panel next to the copy: desktop/tablet default. */
+.hero-video-panel { position: relative; aspect-ratio: 3/4; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); }
+.hero-video-panel video { width: 100%; height: 100%; object-fit: cover; display: block; animation: hero-kenburns 24s ease-in-out infinite alternate; }
+.hero-video-panel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55) 100%); }
+
+/* Full-bleed background video: hidden by default, swapped in on mobile only (see responsive rules below). */
+.hero-video { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; animation: hero-kenburns 24s ease-in-out infinite alternate; }
 @keyframes hero-kenburns { from { transform: scale(1.06); } to { transform: scale(1.16); } }
-.hero-overlay { position: absolute; inset: 0; z-index: 1; background:
+.hero-overlay { display: none; position: absolute; inset: 0; z-index: 1; background:
   linear-gradient(90deg, rgba(9,9,10,.96) 0%, rgba(9,9,10,.82) 38%, rgba(9,9,10,.5) 70%, rgba(9,9,10,.62) 100%),
   linear-gradient(0deg, var(--bg) 2%, transparent 24%, transparent 80%, rgba(9,9,10,.5) 100%); }
-.hero .wrap { position: relative; z-index: 2; }
-.hero .eyebrow { display: inline-block; }
+
+.hero .eyebrow { display: inline-block; background: var(--ink); color: #ffffff; }
 .hero-copy { max-width: 640px; }
 .hero h1 { font-size: clamp(46px, 8.5vw, 104px); font-weight: 600; line-height: .96; letter-spacing: -.5px; margin: 18px 0 20px; }
-.hero h1 .o1 { color: #ffffff; }
-.hero h1 .o2 { -webkit-text-stroke: 2px #ffffff; color: transparent; }
-.hero p.lead { font-size: 18px; color: #d4d4d8; max-width: 52ch; margin: 0 0 26px; }
-.hero-lockup { display: flex; align-items: center; gap: 16px; margin: 0 0 22px; font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 4px; font-size: 13px; color: #c7c7cf; }
+.hero h1 .o1 { color: var(--cyan); }
+.hero h1 .o2 { -webkit-text-stroke: 2px var(--ink); color: transparent; }
+.hero p.lead { font-size: 18px; color: var(--muted); max-width: 52ch; margin: 0 0 26px; }
+.hero-lockup { display: flex; align-items: center; gap: 16px; margin: 0 0 22px; font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 4px; font-size: 13px; color: var(--muted); }
 .hero-lockup .rule { width: 46px; height: 1px; background: var(--ink); opacity: .7; flex-shrink: 0; }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-stats { display: flex; gap: 28px; margin-top: 34px; flex-wrap: wrap; }
 .hero-stats .stat b { font-family: var(--display); font-size: 34px; display: block; line-height: 1; }
 .hero-stats .stat span { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
-.hero-stats .s1 b { color: var(--pink); } .hero-stats .s2 b { color: var(--cyan); } .hero-stats .s3 b { color: var(--lime); }
+.hero-stats .s1 b { color: var(--ink); } .hero-stats .s2 b { color: var(--cyan); } .hero-stats .s3 b { color: var(--accent-2); }
 
 .hero-art { position: relative; aspect-ratio: 1/1; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: radial-gradient(120% 120% at 50% 0%, #161619, #0a0a0b 70%); display: grid; place-items: center; }
 .hero-logo { position: relative; z-index: 2; width: 78%; max-width: 380px; height: auto; filter: drop-shadow(0 16px 40px rgba(0,0,0,.6)); animation: logo-float 6s ease-in-out infinite; }
@@ -509,6 +532,7 @@ body::before {
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .props { grid-template-columns: repeat(2,1fr); }
   .hero-grid { grid-template-columns: 1fr; }
+  .hero-video-panel { max-width: 420px; aspect-ratio: 16/10; margin: 0 auto; }
   .hero-art { max-width: 460px; }
   .pdp, .contact-grid, .about-hero { grid-template-columns: 1fr; }
   .cart-layout { grid-template-columns: 1fr; }
@@ -535,9 +559,12 @@ body::before {
   .site-nav.open { opacity: 1; visibility: visible; transform: none; }
   .nav-list { flex-direction: column; align-items: stretch; gap: 0; padding-top: 6px; }
   .site-nav .nav-list > li { padding: 0 10px; }
-  .site-nav .nav-list > li > a { height: auto; padding: 13px 14px; margin: 2px 0; border-radius: 12px; }
+  /* This popup floats off the black header as its own light card, so its
+     links need the regular dark-on-light text, not the header's white text. */
+  .site-nav .nav-list > li > a { height: auto; padding: 13px 14px; margin: 2px 0; border-radius: 12px; color: var(--ink); }
   .site-nav .nav-list > li > a::after { display: none; }
   .site-nav .nav-list > li > a:hover { background: var(--bg-3); }
+  .site-nav .nav-list > li > a .caret { color: var(--muted); }
   .site-nav .nav-list > li.active > a { background: var(--ink); color: var(--ink-contrast); }
   .site-nav .nav-list > li.active > a .caret { color: var(--ink-contrast); }
   .dropdown, .dropdown.mega { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; width: auto; display: none; grid-template-columns: 1fr; background: var(--bg-3); border-radius: 12px; margin: 2px 0 8px; padding: 6px; }
@@ -560,6 +587,29 @@ body::before {
   .brand-grid { grid-template-columns: repeat(3,1fr); }
   .footer-grid, .props, .values { grid-template-columns: 1fr; }
   .hero { min-height: 74vh; padding: 64px 0; }
+  /* Mobile only: drop the small side video panel and go back to a
+     full-bleed background video behind the copy, as requested. */
+  .hero-video-panel { display: none; }
+  .hero-video, .hero-overlay { display: block; }
+  /* Mobile only: the video becomes the background again, so text goes back
+     to the light-on-dark treatment the video's scrim needs for contrast. */
+  .hero { background: #0b0b0d; }
+  .hero .eyebrow { background: #ffffff; color: #18181b; }
+  .hero-copy { color: #ffffff; }
+  .hero h1 { color: #ffffff; }
+  .hero h1 .o1 { color: #ffffff; }
+  .hero h1 .o2 { -webkit-text-stroke: 2px #ffffff; color: transparent; }
+  .hero p.lead { color: #d4d4d8; }
+  .hero-lockup { color: #c7c7cf; }
+  .hero-lockup .rule { background: rgba(255,255,255,.5); opacity: 1; }
+  .hero .btn { background: #ffffff; color: #0b0b0d; border-color: #ffffff; }
+  .hero .btn::before { background: #0b0b0d; }
+  .hero .btn:hover { color: #ffffff; border-color: #ffffff; }
+  .hero .btn.ghost { background: transparent; color: #ffffff; border-color: rgba(255,255,255,.55); }
+  .hero .btn.ghost::before { background: #ffffff; }
+  .hero .btn.ghost:hover { color: #0b0b0d; border-color: #ffffff; }
+  .hero-stats .stat span { color: rgba(255,255,255,.5); }
+  .hero-stats .s1 b { color: #ffffff; } .hero-stats .s2 b { color: #d4d4d8; } .hero-stats .s3 b { color: #a1a1aa; }
   .hero-stats { gap: 18px; }
   .cart-row { grid-template-columns: 72px 1fr; }
   .cart-row .ci-img { width: 72px; height: 72px; }
@@ -616,7 +666,7 @@ body::before {
 .stagger > *.in { opacity: 1; transform: none; filter: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .stagger > *, .hero-copy > *, .hero-video { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+  .reveal, .stagger > *, .hero-copy > *, .hero-video, .hero-video-panel, .hero-video-panel video { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
 }
 
 /* Glitch effect */
@@ -663,7 +713,7 @@ body::before {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: none; }
 }
-.hero-art { animation: fade-scale .9s .3s ease both; }
+.hero-art, .hero-video-panel { animation: fade-scale .9s .3s ease both; }
 @keyframes fade-scale {
   from { opacity: 0; transform: scale(.94); }
   to   { opacity: 1; transform: scale(1); }
