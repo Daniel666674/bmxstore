@@ -120,16 +120,16 @@ function stikeToast(msg) {
 const STIKE_LOW_STOCK = 5;
 function stikeProductUrl(p) { return `producto/${p.slug}.html`; }
 function stikeProductCard(p) {
-  const total = stikeTotalStock(p);
   const out = stikeIsOutOfStock(p);
   const badge = out ? `<span class="badge sold">Agotado</span>`
               : p.promo ? `<span class="badge promo">Oferta</span>`
               : p.tag === "new" ? `<span class="badge new">Nuevo</span>` : "";
   const oldPrice = p.old ? `<span class="old">${stikePrice(p.old)}</span>` : "";
-  const lowStock = (!out && total > 0 && total <= STIKE_LOW_STOCK)
-    ? `<span class="stock-low">Solo ${total} ${total === 1 ? "unidad" : "unidades"}</span>` : "";
   const hasVariants = !!(p.sizes || p.colors);
   const url = stikeProductUrl(p);
+  /* Ficha minimalista: foto + nombre + precio, centrado, sin mas ruido.
+     El CTA existe pero solo aparece en hover, para que la grilla en reposo
+     sea una pared limpia de fotos sin perder el "agregar" de un clic. */
   const cta = out
     ? `<a class="btn cyan sm block" href="${url}">Ver producto</a>`
     : hasVariants
@@ -145,11 +145,8 @@ function stikeProductCard(p) {
       </a>
     </div>
     <div class="body">
-      <span class="brandline">${p.brand}</span>
       <div class="title"><a href="${url}">${p.n}</a></div>
       <div class="price">${stikePrice(p.price)} ${oldPrice}</div>
-      ${stikeVariantChips(p)}
-      ${lowStock}
       ${cta}
     </div>
   </article>`;
