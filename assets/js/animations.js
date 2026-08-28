@@ -52,7 +52,7 @@
   /* ---- Auto-tag more elements so the whole site animates ---- */
   document.querySelectorAll('.section-head, .cta-band .wrap, .tl-item, .map-embed, .contact-card, .about-hero > div, .pdp-info, .pdp-gallery')
     .forEach(function (el) { el.classList.add('reveal'); });
-  document.querySelectorAll('.brand-grid, .ig-grid, .values, .props, .subcat-chips')
+  document.querySelectorAll('.brand-grid, .ig-grid, .values, .props')
     .forEach(function (el) { el.classList.add('stagger'); });
 
   /* ---- Scroll reveal ---- */
