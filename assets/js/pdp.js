@@ -25,6 +25,38 @@ function stikePdpInit(slug) {
   const waBuy = document.getElementById("wa-buy");
   const mainImg = document.getElementById("main-img");
   const thumbsBox = document.querySelector(".pdp-thumbs");
+  const mainBox = document.querySelector(".pdp-gallery .main");
+
+  // Cart icon on the add-to-cart button
+  if (addBtn && !addBtn.querySelector("svg")) {
+    addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>` + addBtn.textContent;
+  }
+
+  // Magnifier + lightbox: click the main photo (or the zoom button) to see it full-size
+  if (mainBox && mainImg) {
+    let lightbox = document.querySelector(".pdp-lightbox");
+    if (!lightbox) {
+      lightbox = document.createElement("div");
+      lightbox.className = "pdp-lightbox";
+      lightbox.innerHTML = `<button class="lb-close" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><img alt="">`;
+      document.body.appendChild(lightbox);
+      const lbImg = lightbox.querySelector("img");
+      const close = () => lightbox.classList.remove("open");
+      lightbox.querySelector(".lb-close").addEventListener("click", close);
+      lightbox.addEventListener("click", e => { if (e.target === lightbox) close(); });
+      document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+      lightbox._open = src => { lbImg.src = src; lightbox.classList.add("open"); };
+    }
+    const zoomBtn = document.createElement("button");
+    zoomBtn.className = "pdp-zoom";
+    zoomBtn.type = "button";
+    zoomBtn.setAttribute("aria-label", "Ver imagen completa");
+    zoomBtn.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>`;
+    mainBox.appendChild(zoomBtn);
+    const openLightbox = () => document.querySelector(".pdp-lightbox")._open(mainImg.src);
+    zoomBtn.addEventListener("click", openLightbox);
+    mainImg.addEventListener("click", openLightbox);
+  }
 
   function currentStock() {
     return stikeStockFor(p, p.sizes ? selectedSize : undefined, p.colors ? selectedColor : undefined);

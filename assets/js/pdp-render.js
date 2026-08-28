@@ -66,7 +66,7 @@
   function renderSpecs(p) {
     return (p.spec || []).map(s => {
       var idx = s.indexOf(":");
-      if (idx === -1) return `<div class="spec-row"><span class="k">·</span><span class="v">${esc(s)}</span></div>`;
+      if (idx === -1) return `<div class="spec-row plain"><span class="v">${esc(s)}</span></div>`;
       return `<div class="spec-row"><span class="k">${esc(s.slice(0, idx))}</span><span class="v">${esc(s.slice(idx + 1).trim())}</span></div>`;
     }).join("");
   }
@@ -96,7 +96,7 @@
     var waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.n} (${money(p.price)}). ¿Está disponible?`);
     var canonical = `${SITE_URL}/producto/${p.slug}.html`;
     var shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.n}, ${money(p.price)}\n${canonical}`);
-    var ogImage = coverUrl ? (coverUrl.indexOf("http") === 0 ? coverUrl : `${SITE_URL}${coverUrl}`) : `${SITE_URL}/assets/img/og-stike.jpg`;
+    var ogImage = coverUrl ? (coverUrl.indexOf("http") === 0 ? coverUrl : `${SITE_URL}/${coverUrl.replace(/^\//, "")}`) : `${SITE_URL}/assets/img/og-stike.jpg`;
     var catLink = `tienda.html?cat=${esc(p.cat)}`;
     var subLink = p.sub ? `tienda.html?cat=${esc(p.cat)}&sub=${encodeURIComponent(p.sub)}` : null;
     var subCrumb = subLink ? `<span class="sep">/</span><a href="${subLink}" style="color:inherit">${esc(p.sub)}</a>` : "";

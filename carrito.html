@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=5">
+  <link rel="stylesheet" href="assets/css/styles.css?v=6">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -30,6 +30,96 @@
     stikeInit();
     const FREE_SHIP = 300000;
     const SHIP_COST = 18000;
+
+    /* ---------------------- Pago (pasarela simulada) --------------------- */
+    let checkoutOverlay;
+    function ensureCheckoutOverlay() {
+      if (checkoutOverlay) return checkoutOverlay;
+      checkoutOverlay = document.createElement("div");
+      checkoutOverlay.className = "checkout-overlay";
+      document.body.appendChild(checkoutOverlay);
+      checkoutOverlay.addEventListener("click", e => { if (e.target === checkoutOverlay) closeCheckout(); });
+      document.addEventListener("keydown", e => { if (e.key === "Escape") closeCheckout(); });
+      return checkoutOverlay;
+    }
+    function closeCheckout() { if (checkoutOverlay) checkoutOverlay.classList.remove("open"); }
+
+    function openCheckout(total) {
+      const ov = ensureCheckoutOverlay();
+      ov.innerHTML = `
+        <div class="checkout-modal">
+          <button class="co-close" aria-label="Cerrar" onclick="closeCheckout()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <h3>Pago con tarjeta</h3>
+          <div class="co-demo-note">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Pasarela simulada (demo): no se procesan cobros reales ni se guardan datos de tarjeta.</span>
+          </div>
+          <div class="co-total-line"><span>Total a pagar</span><b>${stikePrice(total)}</b></div>
+          <form class="co-form" id="co-form" autocomplete="off">
+            <div>
+              <label for="co-name">Nombre en la tarjeta</label>
+              <input id="co-name" type="text" placeholder="Como aparece en la tarjeta" required>
+            </div>
+            <div>
+              <label for="co-number">Número de tarjeta</label>
+              <input id="co-number" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" required>
+            </div>
+            <div class="co-row2">
+              <div>
+                <label for="co-exp">Vencimiento</label>
+                <input id="co-exp" type="text" inputmode="numeric" placeholder="MM/AA" maxlength="5" required>
+              </div>
+              <div>
+                <label for="co-cvv">CVV</label>
+                <input id="co-cvv" type="text" inputmode="numeric" placeholder="123" maxlength="4" required>
+              </div>
+            </div>
+            <button type="submit" class="btn block co-pay-btn"><span class="co-label">Pagar ${stikePrice(total)}</span><span class="co-spinner"></span></button>
+          </form>
+        </div>`;
+      ov.classList.add("open");
+
+      const numEl = document.getElementById("co-number");
+      numEl.addEventListener("input", () => {
+        numEl.value = numEl.value.replace(/[^0-9]/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+      });
+      const expEl = document.getElementById("co-exp");
+      expEl.addEventListener("input", () => {
+        let v = expEl.value.replace(/[^0-9]/g, "").slice(0, 4);
+        if (v.length > 2) v = v.slice(0, 2) + "/" + v.slice(2);
+        expEl.value = v;
+      });
+      const cvvEl = document.getElementById("co-cvv");
+      cvvEl.addEventListener("input", () => { cvvEl.value = cvvEl.value.replace(/[^0-9]/g, "").slice(0, 4); });
+
+      document.getElementById("co-form").addEventListener("submit", e => {
+        e.preventDefault();
+        const btn = e.target.querySelector(".co-pay-btn");
+        if (btn.classList.contains("loading")) return;
+        btn.classList.add("loading");
+        setTimeout(() => showCheckoutSuccess(total), 1400);
+      });
+    }
+
+    function showCheckoutSuccess(total) {
+      const orderNo = "STK-" + Date.now().toString().slice(-6);
+      const modal = checkoutOverlay.querySelector(".checkout-modal");
+      modal.innerHTML = `
+        <button class="co-close" aria-label="Cerrar" onclick="closeCheckout()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div class="co-success">
+          <div class="co-check"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h3>¡Pago exitoso!</h3>
+          <div class="co-order-no">Pedido ${orderNo}</div>
+          <p>Pagaste ${stikePrice(total)} (simulado). Te escribiremos por WhatsApp para confirmar tu pedido.</p>
+          <button class="btn block" onclick="finishCheckout()">Volver a la tienda</button>
+        </div>`;
+    }
+
+    function finishCheckout() {
+      stikeSaveCart([]);
+      closeCheckout();
+      render();
+    }
 
     function render() {
       const cart = stikeGetCart();
@@ -108,7 +198,7 @@
           </div>
           <div class="line total"><span>Total</span><span>${stikePrice(total)}</span></div>
           <a class="btn wa block" style="margin-top:16px" href="https://wa.me/${STIKE_CONFIG.whatsapp}?text=${waMsg}" target="_blank" rel="noopener">Finalizar por WhatsApp</a>
-          <button class="btn block" style="margin-top:10px" onclick="stikeToast('Simulación de pago: aquí se conecta la pasarela real')">Pagar ahora</button>
+          <button class="btn block" style="margin-top:10px" onclick="openCheckout(${total})">Pagar ahora</button>
           <p style="color:var(--muted);font-size:12px;margin-top:14px;text-align:center">Pagos: Tarjeta · PSE · Nequi · Efecty</p>
         </aside>
       </div>`;
