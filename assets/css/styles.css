@@ -5,14 +5,16 @@
 
 /* ----------------------------- Design tokens ---------------------------- */
 :root {
-  /* Base: light, plenty of white */
-  --bg:        #f7f7f6;
-  --bg-2:      #ffffff;
-  --bg-3:      #f1f1ef;
+  /* Base: soft grey canvas. Product shots are white-background cutouts and
+     are blended into it (mix-blend-mode: multiply on .thumb/.main images),
+     so photos sit directly on the page instead of inside white boxes. */
+  --bg:        #dcdcdc;
+  --bg-2:      #e6e6e6;
+  --bg-3:      #d2d2d2;
   --panel:     #ffffff;
   --ink:       #18181b;
-  --muted:     #6b6b74;
-  --line:      #e4e4e7;
+  --muted:     #5f5f68;
+  --line:      #c4c4c4;
 
   /* Monochrome ramp (B&W theme, legacy color names kept as grayscale) */
   --pink:   #18181b;
@@ -300,8 +302,8 @@ body::before {
   background: transparent; border: none; border-radius: 0; overflow: visible;
   display: flex; flex-direction: column;
 }
-.card .thumb { position: relative; aspect-ratio: 1/1; background: #fff; overflow: hidden; }
-.card .thumb img { width: 100%; height: 100%; object-fit: contain; background: #fff; transition: transform .7s var(--ease); }
+.card .thumb { position: relative; aspect-ratio: 1/1; background: transparent; overflow: hidden; }
+.card .thumb img { width: 100%; height: 100%; object-fit: contain; background: transparent; mix-blend-mode: multiply; transition: transform .7s var(--ease); }
 .card:hover .thumb img { transform: scale(1.05); }
 .card .badge { position: absolute; top: 10px; left: 10px; font-family: var(--display); text-transform: uppercase; font-size: 11px; letter-spacing: .5px; padding: 4px 9px; border-radius: 0; z-index: 2; opacity: 0; transition: opacity .3s var(--ease); }
 .card:hover .badge { opacity: 1; }
@@ -439,10 +441,11 @@ body::before {
 /* Minimal gallery: the photo IS the frame — no card border, no radius, no
    inner padding box (which made the white product shots look like a white
    box floating inside a grey box). */
-/* White ground (product shots are white-background cutouts, so a grey frame
-   just reads as a box-inside-a-box); contain, never cover, so nothing crops. */
-.pdp-gallery .main { position: relative; aspect-ratio: 1/1; overflow: hidden; background: #fff; }
-.pdp-gallery .main img { width: 100%; height: 100%; object-fit: contain; background: #fff; transition: transform .6s var(--ease); cursor: zoom-in; }
+/* The photo sits straight on the page canvas: multiply blending drops the
+   white background out of the product shots, so there is no white panel
+   framing them. contain, never cover, so nothing crops. */
+.pdp-gallery .main { position: relative; aspect-ratio: 1/1; overflow: hidden; background: transparent; }
+.pdp-gallery .main img { width: 100%; height: 100%; object-fit: contain; background: transparent; mix-blend-mode: multiply; transition: transform .6s var(--ease); cursor: zoom-in; }
 .pdp-gallery .main:hover img { transform: scale(1.03); }
 .pdp-zoom {
   position: absolute; top: 16px; right: 16px; z-index: 2; width: 40px; height: 40px; border-radius: 50%;
@@ -451,8 +454,8 @@ body::before {
 }
 .pdp-zoom:hover { transform: scale(1.08); background: var(--ink); color: var(--ink-contrast); }
 .pdp-thumbs { display: flex; gap: 10px; margin-top: 10px; }
-.pdp-thumbs button { flex: 0 0 auto; width: 86px; aspect-ratio: 1/1; overflow: hidden; border: 1px solid transparent; background: #f2f2f2; padding: 0; cursor: pointer; transition: border-color .2s, opacity .2s; opacity: .72; }
-.pdp-thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+.pdp-thumbs button { flex: 0 0 auto; width: 86px; aspect-ratio: 1/1; overflow: hidden; border: 1px solid transparent; background: transparent; padding: 0; cursor: pointer; transition: border-color .2s, opacity .2s; opacity: .72; }
+.pdp-thumbs button img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
 .pdp-thumbs button:hover { opacity: 1; }
 .pdp-thumbs button.active { border-color: var(--ink); opacity: 1; }
 
