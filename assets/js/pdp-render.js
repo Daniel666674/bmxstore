@@ -89,10 +89,10 @@
     var out = totalStock(p);
     var low = out > 0 && out <= 5;
     var stockHtml = out > 0
-      ? `<span class="stock${low ? " low" : ""}">● ${low ? `¡Solo ${out} disponible${out === 1 ? "" : "s"}!` : `En stock (${out} disponibles)`}</span>`
-      : `<span class="stock out">● Agotado. Consúltanos por WhatsApp</span>`;
+      ? `<span class="stock${low ? " low" : ""}">${low ? `Solo ${out} disponible${out === 1 ? "" : "s"}` : "En stock"}</span>`
+      : `<span class="stock out">Agotado — consúltanos por WhatsApp</span>`;
     var oldPrice = p.old ? `<span class="old">${money(p.old)}</span>` : "";
-    var discount = p.old ? `<span class="tag-pill" style="background:var(--yellow);color:#0b0b0d;margin-left:10px">-${Math.round((1 - p.price / p.old) * 100)}%</span>` : "";
+    var discount = p.old ? `<span class="tag-pill" style="background:#18181b;color:#fff;margin-left:10px;font-size:11px;padding:4px 10px">-${Math.round((1 - p.price / p.old) * 100)}%</span>` : "";
     var waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.n} (${money(p.price)}). ¿Está disponible?`);
     var canonical = `${SITE_URL}/producto/${p.slug}.html`;
     var shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.n}, ${money(p.price)}\n${canonical}`);

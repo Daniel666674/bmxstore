@@ -466,24 +466,30 @@ body::before {
   display: grid; place-items: center; font-size: 18px; transition: background .15s;
 }
 .pdp-lightbox .lb-close:hover { background: rgba(255,255,255,.24); }
-.pdp-info .brandline { color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
-.pdp-info h1 { font-size: clamp(30px, 5vw, 46px); margin: 10px 0 16px; }
-.pdp-info .price { font-family: var(--display); font-weight: 600; font-size: 40px; }
-.pdp-info .price .old { font-family: var(--body); font-size: 18px; color: var(--muted); text-decoration: line-through; margin-left: 10px; font-weight: 400; }
-.pdp-info .desc { color: var(--muted); margin: 18px 0; }
-.pdp-info .stock { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); margin-bottom: 10px; }
-.pdp-info .stock.out { color: var(--muted); }
-/* Buy box: no card chrome, it just sits on the page */
-.buy-box { background: transparent; border: none; border-radius: 0; padding: 0; margin: 20px 0 22px; }
-.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); overflow: hidden; }
-.qty button { background: transparent; border: none; color: var(--ink); width: 44px; height: 52px; font-size: 20px; transition: background .2s, color .2s; }
+/* Quiet type hierarchy: the title is a calm uppercase line, not a poster
+   headline, and the price sits just under it at a similar visual weight. */
+.pdp-info h1 { font-size: clamp(21px, 2.3vw, 27px); font-weight: 500; letter-spacing: 2.5px; line-height: 1.25; margin: 0 0 18px; }
+.pdp-info .price { font-family: var(--display); font-weight: 500; font-size: 26px; letter-spacing: 1px; color: var(--ink); }
+.pdp-info .price .old { font-family: var(--display); font-size: 17px; color: var(--muted); text-decoration: line-through; margin-left: 10px; font-weight: 400; }
+/* Copy block: bold product name, then the description and the spec lines
+   flowing underneath as one continuous read. */
+.pdp-copy { margin: 26px 0 24px; }
+.pdp-copy-title { font-size: 14px; font-weight: 700; letter-spacing: 1px; margin: 0 0 14px; }
+.pdp-copy-title::after { content: ":"; }
+.pdp-info .desc { color: var(--muted); margin: 0 0 16px; font-size: 14.5px; line-height: 1.7; }
+.stock-line { font-size: 14px; color: var(--muted); margin: 0 0 20px; }
+.pdp-info .stock { display: inline; font-size: 14px; color: var(--muted); }
+.pdp-info .stock.out { color: var(--ink); font-weight: 600; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); overflow: hidden; background: #fff; }
+.qty button { background: transparent; border: none; color: var(--muted); width: 42px; height: 54px; font-size: 18px; transition: background .2s, color .2s; }
 .qty button:hover { background: var(--ink); color: var(--ink-contrast); }
-.qty input { width: 50px; height: 52px; text-align: center; background: transparent; border: none; color: var(--ink); font-family: var(--display); font-size: 18px; }
-.pdp-actions { display: flex; gap: 12px; margin: 18px 0 0; flex-wrap: wrap; align-items: center; }
-.pdp-actions .btn { flex: 1; min-width: 160px; }
+.qty input { width: 54px; height: 54px; text-align: center; background: transparent; border: none; color: var(--ink); font-family: var(--display); font-size: 16px; }
+.pdp-actions { display: flex; gap: 14px; margin: 0; flex-wrap: wrap; align-items: center; }
+.pdp-actions .btn { flex: 1; min-width: 200px; }
 /* Squared-off, flat CTAs on the product page (the pill shape reads busy here) */
-.pdp .btn { border-radius: 0; height: 52px; padding: 0 26px; }
+.pdp .btn { border-radius: 0; height: 54px; padding: 0 26px; letter-spacing: 2.5px; font-size: 13px; }
 .pdp .btn:hover { transform: none; box-shadow: none; }
+.pdp .btn.wa { margin-top: 12px; }
 /* Spec list: plain flowing lines ("Label: value"), not a rigid table */
 .spec-table { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }
 .spec-row { font-size: 14px; color: var(--ink); }
@@ -492,9 +498,18 @@ body::before {
 .spec-row .v { color: var(--muted); }
 .spec-row.plain .v { color: var(--ink); }
 .spec-row.plain .v::before { content: "• "; color: var(--muted); }
-.pdp-meta { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; font-size: 14px; color: var(--muted); }
+.pdp-meta { border-top: 1px solid var(--line); margin-top: 34px; padding-top: 20px; font-size: 13.5px; color: var(--muted); }
 .pdp-meta div { margin-bottom: 8px; }
-.pdp-meta b { color: var(--ink); }
+.pdp-meta b { color: var(--ink); font-weight: 600; }
+.pdp-meta a { color: var(--ink); }
+.pdp-meta a:hover { color: var(--muted); }
+/* Share is a quiet pair of text links down in the meta, not a row of pills */
+.pdp-share { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; }
+.pdp-share a, .pdp-share button {
+  background: none; border: none; padding: 0; font-family: var(--body); font-size: 13.5px;
+  color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.pdp-share a:hover, .pdp-share button:hover { color: var(--ink); }
 
 /* =============================== CART ================================= */
 .cart-layout { display: grid; grid-template-columns: 1fr 360px; gap: 30px; padding: 16px 0 80px; align-items: start; }
@@ -904,15 +919,15 @@ body::before {
 .pdp-info .stock.low::before { content: ""; }
 
 /* ----------------------------- Selector de talla ----------------------- */
-.size-select { margin-top: 16px; }
-.size-label { font-family: var(--display); text-transform: uppercase; letter-spacing: 1.5px; font-size: 13px; color: var(--ink); margin-bottom: 9px; }
+.size-select { margin-top: 4px; margin-bottom: 20px; }
+.size-label { font-family: var(--display); text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px; color: var(--muted); margin-bottom: 9px; }
 .size-label .size-req { color: var(--muted); letter-spacing: .5px; font-size: 12px; margin-left: 6px; }
-.size-options { display: flex; flex-wrap: wrap; gap: 9px; }
-.size-opt { min-width: 46px; height: 44px; padding: 0 12px; border-radius: 10px; background: var(--bg-3); border: 1.5px solid var(--line); color: var(--ink); font-family: var(--display); font-size: 16px; letter-spacing: .5px; transition: border-color .18s, background .18s, transform .18s; }
-.size-opt:hover { border-color: var(--accent); transform: translateY(-2px); }
+.size-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.size-opt { min-width: 46px; height: 44px; padding: 0 14px; border-radius: 0; background: #fff; border: 1px solid var(--line); color: var(--ink); font-family: var(--display); font-size: 15px; letter-spacing: .5px; transition: border-color .18s, background .18s, color .18s; }
+.size-opt:hover { border-color: var(--ink); }
 .size-opt.active { background: var(--ink); color: var(--ink-contrast); border-color: var(--ink); }
 .size-opt.out, .size-opt:disabled { opacity: .35; text-decoration: line-through; cursor: not-allowed; }
-.size-opt.out:hover, .size-opt:disabled:hover { transform: none; border-color: var(--line); }
+.size-opt.out:hover, .size-opt:disabled:hover { border-color: var(--line); }
 .size-options.shake { animation: shake .42s; }
 @keyframes shake { 10%,90% { transform: translateX(-1px); } 20%,80% { transform: translateX(2px); } 30%,50%,70% { transform: translateX(-5px); } 40%,60% { transform: translateX(5px); } }
 
