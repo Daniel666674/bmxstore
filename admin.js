@@ -511,7 +511,7 @@ async function regenerateProductPages(merged, scopeSlugs, commitMessage) {
     const row = merged.find(r => r.slug === slug);
     if (!row || row.published === false) continue;
     const cat = catIndex.get(row.cat);
-    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat });
+    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat, placeholderImg: stikeProductImage(row, 1200) });
     const path = `producto/${row.slug}.html`;
     const meta = await ghGetMeta(path);
     await ghPutOnce(path, b64EncodeText(html), commitMessage, meta ? meta.sha : undefined);
