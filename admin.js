@@ -511,7 +511,7 @@ async function regenerateProductPages(merged, scopeSlugs, commitMessage) {
     const row = merged.find(r => r.slug === slug);
     if (!row || row.published === false) continue;
     const cat = catIndex.get(row.cat);
-    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat });
+    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat, placeholderImg: stikeProductImage(row, 1200) });
     const path = `producto/${row.slug}.html`;
     const meta = await ghGetMeta(path);
     await ghPutOnce(path, b64EncodeText(html), commitMessage, meta ? meta.sha : undefined);
@@ -1463,9 +1463,17 @@ function downloadFile(filename, text, mime) {
   setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 function toCSV(rows) {
-  const headers = ["slug", "sku", "n", "brand", "cat", "sub", "price", "cost", "units", "published"];
+  const headers = ["slug", "sku", "n", "brand", "cat", "sub", "spec", "price", "cost", "units", "tag", "imgs", "sizes", "colors", "imgFit", "published"];
+  const joinStock = arr => (arr || []).map(s => `${s.v}:${s.u}`).join("|");
+  const val = (p, h) => {
+    if (h === "spec") return (p.spec || []).join("\n");
+    if (h === "imgs") return (p.imgs || []).join("|");
+    if (h === "sizes") return joinStock(p.sizes);
+    if (h === "colors") return joinStock(p.colors);
+    return p[h];
+  };
   const esc = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
-  return [headers.join(",")].concat(rows.map(p => headers.map(h => esc(p[h])).join(","))).join("\n");
+  return [headers.join(",")].concat(rows.map(p => headers.map(h => esc(val(p, h))).join(","))).join("\n");
 }
 function exportCSV() { downloadFile("stike-catalogo.csv", toCSV(workingCatalog), "text/csv"); }
 function exportJSON() { downloadFile("stike-catalogo.json", JSON.stringify(workingCatalog.map(toSiteProduct), null, 2), "application/json"); }
@@ -1480,6 +1488,17 @@ function parseCSV(text) {
     return row;
   });
 }
+/* "valor:unidades" separados por "|" -> [{v,u}]. Tolera un tercer campo
+   vacio (p.ej. "Negro:2:") que algunos exports historicos incluian. */
+function parseStockField(raw) {
+  if (Array.isArray(raw)) return raw;
+  const items = String(raw).split("|").map(s => s.trim()).filter(Boolean);
+  if (!items.length) return null;
+  return items.map(item => {
+    const [v, u] = item.split(":");
+    return { v: (v || "").trim(), u: parseInt(u) || 0 };
+  });
+}
 async function importFile(file) {
   const text = await file.text();
   let rows;
@@ -1490,9 +1509,17 @@ async function importFile(file) {
     const slug = row.slug || uniqueSlug(slugify(row.n || row.slug || "producto"), null);
     const existing = workingCatalog.find(p => p.slug === slug);
     const merged = existing ? { ...existing } : blankProduct();
-    ["n", "brand", "cat", "sub"].forEach(k => { if (row[k] !== undefined && row[k] !== "") merged[k] = row[k]; });
+    ["n", "brand", "cat", "sub", "tag", "imgFit"].forEach(k => { if (row[k] !== undefined && row[k] !== "") merged[k] = row[k]; });
     ["price", "cost", "units"].forEach(k => { if (row[k] !== undefined && row[k] !== "") merged[k] = parseInt(row[k]) || 0; });
     if (row.sku) merged.sku = row.sku;
+    if (row.spec !== undefined && row.spec !== "") {
+      merged.spec = Array.isArray(row.spec) ? row.spec : String(row.spec).split("\n").map(s => s.trim()).filter(Boolean);
+    }
+    if (row.imgs !== undefined && row.imgs !== "") {
+      merged.imgs = Array.isArray(row.imgs) ? row.imgs : String(row.imgs).split("|").map(s => s.trim()).filter(Boolean);
+    }
+    if (row.sizes !== undefined && row.sizes !== "") merged.sizes = parseStockField(row.sizes);
+    if (row.colors !== undefined && row.colors !== "") merged.colors = parseStockField(row.colors);
     merged.slug = slug;
     if (row.published !== undefined) merged.published = String(row.published) !== "false" && row.published !== false;
     if (!merged.sku) merged.sku = generateSku(merged.cat, merged.brand);
