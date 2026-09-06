@@ -398,7 +398,7 @@ async function regenerateSitemap(merged, commitMessage) {
   const base = "https://daniel666674.github.io/bmxstore";
   const staticPages = [
     ["", "1.0", "weekly"], ["tienda.html", "0.9", "weekly"], ["armar.html", "0.9", "monthly"],
-    ["marcas.html", "0.6", "monthly"], ["marca-fate.html", "0.6", "monthly"],
+    ["marcas.html", "0.6", "monthly"], ["fate/", "0.6", "monthly"], ["fate/tienda.html", "0.6", "weekly"],
     ["nosotros.html", "0.6", "monthly"], ["contacto.html", "0.6", "monthly"],
     ["blog.html", "0.8", "weekly"], ["blog-historia-bmx.html", "0.7", "yearly"],
     ["blog-bmx-bogota.html", "0.7", "yearly"], ["blog-arma-tu-bmx.html", "0.7", "yearly"],

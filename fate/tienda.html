@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo Fate BMX Colombia: Stike Bike Shop</title>
+  <meta name="description" content="Catálogo completo Fate BMX Colombia: marcos, sillas, platos y accesorios. Filtra por categoría y precio.">
+  <link rel="canonical" href="https://daniel666674.github.io/bmxstore/fate/tienda.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Stike Bike Shop">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:title" content="Catálogo Fate BMX Colombia | Stike Bike Shop">
+  <meta property="og:description" content="Todos los productos Fate BMX Colombia en un solo lugar: marcos, sillas, platos y accesorios.">
+  <meta property="og:url" content="https://daniel666674.github.io/bmxstore/fate/tienda.html">
+  <meta property="og:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=1">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div class="wrap page-head">
+    <nav class="breadcrumb"><a href="../index.html">Inicio</a><span class="sep">/</span><a href="../marcas.html">Marcas</a><span class="sep">/</span><a href="index.html">Fate BMX Colombia</a><span class="sep">/</span><span>Catálogo</span></nav>
+    <h1 id="page-title">Catálogo Fate</h1>
+    <div class="count" id="result-count"></div>
+  </div>
+
+  <div class="wrap shop-layout">
+    <aside class="filters">
+      <h4>Filtrar</h4>
+      <div class="fgroup">
+        <strong style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)">Categoría</strong>
+        <div id="filter-cats" style="margin-top:8px"></div>
+      </div>
+      <div class="fgroup">
+        <strong style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)">Precio</strong>
+        <div id="filter-price" style="margin-top:8px">
+          <label><input type="radio" name="price" value="all" checked> Todos</label>
+          <label><input type="radio" name="price" value="0-150000"> Hasta $150.000</label>
+          <label><input type="radio" name="price" value="150000-500000"> $150.000 – $500.000</label>
+          <label><input type="radio" name="price" value="500000-1000000"> $500.000 – $1.000.000</label>
+        </div>
+      </div>
+      <button class="btn ghost sm block" id="clear-filters">Limpiar filtros</button>
+    </aside>
+
+    <div class="shop-main">
+      <div class="subcat-chips" id="subcat-chips"></div>
+      <div class="shop-toolbar">
+        <div id="showing" style="color:var(--muted);font-size:14px"></div>
+        <label style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px">Ordenar:
+          <select id="sort">
+            <option value="relevance">Relevancia</option>
+            <option value="price-asc">Precio: menor a mayor</option>
+            <option value="price-desc">Precio: mayor a menor</option>
+            <option value="name">Nombre A-Z</option>
+          </select>
+        </label>
+      </div>
+      <div class="product-grid" id="grid"></div>
+      <div class="empty" id="empty" style="display:none">
+        <h3 style="font-size:28px">Sin resultados</h3>
+        <p>No encontramos productos Fate con esos filtros. Prueba con otra categoría o precio.</p>
+        <a class="btn cyan" href="tienda.html">Ver todo el catálogo Fate</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/js/products-data.js?v=1"></script>
+  <script src="../assets/js/data.js?v=1"></script>
+  <script src="../assets/js/app.js?v=1"></script>
+  <script>
+    stikeInit("marcas");
+
+    const FATE_BRAND = "Fate BMX Colombia";
+    const params = new URLSearchParams(location.search);
+    const state = {
+      cats: params.get("cat") ? [params.get("cat")] : [],
+      sub: params.get("sub") || null,
+      price: "all",
+      sort: "relevance"
+    };
+
+    const titleEl = document.getElementById("page-title");
+
+    function currentCat() { return state.cats.length === 1 ? stikeCategory(state.cats[0]) : null; }
+
+    function buildHeader() {
+      const cat = currentCat();
+      titleEl.textContent = state.sub ? state.sub : (cat ? cat.name : "Catálogo Fate");
+    }
+
+    function buildFilters() {
+      const fateCats = [...new Set(STIKE_PRODUCTS.filter(p => p.brand === FATE_BRAND).map(p => p.cat))];
+      document.getElementById("filter-cats").innerHTML = STIKE_CATEGORIES.filter(c => fateCats.includes(c.slug)).map(c => `
+        <label><input type="checkbox" value="${c.slug}" ${state.cats.includes(c.slug) ? "checked" : ""}> ${c.name}</label>`).join("");
+      document.querySelectorAll("#filter-cats input").forEach(cb => cb.addEventListener("change", () => {
+        state.cats = [...document.querySelectorAll("#filter-cats input:checked")].map(i => i.value);
+        state.sub = null;
+        render();
+      }));
+      document.querySelectorAll("input[name=price]").forEach(r => r.addEventListener("change", e => { state.price = e.target.value; render(); }));
+      document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+      document.getElementById("clear-filters").addEventListener("click", () => {
+        state.cats = []; state.sub = null; state.price = "all";
+        document.querySelectorAll(".filters input[type=checkbox]").forEach(i => i.checked = false);
+        document.querySelector("input[name=price][value=all]").checked = true;
+        render();
+      });
+    }
+
+    function buildSubcats() {
+      const cat = currentCat();
+      const box = document.getElementById("subcat-chips");
+      if (!cat || !cat.subs.length) { box.innerHTML = ""; return; }
+      const fateSubs = new Set(STIKE_PRODUCTS.filter(p => p.brand === FATE_BRAND && p.cat === cat.slug).map(p => p.sub));
+      const subs = cat.subs.filter(s => fateSubs.has(s));
+      if (!subs.length) { box.innerHTML = ""; return; }
+      box.innerHTML = `<a class="chip ${!state.sub ? "active" : ""}" href="tienda.html?cat=${cat.slug}">Todo</a>` +
+        subs.map(s => `<a class="chip ${state.sub === s ? "active" : ""}" href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
+    }
+
+    function filtered() {
+      let list = STIKE_PRODUCTS.filter(p => p.brand === FATE_BRAND);
+      if (state.cats.length) list = list.filter(p => state.cats.includes(p.cat));
+      if (state.sub) list = list.filter(p => p.sub === state.sub);
+      if (state.price !== "all") {
+        const [lo, hi] = state.price.split("-").map(Number);
+        list = list.filter(p => p.price >= lo && p.price <= hi);
+      }
+      if (state.sort === "price-asc") list.sort((a,b) => a.price - b.price);
+      else if (state.sort === "price-desc") list.sort((a,b) => b.price - a.price);
+      else if (state.sort === "name") list.sort((a,b) => a.n.localeCompare(b.n));
+      return list;
+    }
+
+    function render() {
+      buildHeader();
+      buildSubcats();
+      const list = filtered();
+      const grid = document.getElementById("grid");
+      const empty = document.getElementById("empty");
+      grid.innerHTML = list.map(stikeProductCard).join("");
+      empty.style.display = list.length ? "none" : "block";
+      grid.style.display = list.length ? "grid" : "none";
+      document.getElementById("result-count").textContent = `${list.length} producto${list.length === 1 ? "" : "s"} Fate`;
+      document.getElementById("showing").textContent = `Mostrando ${list.length} resultado${list.length === 1 ? "" : "s"}`;
+    }
+
+    buildFilters();
+    render();
+  </script>
+  <script src="../assets/js/animations.js?v=1"></script>
+</body>
+</html>

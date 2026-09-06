@@ -41,7 +41,7 @@
   <script src="assets/js/app.js?v=1"></script>
   <script>
     stikeInit("marcas");
-    const BRAND_PAGES = { "Fate BMX Colombia": "marca-fate.html" };
+    const BRAND_PAGES = { "Fate BMX Colombia": "fate/" };
     document.getElementById("brand-grid").innerHTML = STIKE_BRANDS.filter(b => STIKE_PRODUCTS.some(p => p.brand === b)).map(b => {
       const count = STIKE_PRODUCTS.filter(p => p.brand === b).length;
       const href = BRAND_PAGES[b] || `tienda.html?brand=${encodeURIComponent(b)}`;
