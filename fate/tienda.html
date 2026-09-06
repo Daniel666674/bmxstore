@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catálogo Fate BMX Colombia: Stike Bike Shop</title>
+  <title>Catálogo: Fate BMX Colombia</title>
   <meta name="description" content="Catálogo completo Fate BMX Colombia: marcos, sillas, platos y accesorios. Filtra por categoría y precio.">
   <link rel="canonical" href="https://daniel666674.github.io/bmxstore/fate/tienda.html">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Stike Bike Shop">
+  <meta property="og:site_name" content="Fate BMX Colombia">
   <meta property="og:locale" content="es_CO">
-  <meta property="og:title" content="Catálogo Fate BMX Colombia | Stike Bike Shop">
+  <meta property="og:title" content="Catálogo Fate BMX Colombia">
   <meta property="og:description" content="Todos los productos Fate BMX Colombia en un solo lugar: marcos, sillas, platos y accesorios.">
   <meta property="og:url" content="https://daniel666674.github.io/bmxstore/fate/tienda.html">
   <meta property="og:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
@@ -19,13 +19,41 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/styles.css?v=1">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23fff' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
 </head>
 <body>
-  <div id="site-header"></div>
+  <script>window.STIKE_LOADER_TEXT = "FATE";</script>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="header-main">
+        <a class="brand" href="index.html">
+          <span class="name">Fate<small>BMX COLOMBIA</small></span>
+        </a>
+        <div class="header-actions">
+          <a class="icon-btn" href="../carrito.html" title="Carrito" aria-label="Carrito">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-count">0</span>
+          </a>
+          <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg></button>
+        </div>
+      </div>
+      <nav class="site-nav" id="site-nav">
+        <div class="wrap">
+          <ul class="nav-list">
+            <li><a href="index.html">Inicio</a></li>
+            <li class="active"><a href="tienda.html">Catálogo</a></li>
+            <li><a href="../armar.html">Arma tu BMX con Fate</a></li>
+            <li><a href="../index.html">Stike Bike Shop →</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <div class="nav-backdrop" id="nav-backdrop"></div>
 
   <div class="wrap page-head">
-    <nav class="breadcrumb"><a href="../index.html">Inicio</a><span class="sep">/</span><a href="../marcas.html">Marcas</a><span class="sep">/</span><a href="index.html">Fate BMX Colombia</a><span class="sep">/</span><span>Catálogo</span></nav>
+    <nav class="breadcrumb"><a href="../index.html">Stike Bike Shop</a><span class="sep">/</span><a href="../marcas.html">Marcas</a><span class="sep">/</span><a href="index.html">Fate BMX Colombia</a><span class="sep">/</span><span>Catálogo</span></nav>
     <h1 id="page-title">Catálogo Fate</h1>
     <div class="count" id="result-count"></div>
   </div>
@@ -71,13 +99,38 @@
     </div>
   </div>
 
-  <div id="site-footer"></div>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid" style="grid-template-columns:1.4fr 1fr 1fr">
+        <div class="footer-brand">
+          <div class="brand"><span class="name">Fate<small>BMX COLOMBIA</small></span></div>
+          <p style="margin-top:14px">Marca BMX colombiana: marcos, sillas, platos y accesorios diseñados y probados en Bogotá.</p>
+        </div>
+        <div>
+          <h5>Fate</h5>
+          <a href="index.html">La marca</a>
+          <a href="tienda.html">Catálogo</a>
+          <a href="../armar.html">Arma tu BMX con Fate</a>
+        </div>
+        <div>
+          <h5>Disponible en</h5>
+          <p>Fate BMX Colombia se distribuye en Bogotá a través de <a href="../index.html" style="color:var(--ink);text-decoration:underline">Stike Bike Shop</a>.</p>
+          <p style="margin-top:12px">+57 311 810 8848<br>Bogotá D.C., Colombia</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Fate BMX Colombia · Distribuido por Stike Bike Shop. Maqueta de demostración.</span>
+      </div>
+    </div>
+  </footer>
 
   <script src="../assets/js/products-data.js?v=1"></script>
   <script src="../assets/js/data.js?v=1"></script>
   <script src="../assets/js/app.js?v=1"></script>
   <script>
-    stikeInit("marcas");
+    stikeBindHeader();
+    stikeUpdateCartBadge();
+    stikeFloatingWA();
 
     const FATE_BRAND = "Fate BMX Colombia";
     const params = new URLSearchParams(location.search);

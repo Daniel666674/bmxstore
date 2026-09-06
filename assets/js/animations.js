@@ -7,7 +7,7 @@
   const loader = document.createElement('div');
   loader.id = 'stike-loader';
   loader.setAttribute('aria-hidden', 'true');
-  loader.innerHTML = '<div class="loader-inner"><div class="loader-ring"></div><span class="loader-text">STIKE</span></div>';
+  loader.innerHTML = '<div class="loader-inner"><div class="loader-ring"></div><span class="loader-text">' + (window.STIKE_LOADER_TEXT || 'STIKE') + '</span></div>';
   if (document.body) document.body.insertBefore(loader, document.body.firstChild);
   window.addEventListener('load', function () {
     loader.classList.add('done');
