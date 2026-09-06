@@ -21,6 +21,7 @@
   function money(n) { return "$" + Number(n).toLocaleString("es-CO"); }
 
   var SITE_URL = "https://daniel666674.github.io/bmxstore";
+  var SITE_ORIGIN = "https://daniel666674.github.io";
 
   function poolTotal(pool) { return pool ? pool.reduce((s, r) => s + r.u, 0) : null; }
 
@@ -96,9 +97,9 @@
     var waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.n} (${money(p.price)}). ¿Está disponible?`);
     var canonical = `${SITE_URL}/producto/${p.slug}.html`;
     var shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.n}, ${money(p.price)}\n${canonical}`);
-    var ogImage = coverUrl ? (coverUrl.indexOf("http") === 0 ? coverUrl : `${SITE_URL}${coverUrl}`) : `${SITE_URL}/assets/img/og-stike.jpg`;
-    var catLink = `/tienda.html?cat=${esc(p.cat)}`;
-    var subLink = p.sub ? `/tienda.html?cat=${esc(p.cat)}&sub=${encodeURIComponent(p.sub)}` : null;
+    var ogImage = coverUrl ? (coverUrl.indexOf("http") === 0 ? coverUrl : `${SITE_ORIGIN}${coverUrl}`) : `${SITE_URL}/assets/img/og-stike.jpg`;
+    var catLink = `/bmxstore/tienda.html?cat=${esc(p.cat)}`;
+    var subLink = p.sub ? `/bmxstore/tienda.html?cat=${esc(p.cat)}&sub=${encodeURIComponent(p.sub)}` : null;
     var subCrumb = subLink ? `<span class="sep">/</span><a href="${subLink}" style="color:inherit">${esc(p.sub)}</a>` : "";
 
     return replaceAll(template, {
@@ -106,7 +107,7 @@
       META_DESC: esc(ctx.metaDesc || `${p.n} de ${p.brand} en Stike Bike Shop, tu tienda BMX en Bogotá.`),
       CANONICAL: canonical,
       OG_IMAGE: ogImage,
-      BREADCRUMB: `<a href="/index.html">Inicio</a><span class="sep">/</span><a href="${catLink}">${esc(categoryName)}</a>${subCrumb}<span class="sep">/</span><span>${esc(p.n)}</span>`,
+      BREADCRUMB: `<a href="/bmxstore/index.html">Inicio</a><span class="sep">/</span><a href="${catLink}">${esc(categoryName)}</a>${subCrumb}<span class="sep">/</span><span>${esc(p.n)}</span>`,
       GALLERY: renderGallery(p, coverUrl),
       BRAND: esc(p.brand),
       NAME: esc(p.n),
