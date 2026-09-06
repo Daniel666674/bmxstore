@@ -144,7 +144,7 @@ window.STIKE_PRODUCTS = [
       "Largo: 175mm",
       "Eje: 24mm",
       "Material: Cromoly tubular",
-      "Estriado 48"
+      "Estriado: 48"
     ],
     "price": 540000,
     "promo": false,
