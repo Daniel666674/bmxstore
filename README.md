@@ -21,6 +21,12 @@ backend**, no hay servidor ni base de datos.
   - `carrito.html` — Carrito con cantidades, envío gratis y checkout por WhatsApp
   - `marcas.html`, `contacto.html`, `nosotros.html`, `armar.html` (configurador), `blog*.html`
   - `admin.html` — Panel de inventario (ver abajo)
+  - `fate/` — Micro-sitio de **Fate BMX Colombia**, marca local que se vende
+    acá: landing propia (`fate/index.html`) con header/nav/footer propios
+    (no el header/footer compartido del resto del sitio) y catálogo propio
+    filtrable (`fate/tienda.html`), enlazados desde el nav principal y desde
+    `marcas.html`/home con una banda destacada. Carrito y checkout por
+    WhatsApp siguen siendo los de Stike; `marca-fate.html` viejo redirige acá.
 - **Catálogo** en `assets/js/products-data.js` (`window.STIKE_PRODUCTS`, JS
   plano no JSON, para poder incluirlo con `<script src>` sin fetch/CORS).
   Cada producto puede tener **tallas y/o colores como pools de stock
