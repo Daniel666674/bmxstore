@@ -177,12 +177,12 @@ body::after {
 .nav-list { display: flex; align-items: stretch; gap: 2px; }
 .nav-list > li { position: relative; }
 .nav-list > li > a {
-  position: relative; display: flex; align-items: center; height: 48px; padding: 0 18px;
+  position: relative; display: flex; align-items: center; height: 48px; padding: 0 14px; white-space: nowrap;
   font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 1.8px; font-size: 14px;
   color: var(--muted); transition: color .25s var(--ease);
 }
 .nav-list > li > a::after {
-  content: ""; position: absolute; left: 18px; right: 18px; bottom: 8px; height: 1.5px;
+  content: ""; position: absolute; left: 14px; right: 14px; bottom: 8px; height: 1.5px;
   background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease);
 }
 .nav-list > li > a:hover, .nav-list > li.active > a { color: var(--ink); }
@@ -193,6 +193,8 @@ body::after {
 .nav-list > li > a[data-accent]::after { }
 .nav-list > li > a[data-accent="promo"] { color: var(--yellow); }
 .nav-list > li > a[data-accent="promo"]:hover { color: var(--orange); }
+.nav-list > li > a[data-accent="fate"] { color: var(--pink); }
+.nav-list > li > a[data-accent="fate"]:hover { color: var(--ink); }
 
 /* Mega / dropdown */
 .dropdown {
