@@ -6,7 +6,7 @@
    la API de GitHub) es peor que no tener soporte offline.
    ========================================================================= */
 const CACHE_NAME = "stike-admin-shell-v1";
-const SHELL_ASSETS = ["/assets/img/logo-stike.svg"];
+const SHELL_ASSETS = ["/bmxstore/assets/img/logo-stike.svg"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL_ASSETS)));

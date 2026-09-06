@@ -200,7 +200,7 @@
 
     buildFilters();
     render();
-    fetch("/data/site-content.json", { cache: "no-store" }).then(r => r.ok ? r.json() : {}).catch(() => ({})).then(c => { siteContentManifest = c; buildHeader(); });
+    fetch("/bmxstore/data/site-content.json", { cache: "no-store" }).then(r => r.ok ? r.json() : {}).catch(() => ({})).then(c => { siteContentManifest = c; buildHeader(); });
   </script>
   <script src="assets/js/animations.js?v=2"></script>
 </body>
