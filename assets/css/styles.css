@@ -197,6 +197,8 @@ body::before {
 .nav-list > li > a[data-accent]::after { }
 .nav-list > li > a[data-accent="promo"] { color: #ffffff; font-weight: 700; }
 .nav-list > li > a[data-accent="promo"]:hover { color: rgba(255,255,255,.75); }
+.nav-list > li > a[data-accent="fate"] { color: #ffffff; font-weight: 700; }
+.nav-list > li > a[data-accent="fate"]:hover { color: rgba(255,255,255,.75); }
 
 /* Mega / dropdown */
 .dropdown {
@@ -262,6 +264,10 @@ body::before {
   padding: 8px 16px; border-radius: 999px; color: var(--ink); background: transparent !important;
   border: 1px solid var(--line); backdrop-filter: blur(4px); transform: none !important; z-index: 3;
 }
+/* .hero-art is a fixed dark panel regardless of theme (see its own rule), so
+   stickers placed inside it need light text/border instead of the
+   page-body-oriented --ink/--line tokens, or they go invisible on light themes. */
+.hero-art .sticker { color: #ffffff; border-color: rgba(255,255,255,.3); }
 
 /* Marquee strip: subtle premium ticker */
 .marquee { background: transparent; color: var(--muted); overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }

@@ -220,6 +220,7 @@ function stikeRenderHeader(active) {
       <div class="wrap">
         <ul class="nav-list">
           <li class="${active === 'home' ? 'active' : ''}"><a href="index.html">Inicio</a></li>
+          <li><a href="fate/" data-accent="fate">Fate</a></li>
           ${navItems}
           <li class="${active === 'marcas' ? 'active' : ''}"><a href="marcas.html">Marcas</a></li>
           <li class="${active === 'blog' ? 'active' : ''}"><a href="blog.html">Blog</a></li>
