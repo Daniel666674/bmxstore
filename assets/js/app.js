@@ -15,7 +15,14 @@ const STIKE_CONFIG = {
   ig: "https://www.instagram.com/stikebikeshop?igsh=emVzZXc0NWVlNmcy",
   fb: "https://www.facebook.com/share/1Cz3ezfUvL/?mibextid=wwXIfr",
   tiktok: "https://tiktok.com/@stikebikeshop",
-  igHandle: "@stikebikeshop"
+  igHandle: "@stikebikeshop",
+  /* --- Datos legales: COMPLETAR con la información real de la empresa --- */
+  legalName: "[Razón social — completar]",   // p. ej. "Stike Bike Shop S.A.S."
+  nit: "[NIT — completar]",
+  legalUpdated: "21 de junio de 2026",
+  /* Endpoint para enviar formularios (p. ej. Formspree: https://formspree.io/f/xxxxxxx).
+     Si se deja vacío, el formulario de contacto cae a WhatsApp y el boletín solo confirma. */
+  formEndpoint: ""
 };
 
 const STIKE_BASE = "";
@@ -30,7 +37,7 @@ const SOCICO_WA = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.or
 /* Real Stike emblem, vector-traced from the brand artwork (white on transparent) */
 function stikeLogoSVG(size) {
   size = size || 46;
-  return `<img class="logo" src="/bmxstore/assets/img/logo-stike.svg" alt="Stike Bike Shop" style="height:${size}px;width:auto" />`;
+  return `<img class="logo" src="assets/img/logo-stike.svg" alt="Stike Bike Shop" style="height:${size}px;width:auto" />`;
 }
 
 /* ----------------------------- CARRITO --------------------------------- */
@@ -111,18 +118,18 @@ function stikeToast(msg) {
 
 /* ------------------------- TARJETA DE PRODUCTO ------------------------- */
 const STIKE_LOW_STOCK = 5;
-function stikeProductUrl(p) { return `/bmxstore/producto/${p.slug}.html`; }
+function stikeProductUrl(p) { return `producto/${p.slug}.html`; }
 function stikeProductCard(p) {
-  const total = stikeTotalStock(p);
   const out = stikeIsOutOfStock(p);
   const badge = out ? `<span class="badge sold">Agotado</span>`
               : p.promo ? `<span class="badge promo">Oferta</span>`
               : p.tag === "new" ? `<span class="badge new">Nuevo</span>` : "";
   const oldPrice = p.old ? `<span class="old">${stikePrice(p.old)}</span>` : "";
-  const lowStock = (!out && total > 0 && total <= STIKE_LOW_STOCK)
-    ? `<span class="stock-low">Solo ${total} ${total === 1 ? "unidad" : "unidades"}</span>` : "";
   const hasVariants = !!(p.sizes || p.colors);
   const url = stikeProductUrl(p);
+  /* Ficha minimalista: foto + nombre + precio, centrado, sin mas ruido.
+     El CTA existe pero solo aparece en hover, para que la grilla en reposo
+     sea una pared limpia de fotos sin perder el "agregar" de un clic. */
   const cta = out
     ? `<a class="btn cyan sm block" href="${url}">Ver producto</a>`
     : hasVariants
@@ -134,15 +141,12 @@ function stikeProductCard(p) {
       ${badge}
       <button class="fav" title="Guardar" aria-label="Guardar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
       <a href="${url}">
-        <img src="${stikeProductImage(p, 600)}" alt="${p.n}" loading="lazy">
+        <img src="${stikeProductImage(p, 600)}" alt="${p.n}">
       </a>
     </div>
     <div class="body">
-      <span class="brandline">${p.brand}</span>
       <div class="title"><a href="${url}">${p.n}</a></div>
       <div class="price">${stikePrice(p.price)} ${oldPrice}</div>
-      ${stikeVariantChips(p)}
-      ${lowStock}
       ${cta}
     </div>
   </article>`;
@@ -153,14 +157,14 @@ function stikeNavDropdown(cat) {
   if (!cat.subs.length) return "";
   if (cat.slug === "repuestos") {
     const items = cat.subs.map(s =>
-      `<a href="/bmxstore/tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
+      `<a href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
     return `<div class="dropdown mega">
-      <a href="/bmxstore/tienda.html?cat=${cat.slug}" style="grid-column:1/-1" class="col-title">Ver todos los repuestos →</a>
+      <a href="tienda.html?cat=${cat.slug}" style="grid-column:1/-1" class="col-title">Ver todos los repuestos →</a>
       ${items}
     </div>`;
   }
   const items = cat.subs.map(s =>
-    `<a href="/bmxstore/tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
+    `<a href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
   return `<div class="dropdown">${items}</div>`;
 }
 
@@ -173,7 +177,7 @@ function stikeRenderHeader(active) {
     const accent = cat.slug === "promo" ? ` data-accent="promo"` : "";
     const caret = cat.subs.length ? `<span class="caret"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>` : "";
     return `<li class="${isActive}${hasMega}">
-      <a href="/bmxstore/tienda.html?cat=${cat.slug}"${accent}>${cat.name}${caret}</a>
+      <a href="tienda.html?cat=${cat.slug}"${accent}>${cat.name}${caret}</a>
       ${stikeNavDropdown(cat)}
     </li>`;
   }).join("");
@@ -192,7 +196,7 @@ function stikeRenderHeader(active) {
   <header class="site-header">
     <div class="wrap">
       <div class="header-main">
-        <a class="brand" href="/bmxstore/index.html">
+        <a class="brand" href="index.html">
           ${stikeLogoSVG(52)}
           <span class="name">Stike<small>BIKE SHOP · BOGOTÁ</small></span>
         </a>
@@ -202,9 +206,9 @@ function stikeRenderHeader(active) {
         </form>
         <div class="header-actions">
           <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
-          <a class="icon-btn hide-mobile" href="/bmxstore/nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
-          <a class="icon-btn hide-mobile" href="/bmxstore/contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
-          <a class="icon-btn" href="/bmxstore/carrito.html" title="Carrito" aria-label="Carrito">
+          <a class="icon-btn hide-mobile" href="nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
+          <a class="icon-btn hide-mobile" href="contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
+          <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             <span class="cart-count">0</span>
           </a>
@@ -215,12 +219,11 @@ function stikeRenderHeader(active) {
     <nav class="site-nav" id="site-nav">
       <div class="wrap">
         <ul class="nav-list">
-          <li class="${active === 'home' ? 'active' : ''}"><a href="/bmxstore/index.html">Inicio</a></li>
-          <li><a href="/bmxstore/fate/" data-accent="fate">Fate</a></li>
+          <li class="${active === 'home' ? 'active' : ''}"><a href="index.html">Inicio</a></li>
           ${navItems}
-          <li class="${active === 'marcas' ? 'active' : ''}"><a href="/bmxstore/marcas.html">Marcas</a></li>
-          <li class="${active === 'blog' ? 'active' : ''}"><a href="/bmxstore/blog.html">Blog</a></li>
-          <li class="nav-build ${active === 'armar' ? 'active' : ''}"><a href="/bmxstore/armar.html"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Arma tu BMX</a></li>
+          <li class="${active === 'marcas' ? 'active' : ''}"><a href="marcas.html">Marcas</a></li>
+          <li class="${active === 'blog' ? 'active' : ''}"><a href="blog.html">Blog</a></li>
+          <li class="nav-build ${active === 'armar' ? 'active' : ''}"><a href="armar.html"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Arma tu BMX</a></li>
         </ul>
       </div>
     </nav>
@@ -311,7 +314,7 @@ function stikeRenderSearchOverlay() {
 }
 function stikeSearchRow(p) {
   return `<a class="sr-row" href="${stikeProductUrl(p)}">
-    <span class="sr-thumb"><img src="${stikeProductImage(p, 120)}" alt="" loading="lazy"></span>
+    <span class="sr-thumb"><img src="${stikeProductImage(p, 120)}" alt=""></span>
     <span class="sr-meta"><span class="sr-name">${p.n}</span><span class="sr-brand">${p.brand}</span></span>
     <span class="sr-price">${stikePrice(p.price)}</span>
   </a>`;
@@ -321,7 +324,7 @@ function stikeSearchRender(q) {
   if (!box) return;
   q = (q || "").trim().toLowerCase();
   if (!q) {
-    const cats = STIKE_CATEGORIES.map(c => `<a class="sr-chip" href="/bmxstore/tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
+    const cats = STIKE_CATEGORIES.map(c => `<a class="sr-chip" href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
     const pop = STIKE_PRODUCTS.slice(0, 4).map(stikeSearchRow).join("");
     box.innerHTML = `<div class="sr-section"><div class="sr-head">Explora</div><div class="sr-chips">${cats}</div></div>
       <div class="sr-section"><div class="sr-head">Destacados</div>${pop}</div>`;
@@ -334,15 +337,15 @@ function stikeSearchRender(q) {
   let html = "";
   if (cats.length || brands.length) {
     html += `<div class="sr-section"><div class="sr-head">Sugerencias</div><div class="sr-chips">` +
-      cats.map(c => `<a class="sr-chip" href="/bmxstore/tienda.html?cat=${c.slug}">${c.name}</a>`).join("") +
-      brands.map(b => `<a class="sr-chip" href="/bmxstore/tienda.html?brand=${encodeURIComponent(b)}">${b}</a>`).join("") +
+      cats.map(c => `<a class="sr-chip" href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("") +
+      brands.map(b => `<a class="sr-chip" href="tienda.html?brand=${encodeURIComponent(b)}">${b}</a>`).join("") +
       `</div></div>`;
   }
   if (prods.length) {
     html += `<div class="sr-section"><div class="sr-head">Productos</div>${prods.map(stikeSearchRow).join("")}</div>`;
-    html += `<a class="sr-all" href="/bmxstore/tienda.html?q=${encodeURIComponent(q)}">Ver todos los resultados de “${q}” →</a>`;
+    html += `<a class="sr-all" href="tienda.html?q=${encodeURIComponent(q)}">Ver todos los resultados de “${q}” →</a>`;
   } else if (!cats.length && !brands.length) {
-    html = `<div class="sr-empty">Sin resultados para “${q}”.<br><a href="/bmxstore/tienda.html?q=${encodeURIComponent(q)}">Buscar en toda la tienda →</a></div>`;
+    html = `<div class="sr-empty">Sin resultados para “${q}”.<br><a href="tienda.html?q=${encodeURIComponent(q)}">Buscar en toda la tienda →</a></div>`;
   }
   box.innerHTML = html;
 }
@@ -381,7 +384,7 @@ function stikeCloseSearch() {
 function stikeRenderFooter() {
   const C = STIKE_CONFIG;
   const catLinks = STIKE_CATEGORIES.map(c =>
-    `<a href="/bmxstore/tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
+    `<a href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
   const footer = `
   <section class="cta-band">
     <div class="wrap">
@@ -408,30 +411,42 @@ function stikeRenderFooter() {
         <div>
           <h5>Tienda</h5>
           ${catLinks}
-          <a href="/bmxstore/marcas.html">Marcas</a>
-          <a href="/bmxstore/armar.html">Arma tu BMX</a>
-          <a href="/bmxstore/blog.html">Blog</a>
+          <a href="marcas.html">Marcas</a>
+          <a href="armar.html">Arma tu BMX</a>
+          <a href="blog.html">Blog</a>
         </div>
         <div>
           <h5>Ayuda</h5>
-          <a href="/bmxstore/contacto.html">Contacto</a>
-          <a href="/bmxstore/nosotros.html">Nosotros</a>
-          <a href="/bmxstore/contacto.html#envios">Envíos y entregas</a>
-          <a href="/bmxstore/contacto.html#faq">Preguntas frecuentes</a>
-          <a href="/bmxstore/carrito.html">Mi carrito</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="nosotros.html">Nosotros</a>
+          <a href="envios.html">Envíos y entregas</a>
+          <a href="devoluciones.html">Cambios y devoluciones</a>
+          <a href="contacto.html#faq">Preguntas frecuentes</a>
+          <a href="carrito.html">Mi carrito</a>
         </div>
         <div>
           <h5>Boletín</h5>
           <p>Recibe lanzamientos, ofertas y eventos de la comunidad.</p>
           <form class="newsletter" onsubmit="stikeNewsletter(event)">
-            <input type="email" placeholder="Tu correo" required>
+            <input type="email" name="email" placeholder="Tu correo" required>
             <button class="btn sm" type="submit">Unirme</button>
+            <label class="form-consent">
+              <input type="checkbox" name="consent" required>
+              <span>Acepto la <a href="privacidad.html">Política de Privacidad</a> y el tratamiento de mis datos.</span>
+            </label>
           </form>
           <p style="margin-top:14px">${C.address}<br>${C.hours}<br>${C.whatsappPretty}</p>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© ${new Date().getFullYear()} ${C.full}, Bogotá, Colombia. Maqueta de demostración.</span>
+        <span>© ${new Date().getFullYear()} ${C.full} — Bogotá, Colombia.</span>
+        <nav class="footer-legal" aria-label="Enlaces legales">
+          <a href="privacidad.html">Privacidad</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="terminos.html">Términos</a>
+          <a href="envios.html">Envíos</a>
+          <a href="devoluciones.html">Devoluciones</a>
+        </nav>
         <div class="pay-icons">
           <span>VISA</span><span>MASTERCARD</span><span>PSE</span><span>NEQUI</span><span>EFECTY</span>
         </div>
@@ -442,6 +457,53 @@ function stikeRenderFooter() {
   if (mount) mount.innerHTML = footer;
 }
 
+/* --------------------------- ENVÍO DE FORMULARIOS ---------------------- */
+function stikeFormEndpoint() {
+  const e = STIKE_CONFIG.formEndpoint;
+  return (e && /^https?:\/\//.test(e)) ? e : null;
+}
+/* Envía `data` al endpoint configurado (Formspree, etc.). Si no hay endpoint,
+   ejecuta `fallback` (o confirma con un toast). `submit` es el evento del form. */
+function stikeSubmitForm(e, data, successMsg, fallback) {
+  e.preventDefault();
+  const form = e.target;
+  const endpoint = stikeFormEndpoint();
+  if (!endpoint) {
+    if (typeof fallback === "function") fallback();
+    else { form.reset(); stikeToast(successMsg); }
+    return;
+  }
+  const btn = form.querySelector('[type="submit"]');
+  const prev = btn ? btn.textContent : "";
+  if (btn) { btn.disabled = true; btn.textContent = "Enviando…"; }
+  fetch(endpoint, {
+    method: "POST",
+    headers: { "Accept": "application/json" },
+    body: new URLSearchParams(data)
+  })
+    .then(r => { if (!r.ok) throw new Error("bad status"); form.reset(); stikeToast(successMsg); })
+    .catch(() => stikeToast("No pudimos enviar. Escríbenos por WhatsApp."))
+    .finally(() => { if (btn) { btn.disabled = false; btn.textContent = prev; } });
+}
+
+function stikeContact(e) {
+  const form = e.target;
+  const val = sel => (form.querySelector(sel)?.value || "").trim();
+  const nombre = val('input[type="text"]');
+  const tel = val('input[type="tel"]');
+  const tema = val('select');
+  const mensaje = val('textarea');
+  stikeSubmitForm(e,
+    { nombre, telefono: tel, tema, mensaje, _subject: "Contacto web — " + tema },
+    "Mensaje enviado, te contactamos pronto",
+    () => {  // sin endpoint: abrimos WhatsApp con el mensaje ya escrito
+      const text = `Hola Stike! Soy ${nombre}.\nTema: ${tema}\n${mensaje}\nMi WhatsApp/Tel: ${tel}`;
+      window.open("https://wa.me/" + STIKE_CONFIG.whatsapp + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+      form.reset();
+      stikeToast("Te llevamos a WhatsApp para enviar tu mensaje");
+    });
+}
+
 /* ------------------------- Boletín (footer + popup) ---------------------- */
 const NEWSLETTER_KEY = "stike_newsletter_v1";
 
@@ -449,12 +511,13 @@ function stikeMarkNewsletterSubscribed() {
   localStorage.setItem(NEWSLETTER_KEY, "subscribed");
   const overlay = document.getElementById("newsletter-overlay");
   if (overlay) overlay.classList.remove("open");
-  stikeToast("Bienvenido a la comunidad Stike");
 }
 
 function stikeNewsletter(e) {
-  e.preventDefault();
-  e.target.reset();
+  const email = (e.target.querySelector('input[type="email"]').value || "").trim();
+  stikeSubmitForm(e,
+    { email, _subject: "Nuevo suscriptor — boletín Stike", origen: "newsletter" },
+    "¡Bienvenido a la comunidad Stike!");
   stikeMarkNewsletterSubscribed();
 }
 
@@ -466,7 +529,10 @@ function stikeDismissNewsletter(e) {
 }
 
 function stikeSubscribeFromPopup(e) {
-  e.preventDefault();
+  const email = (e.target.querySelector('input[type="email"]').value || "").trim();
+  stikeSubmitForm(e,
+    { email, _subject: "Nuevo suscriptor — popup Stike", origen: "popup" },
+    "¡Bienvenido a la comunidad Stike!");
   stikeMarkNewsletterSubscribed();
 }
 
@@ -518,6 +584,58 @@ function stikeFloatingWA() {
   document.body.appendChild(a);
 }
 
+/* ------------------------- COOKIES / CONSENTIMIENTO -------------------- */
+const STIKE_COOKIE_KEY = "stike_cookie_consent_v1";
+function stikeCookieConsent() {
+  try { return JSON.parse(localStorage.getItem(STIKE_COOKIE_KEY)); } catch (e) { return null; }
+}
+function stikeSetCookieConsent(choice) {
+  try { localStorage.setItem(STIKE_COOKIE_KEY, JSON.stringify({ choice, ts: Date.now() })); } catch (e) {}
+  /* Las analíticas/marketing deben escuchar este evento antes de cargar (consent mode) */
+  document.dispatchEvent(new CustomEvent("stike:consent", { detail: { choice } }));
+}
+function stikeCookieBanner() {
+  if (stikeCookieConsent()) return;            // el usuario ya decidió
+  const el = document.createElement("div");
+  el.className = "cookie-banner";
+  el.setAttribute("role", "dialog");
+  el.setAttribute("aria-label", "Aviso de cookies");
+  el.innerHTML = `
+    <div class="cookie-inner">
+      <div class="cookie-text">
+        <strong>Cookies en Stike</strong>
+        <p>Usamos cookies propias y de terceros para que la tienda funcione, recordar tu carrito y entender el tráfico del sitio. Acepta o rechaza las opcionales. Lee nuestra <a href="cookies.html">Política de Cookies</a> y de <a href="privacidad.html">Privacidad</a>.</p>
+      </div>
+      <div class="cookie-actions">
+        <button class="btn ghost sm" data-cookie="reject" type="button">Rechazar opcionales</button>
+        <button class="btn sm" data-cookie="accept" type="button">Aceptar todas</button>
+      </div>
+    </div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("show"));
+  el.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-cookie]");
+    if (!btn) return;
+    stikeSetCookieConsent(btn.getAttribute("data-cookie"));
+    el.classList.remove("show");
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 350);
+  });
+}
+
+/* Rellena elementos con [data-cfg] desde STIKE_CONFIG (páginas legales) */
+function stikeFillConfig(root) {
+  const C = STIKE_CONFIG;
+  const map = {
+    site: C.full, legalName: C.legalName, nit: C.nit,
+    email: C.email, whatsapp: C.whatsappPretty, phone: C.phone,
+    address: C.address, hours: C.hours, updated: C.legalUpdated, igHandle: C.igHandle
+  };
+  (root || document).querySelectorAll("[data-cfg]").forEach(el => {
+    const k = el.getAttribute("data-cfg");
+    if (map[k] != null) el.textContent = map[k];
+  });
+}
+
 /* ------------------------- CONTENIDO EDITABLE --------------------------
    Manifest plano (data/site-content.json) que el admin edita en la pestaña
    "Contenido del sitio". Se aplica por PRESENCIA de clave: una clave que el
@@ -527,7 +645,7 @@ function stikeFloatingWA() {
 function stikeApplyContent() {
   const els = document.querySelectorAll("[data-content-key]");
   if (!els.length) return;
-  fetch("/bmxstore/data/site-content.json", { cache: "no-store" })
+  fetch("data/site-content.json", { cache: "no-store" })
     .then(r => r.ok ? r.json() : {})
     .catch(() => ({}))
     .then(content => {
@@ -544,6 +662,8 @@ function stikeInit(active) {
   stikeRenderFooter();
   stikeFloatingWA();
   stikeRenderSearchOverlay();
+  stikeFillConfig();
+  stikeCookieBanner();
   stikeRenderNewsletterPopup();
   stikeApplyContent();
 }

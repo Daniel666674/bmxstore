@@ -13,7 +13,7 @@ const CONFIG = {
   owner: "Daniel666674",
   repo: "bmxstore",
   // Rama que despliega a GitHub Pages (ver .github/workflows/deploy.yml).
-  branch: "claude/sweet-albattani-ti0w0e",
+  branch: "main",
   paths: {
     catalog: "assets/js/products-data.js",
     costs: "data/costs.json",
@@ -23,12 +23,6 @@ const CONFIG = {
     sitemap: "sitemap.xml",
     template: "_template.html",
   },
-  // Demo: clave compartida en vez de Google OAuth real (ver nota en admin.html).
-  passcode: "stike2026",
-  // Correos con rol "owner": ven costo/margen, KPIs y auditoria completa.
-  // Cualquier otro correo que conozca la clave entra como "editor" (CRUD +
-  // ventas, sin datos financieros).
-  ownerAllowlist: ["hola@stikebikeshop.com", "daniel.f.acosta96@gmail.com"],
 };
 
 const $ = sel => document.querySelector(sel);
@@ -37,20 +31,36 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const backoffMs = attempt => [0, 400, 900, 1800, 3200][attempt] || 4000;
 const money = n => "$" + Math.round(n || 0).toLocaleString("es-CO");
 
-/* ============================== SESSION ================================= */
-let session = null; // { name, email, role, pat }
+/* ============================== CRASH BANNER =============================
+   Si algo revienta (un error de red raro, un bug), que se vea en pantalla
+   en vez de dejar la app muerta en silencio (botones que "no hacen nada").
+   No depende de ninguna otra funcion del archivo para que nunca falle ella
+   misma, ni siquiera si revento antes de que $()/$$() esten disponibles.
+   ========================================================================= */
+(function () {
+  function showCrash(msg) {
+    try {
+      let box = document.getElementById("crash-banner");
+      if (!box) {
+        box = document.createElement("div");
+        box.id = "crash-banner";
+        box.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#4a1216;color:#ffd7da;padding:12px 16px;font:13px/1.5 system-ui,sans-serif;border-bottom:2px solid #ff4d5e;white-space:pre-wrap";
+        (document.body || document.documentElement).appendChild(box);
+      }
+      box.textContent = "⚠ Error en el panel (avísale a soporte con este texto): " + msg;
+    } catch {}
+  }
+  window.addEventListener("error", e => showCrash(e.message + (e.filename ? ` (${e.filename}:${e.lineno})` : "")));
+  window.addEventListener("unhandledrejection", e => showCrash((e.reason && e.reason.message) || String(e.reason)));
+})();
 
-function loadSession() {
-  try {
-    const s = JSON.parse(sessionStorage.getItem("stike_admin_session") || "null");
-    const pat = localStorage.getItem("stike_admin_pat") || "";
-    if (s) return { ...s, pat };
-  } catch {}
-  return null;
-}
-function saveSession(s) {
-  sessionStorage.setItem("stike_admin_session", JSON.stringify({ name: s.name, email: s.email, role: s.role }));
-}
+/* ============================== SESSION =================================
+   Demo: sin login. Todos entran directo como "owner" (ven costo/margen,
+   KPIs y auditoria); lo unico que realmente controla quien puede publicar
+   es el token de GitHub (pestaña Configuración). session.email queda solo
+   como firma de commits/ventas/auditoría.
+   ========================================================================= */
+let session = { name: "demo", email: "demo@stikebikeshop.com", role: "owner", pat: "" };
 
 /* ============================== BASE64 (UTF-8 y binario safe) =========== */
 function b64EncodeBytes(bytes) {
@@ -195,6 +205,118 @@ let pendingUploads = new Map();    // path reservado -> File original (sin compr
 let templateCache = null;
 let catalogLoaded = false;
 
+/* ============================== MODO DEMO ================================
+   Sin token de GitHub el panel no puede leer NADA real, asi que arranca en
+   modo demo: reusa el catalogo publico ya cargado por products-data.js y
+   genera ventas, costos y auditoria FICTICIOS para que se vea como luce el
+   panel con movimiento real. Nada de esto se escribe jamas en GitHub:
+   mientras demoMode este activo, publicar y registrar ventas quedan
+   bloqueados (ver publishCatalog/registrarVenta). Al guardar un token real,
+   loadAll() reemplaza todo por los datos de verdad y demoMode se apaga.
+   ========================================================================= */
+let demoMode = false;
+
+/* PRNG con semilla fija: los numeros del demo son siempre los mismos entre
+   recargas, para que la demo no cambie de cifras cada vez que se abre. */
+function mulberry32(seed) {
+  return function () {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+const DEMO_SELLERS = ["camilo@stikebikeshop.com", "laura@stikebikeshop.com", "hola@stikebikeshop.com"];
+
+function generateDemoSales(catalog, days) {
+  const rnd = mulberry32(20260827);
+  const pool = catalog.filter(p => p.published !== false && p.price > 0);
+  if (!pool.length) return [];
+  // Lo barato rota mas que un marco de $980.000: peso inverso al precio.
+  const weights = pool.map(p => 1 + Math.max(0, 500000 - Math.min(p.price, 500000)) / 90000);
+  const totalW = weights.reduce((a, b) => a + b, 0);
+  const pick = () => {
+    let r = rnd() * totalW;
+    for (let i = 0; i < pool.length; i++) { r -= weights[i]; if (r <= 0) return pool[i]; }
+    return pool[pool.length - 1];
+  };
+  const out = [];
+  for (let d = days - 1; d >= 0; d--) {
+    const date = new Date(Date.now() - d * 864e5);
+    const dow = date.getDay();
+    let n = 1 + Math.floor(rnd() * 4);
+    if (dow === 6) n += 2;                    // sabado es el dia fuerte
+    if (dow === 0) n = Math.max(0, n - 2);    // domingo flojo
+    if (d < 30) n += 1;                       // ultimo mes con mas movimiento
+    for (let i = 0; i < n; i++) {
+      const p = pick();
+      const qty = rnd() < 0.78 ? 1 : (rnd() < 0.7 ? 2 : 3);
+      const size = (p.sizes && p.sizes.length) ? p.sizes[Math.floor(rnd() * p.sizes.length)].v : null;
+      const color = (p.colors && p.colors.length) ? p.colors[Math.floor(rnd() * p.colors.length)].v : null;
+      // Algun descuento puntual de mostrador, como en la vida real.
+      const unitPrice = rnd() < 0.12 ? Math.round(p.price * 0.95 / 1000) * 1000 : p.price;
+      const ts = new Date(date);
+      ts.setHours(10 + Math.floor(rnd() * 9), Math.floor(rnd() * 60), 0, 0);
+      out.push({
+        ts: ts.toISOString(), slug: p.slug, name: p.n, size, color, qty,
+        unitPrice, total: unitPrice * qty,
+        admin: DEMO_SELLERS[Math.floor(rnd() * DEMO_SELLERS.length)],
+      });
+    }
+  }
+  return out.sort((a, b) => a.ts.localeCompare(b.ts));
+}
+
+function generateDemoAudit() {
+  const rnd = mulberry32(7788);
+  const notes = [
+    "Actualizó precios de repuestos (+8%)", "Cargó fotos nuevas de cascos",
+    "Registró venta de mostrador", "Creó 3 productos de la marca Fate",
+    "Marcó agotado el marco Sunday", "Actualizó textos del sitio",
+    "Ajustó stock tras inventario físico", "Publicó la promo de fin de mes",
+  ];
+  return notes.map((summary, i) => {
+    const ts = new Date(Date.now() - (i * 3 + Math.floor(rnd() * 3)) * 864e5);
+    return {
+      ts: ts.toISOString(), admin: DEMO_SELLERS[Math.floor(rnd() * DEMO_SELLERS.length)],
+      summary, created: Math.floor(rnd() * 3), edited: 1 + Math.floor(rnd() * 4),
+      deleted: 0, photos: Math.floor(rnd() * 4),
+    };
+  }).reverse();
+}
+
+function seedDemoData() {
+  demoMode = true;
+  const base = (window.STIKE_PRODUCTS || []).map(p => JSON.parse(JSON.stringify(p)));
+  costsMap = {};
+  base.forEach(p => { costsMap[p.slug] = Math.round((p.price * 0.62) / 1000) * 1000; });
+  workingCatalog = base.map(p => ({ ...p, cost: costsMap[p.slug] || 0 }));
+  baseline = new Map();
+  dirtySlugs = new Set(); deletedSlugs = new Set(); renamedFrom = new Map();
+  pendingUploads = new Map();
+  window.STIKE_PRODUCTS = workingCatalog;
+  salesLog = generateDemoSales(workingCatalog, 120);
+  auditLog = generateDemoAudit();
+  siteContent = {};
+  catalogLoaded = true;
+}
+
+function renderDemoBanner() {
+  const el = $("#demo-banner");
+  if (!el) return;
+  el.innerHTML = demoMode ? `
+    <div class="demo-banner">
+      <span style="font-size:18px;line-height:1">🧪</span>
+      <div>
+        <b>Modo demo — datos de ejemplo</b>
+        <p>El catálogo es el real del sitio, pero las <b>ventas, costos, márgenes y auditoría son ficticios</b>,
+        generados solo para mostrar cómo se ve el panel con movimiento. No se guarda ni se publica nada.
+        Para trabajar con datos reales, pega tu token de GitHub en <b>Configuración</b>.</p>
+      </div>
+    </div>` : "";
+}
+
 function findOwnBaselineSlug(currentSlug) {
   for (const [ns, os] of renamedFrom.entries()) if (ns === currentSlug) return os;
   return baseline.has(currentSlug) ? currentSlug : null;
@@ -232,8 +354,10 @@ async function loadAll() {
   pendingUploads = new Map();
   window.STIKE_PRODUCTS = workingCatalog; // reusa helpers de data.js (stikeStockFor, stikeCategory, ...)
   catalogLoaded = true;
+  demoMode = false;       // ya hay datos reales: se apaga la demo
+  renderDemoBanner();
 
-  renderProductTable();
+  renderProductGrid();
   renderSalesTab();
   renderKpis();
   renderAudit();
@@ -387,7 +511,7 @@ async function regenerateProductPages(merged, scopeSlugs, commitMessage) {
     const row = merged.find(r => r.slug === slug);
     if (!row || row.published === false) continue;
     const cat = catIndex.get(row.cat);
-    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat });
+    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat, placeholderImg: stikeProductImage(row, 1200) });
     const path = `producto/${row.slug}.html`;
     const meta = await ghGetMeta(path);
     await ghPutOnce(path, b64EncodeText(html), commitMessage, meta ? meta.sha : undefined);
@@ -421,6 +545,11 @@ function setPublishing(v) { publishing = v; $("#btn-publish").disabled = v || (d
  */
 async function publishCatalog(opts = {}) {
   const scopeSlugs = opts.scopeSlugs || null;
+  // Cortafuegos: los datos de la demo son ficticios y jamas deben viajar al repo.
+  if (demoMode) {
+    showStatus([{ text: "Modo demo: no se publica nada. Guarda tu token de GitHub en Configuración para publicar de verdad.", cls: "bad" }]);
+    return;
+  }
   if (!dirtySlugs.size && !deletedSlugs.size) { showStatus([{ text: "No hay cambios para publicar.", cls: "muted" }]); return; }
   const errors = validateCatalog(workingCatalog);
   if (errors.length) { renderValidationErrors(errors); return; }
@@ -488,7 +617,7 @@ async function publishCatalog(opts = {}) {
     lines[lines.length - 1].cls = "ok";
     showStatus(lines);
     updateDirtyUI();
-    renderProductTable();
+    renderProductGrid();
     renderAudit();
   } catch (e) {
     lines.push({ text: (e.userFacing ? e.message : "Error: " + e.message), cls: "bad" });
@@ -610,37 +739,64 @@ function populateCategoryFilter() {
   const sel = $("#p-filter-cat");
   sel.innerHTML = `<option value="">Todas las categorías</option>` + STIKE_CATEGORIES.filter(c => c.slug !== "promo").map(c => `<option value="${c.slug}">${c.name}</option>`).join("");
 }
-function renderProductTable() {
+/* Grilla de tarjetas con la MISMA estetica que la tienda (foto grande,
+   marca, nombre, precio) mas lo que el admin necesita ver de un vistazo:
+   SKU, stock real y estado (borrador / bajo / agotado / sin publicar). */
+function renderProductGrid() {
   const q = ($("#p-search").value || "").toLowerCase().trim();
   const catFilter = $("#p-filter-cat").value;
   const lowOnly = $("#p-filter-low").checked;
-  const rows = workingCatalog
+  const visible = workingCatalog
     .filter(p => !q || `${p.n} ${p.brand} ${p.sku} ${p.sub || ""}`.toLowerCase().includes(q))
     .filter(p => !catFilter || p.cat === catFilter)
-    .filter(p => !lowOnly || stikeTotalStock(p) <= STIKE_LOW_STOCK_ADMIN)
-    .map(p => {
-      const total = stikeTotalStock(p);
-      const out = total <= 0;
-      const low = !out && total <= STIKE_LOW_STOCK_ADMIN;
-      const statusPill = !p.published ? `<span class="pill">Borrador</span>`
-        : out ? `<span class="pill out dot">Agotado</span>`
-        : low ? `<span class="pill low dot">Bajo (${total})</span>`
-        : `<span class="pill dot" style="color:var(--good)">OK</span>`;
-      const dirty = dirtySlugs.has(p.slug) ? `<span class="pill dirty">sin publicar</span>` : "";
-      const img = (p.imgs && p.imgs[0]) ? previewSrcFor(p.imgs[0]) : stikeProductImage(p, 80);
-      return `<tr data-slug="${p.slug}">
-        <td><div class="imgcell"><img src="${img}" loading="lazy" alt=""></div></td>
-        <td><b>${p.n}</b><div class="muted" style="font-size:11.5px">${p.brand}</div></td>
-        <td>${p.cat}${p.sub ? " · " + p.sub : ""}</td>
-        <td class="mono">${p.sku}</td>
-        <td>${money(p.price)}</td>
-        <td>${total}</td>
-        <td>${statusPill} ${dirty}</td>
-        <td><button class="btn ghost sm" data-edit="${p.slug}">Editar</button></td>
-      </tr>`;
-    }).join("");
-  $("#product-tbody").innerHTML = rows || `<tr><td colspan="8" class="muted" style="padding:20px;text-align:center">Sin resultados.</td></tr>`;
-  $$("#product-tbody [data-edit]").forEach(b => b.addEventListener("click", () => openEditor(b.getAttribute("data-edit"))));
+    .filter(p => !lowOnly || stikeTotalStock(p) <= STIKE_LOW_STOCK_ADMIN);
+
+  const cards = visible.map(p => {
+    const total = stikeTotalStock(p);
+    const out = total <= 0;
+    const low = !out && total <= STIKE_LOW_STOCK_ADMIN;
+    const flags = [
+      !p.published ? `<span class="pill">Borrador</span>` : "",
+      out ? `<span class="pill out dot">Agotado</span>`
+        : low ? `<span class="pill low dot">Bajo: ${total}</span>` : "",
+      p.promo ? `<span class="pill" style="color:var(--yellow)">Oferta</span>` : "",
+      dirtySlugs.has(p.slug) ? `<span class="pill dirty">Sin publicar</span>` : "",
+    ].filter(Boolean).join("");
+    const img = (p.imgs && p.imgs[0]) ? previewSrcFor(p.imgs[0]) : stikeProductImage(p, 600);
+    const stockTxt = out ? `<span style="color:var(--bad)">Sin stock</span>`
+      : low ? `<span style="color:var(--yellow)">${total} en stock</span>`
+      : `${total} en stock`;
+    return `<article class="pcard" data-slug="${p.slug}">
+      <div class="thumb">
+        <div class="flags">${flags}</div>
+        <img src="${img}" alt="">
+      </div>
+      <div class="body">
+        <span class="brandline">${p.brand}</span>
+        <div class="title">${p.n}</div>
+        <div class="subline">${stikeCategory(p.cat) ? stikeCategory(p.cat).name : p.cat}${p.sub ? " · " + p.sub : ""}</div>
+        <div class="meta">
+          <span class="price">${money(p.price)}</span>
+          <span class="stockline">${stockTxt}</span>
+        </div>
+        <div class="subline mono">${p.sku}</div>
+        <div class="foot">
+          <button class="btn ghost sm" data-edit="${p.slug}">Editar</button>
+          <button class="btn cyan sm" data-sell="${p.slug}" ${out ? "disabled title=\"Sin stock\"" : ""}>Vender</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+
+  const emptyMsg = !catalogLoaded
+    ? `Todavía no se cargó el catálogo — guarda tu token de GitHub en <b>Configuración</b> para verlo.`
+    : "Ningún producto coincide con el filtro.";
+  $("#product-grid").innerHTML = cards || `<div class="grid-empty">${emptyMsg}</div>`;
+  $("#p-count").textContent = catalogLoaded
+    ? `${visible.length} de ${workingCatalog.length} producto${workingCatalog.length === 1 ? "" : "s"}`
+    : "";
+  $$("#product-grid [data-edit]").forEach(b => b.addEventListener("click", () => openEditor(b.getAttribute("data-edit"))));
+  $$("#product-grid [data-sell]").forEach(b => b.addEventListener("click", () => openQuickSale(b.getAttribute("data-sell"))));
   populateSaleProductSelect();
 }
 const STIKE_LOW_STOCK_ADMIN = 5;
@@ -761,6 +917,7 @@ function renderEditor() {
   renderPhotoGrid();
   validateSlugField();
   validateSkuField();
+  disableAutofill($("#editor-drawer")); // el drawer se genera por JS en cada apertura
 }
 
 function escAttr(s) { return String(s == null ? "" : s).replace(/"/g, "&quot;"); }
@@ -937,7 +1094,7 @@ function saveEditorDraft() {
   }
   markDirty(d.slug);
   closeEditor();
-  renderProductTable();
+  renderProductGrid();
 }
 function deleteFromEditor() {
   const d = editorDraft;
@@ -953,7 +1110,7 @@ function deleteFromEditor() {
   renamedFrom.delete(editorOriginalSlug);
   closeEditor();
   updateDirtyUI();
-  renderProductTable();
+  renderProductGrid();
 }
 
 /* ============================== VENTAS ===================================== */
@@ -982,15 +1139,18 @@ function updateSaleStockHint() {
   const stock = stikeStockFor(p, size, color);
   $("#sale-stock-hint").textContent = stock == null ? "Elige talla/color para ver el stock disponible." : `Stock disponible para esa combinación: ${stock}`;
 }
-async function registrarVenta() {
-  const p = workingCatalog.find(x => x.slug === $("#sale-product").value);
-  if (!p) return;
-  const size = p.sizes ? $("#sale-size").value : null;
-  const color = p.colors ? $("#sale-color").value : null;
-  const qty = Math.max(1, parseInt($("#sale-qty").value) || 1);
-  const unitPrice = Math.max(0, parseInt($("#sale-price").value) || p.price);
+/* Nucleo de "registrar venta": valida stock, lo descuenta, arma la entrada
+   del log y la persiste (o la deja solo en memoria en modo demo). Lo usan
+   las DOS entradas: el formulario del panel Ventas y el boton "Vender" de
+   cada tarjeta del inventario. Devuelve true si la venta se registro. */
+async function applySale(p, opts) {
+  if (!p) return false;
+  const size = (p.sizes && p.sizes.length) ? (opts.size || null) : null;
+  const color = (p.colors && p.colors.length) ? (opts.color || null) : null;
+  const qty = Math.max(1, parseInt(opts.qty) || 1);
+  const unitPrice = Math.max(0, parseInt(opts.unitPrice) || p.price);
   const stock = stikeStockFor(p, size, color);
-  if (stock != null && qty > stock) { alert(`Solo hay ${stock} unidades disponibles para esa combinación.`); return; }
+  if (stock != null && qty > stock) { alert(`Solo hay ${stock} unidades disponibles para esa combinación.`); return false; }
 
   if (p.sizes && size) { const row = p.sizes.find(s => s.v === size); row.u = Math.max(0, row.u - qty); }
   if (p.colors && color) { const row = p.colors.find(c => c.v === color); row.u = Math.max(0, row.u - qty); }
@@ -998,22 +1158,173 @@ async function registrarVenta() {
   markDirty(p.slug);
 
   const entry = { ts: new Date().toISOString(), slug: p.slug, name: p.n, size: size || null, color: color || null, qty, unitPrice, total: unitPrice * qty, admin: session.email };
-  setPublishing(true);
-  try {
-    salesLog = await appendJsonLog(CONFIG.paths.salesLog, [entry], `Venta: ${qty}x ${p.n}`);
-    // Publica SOLO el stock de este producto (no arrastra otras ediciones a medio terminar).
-    await publishCatalog({ scopeSlugs: new Set([p.slug]), auditNote: `Venta registrada: ${qty}x ${p.n}` });
-  } catch (e) {
-    showStatus([{ text: "Error registrando venta: " + e.message, cls: "bad" }]);
-    setPublishing(false);
+
+  if (demoMode) {
+    // En demo la venta se ve reflejada al instante (stock, historial, KPIs)
+    // pero se queda en memoria: no toca GitHub ni el log real de ventas.
+    salesLog = salesLog.concat([entry]);
+    dirtySlugs.delete(p.slug);
+    updateDirtyUI();
+    showStatus([{ text: `Venta registrada en la demo: ${qty}x ${p.n} (no se publicó, es solo de ejemplo).`, cls: "ok" }]);
+  } else {
+    setPublishing(true);
+    try {
+      salesLog = await appendJsonLog(CONFIG.paths.salesLog, [entry], `Venta: ${qty}x ${p.n}`);
+      // Publica SOLO el stock de este producto (no arrastra otras ediciones a medio terminar).
+      await publishCatalog({ scopeSlugs: new Set([p.slug]), auditNote: `Venta registrada: ${qty}x ${p.n}` });
+    } catch (e) {
+      showStatus([{ text: "Error registrando venta: " + e.message, cls: "bad" }]);
+      setPublishing(false);
+    }
   }
   renderSalesTab();
   renderKpis();
-  renderProductTable();
+  renderProductGrid();
+  return true;
 }
+
+/* Entrada 1: formulario completo del panel Ventas. */
+async function registrarVenta() {
+  const p = workingCatalog.find(x => x.slug === $("#sale-product").value);
+  if (!p) return;
+  await applySale(p, {
+    size: p.sizes ? $("#sale-size").value : null,
+    color: p.colors ? $("#sale-color").value : null,
+    qty: $("#sale-qty").value,
+    unitPrice: $("#sale-price").value,
+  });
+}
+
+/* ===================== Entrada 2: venta rapida desde la tarjeta ==============
+   Un boton "Vender" en cada producto del inventario abre este modal chico con
+   talla/color/cantidad/precio ya resueltos para ese producto: es el camino
+   corto para el dia a dia del mostrador, sin pasar por el panel Ventas.
+   ========================================================================= */
+let quickSaleSlug = null;
+
+function openQuickSale(slug) {
+  if (!workingCatalog.find(x => x.slug === slug)) return;
+  quickSaleSlug = slug;
+  renderQuickSale();
+  $("#sale-overlay").classList.add("open");
+}
+function closeQuickSale() {
+  $("#sale-overlay").classList.remove("open");
+  quickSaleSlug = null;
+}
+
+function renderQuickSale() {
+  const p = workingCatalog.find(x => x.slug === quickSaleSlug);
+  if (!p) return;
+  const sizes = p.sizes || [], colors = p.colors || [];
+  const img = (p.imgs && p.imgs[0]) ? previewSrcFor(p.imgs[0]) : stikeProductImage(p, 200);
+  const opt = (row, agotadoTxt) =>
+    `<option value="${escAttr(row.v)}" ${row.u <= 0 ? "disabled" : ""}>${row.v}${row.u <= 0 ? ` (${agotadoTxt})` : ` — ${row.u} disp.`}</option>`;
+
+  $("#sale-modal").innerHTML = `
+    <div class="qs-head">
+      <img src="${img}" alt="">
+      <div>
+        <div style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--cyan)">${p.brand}</div>
+        <h3>${p.n}</h3>
+        <div class="mono muted" style="font-size:11.5px">${p.sku}</div>
+      </div>
+    </div>
+    ${sizes.length ? `<div class="field"><label>Talla</label><select id="qs-size">${sizes.map(s => opt(s, "agotada")).join("")}</select></div>` : ""}
+    ${colors.length ? `<div class="field"><label>Color</label><select id="qs-color">${colors.map(c => opt(c, "agotado")).join("")}</select></div>` : ""}
+    <div class="grid-2">
+      <div class="field"><label>Cantidad</label><input id="qs-qty" type="number" min="1" value="1"></div>
+      <div class="field"><label>Precio unitario</label><input id="qs-price" type="number" min="0" step="1000" value="${p.price}"></div>
+    </div>
+    <p class="hint muted" id="qs-stock"></p>
+    <div class="qs-total"><span class="muted">Total</span><b id="qs-total">${money(p.price)}</b></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn ghost" id="qs-cancel" style="flex:1">Cancelar</button>
+      <button class="btn cyan" id="qs-confirm" style="flex:2">Registrar venta</button>
+    </div>`;
+
+  ["#qs-size", "#qs-color", "#qs-qty", "#qs-price"].forEach(sel => {
+    const el = $(sel);
+    if (el) { el.addEventListener("change", refreshQuickSale); el.addEventListener("input", refreshQuickSale); }
+  });
+  $("#qs-cancel").addEventListener("click", closeQuickSale);
+  $("#qs-confirm").addEventListener("click", confirmQuickSale);
+  disableAutofill($("#sale-modal"));
+  refreshQuickSale();
+}
+
+function refreshQuickSale() {
+  const p = workingCatalog.find(x => x.slug === quickSaleSlug);
+  if (!p) return;
+  const size = $("#qs-size") ? $("#qs-size").value : null;
+  const color = $("#qs-color") ? $("#qs-color").value : null;
+  const stock = stikeStockFor(p, size, color);
+  const qtyEl = $("#qs-qty");
+  let qty = Math.max(1, parseInt(qtyEl.value) || 1);
+  if (stock != null && qty > stock) { qty = Math.max(1, stock); qtyEl.value = qty; }  // nunca dejar pedir mas de lo que hay
+  if (stock != null) qtyEl.max = Math.max(1, stock);
+
+  const unitPrice = Math.max(0, parseInt($("#qs-price").value) || 0);
+  $("#qs-total").textContent = money(unitPrice * qty);
+  $("#qs-stock").textContent = stock == null ? "" :
+    stock <= 0 ? "Sin stock para esa combinación." : `Stock disponible: ${stock}`;
+  $("#qs-confirm").disabled = (stock != null && stock <= 0);
+}
+
+async function confirmQuickSale() {
+  const p = workingCatalog.find(x => x.slug === quickSaleSlug);
+  if (!p) return;
+  $("#qs-confirm").disabled = true;
+  const ok = await applySale(p, {
+    size: $("#qs-size") ? $("#qs-size").value : null,
+    color: $("#qs-color") ? $("#qs-color").value : null,
+    qty: $("#qs-qty").value,
+    unitPrice: $("#qs-price").value,
+  });
+  if (ok) closeQuickSale();
+  else $("#qs-confirm").disabled = false;
+}
+
 function renderSalesTab() {
   populateSaleProductSelect();
-  $("#sales-tbody").innerHTML = salesLog.slice().reverse().slice(0, 200).map(s => `
+
+  const now = Date.now();
+  const monthAgo = now - 30 * 864e5;
+  const thisMonth = salesLog.filter(s => new Date(s.ts).getTime() >= monthAgo);
+  const revenue = thisMonth.reduce((a, s) => a + s.total, 0);
+  const units = thisMonth.reduce((a, s) => a + s.qty, 0);
+  const tickets = thisMonth.length;
+  const avgTicket = tickets ? revenue / tickets : 0;
+  $("#sales-kpis").innerHTML = `
+    <div class="kpi"><div class="n">${money(revenue)}</div><div class="l">Ventas (30d)</div></div>
+    <div class="kpi"><div class="n">${units}</div><div class="l">Unidades (30d)</div></div>
+    <div class="kpi"><div class="n">${tickets}</div><div class="l">Transacciones (30d)</div></div>
+    <div class="kpi"><div class="n">${money(avgTicket)}</div><div class="l">Ticket promedio</div></div>`;
+
+  // Barras por mes (ultimos 6 meses)
+  const months = [];
+  const d0 = new Date(); d0.setDate(1);
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(d0.getFullYear(), d0.getMonth() - i, 1);
+    months.push({ key: d.toISOString().slice(0, 7), label: d.toLocaleDateString("es-CO", { month: "short" }), total: 0 });
+  }
+  const idx = Object.fromEntries(months.map((m, i) => [m.key, i]));
+  salesLog.forEach(s => { const k = s.ts.slice(0, 7); if (k in idx) months[idx[k]].total += s.total; });
+  const maxM = Math.max(1, ...months.map(m => m.total));
+  const W = 600, H = 170, padX = 10, padB = 26, padT = 10;
+  const bw = (W - padX * 2) / months.length;
+  $("#sales-month-chart").innerHTML = months.map((m, i) => {
+    const h = (m.total / maxM) * (H - padB - padT);
+    const x = padX + i * bw, y = H - padB - h;
+    return `<rect x="${(x + bw * .18).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw * .64).toFixed(1)}" height="${Math.max(1, h).toFixed(1)}" rx="4" fill="#33e0ff" opacity="${i === months.length - 1 ? 1 : .55}"/>
+      <text x="${(x + bw / 2).toFixed(1)}" y="${H - 9}" text-anchor="middle" font-size="11" fill="#8e8e96">${m.label}</text>`;
+  }).join("") + `<line x1="${padX}" y1="${H - padB}" x2="${W - padX}" y2="${H - padB}" stroke="#232327"/>`;
+
+  const rows = salesLog.slice().reverse();
+  $("#sales-count").textContent = rows.length
+    ? `${rows.length} venta${rows.length === 1 ? "" : "s"} registrada${rows.length === 1 ? "" : "s"}${rows.length > 200 ? " — mostrando las 200 más recientes" : ""}`
+    : "";
+  $("#sales-tbody").innerHTML = rows.slice(0, 200).map(s => `
     <tr><td>${new Date(s.ts).toLocaleString("es-CO")}</td><td>${s.name || s.slug}</td>
     <td>${[s.size, s.color].filter(Boolean).join(" / ") || "—"}</td><td>${s.qty}</td><td>${money(s.total)}</td><td>${s.admin || ""}</td></tr>`).join("")
     || `<tr><td colspan="6" class="muted" style="padding:16px;text-align:center">Sin ventas registradas.</td></tr>`;
@@ -1022,46 +1333,104 @@ function renderSalesTab() {
 /* ============================== KPIs ======================================== */
 function renderKpis() {
   const isOwner = session.role === "owner";
-  const last30 = salesLog.filter(s => (Date.now() - new Date(s.ts).getTime()) <= 30 * 864e5);
-  const revenue = last30.reduce((sum, s) => sum + s.total, 0);
-  const units = last30.reduce((sum, s) => sum + s.qty, 0);
-  const lowStock = workingCatalog.filter(p => { const t = stikeTotalStock(p); return t <= STIKE_LOW_STOCK_ADMIN; }).length;
-  let margin = "—";
-  if (isOwner) {
-    const cogs = last30.reduce((sum, s) => { const p = workingCatalog.find(x => x.slug === s.slug); return sum + (p ? (p.cost || 0) * s.qty : 0); }, 0);
-    margin = revenue > 0 ? Math.round(((revenue - cogs) / revenue) * 100) + "%" : "—";
-  }
-  $("#kpi-cards").innerHTML = `
-    <div class="kpi"><div class="n">${money(revenue)}</div><div class="l">Ingresos (30d)</div></div>
-    <div class="kpi"><div class="n">${units}</div><div class="l">Unidades vendidas (30d)</div></div>
-    <div class="kpi"><div class="n">${lowStock}</div><div class="l">Bajo stock / agotados</div></div>
-    <div class="kpi"><div class="n">${isOwner ? margin : "🔒"}</div><div class="l">Margen (30d)</div></div>`;
+  const now = Date.now();
+  const inRange = (s, fromDaysAgo, toDaysAgo) => {
+    const t = new Date(s.ts).getTime();
+    return t > now - fromDaysAgo * 864e5 && t <= now - toDaysAgo * 864e5;
+  };
+  const last30 = salesLog.filter(s => inRange(s, 30, 0));
+  const prev30 = salesLog.filter(s => inRange(s, 60, 30));
 
-  // Serie diaria (30 dias)
-  const days = [];
-  for (let i = 29; i >= 0; i--) { const d = new Date(Date.now() - i * 864e5); days.push(d.toISOString().slice(0, 10)); }
-  const byDay = Object.fromEntries(days.map(d => [d, 0]));
-  last30.forEach(s => { const k = s.ts.slice(0, 10); if (k in byDay) byDay[k] += s.total; });
-  const values = days.map(d => byDay[d]);
-  const max = Math.max(1, ...values);
-  const W = 600, H = 160, pad = 8;
-  const pts = values.map((v, i) => {
-    const x = pad + (i / (values.length - 1)) * (W - pad * 2);
+  const sum = arr => arr.reduce((a, s) => a + s.total, 0);
+  const revenue = sum(last30), prevRevenue = sum(prev30);
+  const units = last30.reduce((a, s) => a + s.qty, 0);
+  const prevUnits = prev30.reduce((a, s) => a + s.qty, 0);
+  const avgTicket = last30.length ? revenue / last30.length : 0;
+  const prevAvg = prev30.length ? prevRevenue / prev30.length : 0;
+  const lowStock = workingCatalog.filter(p => stikeTotalStock(p) <= STIKE_LOW_STOCK_ADMIN).length;
+  const activos = workingCatalog.filter(p => p.published !== false).length;
+
+  const costOf = slug => { const p = workingCatalog.find(x => x.slug === slug); return p ? (p.cost || costsMap[slug] || 0) : 0; };
+  const cogs = last30.reduce((a, s) => a + costOf(s.slug) * s.qty, 0);
+  const marginPct = revenue > 0 ? Math.round(((revenue - cogs) / revenue) * 100) : 0;
+
+  const delta = (cur, prev) => {
+    if (!prev) return `<div class="delta flat">sin base previa</div>`;
+    const pct = Math.round(((cur - prev) / prev) * 100);
+    const cls = pct > 0 ? "up" : pct < 0 ? "down" : "flat";
+    const arrow = pct > 0 ? "▲" : pct < 0 ? "▼" : "=";
+    return `<div class="delta ${cls}">${arrow} ${Math.abs(pct)}% vs 30d previos</div>`;
+  };
+
+  $("#kpi-cards").innerHTML = `
+    <div class="kpi"><div class="n">${money(revenue)}</div><div class="l">Ingresos (30d)</div>${delta(revenue, prevRevenue)}</div>
+    <div class="kpi"><div class="n">${units}</div><div class="l">Unidades vendidas (30d)</div>${delta(units, prevUnits)}</div>
+    <div class="kpi"><div class="n">${money(avgTicket)}</div><div class="l">Ticket promedio</div>${delta(avgTicket, prevAvg)}</div>
+    <div class="kpi"><div class="n">${isOwner ? marginPct + "%" : "🔒"}</div><div class="l">Margen bruto (30d)</div>
+      <div class="delta flat">${isOwner ? "Costo: " + money(cogs) : "solo dueño"}</div></div>
+    <div class="kpi"><div class="n">${lowStock}</div><div class="l">Bajo stock / agotados</div>
+      <div class="delta ${lowStock ? "down" : "up"}">${lowStock ? "requieren reposición" : "todo cubierto"}</div></div>
+    <div class="kpi"><div class="n">${activos}</div><div class="l">Productos publicados</div>
+      <div class="delta flat">de ${workingCatalog.length} en catálogo</div></div>`;
+
+  // Serie diaria 30d + sombra de los 30 previos
+  const series = (from, to) => {
+    const days = [];
+    for (let i = from - 1; i >= to; i--) days.push(new Date(now - i * 864e5).toISOString().slice(0, 10));
+    const byDay = Object.fromEntries(days.map(d => [d, 0]));
+    salesLog.forEach(s => { const k = s.ts.slice(0, 10); if (k in byDay) byDay[k] += s.total; });
+    return days.map(d => byDay[d]);
+  };
+  const cur = series(30, 0), old = series(60, 30);
+  const max = Math.max(1, ...cur, ...old);
+  const W = 600, H = 170, pad = 10;
+  const toPts = vals => vals.map((v, i) => {
+    const x = pad + (i / Math.max(1, vals.length - 1)) * (W - pad * 2);
     const y = H - pad - (v / max) * (H - pad * 2);
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(" ");
-  const svg = $("#kpi-chart");
-  svg.innerHTML = `
-    <polyline points="${pts}" fill="none" stroke="#33e0ff" stroke-width="2"/>
-    <polyline points="${pad},${H - pad} ${pts} ${W - pad},${H - pad}" fill="#33e0ff22" stroke="none"/>
+  $("#kpi-chart").innerHTML = `
+    <polyline points="${toPts(old)}" fill="none" stroke="#4a4a55" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <polyline points="${pad},${H - pad} ${toPts(cur)} ${W - pad},${H - pad}" fill="#33e0ff1f" stroke="none"/>
+    <polyline points="${toPts(cur)}" fill="none" stroke="#33e0ff" stroke-width="2.5"/>
     <line x1="${pad}" y1="${H - pad}" x2="${W - pad}" y2="${H - pad}" stroke="#232327"/>`;
 
-  // Top productos (por ingresos, ultimos 30d)
+  // Desglose por categoria y por marca
+  const breakdown = (keyFn) => {
+    const map = {};
+    last30.forEach(s => {
+      const p = workingCatalog.find(x => x.slug === s.slug);
+      const k = p ? keyFn(p) : "—";
+      map[k] = (map[k] || 0) + s.total;
+    });
+    return Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  };
+  const renderBars = (el, rows) => {
+    const top = Math.max(1, ...rows.map(r => r[1]));
+    $(el).innerHTML = rows.map(([k, v]) => `
+      <div class="barrow">
+        <span>${k}</span>
+        <span class="track"><span class="fill" style="width:${Math.max(3, (v / top) * 100).toFixed(1)}%"></span></span>
+        <span class="val">${money(v)}</span>
+      </div>`).join("") || `<p class="muted" style="margin:0">Sin ventas en el período.</p>`;
+  };
+  renderBars("#kpi-by-cat", breakdown(p => { const c = stikeCategory(p.cat); return c ? c.name : p.cat; }));
+  renderBars("#kpi-by-brand", breakdown(p => p.brand || "—"));
+
+  // Top productos con margen
   const bySlug = {};
-  last30.forEach(s => { bySlug[s.slug] = bySlug[s.slug] || { name: s.name || s.slug, units: 0, revenue: 0 }; bySlug[s.slug].units += s.qty; bySlug[s.slug].revenue += s.total; });
+  last30.forEach(s => {
+    bySlug[s.slug] = bySlug[s.slug] || { name: s.name || s.slug, units: 0, revenue: 0, cost: 0 };
+    bySlug[s.slug].units += s.qty;
+    bySlug[s.slug].revenue += s.total;
+    bySlug[s.slug].cost += costOf(s.slug) * s.qty;
+  });
   const top = Object.values(bySlug).sort((a, b) => b.revenue - a.revenue).slice(0, 10);
-  $("#top-products-tbody").innerHTML = top.map(t => `<tr><td>${t.name}</td><td>${t.units}</td><td>${money(t.revenue)}</td></tr>`).join("")
-    || `<tr><td colspan="3" class="muted" style="padding:16px;text-align:center">Sin ventas en los últimos 30 días.</td></tr>`;
+  $("#top-products-tbody").innerHTML = top.map(t => {
+    const m = t.revenue > 0 ? Math.round(((t.revenue - t.cost) / t.revenue) * 100) + "%" : "—";
+    return `<tr><td>${t.name}</td><td>${t.units}</td><td>${money(t.revenue)}</td><td>${isOwner ? m : "🔒"}</td></tr>`;
+  }).join("")
+    || `<tr><td colspan="4" class="muted" style="padding:16px;text-align:center">Sin ventas en los últimos 30 días.</td></tr>`;
 }
 
 /* ============================== AUDITORÍA =================================== */
@@ -1083,7 +1452,7 @@ function bulkPriceAdjust() {
     p.price = Math.max(0, Math.round((p.price * factor) / 100) * 100);
     markDirty(p.slug);
   });
-  renderProductTable();
+  renderProductGrid();
 }
 
 /* ============================== CSV / JSON =================================== */
@@ -1095,9 +1464,17 @@ function downloadFile(filename, text, mime) {
   setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 function toCSV(rows) {
-  const headers = ["slug", "sku", "n", "brand", "cat", "sub", "price", "cost", "units", "published"];
+  const headers = ["slug", "sku", "n", "brand", "cat", "sub", "spec", "price", "cost", "units", "tag", "imgs", "sizes", "colors", "imgFit", "published"];
+  const joinStock = arr => (arr || []).map(s => `${s.v}:${s.u}`).join("|");
+  const val = (p, h) => {
+    if (h === "spec") return (p.spec || []).join("\n");
+    if (h === "imgs") return (p.imgs || []).join("|");
+    if (h === "sizes") return joinStock(p.sizes);
+    if (h === "colors") return joinStock(p.colors);
+    return p[h];
+  };
   const esc = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
-  return [headers.join(",")].concat(rows.map(p => headers.map(h => esc(p[h])).join(","))).join("\n");
+  return [headers.join(",")].concat(rows.map(p => headers.map(h => esc(val(p, h))).join(","))).join("\n");
 }
 function exportCSV() { downloadFile("stike-catalogo.csv", toCSV(workingCatalog), "text/csv"); }
 function exportJSON() { downloadFile("stike-catalogo.json", JSON.stringify(workingCatalog.map(toSiteProduct), null, 2), "application/json"); }
@@ -1112,6 +1489,17 @@ function parseCSV(text) {
     return row;
   });
 }
+/* "valor:unidades" separados por "|" -> [{v,u}]. Tolera un tercer campo
+   vacio (p.ej. "Negro:2:") que algunos exports historicos incluian. */
+function parseStockField(raw) {
+  if (Array.isArray(raw)) return raw;
+  const items = String(raw).split("|").map(s => s.trim()).filter(Boolean);
+  if (!items.length) return null;
+  return items.map(item => {
+    const [v, u] = item.split(":");
+    return { v: (v || "").trim(), u: parseInt(u) || 0 };
+  });
+}
 async function importFile(file) {
   const text = await file.text();
   let rows;
@@ -1122,16 +1510,24 @@ async function importFile(file) {
     const slug = row.slug || uniqueSlug(slugify(row.n || row.slug || "producto"), null);
     const existing = workingCatalog.find(p => p.slug === slug);
     const merged = existing ? { ...existing } : blankProduct();
-    ["n", "brand", "cat", "sub"].forEach(k => { if (row[k] !== undefined && row[k] !== "") merged[k] = row[k]; });
+    ["n", "brand", "cat", "sub", "tag", "imgFit"].forEach(k => { if (row[k] !== undefined && row[k] !== "") merged[k] = row[k]; });
     ["price", "cost", "units"].forEach(k => { if (row[k] !== undefined && row[k] !== "") merged[k] = parseInt(row[k]) || 0; });
     if (row.sku) merged.sku = row.sku;
+    if (row.spec !== undefined && row.spec !== "") {
+      merged.spec = Array.isArray(row.spec) ? row.spec : String(row.spec).split("\n").map(s => s.trim()).filter(Boolean);
+    }
+    if (row.imgs !== undefined && row.imgs !== "") {
+      merged.imgs = Array.isArray(row.imgs) ? row.imgs : String(row.imgs).split("|").map(s => s.trim()).filter(Boolean);
+    }
+    if (row.sizes !== undefined && row.sizes !== "") merged.sizes = parseStockField(row.sizes);
+    if (row.colors !== undefined && row.colors !== "") merged.colors = parseStockField(row.colors);
     merged.slug = slug;
     if (row.published !== undefined) merged.published = String(row.published) !== "false" && row.published !== false;
     if (!merged.sku) merged.sku = generateSku(merged.cat, merged.brand);
     if (existing) { Object.assign(existing, merged); updated++; } else { workingCatalog.push(merged); created++; }
     markDirty(slug);
   });
-  renderProductTable();
+  renderProductGrid();
   showStatus([{ text: `Importados: ${created} nuevos, ${updated} actualizados (sin publicar aún).`, cls: "ok" }]);
 }
 
@@ -1185,30 +1581,41 @@ async function saveSiteContent() {
   setPublishing(false);
 }
 
-/* ============================== AUTH GATE ==================================== */
-function roleFor(email) { return CONFIG.ownerAllowlist.includes((email || "").toLowerCase().trim()) ? "owner" : "editor"; }
-
+/* ============================== APP SHELL ==================================== */
 function showApp() {
-  $("#gate").style.display = "none";
-  $("#app").classList.add("show");
-  $("#session-info").innerHTML = `<div>${session.name}</div><div class="mono" style="font-size:11px">${session.email}</div><span class="pill ${session.role}" style="margin-top:6px">${session.role === "owner" ? "Dueño" : "Editor"}</span>`;
-  $$(".navbtn[data-panel=kpis], .navbtn[data-panel=auditoria]").forEach(b => b.style.display = session.role === "owner" ? "" : "none");
+  $("#session-info").innerHTML = `<span class="pill owner">Modo demo</span>`;
   $("#cfg-repo").textContent = `${CONFIG.owner}/${CONFIG.repo}`;
   $("#cfg-branch").textContent = CONFIG.branch;
-  $("#pat-status").textContent = session.pat ? "Token guardado en este navegador." : "Falta guardar tu token de GitHub (pestaña Configuración) para poder cargar/publicar.";
-  if (session.pat) loadAll().catch(e => showStatus([{ text: "Error cargando catálogo: " + e.message, cls: "bad" }]));
-  else switchPanel("config");
+  $("#pat-status").textContent = session.pat ? "Token guardado en este navegador." : "Sin token: el panel está en modo demo con datos de ejemplo. Pega un token para trabajar con datos reales.";
+  if (session.pat) {
+    loadAll().catch(e => handleLoadError(e));
+  } else {
+    // Sin token no hay nada real que leer: arranca la demo para que el panel
+    // se vea como se veria operando, en vez de mostrar tablas vacias.
+    seedDemoData();
+    renderDemoBanner();
+    renderProductGrid();
+    renderSalesTab();
+    renderKpis();
+    renderAudit();
+    renderContentTab();
+    updateDirtyUI();
+    switchPanel("productos");
+  }
 }
 
-$("#gate-form").addEventListener("submit", e => {
-  e.preventDefault();
-  const name = $("#g-name").value.trim(), email = $("#g-email").value.trim(), pass = $("#g-pass").value;
-  if (pass !== CONFIG.passcode) { $("#gate-err").textContent = "Clave incorrecta."; return; }
-  if (!name || !email) { $("#gate-err").textContent = "Falta tu nombre o correo."; return; }
-  session = { name, email, role: roleFor(email), pat: localStorage.getItem("stike_admin_pat") || "" };
-  saveSession(session);
-  showApp();
-});
+function handleLoadError(e) {
+  const friendly = patErrorMessage(e);
+  $("#pat-status").innerHTML = `<span style="color:var(--bad)">${friendly}</span>`;
+  switchPanel("config");
+  showStatus([{ text: "Error cargando catálogo: " + e.message, cls: "bad" }]);
+}
+function patErrorMessage(e) {
+  if (/-> 401/.test(e.message)) return "Token inválido o expirado. Genera uno nuevo en GitHub y pégalo de nuevo.";
+  if (/-> 404/.test(e.message)) return `No se encontró ${CONFIG.owner}/${CONFIG.repo} (rama "${CONFIG.branch}") con ese token. Revisa que el token tenga acceso a este repo.`;
+  if (/-> 403/.test(e.message)) return "El token no tiene permiso de escritura sobre este repo (o se agotó el límite de la API). Revisa el scope Contents: Read and write.";
+  return "No se pudo cargar el catálogo: " + e.message;
+}
 
 $("#btn-save-pat").addEventListener("click", () => {
   const v = $("#pat-input").value.trim();
@@ -1217,10 +1624,12 @@ $("#btn-save-pat").addEventListener("click", () => {
   session.pat = v;
   $("#pat-input").value = "";
   $("#pat-status").textContent = "Token guardado en este navegador.";
-  if (!catalogLoaded) {
+  // En modo demo el catalogo "ya esta cargado" (ficticio), asi que hay que
+  // recargar igual para reemplazarlo por los datos reales del repo.
+  if (!catalogLoaded || demoMode) {
     loadAll()
       .then(() => switchPanel("productos"))
-      .catch(e => showStatus([{ text: "Error cargando catálogo: " + e.message, cls: "bad" }]));
+      .catch(e => handleLoadError(e));
   }
 });
 $("#btn-clear-pat").addEventListener("click", () => {
@@ -1228,10 +1637,46 @@ $("#btn-clear-pat").addEventListener("click", () => {
   if (session) session.pat = "";
   $("#pat-status").textContent = "Token borrado.";
 });
-$("#btn-logout").addEventListener("click", () => {
-  sessionStorage.removeItem("stike_admin_session");
-  location.reload();
-});
+
+/* ============================== ANTI-AUTOFILL ===============================
+   El panel es una herramienta interna: ningun campo debe autocompletarse ni
+   conservar lo que se escribio antes. Chrome ignora autocomplete="off" en
+   varios casos y ademas restaura valores al recargar (form restoration) y al
+   volver con atras (bfcache), asi que no alcanza con el atributo en el HTML:
+   1) se marcan todos los inputs (incluye los del drawer, que se generan por JS),
+   2) al filtro se le pone un name aleatorio en cada carga, para que no haya
+      historial guardado que el navegador pueda asociar a ese campo, y
+   3) se limpia el filtro activamente en el arranque, en el siguiente frame y
+      al volver desde bfcache.
+   ========================================================================= */
+function disableAutofill(root) {
+  (root || document).querySelectorAll("input, textarea").forEach(el => {
+    if (el.type === "file") return;
+    el.setAttribute("autocomplete", "off");
+    el.setAttribute("autocorrect", "off");
+    el.setAttribute("autocapitalize", "off");
+    el.setAttribute("spellcheck", "false");
+    el.setAttribute("data-lpignore", "true");   // LastPass
+    el.setAttribute("data-1p-ignore", "");      // 1Password
+    el.setAttribute("data-bwignore", "");       // Bitwarden
+    el.setAttribute("data-form-type", "other"); // Dashlane
+  });
+}
+
+function resetSearchFilter(rerender) {
+  const el = $("#p-search");
+  if (!el) return;
+  // name aleatorio: sin nombre estable, el navegador no tiene con que
+  // emparejar lo que se escribio en cargas anteriores.
+  el.setAttribute("name", "f" + Math.random().toString(36).slice(2, 10));
+  if (el.value) {
+    el.value = "";
+    if (rerender && catalogLoaded) renderProductGrid();
+  }
+}
+
+// bfcache / boton atras: el navegador reinyecta el valor viejo despues de load.
+window.addEventListener("pageshow", () => resetSearchFilter(true));
 
 /* ============================== NAV / PANELES ================================ */
 function switchPanel(name) {
@@ -1248,9 +1693,9 @@ $$(".navbtn").forEach(b => b.addEventListener("click", () => switchPanel(b.getAt
 $("#btn-refresh").addEventListener("click", () => loadAll().catch(e => showStatus([{ text: "Error: " + e.message, cls: "bad" }])));
 $("#btn-publish").addEventListener("click", () => publishCatalog());
 $("#btn-new-product").addEventListener("click", () => openEditor(null));
-$("#p-search").addEventListener("input", renderProductTable);
-$("#p-filter-cat").addEventListener("change", renderProductTable);
-$("#p-filter-low").addEventListener("change", renderProductTable);
+$("#p-search").addEventListener("input", renderProductGrid);
+$("#p-filter-cat").addEventListener("change", renderProductGrid);
+$("#p-filter-low").addEventListener("change", renderProductGrid);
 $("#btn-export-csv").addEventListener("click", exportCSV);
 $("#btn-export-json").addEventListener("click", exportJSON);
 $("#btn-bulk-price").addEventListener("click", bulkPriceAdjust);
@@ -1262,10 +1707,20 @@ $("#sale-color").addEventListener("change", updateSaleStockHint);
 $("#btn-registrar-venta").addEventListener("click", registrarVenta);
 $("#btn-save-content").addEventListener("click", saveSiteContent);
 $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "editor-overlay") closeEditor(); });
+$("#sale-overlay").addEventListener("click", e => { if (e.target.id === "sale-overlay") closeQuickSale(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && quickSaleSlug) closeQuickSale(); });
 
 /* ============================== INIT =========================================== */
 (function init() {
+  disableAutofill();
+  resetSearchFilter(false);          // antes del primer render: filtro siempre vacio
   populateCategoryFilter();
-  session = loadSession();
-  if (session && session.email) showApp();
+  renderProductGrid();
+  session.pat = localStorage.getItem("stike_admin_pat") || "";
+  showApp();
+  // Chrome restaura valores DESPUES del load: se vuelve a limpiar en el
+  // siguiente frame y un instante despues, por si llega tarde.
+  requestAnimationFrame(() => resetSearchFilter(true));
+  setTimeout(() => resetSearchFilter(true), 250);
+  window.STIKE_ADMIN_BOOTED = true;
 })();

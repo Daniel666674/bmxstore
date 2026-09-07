@@ -67,7 +67,7 @@
   function renderSpecs(p) {
     return (p.spec || []).map(s => {
       var idx = s.indexOf(":");
-      if (idx === -1) return `<div class="spec-row"><span class="k">·</span><span class="v">${esc(s)}</span></div>`;
+      if (idx === -1) return `<div class="spec-row plain"><span class="v">${esc(s)}</span></div>`;
       return `<div class="spec-row"><span class="k">${esc(s.slice(0, idx))}</span><span class="v">${esc(s.slice(idx + 1).trim())}</span></div>`;
     }).join("");
   }
@@ -90,16 +90,16 @@
     var out = totalStock(p);
     var low = out > 0 && out <= 5;
     var stockHtml = out > 0
-      ? `<span class="stock${low ? " low" : ""}">● ${low ? `¡Solo ${out} disponible${out === 1 ? "" : "s"}!` : `En stock (${out} disponibles)`}</span>`
-      : `<span class="stock out">● Agotado. Consúltanos por WhatsApp</span>`;
+      ? `<span class="stock${low ? " low" : ""}">${low ? `Solo ${out} disponible${out === 1 ? "" : "s"}` : "En stock"}</span>`
+      : `<span class="stock out">Agotado — consúltanos por WhatsApp</span>`;
     var oldPrice = p.old ? `<span class="old">${money(p.old)}</span>` : "";
-    var discount = p.old ? `<span class="tag-pill" style="background:var(--yellow);color:#0b0b0d;margin-left:10px">-${Math.round((1 - p.price / p.old) * 100)}%</span>` : "";
+    var discount = p.old ? `<span class="tag-pill" style="background:#18181b;color:#fff;margin-left:10px;font-size:11px;padding:4px 10px">-${Math.round((1 - p.price / p.old) * 100)}%</span>` : "";
     var waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.n} (${money(p.price)}). ¿Está disponible?`);
     var canonical = `${SITE_URL}/producto/${p.slug}.html`;
     var shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.n}, ${money(p.price)}\n${canonical}`);
-    var ogImage = coverUrl ? (coverUrl.indexOf("http") === 0 ? coverUrl : `${SITE_ORIGIN}${coverUrl}`) : `${SITE_URL}/assets/img/og-stike.jpg`;
-    var catLink = `/bmxstore/tienda.html?cat=${esc(p.cat)}`;
-    var subLink = p.sub ? `/bmxstore/tienda.html?cat=${esc(p.cat)}&sub=${encodeURIComponent(p.sub)}` : null;
+    var ogImage = coverUrl ? (coverUrl.indexOf("http") === 0 ? coverUrl : `${SITE_URL}/${coverUrl.replace(/^\//, "")}`) : `${SITE_URL}/assets/img/og-stike.jpg`;
+    var catLink = `tienda.html?cat=${esc(p.cat)}`;
+    var subLink = p.sub ? `tienda.html?cat=${esc(p.cat)}&sub=${encodeURIComponent(p.sub)}` : null;
     var subCrumb = subLink ? `<span class="sep">/</span><a href="${subLink}" style="color:inherit">${esc(p.sub)}</a>` : "";
 
     return replaceAll(template, {
@@ -107,7 +107,7 @@
       META_DESC: esc(ctx.metaDesc || `${p.n} de ${p.brand} en Stike Bike Shop, tu tienda BMX en Bogotá.`),
       CANONICAL: canonical,
       OG_IMAGE: ogImage,
-      BREADCRUMB: `<a href="/bmxstore/index.html">Inicio</a><span class="sep">/</span><a href="${catLink}">${esc(categoryName)}</a>${subCrumb}<span class="sep">/</span><span>${esc(p.n)}</span>`,
+      BREADCRUMB: `<a href="index.html">Inicio</a><span class="sep">/</span><a href="${catLink}">${esc(categoryName)}</a>${subCrumb}<span class="sep">/</span><span>${esc(p.n)}</span>`,
       GALLERY: renderGallery(p, coverUrl),
       BRAND: esc(p.brand),
       NAME: esc(p.n),
