@@ -6,6 +6,10 @@
   <url><loc>https://daniel666674.github.io/bmxstore/marcas.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://daniel666674.github.io/bmxstore/fate/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://daniel666674.github.io/bmxstore/fate/tienda.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://daniel666674.github.io/bmxstore/fate/blog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://daniel666674.github.io/bmxstore/fate/historia-fate.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://daniel666674.github.io/bmxstore/fate/taller-fate.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://daniel666674.github.io/bmxstore/fate/riders-fate.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
   <url><loc>https://daniel666674.github.io/bmxstore/nosotros.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://daniel666674.github.io/bmxstore/contacto.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://daniel666674.github.io/bmxstore/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
