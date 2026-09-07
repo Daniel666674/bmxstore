@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+<base href="/bmxstore/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contacto: Stike Bike Shop</title>
   <meta name="description" content="Visítanos en Venecia, Bogotá o escríbenos por WhatsApp. Stike Bike Shop, tu tienda BMX.">
@@ -17,8 +18,8 @@
   <meta name="twitter:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=2">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css?v=12">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -49,10 +50,10 @@
       <h2 style="font-size:28px;margin-bottom:6px">Escríbenos</h2>
       <p style="color:var(--muted);margin-bottom:18px">¿Dudas con un repuesto o quieres armar tu BMX? Cuéntanos.</p>
       <form onsubmit="stikeContact(event)">
-        <div class="form-field"><label>Nombre</label><input type="text" required placeholder="Tu nombre"></div>
-        <div class="form-field"><label>WhatsApp / Teléfono</label><input type="tel" required placeholder="3xx xxx xxxx"></div>
+        <div class="form-field"><label>Nombre</label><input type="text" name="nombre" required placeholder="Tu nombre"></div>
+        <div class="form-field"><label>WhatsApp / Teléfono</label><input type="tel" name="telefono" required placeholder="3xx xxx xxxx"></div>
         <div class="form-field"><label>Tema</label>
-          <select>
+          <select name="tema">
             <option>Asesoría para comprar BMX</option>
             <option>Disponibilidad de repuesto</option>
             <option>Estado de mi pedido</option>
@@ -60,7 +61,11 @@
             <option>Eventos / comunidad</option>
           </select>
         </div>
-        <div class="form-field"><label>Mensaje</label><textarea rows="4" required placeholder="¿En qué te ayudamos?"></textarea></div>
+        <div class="form-field"><label>Mensaje</label><textarea name="mensaje" rows="4" required placeholder="¿En qué te ayudamos?"></textarea></div>
+        <label class="form-consent">
+          <input type="checkbox" name="consent" required>
+          <span>Acepto la <a href="privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a> y el tratamiento de mis datos personales conforme a la Ley 1581 de 2012.</span>
+        </label>
         <button class="btn block" type="submit">Enviar mensaje</button>
       </form>
     </div>
@@ -80,9 +85,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="assets/js/products-data.js?v=1"></script>
-  <script src="assets/js/data.js?v=1"></script>
-  <script src="assets/js/app.js?v=2"></script>
+  <script src="assets/js/products-data.js?v=2"></script>
+  <script src="assets/js/data.js?v=2"></script>
+  <script src="assets/js/app.js?v=3"></script>
   <script>
     stikeInit();
     const C = STIKE_CONFIG;
@@ -94,8 +99,7 @@
       `<a href="${C.ig}" target="_blank" rel="noopener" style="color:var(--cyan)">${C.igHandle}</a> · ` +
       `<a href="${C.fb}" target="_blank" rel="noopener" style="color:var(--cyan)">Facebook</a> · ` +
       `<a href="${C.tiktok}" target="_blank" rel="noopener" style="color:var(--cyan)">TikTok</a>`;
-    function stikeContact(e){ e.preventDefault(); e.target.reset(); stikeToast("Mensaje enviado, te contactamos pronto"); }
   </script>
-  <script src="assets/js/animations.js?v=2"></script>
+  <script src="assets/js/animations.js?v=3"></script>
 </body>
 </html>

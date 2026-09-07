@@ -42,20 +42,17 @@ App de una sola página, sin build, que lee y escribe directo la API de
 contenidos de GitHub (`assets/js/products-data.js`, `producto/*.html`,
 `sitemap.xml`, y los archivos internos en `data/`).
 
-- **Acceso**: clave compartida (demo — no es Google OAuth real, ver
-  `CONFIG.passcode` en `admin.js`) + tu nombre/correo, que queda como firma
-  en cada commit (`[tu correo] mensaje`). Correos en `CONFIG.ownerAllowlist`
-  entran como **dueño** (ven costo/margen, KPIs y auditoría); cualquier otro
-  correo con la clave entra como **editor** (CRUD + ventas, sin datos
-  financieros). Esto es intencionalmente simple para una demo; si se quiere
-  Google Sign-In real hay que registrar un OAuth Client ID en Google Cloud
-  y reemplazar el gate en `admin.js`.
+- **Acceso**: ninguno — es una demo, entra directo sin login. Lo único que
+  realmente controla quién puede publicar es el token de GitHub (siguiente
+  punto); las firmas de commit/ventas/auditoría usan un `session.email` fijo
+  en `admin.js`. Si esto pasa a producción real, ahí sí hace falta un login
+  de verdad antes de exponer el token a cualquiera.
 - **Token de GitHub**: cada admin pega su propio Personal Access Token
   (fine-grained, permiso *Contents: Read and write* sobre este repo) en la
   pestaña "Configuración". Se guarda solo en `localStorage` de ese
   navegador, nunca se publica.
 - **Rama de publicación**: `CONFIG.branch` en `admin.js` (hoy
-  `claude/sweet-albattani-ti0w0e`, la misma que dispara el deploy a GitHub
+  `main`, la misma que dispara el deploy a GitHub
   Pages — ver `.github/workflows/deploy.yml`).
 - **Costos internos**: `data/costs.json` (nunca se publica en
   `products-data.js` ni aparece en la ficha de ningún producto).
@@ -92,7 +89,7 @@ un token de GitHub real con acceso de escritura a este repo.
 
 Esto es una demo sin hosting propio: **GitHub Pages es el único deploy
 real**. `.github/workflows/deploy.yml` publica todo el repo en cada push a
-la rama configurada (hoy `claude/sweet-albattani-ti0w0e`) usando
+la rama configurada (hoy `main`) usando
 `actions/deploy-pages`; no hace falta ningún secret, solo que "GitHub
 Actions" esté seleccionado como fuente en Settings → Pages del repo (ya
 lo estaba, porque el sitio ya vivía en

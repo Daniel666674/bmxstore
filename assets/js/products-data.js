@@ -18,12 +18,12 @@ window.STIKE_PRODUCTS = [
       "Ángulo dirección: 75°",
       "Peso: 2.1 kg"
     ],
-    "price": 980000,
+    "price": 999600,
     "promo": false,
     "tag": "new",
     "units": 4,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7282.jpeg"
+      "assets/img/products/IMG_7282.jpeg"
     ],
     "published": true
   },
@@ -40,12 +40,12 @@ window.STIKE_PRODUCTS = [
       "Vainas: 13\"",
       "Geometría street"
     ],
-    "price": 910000,
+    "price": 928200,
     "old": 1040000,
     "promo": true,
     "units": 2,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7283.jpeg"
+      "assets/img/products/IMG_7283.jpeg"
     ],
     "published": true
   },
@@ -62,11 +62,11 @@ window.STIKE_PRODUCTS = [
       "Eje: 10mm / 14mm",
       "Tubo de dirección butado"
     ],
-    "price": 360000,
+    "price": 367200,
     "promo": false,
     "units": 7,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7181.jpeg"
+      "assets/img/products/IMG_7181.jpeg"
     ],
     "published": true
   },
@@ -82,11 +82,11 @@ window.STIKE_PRODUCTS = [
       "Avance: 30mm",
       "Peso: 0.85 kg"
     ],
-    "price": 330000,
+    "price": 336600,
     "promo": false,
     "units": 5,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-fork-shadow.png"
+      "assets/img/products/prod-fork-shadow.png"
     ],
     "published": true
   },
@@ -103,11 +103,11 @@ window.STIKE_PRODUCTS = [
       "Material: Cromoly",
       "Retroceso: 12°"
     ],
-    "price": 240000,
+    "price": 244800,
     "promo": false,
     "units": 9,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-bar-cult.png"
+      "assets/img/products/prod-bar-cult.png"
     ],
     "published": true
   },
@@ -124,12 +124,12 @@ window.STIKE_PRODUCTS = [
       "Material: Cromoly",
       "Retroceso: 11°"
     ],
-    "price": 210000,
+    "price": 214200,
     "old": 260000,
     "promo": true,
     "units": 6,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-bar-eclat.png"
+      "assets/img/products/prod-bar-eclat.png"
     ],
     "published": true
   },
@@ -146,11 +146,11 @@ window.STIKE_PRODUCTS = [
       "Material: Cromoly tubular",
       "Estriado: 48"
     ],
-    "price": 540000,
+    "price": 550800,
     "promo": false,
     "units": 4,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7284.jpeg"
+      "assets/img/products/IMG_7284.jpeg"
     ],
     "published": true
   },
@@ -167,7 +167,7 @@ window.STIKE_PRODUCTS = [
       "Protector integrado",
       "Hecho en Colombia"
     ],
-    "price": 150000,
+    "price": 153000,
     "promo": false,
     "tag": "new",
     "colors": [
@@ -181,12 +181,12 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/bmxstore/assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg",
-      "/bmxstore/assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg"
+      "assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg",
+      "assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg"
     ],
     "imgColorMap": {
-      "/bmxstore/assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg": "Negro",
-      "/bmxstore/assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg": "Cromado"
+      "assets/img/products/F45D508E-ADC2-472F-AAFA-0ED417BD1C15.jpeg": "Negro",
+      "assets/img/products/EA19B12C-1FBD-4387-A361-7A4AED292633.jpeg": "Cromado"
     },
     "published": true
   },
@@ -203,11 +203,11 @@ window.STIKE_PRODUCTS = [
       "Color: negro",
       "Pasador reforzado"
     ],
-    "price": 95000,
+    "price": 96900,
     "promo": false,
     "units": 15,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7166.jpeg"
+      "assets/img/products/IMG_7166.jpeg"
     ],
     "published": true
   },
@@ -224,11 +224,11 @@ window.STIKE_PRODUCTS = [
       "Pastillas M2",
       "Cable incluido"
     ],
-    "price": 180000,
+    "price": 183600,
     "promo": false,
     "units": 6,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7285.jpeg"
+      "assets/img/products/IMG_7285.jpeg"
     ],
     "published": true
   },
@@ -245,12 +245,12 @@ window.STIKE_PRODUCTS = [
       "Holgura ajustable",
       "Eje 14mm"
     ],
-    "price": 620000,
+    "price": 632400,
     "old": 720000,
     "promo": true,
     "units": 3,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7286.jpeg"
+      "assets/img/products/IMG_7286.jpeg"
     ],
     "published": true
   },
@@ -267,11 +267,11 @@ window.STIKE_PRODUCTS = [
       "Material: 6061",
       "Unión remachada"
     ],
-    "price": 210000,
+    "price": 214200,
     "promo": false,
     "units": 8,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7171.jpeg"
+      "assets/img/products/IMG_7171.jpeg"
     ],
     "published": true
   },
@@ -288,11 +288,11 @@ window.STIKE_PRODUCTS = [
       "Compuesto dual",
       "Talón plegable"
     ],
-    "price": 120000,
+    "price": 122400,
     "promo": false,
     "units": 20,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-tire-total.png"
+      "assets/img/products/prod-tire-total.png"
     ],
     "published": true
   },
@@ -309,11 +309,11 @@ window.STIKE_PRODUCTS = [
       "Plataforma ancha",
       "9/16\""
     ],
-    "price": 85000,
+    "price": 86700,
     "promo": false,
     "units": 25,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-pedals-odyssey.webp"
+      "assets/img/products/prod-pedals-odyssey.webp"
     ],
     "published": true
   },
@@ -330,12 +330,12 @@ window.STIKE_PRODUCTS = [
       "Corte original",
       "Hecha en Colombia"
     ],
-    "price": 130000,
+    "price": 132600,
     "promo": false,
     "tag": "new",
     "units": 10,
     "imgs": [
-      "/bmxstore/assets/img/products/3A06D926-2987-4488-AA12-28567FE35426.jpeg"
+      "assets/img/products/3A06D926-2987-4488-AA12-28567FE35426.jpeg"
     ],
     "published": true
   },
@@ -352,11 +352,11 @@ window.STIKE_PRODUCTS = [
       "Eje: 10/14mm",
       "Incluye par"
     ],
-    "price": 90000,
+    "price": 91800,
     "promo": false,
     "units": 14,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7145.jpeg"
+      "assets/img/products/IMG_7145.jpeg"
     ],
     "published": true
   },
@@ -373,7 +373,7 @@ window.STIKE_PRODUCTS = [
       "10 ventilaciones",
       "Forro lavable"
     ],
-    "price": 230000,
+    "price": 234600,
     "promo": false,
     "tag": "new",
     "sizes": [
@@ -405,12 +405,12 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7130.jpeg",
-      "/bmxstore/assets/img/products/IMG_7131.jpeg"
+      "assets/img/products/IMG_7130.jpeg",
+      "assets/img/products/IMG_7131.jpeg"
     ],
     "imgColorMap": {
-      "/bmxstore/assets/img/products/IMG_7130.jpeg": "Salmón",
-      "/bmxstore/assets/img/products/IMG_7131.jpeg": "Blanco"
+      "assets/img/products/IMG_7130.jpeg": "Salmón",
+      "assets/img/products/IMG_7131.jpeg": "Blanco"
     },
     "published": true
   },
@@ -427,7 +427,7 @@ window.STIKE_PRODUCTS = [
       "Negro mate",
       "Forro lavable"
     ],
-    "price": 215000,
+    "price": 219300,
     "promo": false,
     "sizes": [
       {
@@ -448,7 +448,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7273.jpeg"
+      "assets/img/products/IMG_7273.jpeg"
     ],
     "published": true
   },
@@ -465,7 +465,7 @@ window.STIKE_PRODUCTS = [
       "Lavables",
       "Ajuste con velcro"
     ],
-    "price": 175000,
+    "price": 178500,
     "old": 210000,
     "promo": true,
     "sizes": [
@@ -487,7 +487,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7272.jpeg"
+      "assets/img/products/IMG_7272.jpeg"
     ],
     "published": true
   },
@@ -503,7 +503,7 @@ window.STIKE_PRODUCTS = [
       "Palma reforzada",
       "Transpirables"
     ],
-    "price": 65000,
+    "price": 66300,
     "promo": false,
     "sizes": [
       {
@@ -524,90 +524,8 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7271.jpeg"
+      "assets/img/products/IMG_7271.jpeg"
     ],
-    "published": true
-  },
-  {
-    "slug": "camiseta-stike-graffiti-tee",
-    "sku": "ROP-STI-004",
-    "n": "Camiseta Stike Graffiti Tee",
-    "brand": "Stike",
-    "cat": "ropa",
-    "sub": "Camisetas",
-    "spec": [
-      "Material: 100% algodón",
-      "Tallas: S-XXL",
-      "Estampado serigrafía",
-      "Corte regular"
-    ],
-    "price": 79000,
-    "promo": false,
-    "tag": "new",
-    "sizes": [
-      {
-        "v": "S",
-        "u": 3
-      },
-      {
-        "v": "M",
-        "u": 7
-      },
-      {
-        "v": "L",
-        "u": 10
-      },
-      {
-        "v": "XL",
-        "u": 7
-      },
-      {
-        "v": "XXL",
-        "u": 3
-      }
-    ],
-    "imgs": [],
-    "published": true
-  },
-  {
-    "slug": "buso-stike-box-logo",
-    "sku": "ROP-STI-005",
-    "n": "Buso Stike Box Logo",
-    "brand": "Stike",
-    "cat": "ropa",
-    "sub": "Busos y Chaquetas",
-    "spec": [
-      "Material: Algodón/poly 320g",
-      "Tallas: S-XXL",
-      "Logo bordado",
-      "Bolsillo canguro"
-    ],
-    "price": 165000,
-    "old": 199000,
-    "promo": true,
-    "sizes": [
-      {
-        "v": "S",
-        "u": 2
-      },
-      {
-        "v": "M",
-        "u": 4
-      },
-      {
-        "v": "L",
-        "u": 5
-      },
-      {
-        "v": "XL",
-        "u": 3
-      },
-      {
-        "v": "XXL",
-        "u": 2
-      }
-    ],
-    "imgs": [],
     "published": true
   },
   {
@@ -623,12 +541,12 @@ window.STIKE_PRODUCTS = [
       "Logo bordado",
       "Hecha en Colombia"
     ],
-    "price": 69000,
+    "price": 70400,
     "promo": false,
     "tag": "new",
     "units": 22,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7138.jpeg"
+      "assets/img/products/IMG_7138.jpeg"
     ],
     "published": true
   },
@@ -645,12 +563,12 @@ window.STIKE_PRODUCTS = [
       "Banda ajustable",
       "Espuma triple densidad"
     ],
-    "price": 165000,
+    "price": 168300,
     "promo": false,
     "tag": "new",
     "units": 9,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7275.jpeg"
+      "assets/img/products/IMG_7275.jpeg"
     ],
     "published": true
   },
@@ -666,7 +584,7 @@ window.STIKE_PRODUCTS = [
       "Tallas: 38-44",
       "Refuerzo en empeine"
     ],
-    "price": 245000,
+    "price": 249900,
     "promo": false,
     "sizes": [
       {
@@ -699,7 +617,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7152.jpeg"
+      "assets/img/products/IMG_7152.jpeg"
     ],
     "published": true
   },
@@ -716,7 +634,7 @@ window.STIKE_PRODUCTS = [
       "Tallas: 38-44",
       "Refuerzo lateral"
     ],
-    "price": 235000,
+    "price": 239700,
     "promo": false,
     "sizes": [
       {
@@ -749,27 +667,8 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "/bmxstore/assets/img/products/prod-shoes-fade.webp"
+      "assets/img/products/prod-shoes-fade.webp"
     ],
-    "published": true
-  },
-  {
-    "slug": "multiherramienta-stike-18-en-1",
-    "sku": "ACC-STI-003",
-    "n": "Multiherramienta Stike 18-en-1",
-    "brand": "Stike",
-    "cat": "accesorios",
-    "sub": "Herramientas",
-    "spec": [
-      "18 funciones",
-      "Acero cromo-vanadio",
-      "Estuche incluido"
-    ],
-    "price": 89000,
-    "promo": false,
-    "tag": "new",
-    "units": 20,
-    "imgs": [],
     "published": true
   },
   {
@@ -785,11 +684,11 @@ window.STIKE_PRODUCTS = [
       "Acero tratado",
       "Marca: Cult"
     ],
-    "price": 95000,
+    "price": 96900,
     "promo": false,
     "units": 10,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7276.webp"
+      "assets/img/products/IMG_7276.webp"
     ],
     "published": true
   },
@@ -806,11 +705,11 @@ window.STIKE_PRODUCTS = [
       "Compuesto firme",
       "Tapones incluidos"
     ],
-    "price": 55000,
+    "price": 56100,
     "promo": false,
     "units": 28,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7182.jpeg"
+      "assets/img/products/IMG_7182.jpeg"
     ],
     "published": true
   },
@@ -827,31 +726,13 @@ window.STIKE_PRODUCTS = [
       "Base plegable",
       "Manguera flexible"
     ],
-    "price": 110000,
+    "price": 112200,
     "old": 135000,
     "promo": true,
     "units": 13,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-pump-gw.png"
+      "assets/img/products/prod-pump-gw.png"
     ],
-    "published": true
-  },
-  {
-    "slug": "pack-de-calcomanias-stike-graffiti",
-    "sku": "ACC-STI-004",
-    "n": "Pack de Calcomanías Stike Graffiti",
-    "brand": "Stike",
-    "cat": "accesorios",
-    "sub": "Pegatinas",
-    "spec": [
-      "12 stickers",
-      "Vinilo resistente",
-      "Anti-agua / anti-UV"
-    ],
-    "price": 25000,
-    "promo": false,
-    "units": 50,
-    "imgs": [],
     "published": true
   },
   {
@@ -867,12 +748,12 @@ window.STIKE_PRODUCTS = [
       "Eslabón estándar",
       "Compatible BMX"
     ],
-    "price": 75000,
+    "price": 76500,
     "promo": false,
     "tag": "new",
     "units": 18,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7165.jpeg"
+      "assets/img/products/IMG_7165.jpeg"
     ],
     "published": true
   },
@@ -889,11 +770,11 @@ window.STIKE_PRODUCTS = [
       "Talón de alambre",
       "90 PSI max"
     ],
-    "price": 95000,
+    "price": 96900,
     "promo": false,
     "units": 12,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7167.jpeg"
+      "assets/img/products/IMG_7167.jpeg"
     ],
     "published": true
   },
@@ -910,11 +791,11 @@ window.STIKE_PRODUCTS = [
       "Material: 6061",
       "Unión remachada"
     ],
-    "price": 195000,
+    "price": 198900,
     "promo": false,
     "units": 5,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7172.jpeg"
+      "assets/img/products/IMG_7172.jpeg"
     ],
     "published": true
   },
@@ -931,12 +812,12 @@ window.STIKE_PRODUCTS = [
       "Anodizado negro",
       "Unión remachada"
     ],
-    "price": 205000,
+    "price": 209100,
     "old": 240000,
     "promo": true,
     "units": 4,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7173.jpeg"
+      "assets/img/products/IMG_7173.jpeg"
     ],
     "published": true
   },
@@ -953,11 +834,11 @@ window.STIKE_PRODUCTS = [
       "Material: Cromoly",
       "Retroceso: 10°"
     ],
-    "price": 235000,
+    "price": 239700,
     "promo": false,
     "units": 6,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7176.jpeg"
+      "assets/img/products/IMG_7176.jpeg"
     ],
     "published": true
   },
@@ -974,12 +855,12 @@ window.STIKE_PRODUCTS = [
       "Material: Cromoly full",
       "Barra transversal incluida"
     ],
-    "price": 260000,
+    "price": 265200,
     "promo": false,
     "tag": "new",
     "units": 5,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7177.jpeg"
+      "assets/img/products/IMG_7177.jpeg"
     ],
     "published": true
   },
@@ -996,11 +877,11 @@ window.STIKE_PRODUCTS = [
       "Eje: 10mm",
       "Avance: 28mm"
     ],
-    "price": 280000,
+    "price": 285600,
     "promo": false,
     "units": 3,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7178.jpeg"
+      "assets/img/products/IMG_7178.jpeg"
     ],
     "published": true
   },
@@ -1016,11 +897,11 @@ window.STIKE_PRODUCTS = [
       "Material: Aluminio 6061",
       "Llave Allen 6mm"
     ],
-    "price": 35000,
+    "price": 35700,
     "promo": false,
     "units": 25,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7180.jpeg"
+      "assets/img/products/IMG_7180.jpeg"
     ],
     "published": true
   },
@@ -1037,11 +918,11 @@ window.STIKE_PRODUCTS = [
       "Compuesto suave",
       "Tapones incluidos"
     ],
-    "price": 48000,
+    "price": 49000,
     "promo": false,
     "units": 22,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7183.jpeg"
+      "assets/img/products/IMG_7183.jpeg"
     ],
     "published": true
   },
@@ -1058,12 +939,12 @@ window.STIKE_PRODUCTS = [
       "Compuesto doble",
       "Tapones a juego"
     ],
-    "price": 62000,
+    "price": 63200,
     "promo": false,
     "tag": "new",
     "units": 15,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7184.jpeg"
+      "assets/img/products/IMG_7184.jpeg"
     ],
     "published": true
   },
@@ -1080,12 +961,12 @@ window.STIKE_PRODUCTS = [
       "Alcance: 53mm",
       "Abrazadera dentada"
     ],
-    "price": 195000,
+    "price": 198900,
     "promo": false,
     "tag": "new",
     "units": 7,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7186.jpeg"
+      "assets/img/products/IMG_7186.jpeg"
     ],
     "published": true
   },
@@ -1102,11 +983,11 @@ window.STIKE_PRODUCTS = [
       "4 tornillos",
       "Alcance: 52mm"
     ],
-    "price": 225000,
+    "price": 229500,
     "promo": false,
     "units": 8,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7122.jpeg"
+      "assets/img/products/IMG_7122.jpeg"
     ],
     "published": true
   },
@@ -1123,11 +1004,11 @@ window.STIKE_PRODUCTS = [
       "Ajuste universal",
       "Logo bordado"
     ],
-    "price": 65000,
+    "price": 66300,
     "promo": false,
     "units": 18,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7137.jpeg"
+      "assets/img/products/IMG_7137.jpeg"
     ],
     "published": true
   },
@@ -1144,12 +1025,12 @@ window.STIKE_PRODUCTS = [
       "Vainas: 13\"",
       "Hecho en Colombia"
     ],
-    "price": 890000,
+    "price": 907800,
     "promo": false,
     "tag": "new",
     "units": 4,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7139.jpeg"
+      "assets/img/products/IMG_7139.jpeg"
     ],
     "published": true
   },
@@ -1166,11 +1047,11 @@ window.STIKE_PRODUCTS = [
       "Corte original",
       "Hecha en Colombia"
     ],
-    "price": 140000,
+    "price": 142800,
     "promo": false,
     "units": 7,
     "imgs": [
-      "/bmxstore/assets/img/products/3B54281B-6080-4074-A754-4142F71ADBC2.jpeg"
+      "assets/img/products/3B54281B-6080-4074-A754-4142F71ADBC2.jpeg"
     ],
     "published": true
   },
@@ -1188,12 +1069,12 @@ window.STIKE_PRODUCTS = [
       "Soportes: removibles",
       "Color: Blanco/Azul"
     ],
-    "price": 1050000,
+    "price": 1071000,
     "old": 1180000,
     "promo": true,
     "units": 3,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7258.jpeg"
+      "assets/img/products/IMG_7258.jpeg"
     ],
     "published": true
   },
@@ -1211,12 +1092,12 @@ window.STIKE_PRODUCTS = [
       "Soportes: removibles",
       "Color: Blanco mate"
     ],
-    "price": 980000,
+    "price": 999600,
     "promo": false,
     "tag": "new",
     "units": 4,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7259.jpeg"
+      "assets/img/products/IMG_7259.jpeg"
     ],
     "published": true
   },
@@ -1234,12 +1115,12 @@ window.STIKE_PRODUCTS = [
       "Verde lima",
       "Hecho para park/dirt"
     ],
-    "price": 1020000,
+    "price": 1040400,
     "promo": false,
     "tag": "new",
     "units": 3,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7260.jpeg"
+      "assets/img/products/IMG_7260.jpeg"
     ],
     "published": true
   },
@@ -1257,11 +1138,11 @@ window.STIKE_PRODUCTS = [
       "Eje: 14mm",
       "Color: Negro"
     ],
-    "price": 560000,
+    "price": 571200,
     "promo": false,
     "units": 5,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-hub-shadow.png"
+      "assets/img/products/prod-hub-shadow.png"
     ],
     "published": true
   },
@@ -1279,12 +1160,12 @@ window.STIKE_PRODUCTS = [
       "Eje: 14mm",
       "Color: Negro"
     ],
-    "price": 540000,
+    "price": 550800,
     "old": 620000,
     "promo": true,
     "units": 4,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7265.jpeg"
+      "assets/img/products/IMG_7265.jpeg"
     ],
     "published": true
   },
@@ -1302,12 +1183,12 @@ window.STIKE_PRODUCTS = [
       "Eje: 14mm",
       "Rodamientos sellados"
     ],
-    "price": 600000,
+    "price": 612000,
     "promo": false,
     "tag": "new",
     "units": 3,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7266.jpeg"
+      "assets/img/products/IMG_7266.jpeg"
     ],
     "published": true
   },
@@ -1325,11 +1206,11 @@ window.STIKE_PRODUCTS = [
       "Eje: 14mm",
       "Color: Negro"
     ],
-    "price": 480000,
+    "price": 489600,
     "promo": false,
     "units": 8,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-hub-federal.png"
+      "assets/img/products/prod-hub-federal.png"
     ],
     "published": true
   },
@@ -1347,11 +1228,11 @@ window.STIKE_PRODUCTS = [
       "Cuerpo ancho",
       "Color: Negro"
     ],
-    "price": 90000,
+    "price": 91800,
     "promo": false,
     "units": 22,
     "imgs": [
-      "/bmxstore/assets/img/products/prod-pedals-cinema.png"
+      "assets/img/products/prod-pedals-cinema.png"
     ],
     "published": true
   },
@@ -1369,12 +1250,12 @@ window.STIKE_PRODUCTS = [
       "Plataforma ancha",
       "Color: Negro"
     ],
-    "price": 130000,
+    "price": 132600,
     "promo": false,
     "tag": "new",
     "units": 12,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7269.jpeg"
+      "assets/img/products/IMG_7269.jpeg"
     ],
     "published": true
   },
@@ -1392,11 +1273,11 @@ window.STIKE_PRODUCTS = [
       "Plataforma plana",
       "Color: Negro"
     ],
-    "price": 78000,
+    "price": 79600,
     "promo": false,
     "units": 20,
     "imgs": [
-      "/bmxstore/assets/img/products/IMG_7270.jpeg"
+      "assets/img/products/IMG_7270.jpeg"
     ],
     "published": true
   }

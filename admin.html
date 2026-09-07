@@ -2,10 +2,52 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<base href="/bmxstore/">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Stike: Inventario</title>
 <meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3C/svg%3E">
+<script>
+/* Detector de fallas INLINE, antes de cargar nada mas: si admin.js (o
+   cualquier otro script/CSS del panel) no llega a cargar por la razon que
+   sea, esto SI se ejecuta igual (esta en el propio HTML) y lo muestra en
+   pantalla en vez de dejar la app muerta en silencio. Usa fase de captura
+   para poder detectar tambien fallas de carga de recursos (<script>/<link>),
+   que no burbujean hasta window en la fase normal. */
+(function () {
+  function showBoot(msg) {
+    try {
+      var box = document.getElementById("boot-crash");
+      if (!box) {
+        box = document.createElement("div");
+        box.id = "boot-crash";
+        box.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#4a1216;color:#ffd7da;padding:12px 16px;font:13px/1.5 system-ui,sans-serif;border-bottom:2px solid #ff4d5e;white-space:pre-wrap";
+        (document.body || document.documentElement).appendChild(box);
+      }
+      box.textContent = "⚠ El panel no cargó (avísale a soporte con este texto): " + msg;
+    } catch (e) {}
+  }
+  window.addEventListener("error", function (e) {
+    var target = e.target;
+    if (target && target !== window && (target.tagName === "SCRIPT" || target.tagName === "LINK")) {
+      showBoot("No se pudo cargar " + (target.src || target.href));
+    } else {
+      showBoot((e.message || "error desconocido") + (e.filename ? " (" + e.filename + ":" + e.lineno + ")" : ""));
+    }
+  }, true);
+  window.addEventListener("unhandledrejection", function (e) {
+    showBoot((e.reason && e.reason.message) || String(e.reason));
+  });
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      if (!window.STIKE_ADMIN_BOOTED) showBoot("admin.js cargó pero nunca terminó de iniciar (revisa la consola con F12).");
+    }, 4000);
+  });
+})();
+</script>
 <style>
 /* =========================================================================
    Panel admin: app self-contenida, sin build step ni framework. No hereda
@@ -39,19 +81,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--cyan);outline-of
 .pill.low{color:var(--yellow)}
 .pill.out{color:var(--bad)}
 
-/* ---- gate ---- */
-#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.gate-card{width:100%;max-width:380px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:32px}
-.gate-card h1{font-size:26px;margin-bottom:4px}
-.gate-card p.sub{color:var(--muted);margin:0 0 22px;font-size:13px}
-.gate-card label{display:block;font-size:12px;color:var(--muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
-.gate-card input{width:100%}
-.gate-err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
-.gate-note{color:var(--muted);font-size:11.5px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px;line-height:1.6}
-
 /* ---- shell ---- */
-#app{display:none;min-height:100vh;grid-template-columns:220px 1fr}
-#app.show{display:grid}
+#app{display:grid;min-height:100vh;grid-template-columns:220px 1fr}
 .side{background:var(--panel);border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
 .side .brand{font-family:Oswald,sans-serif;font-size:20px;text-transform:uppercase;padding:6px 10px 18px}
 .side .brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:1px}
@@ -88,6 +119,55 @@ tr:hover td{background:var(--bg-2)}
 .right{margin-left:auto}
 .muted{color:var(--muted)}
 .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+/* ---- grilla de productos: misma estetica de tarjeta que la tienda ---- */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s}
+.pcard:hover{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 14px 32px rgba(0,0,0,.5)}
+.pcard .thumb{position:relative;aspect-ratio:1/1;background:#f3f3f3;overflow:hidden}
+.pcard .thumb img{width:100%;height:100%;object-fit:contain;padding:10px;background:#f3f3f3}
+.pcard .flags{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;z-index:2}
+.pcard .flags .pill{background:rgba(9,9,10,.82);backdrop-filter:blur(4px)}
+.pcard .body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:9px;flex:1}
+.pcard .brandline{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--cyan)}
+.pcard .title{font-size:16px;font-weight:700;line-height:1.3}
+.pcard .subline{font-size:12px;color:var(--muted)}
+.pcard .meta{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:auto}
+.pcard .price{font-family:Oswald,Arial Narrow,sans-serif;font-size:23px}
+.pcard .stockline{font-size:12px;color:var(--muted)}
+.pcard .foot{display:flex;gap:8px}
+.pcard .foot .btn{flex:1;text-align:center}
+.grid-empty{grid-column:1/-1;padding:34px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius)}
+@media(max-width:1100px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.pgrid{grid-template-columns:1fr}}
+
+/* ---- venta rapida desde la tarjeta ---- */
+.overlay.center{align-items:center;justify-content:center}
+.modal{width:min(440px,calc(100% - 32px));background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px;max-height:90vh;overflow:auto}
+.qs-head{display:flex;gap:13px;align-items:center;margin-bottom:18px}
+.qs-head img{width:66px;height:66px;object-fit:contain;background:#f3f3f3;border-radius:10px;flex:none}
+.qs-head h3{font-size:17px;margin:2px 0 3px}
+.qs-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);margin-top:14px;padding-top:13px}
+.qs-total b{font-family:Oswald,Arial Narrow,sans-serif;font-size:25px}
+
+/* ---- banner modo demo ---- */
+.demo-banner{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(120deg,#1b1a10,#141417);border:1px solid #3a3320;border-left:3px solid var(--yellow);border-radius:var(--radius);padding:13px 16px;margin-bottom:18px}
+.demo-banner b{color:var(--yellow)}
+.demo-banner p{margin:3px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}
+
+/* ---- reporting ---- */
+.kpi .delta{font-size:12px;margin-top:3px}
+.kpi .delta.up{color:var(--good)}
+.kpi .delta.down{color:var(--bad)}
+.kpi .delta.flat{color:var(--muted)}
+.barlist{display:flex;flex-direction:column;gap:11px}
+.barrow{display:grid;grid-template-columns:150px 1fr auto;gap:12px;align-items:center;font-size:13px}
+.barrow .track{display:block;background:var(--bg-2);border-radius:999px;height:9px;overflow:hidden}
+.barrow .fill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--purple))}
+.barrow .val{color:var(--muted);font-size:12px;white-space:nowrap}
+.chart-legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:8px}
+.chart-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+@media(max-width:700px){.barrow{grid-template-columns:110px 1fr auto}}
 
 /* ---- modal / drawer product editor ---- */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:flex-end;z-index:100}
@@ -137,7 +217,7 @@ tr:hover td{background:var(--bg-2)}
 
 .spark{display:block}
 @media (max-width:900px){
-  #app.show{grid-template-columns:1fr}
+  #app{grid-template-columns:1fr}
   .side{position:static;height:auto;flex-direction:row;overflow-x:auto}
   .grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr}
 }
@@ -145,25 +225,8 @@ tr:hover td{background:var(--bg-2)}
 </head>
 <body>
 
-<!-- ============================== GATE ============================== -->
-<div id="gate">
-  <div class="gate-card">
-    <h1>Panel Stike</h1>
-    <p class="sub">Inventario &amp; ventas. Acceso interno.</p>
-    <form id="gate-form">
-      <label for="g-name">Tu nombre</label>
-      <input id="g-name" type="text" autocomplete="name" required>
-      <label for="g-email">Tu correo</label>
-      <input id="g-email" type="email" autocomplete="email" required>
-      <label for="g-pass">Clave del equipo</label>
-      <input id="g-pass" type="password" autocomplete="current-password" required>
-      <div class="gate-err" id="gate-err"></div>
-      <button class="btn cyan" type="submit" style="width:100%;margin-top:10px">Entrar</button>
-    </form>
-    <p class="gate-note">Demo: acceso por clave compartida + tu correo (no es Google OAuth real). Tu correo queda en cada commit como firma de auditoría. Además necesitas un token personal de GitHub con permiso de escritura sobre este repo — te lo pide la app en "Configuración" la primera vez.</p>
-  </div>
-</div>
-
+<!-- Demo: sin login, entra directo. Lo único que realmente hace falta para
+     publicar es el token de GitHub en la pestaña Configuración. -->
 <!-- ============================== APP ============================== -->
 <div id="app">
   <nav class="side">
@@ -188,10 +251,16 @@ tr:hover td{background:var(--bg-2)}
       </div>
     </div>
 
+    <div id="demo-banner"></div>
+
     <!-- ---------------- Productos ---------------- -->
     <section class="panel active" id="panel-productos">
       <div class="toolbar">
-        <input type="search" id="p-search" placeholder="Buscar por nombre, marca, SKU...">
+        <!-- Sin autocompletado: el navegador no debe rellenar ni recordar el
+             filtro (ver disableAutofill/resetSearchFilter en admin.js). -->
+        <input type="search" id="p-search" placeholder="Buscar por nombre, marca, SKU..."
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+               data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other">
         <select id="p-filter-cat"><option value="">Todas las categorías</option></select>
         <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px"><input type="checkbox" id="p-filter-low"> Solo bajo/agotado</label>
         <div class="right">
@@ -203,14 +272,8 @@ tr:hover td{background:var(--bg-2)}
         </div>
       </div>
       <input type="file" id="import-file" accept=".csv,.json" style="display:none">
-      <div class="card" style="padding:0;overflow:auto">
-        <table id="product-table">
-          <thead><tr>
-            <th></th><th>Nombre</th><th>Categoría</th><th>SKU</th><th>Precio</th><th>Stock</th><th>Estado</th><th></th>
-          </tr></thead>
-          <tbody id="product-tbody"></tbody>
-        </table>
-      </div>
+      <p class="hint muted" id="p-count" style="margin:-4px 0 14px"></p>
+      <div class="pgrid" id="product-grid"></div>
     </section>
 
     <!-- ---------------- Ventas ---------------- -->
@@ -229,23 +292,48 @@ tr:hover td{background:var(--bg-2)}
         </div>
         <p class="hint muted" id="sale-stock-hint"></p>
       </div>
+      <div class="grid-4" id="sales-kpis" style="margin-top:14px"></div>
       <div class="card">
-        <h3 style="margin-bottom:10px">Historial de ventas</h3>
-        <table><thead><tr><th>Fecha</th><th>Producto</th><th>Variante</th><th>Cant.</th><th>Total</th><th>Vendedor</th></tr></thead>
-        <tbody id="sales-tbody"></tbody></table>
+        <h3 style="margin-bottom:10px">Ventas por mes</h3>
+        <svg id="sales-month-chart" class="spark" viewBox="0 0 600 170" width="100%" height="170"></svg>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:4px">Historial de ventas</h3>
+        <p class="hint muted" id="sales-count" style="margin:0 0 10px"></p>
+        <div style="overflow:auto">
+          <table><thead><tr><th>Fecha</th><th>Producto</th><th>Variante</th><th>Cant.</th><th>Total</th><th>Vendedor</th></tr></thead>
+          <tbody id="sales-tbody"></tbody></table>
+        </div>
       </div>
     </section>
 
     <!-- ---------------- KPIs ---------------- -->
     <section class="panel" id="panel-kpis">
-      <div class="grid-4" id="kpi-cards"></div>
+      <div class="grid-3" id="kpi-cards"></div>
       <div class="card">
-        <h3 style="margin-bottom:10px">Ventas por día (últimos 30 días)</h3>
-        <svg id="kpi-chart" class="spark" viewBox="0 0 600 160" width="100%" height="160"></svg>
+        <h3 style="margin-bottom:4px">Ingresos por día (últimos 30 días)</h3>
+        <p class="hint muted" style="margin:0 0 8px">Comparado con los 30 días anteriores.</p>
+        <svg id="kpi-chart" class="spark" viewBox="0 0 600 170" width="100%" height="170"></svg>
+        <div class="chart-legend">
+          <span><i style="background:#33e0ff"></i>Últimos 30 días</span>
+          <span><i style="background:#4a4a55"></i>30 días previos</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="margin-bottom:12px">Ingresos por categoría (30d)</h3>
+          <div class="barlist" id="kpi-by-cat"></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:12px">Ingresos por marca (30d)</h3>
+          <div class="barlist" id="kpi-by-brand"></div>
+        </div>
       </div>
       <div class="card">
-        <h3 style="margin-bottom:10px">Top productos</h3>
-        <table><thead><tr><th>Producto</th><th>Unidades</th><th>Ingresos</th></tr></thead><tbody id="top-products-tbody"></tbody></table>
+        <h3 style="margin-bottom:10px">Top productos (30d)</h3>
+        <div style="overflow:auto">
+          <table><thead><tr><th>Producto</th><th>Unidades</th><th>Ingresos</th><th>Margen</th></tr></thead><tbody id="top-products-tbody"></tbody></table>
+        </div>
       </div>
     </section>
 
@@ -272,31 +360,29 @@ tr:hover td{background:var(--bg-2)}
       <div class="card">
         <h3 style="margin-bottom:10px">Token de GitHub</h3>
         <p class="hint muted">Personal Access Token (fine-grained) con permiso <b>Contents: Read and write</b> sobre <span class="mono" id="cfg-repo"></span>, rama <span class="mono" id="cfg-branch"></span>. Se guarda solo en este navegador (localStorage), nunca se publica.</p>
-        <div class="field" style="margin-top:10px"><input id="pat-input" type="password" placeholder="ghp_..."></div>
+        <div class="field" style="margin-top:10px"><input id="pat-input" type="password" placeholder="ghp_..."
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other"></div>
         <button class="btn cyan sm" id="btn-save-pat">Guardar token</button>
         <button class="btn ghost sm" id="btn-clear-pat">Borrar token</button>
         <p class="hint" id="pat-status"></p>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:10px">Sesión</h3>
-        <p class="hint muted">Cerrar sesión no borra el token guardado en este navegador.</p>
-        <button class="btn ghost sm" id="btn-logout">Cerrar sesión</button>
       </div>
     </section>
   </main>
 </div>
 
 <div class="overlay" id="editor-overlay"><div class="drawer" id="editor-drawer"></div></div>
+<div class="overlay center" id="sale-overlay"><div class="modal" id="sale-modal"></div></div>
 <div class="status" id="status-box"></div>
 
-<script src="/bmxstore/assets/js/products-data.js?v=1"></script>
-<script src="/bmxstore/assets/js/data.js?v=1"></script>
-<script src="/bmxstore/assets/js/pdp-render.js?v=1"></script>
-<script src="/bmxstore/admin.js?v=1"></script>
+<script src="assets/js/products-data.js?v=2"></script>
+<script src="assets/js/data.js?v=2"></script>
+<script src="assets/js/pdp-render.js?v=4"></script>
+<script src="admin.js?v=9"></script>
 <script>
   // Service worker propio del panel: solo cachea el logo del shell, nunca
   // admin.html/admin.js (ver admin-sw.js).
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/bmxstore/admin-sw.js").catch(() => {});
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("admin-sw.js").catch(() => {});
 </script>
 </body>
 </html>

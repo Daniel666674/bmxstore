@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "ts": "2026-08-29T04:17:06.963Z",
+    "admin": "demo@stikebikeshop.com",
+    "summary": "273 creado(s), 56 editado(s), 0 eliminado(s), 0 foto(s)",
+    "created": 273,
+    "edited": 56,
+    "deleted": 0,
+    "photos": 0
+  }
+]
