@@ -13,7 +13,7 @@ const CONFIG = {
   owner: "Daniel666674",
   repo: "bmxstore",
   // Rama que despliega a GitHub Pages (ver .github/workflows/deploy.yml).
-  branch: "main",
+  branch: "claude/sweet-albattani-ti0w0e",
   paths: {
     catalog: "assets/js/products-data.js",
     costs: "data/costs.json",

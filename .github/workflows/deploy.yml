@@ -1,11 +1,11 @@
 name: Deploy to GitHub Pages
 
 # This is a demo with no real hosting account behind it: GitHub Pages is
-# the actual (and only) deploy target. Runs on every push to main, and can
-# be triggered manually from the Actions tab.
+# the actual (and only) deploy target. Runs on every push to the working
+# branch, and can be triggered manually from the Actions tab.
 on:
   push:
-    branches: ["main"]
+    branches: ["claude/sweet-albattani-ti0w0e"]
   workflow_dispatch:
 
 permissions:
