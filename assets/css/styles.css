@@ -94,6 +94,19 @@ body::before {
   background: var(--bg);
 }
 
+/* Keyboard focus. There was no global indicator, so anyone navigating by
+   keyboard was relying on the browser default — which all but disappears
+   against the dark header. :focus-visible keeps it off mouse clicks. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.site-header :where(a, button):focus-visible,
+.topbar :where(a, button):focus-visible {
+  outline-color: #ffffff;
+}
+
 /* ----------------------------- Utilities -------------------------------- */
 .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
@@ -299,20 +312,38 @@ body::before {
 @keyframes marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* =========================== CATEGORY CARDS ============================ */
-.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+/* Five categories in a four-column grid left one orphan tile stranded on
+   its own row next to three empty cells. Five columns puts them in one row. */
+.cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
 .cat-card {
   position: relative; border-radius: 0; overflow: hidden; border: none;
   background: var(--panel) center / cover no-repeat; min-height: 230px; display: flex; flex-direction: column; justify-content: flex-end;
   padding: 22px; isolation: isolate;
 }
-/* Clean photo by default; name/blurb/arrow only reveal on hover. */
-.cat-card::after { content: ""; position: absolute; inset: 0; z-index: 0; opacity: 0; background: linear-gradient(to top, rgba(9,9,10,.94) 16%, rgba(9,9,10,.55) 52%, rgba(9,9,10,.25) 100%); transition: opacity .35s var(--ease); }
+/* The category name is what makes this a navigation tile rather than a
+   photo, so it is always visible. It used to be opacity:0 until hover,
+   which left five unlabelled images on the homepage — and on touch, where
+   there is no hover, they never resolved at all. Hover now deepens the
+   scrim and lifts the blurb; it no longer carries the identity. */
+.cat-card::after {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(to top, rgba(9,9,10,.92) 12%, rgba(9,9,10,.45) 48%, rgba(9,9,10,.12) 100%);
+  transition: opacity .35s var(--ease);
+}
 .cat-card > * { position: relative; z-index: 1; }
-.cat-card:hover::after { opacity: 1; }
-.cat-card h3, .cat-card .blurb { opacity: 0; transform: translateY(10px); transition: opacity .35s var(--ease), transform .35s var(--ease); }
-.cat-card:hover h3, .cat-card:hover .blurb { opacity: 1; transform: translateY(0); }
-.cat-card h3 { font-size: 28px; }
-.cat-card .blurb { display: block; font-size: 13px; color: #c7c7cf; margin-top: 4px; }
+.cat-card:hover::after { opacity: .85; }
+.cat-card h3 {
+  font-size: clamp(19px, 1.6vw, 24px); color: #fff;
+  text-shadow: 0 1px 12px rgba(0,0,0,.5);
+}
+.cat-card .blurb {
+  display: block; font-size: 12.5px; color: #d4d4d8; margin-top: 4px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .35s var(--ease), transform .35s var(--ease);
+}
+.cat-card:hover .blurb { opacity: 1; transform: translateY(0); }
+/* No hover on touch: show the blurb outright. */
+@media (hover: none) { .cat-card .blurb { opacity: 1; transform: none; } }
 .cat-card .go {
   position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
   background: rgba(9,9,10,.45); border: 1px solid rgba(255,255,255,.3); backdrop-filter: blur(4px);
@@ -425,12 +456,34 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
 
 /* =============================== BRANDS =============================== */
 .brand-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+/* Brand tiles are a trust surface — "we stock Cult, Odyssey, Shadow" is the
+   argument this page makes. Left-aligned with the name as the hero and the
+   stock count as supporting data reads as a directory; centred text in a
+   box reads as a placeholder. */
 .brand-chip {
-  display: grid; place-items: center; padding: 22px 10px; background: var(--panel);
-  border: 1px solid var(--line); border-radius: 12px; font-family: var(--display); text-transform: uppercase;
-  letter-spacing: 1px; color: var(--muted); transition: color .15s, border-color .15s, transform .15s; text-align: center;
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+  gap: 3px; min-height: 118px; padding: 20px; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+  transition: border-color .35s var(--ease-soft), transform .35s var(--ease-soft), box-shadow .35s var(--ease-soft);
 }
-.brand-chip:hover { color: var(--ink); border-color: var(--accent); transform: translateY(-3px); }
+.brand-chip .bc-name {
+  font-family: var(--display); font-weight: 800; font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.05; letter-spacing: var(--track-head); text-transform: uppercase; color: var(--ink);
+}
+.brand-chip .bc-count {
+  font-family: var(--display); font-weight: 600; font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: var(--track-micro); color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.brand-chip .bc-go {
+  position: absolute; top: 16px; right: 18px; font-size: 17px; color: var(--ink);
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .3s var(--ease-quart), transform .3s var(--ease-quart);
+}
+.brand-chip:hover {
+  border-color: var(--ink); transform: translateY(-3px);
+  box-shadow: 0 16px 30px -18px rgba(0,0,0,.45);
+}
+.brand-chip:hover .bc-go { opacity: 1; transform: translateX(0); }
 
 /* =============================== COMMUNITY ============================ */
 .community { background: linear-gradient(180deg, transparent, rgba(0,0,0,.02)); }
@@ -607,6 +660,20 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
 .spec-row .v { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
 .spec-row.plain { grid-template-columns: 1fr; }
 .spec-row.plain .v { color: var(--ink); font-weight: 400; }
+/* Service block sits with the buy buttons, not at the bottom of the meta
+   list. Free assembly and nationwide shipping are the reasons to buy here
+   rather than from an importer, so they belong at the decision point. */
+.pdp-service {
+  display: grid; gap: 1px; margin-top: 18px; background: var(--line);
+  border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+}
+.pdp-service li {
+  display: flex; align-items: center; gap: 11px; padding: 12px 14px;
+  background: var(--panel); font-size: 13.5px; color: var(--ink);
+}
+.pdp-service svg { flex-shrink: 0; color: var(--muted); }
+.pdp-service b { font-weight: 700; }
+
 .pdp-meta { border-top: 1px solid var(--line); margin-top: 34px; padding-top: 20px; font-size: 13.5px; color: var(--muted); }
 .pdp-meta div { margin-bottom: 8px; }
 .pdp-meta b { color: var(--ink); font-weight: 600; }
@@ -702,7 +769,10 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
 
 /* =============================== RESPONSIVE =========================== */
 @media (max-width: 1080px) {
-  .cat-grid { grid-template-columns: repeat(2,1fr); }
+  .cat-grid { grid-template-columns: repeat(3,1fr); }
+  /* Five tiles never divide evenly; let a stranded last tile span the gap
+     instead of sitting alone beside empty cells. */
+  .cat-grid > :last-child:nth-child(3n - 2) { grid-column: 1 / -1; }
   .product-grid, .product-grid.cols-3 { grid-template-columns: repeat(2,1fr); }
   .brand-grid { grid-template-columns: repeat(4,1fr); }
   .ig-grid { grid-template-columns: repeat(4,1fr); }
@@ -744,6 +814,13 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
   .site-nav .nav-list > li > a .caret { color: var(--muted); }
   .site-nav .nav-list > li.active > a { background: var(--ink); color: var(--ink-contrast); }
   .site-nav .nav-list > li.active > a .caret { color: var(--ink-contrast); }
+  /* The mobile panel is a light popup, so the build CTA has to invert: the
+     desktop treatment is white-on-dark and would vanish here. */
+  .site-nav .nav-list > li.nav-build > a {
+    color: var(--ink-contrast); background: var(--ink); border-color: var(--ink);
+    margin: 8px 0 4px; padding: 13px 16px; justify-content: center;
+  }
+  .site-nav .nav-list > li.nav-build > a:hover { background: var(--ink); color: var(--ink-contrast); }
   .dropdown, .dropdown.mega { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; width: auto; display: none; grid-template-columns: 1fr; background: var(--bg-3); border-radius: 12px; margin: 2px 0 8px; padding: 6px; }
   .nav-list > li.open-sub .dropdown { display: block; }
   .menu-toggle { display: grid; }
@@ -1037,9 +1114,19 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
 .co-success p { color: var(--muted); font-size: 14px; margin: 0 0 22px; }
 
 /* --------------------------- Nav: Arma tu BMX -------------------------- */
-.nav-list > li.nav-build > a { color: var(--ink); gap: 7px; }
-.nav-list > li.nav-build > a svg { opacity: .9; }
-.nav-list > li.nav-build > a::after { background: var(--accent); }
+/* "Arma tu BMX" is the flagship service, not a nav destination, so it gets
+   a bordered pill that reads as an action. It was previously set to
+   var(--ink) — near-black text on the near-black header, ~1.05:1 contrast,
+   i.e. invisible on every page of the site. */
+.nav-list > li.nav-build > a {
+  color: #ffffff; gap: 7px; font-weight: 700; margin: 8px 0 8px 10px; height: auto;
+  padding: 0 16px; border: 1.5px solid rgba(255,255,255,.45); border-radius: 999px;
+  transition: background .3s var(--ease-soft), border-color .3s var(--ease-soft), color .3s var(--ease-soft);
+}
+.nav-list > li.nav-build > a:hover { background: #ffffff; border-color: #ffffff; color: #0b0b0d; }
+.nav-list > li.nav-build > a svg { opacity: 1; }
+/* The sliding underline is for nav links; the pill has its own hover. */
+.nav-list > li.nav-build > a::after { display: none; }
 
 /* ----------------------------- Stock urgency --------------------------- */
 .stock-low { display: inline-flex; align-items: center; gap: 6px; font-family: var(--display); text-transform: uppercase; letter-spacing: 1px; font-size: 11px; color: var(--ink); }
