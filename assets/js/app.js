@@ -127,27 +127,34 @@ function stikeProductCard(p) {
   const oldPrice = p.old ? `<span class="old">${stikePrice(p.old)}</span>` : "";
   const hasVariants = !!(p.sizes || p.colors);
   const url = stikeProductUrl(p);
-  /* Ficha minimalista: foto + nombre + precio, centrado, sin mas ruido.
-     El CTA existe pero solo aparece en hover, para que la grilla en reposo
-     sea una pared limpia de fotos sin perder el "agregar" de un clic. */
+  /* Jerarquia de ficha: marca (micro) > nombre > precio. El CTA se desliza
+     sobre la foto en hover en vez de ocupar sitio debajo, para que la
+     grilla en reposo sea una pared limpia de fotos sin huecos muertos. */
   const cta = out
     ? `<a class="btn cyan sm block" href="${url}">Ver producto</a>`
     : hasVariants
       ? `<a class="btn cyan sm block" href="${url}">${p.sizes ? "Elegir talla" : "Elegir color"}</a>`
       : `<button class="btn cyan sm add block" data-add="${p.slug}">Agregar al carrito</button>`;
+  /* Kicker carries the brand on the multi-brand storefront. On a
+     single-brand catalogue (Fate) the brand repeats on every card and stops
+     being information, so CSS swaps it for the subcategory there instead. */
+  const brandLine = (p.brand || p.sub || p.cat)
+    ? `<div class="brand-line"><span class="bl-brand">${p.brand || ""}</span><span class="bl-sub">${p.sub || p.cat || ""}</span></div>`
+    : "";
   return `
   <article class="card">
     <div class="thumb">
       ${badge}
       <button class="fav" title="Guardar" aria-label="Guardar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
-      <a href="${url}">
-        <img src="${stikeProductImage(p, 600)}" alt="${p.n}">
+      <a href="${url}" class="thumb-link" tabindex="-1" aria-hidden="true">
+        <img src="${stikeProductImage(p, 600)}" alt="${p.n}" loading="lazy">
       </a>
+      <div class="quick">${cta}</div>
     </div>
     <div class="body">
+      ${brandLine}
       <div class="title"><a href="${url}">${p.n}</a></div>
-      <div class="price">${stikePrice(p.price)} ${oldPrice}</div>
-      ${cta}
+      <div class="price">${stikePrice(p.price)}${oldPrice}</div>
     </div>
   </article>`;
 }

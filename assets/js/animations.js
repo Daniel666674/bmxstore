@@ -137,35 +137,95 @@
     }, interval);
   });
 
-  /* ---- 3D card tilt (desktop only) ---- */
-  if (window.matchMedia('(hover: hover)').matches && !reduceMotion) {
-    document.querySelectorAll('.card').forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var r = card.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width - 0.5;
-        var y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = 'perspective(900px) rotateY(' + (x * 5) + 'deg) rotateX(' + (-y * 5) + 'deg) translateY(-8px)';
-        card.style.transition = 'border-color .2s, box-shadow .2s';
+  /* ---- Headline reveal: words rise in sequence ----
+     Split on words (not characters) so screen readers still read a normal
+     sentence and the line can still wrap naturally. */
+  if (!reduceMotion) {
+    document.querySelectorAll('[data-reveal-words]').forEach(function (el) {
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      var textNodes = [], n;
+      while ((n = walker.nextNode())) { if (n.nodeValue.trim()) textNodes.push(n); }
+      var i = 0;
+      textNodes.forEach(function (node) {
+        var frag = document.createDocumentFragment();
+        node.nodeValue.split(/(\s+)/).forEach(function (part) {
+          if (!part.trim()) { frag.appendChild(document.createTextNode(part)); return; }
+          var outer = document.createElement('span');
+          outer.className = 'rw';
+          var inner = document.createElement('span');
+          inner.className = 'rw-i';
+          inner.textContent = part;
+          inner.style.transitionDelay = (i++ * 55) + 'ms';
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        });
+        node.parentNode.replaceChild(frag, node);
       });
-      card.addEventListener('mouseleave', function () {
-        card.style.transform = '';
-        card.style.transition = '';
-      });
+      requestAnimationFrame(function () { el.classList.add('rw-in'); });
     });
   }
 
-  /* ---- Magnetic buttons (desktop only) ---- */
-  if (window.matchMedia('(hover: hover)').matches && !reduceMotion) {
-    document.querySelectorAll('.btn:not(.sm):not(.block)').forEach(function (btn) {
-      btn.addEventListener('mousemove', function (e) {
-        var r = btn.getBoundingClientRect();
-        var x = (e.clientX - r.left - r.width / 2) * 0.3;
-        var y = (e.clientY - r.top - r.height / 2) * 0.3;
-        btn.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(1.04)';
+  /* ---- Marquee reacts to scroll ----
+     Speeds up and leans in the direction you're scrolling, then settles.
+     A ticker that ignores the page it sits in is the giveaway that it's
+     decoration; this one is tied to the reader's own motion. */
+  /* The skew goes on the .marquee wrapper, not on .track: .track already
+     runs a CSS keyframe animation on `transform`, and an active animation
+     beats an inline style, so a skew set there would be silently dropped.
+     Wrapper skews, track carries the speed. */
+  var marquees = document.querySelectorAll('.marquee');
+  if (marquees.length && !reduceMotion) {
+    var lastY = window.scrollY, vel = 0, marqTick = false;
+    var applyMarq = function () {
+      var skew = Math.max(-6, Math.min(6, vel * 0.22));
+      var speed = Math.min(2.6, 1 + Math.abs(vel) * 0.035);
+      marquees.forEach(function (m) {
+        m.style.transform = 'skewX(' + skew.toFixed(2) + 'deg)';
+        var t = m.querySelector('.track');
+        if (t) t.style.animationDuration = (40 / speed).toFixed(2) + 's';
       });
-      btn.addEventListener('mouseleave', function () {
-        btn.style.transform = '';
-      });
+      vel *= 0.9;
+      if (Math.abs(vel) > 0.1) requestAnimationFrame(applyMarq);
+      else {
+        marquees.forEach(function (m) {
+          m.style.transform = '';
+          var t = m.querySelector('.track');
+          if (t) t.style.animationDuration = '';
+        });
+        marqTick = false;
+      }
+    };
+    window.addEventListener('scroll', function () {
+      vel = window.scrollY - lastY;
+      lastY = window.scrollY;
+      if (!marqTick) { marqTick = true; requestAnimationFrame(applyMarq); }
+    }, { passive: true });
+  }
+
+  /* ---- Product grids: cards rise in sequence as the row arrives ----
+     Grids are rendered by JS after this file runs, so watch for the cards
+     appearing instead of assuming they're in the DOM already. */
+  var gridObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.style.transitionDelay = (Math.min(e.target.dataset.i || 0, 8) * 60) + 'ms';
+      e.target.classList.add('in');
+      gridObs.unobserve(e.target);
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+  function armCards() {
+    document.querySelectorAll('.product-grid .card:not([data-armed])').forEach(function (card, i) {
+      card.dataset.armed = '1';
+      card.dataset.i = i % 9;
+      card.classList.add('card-rise');
+      gridObs.observe(card);
+    });
+  }
+  armCards();
+  if (!reduceMotion) {
+    document.querySelectorAll('.product-grid').forEach(function (grid) {
+      new MutationObserver(armCards).observe(grid, { childList: true });
     });
   }
 

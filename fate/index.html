@@ -18,8 +18,8 @@
   <meta name="twitter:image" content="https://daniel666674.github.io/bmxstore/assets/img/og-stike.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=17">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css?v=23">
   <link rel="icon" href="assets/img/fate-logo.jpg">
 </head>
 <body class="fate-page">
@@ -60,7 +60,7 @@
       <div class="hero-copy">
         <nav class="breadcrumb"><a href="index.html">Stike Bike Shop</a><span class="sep">/</span><a href="marcas.html">Marcas</a><span class="sep">/</span><span>Fate BMX Colombia</span></nav>
         <span class="eyebrow tag-pill">Marca colombiana · Bogotá</span>
-        <h1>FATE <span class="o2">BMX COLOMBIA</span></h1>
+        <h1 data-reveal-words>FATE <span class="o2">BMX COLOMBIA</span></h1>
         <div class="hero-lockup">
           <span class="rule"></span>
           <span>La marca colombiana · Elegida por los riders</span>
@@ -204,7 +204,7 @@
 
   <script src="assets/js/products-data.js?v=2"></script>
   <script src="assets/js/data.js?v=2"></script>
-  <script src="assets/js/app.js?v=3"></script>
+  <script src="assets/js/app.js?v=5"></script>
   <script>
     stikeBindHeader();
     stikeUpdateCartBadge();
@@ -212,6 +212,6 @@
     const fateProducts = STIKE_PRODUCTS.filter(p => p.brand === "Fate BMX Colombia");
     document.getElementById("fate-grid").innerHTML = fateProducts.map(stikeProductCard).join("");
   </script>
-  <script src="assets/js/animations.js?v=3"></script>
+  <script src="assets/js/animations.js?v=5"></script>
 </body>
 </html>
