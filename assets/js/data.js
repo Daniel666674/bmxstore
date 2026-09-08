@@ -220,3 +220,6 @@ function stikeVariantChips(p) {
   if (p.colors) parts.push(`<div class="swatch-row">${p.colors.map(c => `<span class="swatch${c.u <= 0 ? " out" : ""}">${c.v}</span>`).join("")}</div>`);
   return parts.join("");
 }
+
+/* Part types that have their own landing page (categoria/<slug>.html). */
+window.STIKE_PART_PAGES = ["bielas", "bombas", "cadenas", "cascos", "frenos", "gafas", "gorras", "grips", "guantes", "herramientas", "llantas", "manubrios", "manzanas", "marcos", "pedales", "platos", "rines", "rodilleras", "sillas-y-postes", "tacos-y-protectores-de-maza", "tenedores", "tenis", "timones"];

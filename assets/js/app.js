@@ -160,18 +160,46 @@ function stikeProductCard(p) {
 }
 
 /* ----------------------- NAV: dropdown de categoría -------------------- */
+/* Each part type has its own page (categoria/<slug>.html) rather than only a
+   ?sub= filter, so the nav links straight to it. Falls back to the filtered
+   storefront for any sub that doesn't have a page yet. */
+function stikeSubSlug(s) {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase();
+}
+function stikeSubUrl(cat, sub) {
+  const known = (window.STIKE_PART_PAGES || []).indexOf(stikeSubSlug(sub)) !== -1;
+  return known ? `categoria/${stikeSubSlug(sub)}.html`
+               : `tienda.html?cat=${cat}&sub=${encodeURIComponent(sub)}`;
+}
+/* Subcategorias con stock real. La taxonomia en data.js incluye tipos que la
+   tienda todavia no surte; ofrecerlos en el menu o en los filtros manda al
+   visitante a una pagina vacia, asi que la navegacion se deriva del catalogo. */
+function stikeSubCounts(catSlug) {
+  const counts = {};
+  (window.STIKE_PRODUCTS || []).forEach(p => {
+    if (p.cat === catSlug && p.sub) counts[p.sub] = (counts[p.sub] || 0) + 1;
+  });
+  return counts;
+}
+function stikeStockedSubs(cat) {
+  if (!cat || !cat.subs) return [];
+  const counts = stikeSubCounts(cat.slug);
+  return cat.subs.filter(s => counts[s]);
+}
+
 function stikeNavDropdown(cat) {
-  if (!cat.subs.length) return "";
+  const subs = stikeStockedSubs(cat);
+  if (!subs.length) return "";
+  const counts = stikeSubCounts(cat.slug);
+  const items = subs.map(s =>
+    `<a href="${stikeSubUrl(cat.slug, s)}">${s}<i>${counts[s]}</i></a>`).join("");
   if (cat.slug === "repuestos") {
-    const items = cat.subs.map(s =>
-      `<a href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
     return `<div class="dropdown mega">
       <a href="tienda.html?cat=${cat.slug}" style="grid-column:1/-1" class="col-title">Ver todos los repuestos →</a>
       ${items}
     </div>`;
   }
-  const items = cat.subs.map(s =>
-    `<a href="tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
   return `<div class="dropdown">${items}</div>`;
 }
 
@@ -180,9 +208,10 @@ function stikeRenderHeader(active) {
   const C = STIKE_CONFIG;
   const navItems = STIKE_CATEGORIES.map(cat => {
     const isActive = active === cat.slug ? " active" : "";
-    const hasMega = cat.subs.length ? " has-mega" : "";
+    const stocked = stikeStockedSubs(cat).length;
+    const hasMega = stocked ? " has-mega" : "";
     const accent = cat.slug === "promo" ? ` data-accent="promo"` : "";
-    const caret = cat.subs.length ? `<span class="caret"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>` : "";
+    const caret = stocked ? `<span class="caret"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>` : "";
     return `<li class="${isActive}${hasMega}">
       <a href="tienda.html?cat=${cat.slug}"${accent}>${cat.name}${caret}</a>
       ${stikeNavDropdown(cat)}
