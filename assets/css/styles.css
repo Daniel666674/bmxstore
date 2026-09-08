@@ -413,6 +413,47 @@ body::before {
 @media (max-width: 1080px) { #shop-parts { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 560px)  { #shop-parts { grid-template-columns: repeat(2, 1fr); } }
 
+/* ===================== CATALOGO DE MARCA (FATE) ======================= */
+/* Stike filtra 52 referencias con sidebar; Fate tiene 6 y caben en pantalla.
+   Poner ahi la misma maquinaria de filtros seria decoracion, no funcion: el
+   catalogo va a todo el ancho y los tipos de parte son la unica navegacion. */
+.fate-shop { padding-bottom: 70px; }
+/* Cinco tipos de parte: una fila limpia en escritorio en vez de las seis
+   columnas del home de Stike, que dejaria un hueco al final. */
+.fate-parts { grid-template-columns: repeat(5, 1fr); margin-bottom: 26px; }
+@media (max-width: 1080px) { .fate-parts { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px)  { .fate-parts { grid-template-columns: repeat(2, 1fr); } }
+.fate-cat-head .fate-cat-intro {
+  max-width: 60ch; margin: 14px 0 0; font-size: 16.5px; line-height: 1.6; color: var(--muted);
+}
+.fate-filterbar {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--line);
+}
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--display); font-weight: 700; font-size: 12px;
+  text-transform: uppercase; letter-spacing: var(--track-micro);
+  padding: 9px 15px; border-radius: 999px; cursor: pointer;
+  color: var(--ink); background: transparent; border: 1.5px solid var(--line);
+  transition: color .25s var(--ease-soft), background-color .25s var(--ease-soft), border-color .25s var(--ease-soft);
+}
+.chip i {
+  font-style: normal; font-size: 10.5px; font-weight: 600; color: var(--muted);
+  font-variant-numeric: tabular-nums; transition: color .25s var(--ease-soft);
+}
+.chip:hover { border-color: var(--ink); }
+.chip.active {
+  background: var(--ink); border-color: var(--ink); color: var(--ink-contrast);
+}
+.chip.active i { color: rgba(255,255,255,.65); }
+body.fate-page .chip.active { background: var(--fate-accent); border-color: var(--fate-accent); }
+@media (max-width: 560px) {
+  .fate-filterbar { gap: 10px; }
+  .chip { font-size: 11px; padding: 8px 12px; }
+}
+
 /* =========================== PRODUCT CARDS ============================ */
 /* Row gap is tighter than it used to be: the CTA now slides over the photo
    instead of sitting under the price, so no dead space is reserved below

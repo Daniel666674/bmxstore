@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <link rel="stylesheet" href="assets/css/styles.css?v=30">
   <link rel="icon" href="assets/img/fate-logo.jpg">
 </head>
 <body class="fate-page">
@@ -164,6 +164,7 @@
         <div><span class="kicker">Catálogo</span><h2>Productos <span style="color:var(--accent)">Fate</span></h2></div>
         <a class="link-more" href="fate/tienda.html">Ver catálogo completo →</a>
       </div>
+      <div class="part-grid fate-parts" id="fate-parts"></div>
       <div class="product-grid" id="fate-grid"></div>
     </div>
   </section>
@@ -211,6 +212,22 @@
     stikeFloatingWA();
     const fateProducts = STIKE_PRODUCTS.filter(p => p.brand === "Fate BMX Colombia");
     document.getElementById("fate-grid").innerHTML = fateProducts.map(stikeProductCard).join("");
+
+    // Atajo por tipo de parte hacia el catalogo, ordenado del cuadro hacia afuera:
+    // es como un rider arma la bici, no como se ordena una base de datos.
+    const fateCounts = {};
+    fateProducts.forEach(p => { if (p.sub) fateCounts[p.sub] = (fateCounts[p.sub] || 0) + 1; });
+    const fateOrder = ["Marcos", "Sillas y Postes", "Platos", "Tacos y Protectores de Maza"];
+    document.getElementById("fate-parts").innerHTML = Object.keys(fateCounts)
+      .sort((a, b) => {
+        const ia = fateOrder.indexOf(a), ib = fateOrder.indexOf(b);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+      })
+      .map(sub => `
+        <a class="part-tile" href="fate/tienda.html?sub=${encodeURIComponent(sub)}">
+          <span class="pt-name">${sub}</span>
+          <span class="pt-count">${fateCounts[sub]} referencia${fateCounts[sub] === 1 ? "" : "s"}</span>
+        </a>`).join("");
   </script>
   <script src="assets/js/animations.js?v=5"></script>
 </body>

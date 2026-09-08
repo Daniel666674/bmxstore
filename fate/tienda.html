@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <link rel="stylesheet" href="assets/css/styles.css?v=30">
   <link rel="icon" href="assets/img/fate-logo.jpg">
 </head>
 <body class="fate-page">
@@ -55,33 +55,18 @@
   <div class="nav-backdrop" id="nav-backdrop"></div>
   <div class="fate-stripe" aria-hidden="true"></div>
 
-  <div class="wrap page-head">
+  <div class="wrap page-head fate-cat-head">
     <nav class="breadcrumb"><a href="index.html">Stike Bike Shop</a><span class="sep">/</span><a href="marcas.html">Marcas</a><span class="sep">/</span><a href="fate/index.html">Fate BMX Colombia</a><span class="sep">/</span><span>Catálogo</span></nav>
-    <h1 id="page-title">Catálogo Fate</h1>
-    <div class="count" id="result-count"></div>
+    <span class="kicker">Catálogo completo</span>
+    <h1 id="page-title">Todo lo que hace Fate</h1>
+    <p class="fate-cat-intro" id="page-intro">La línea entera de Fate BMX Colombia. Piezas escogidas una por una, probadas en las calles y los parques de Bogotá antes de entrar al catálogo — y respaldadas por el taller de Stike.</p>
   </div>
 
-  <div class="wrap shop-layout">
-    <aside class="filters">
-      <h4>Filtrar</h4>
-      <div class="fgroup">
-        <strong style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)">Categoría</strong>
-        <div id="filter-cats" style="margin-top:8px"></div>
-      </div>
-      <div class="fgroup">
-        <strong style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)">Precio</strong>
-        <div id="filter-price" style="margin-top:8px">
-          <label><input type="radio" name="price" value="all" checked> Todos</label>
-          <label><input type="radio" name="price" value="0-150000"> Hasta $150.000</label>
-          <label><input type="radio" name="price" value="150000-500000"> $150.000 – $500.000</label>
-          <label><input type="radio" name="price" value="500000-1000000"> $500.000 – $1.000.000</label>
-        </div>
-      </div>
-      <button class="btn ghost sm block" id="clear-filters">Limpiar filtros</button>
-    </aside>
-
+  <div class="wrap fate-shop">
     <div class="shop-main">
-      <div class="subcat-chips" id="subcat-chips"></div>
+      <div class="fate-filterbar">
+        <div class="chip-row" id="subcat-chips" role="group" aria-label="Filtrar por tipo de parte"></div>
+      </div>
       <div class="shop-toolbar">
         <div id="showing" style="color:var(--muted);font-size:14px"></div>
         <label style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px">Ordenar:
@@ -145,61 +130,67 @@
     stikeFloatingWA();
 
     const FATE_BRAND = "Fate BMX Colombia";
+    const FATE_ITEMS = STIKE_PRODUCTS.filter(p => p.brand === FATE_BRAND);
     const params = new URLSearchParams(location.search);
     const state = {
-      cats: params.get("cat") ? [params.get("cat")] : [],
       sub: params.get("sub") || null,
-      price: "all",
       sort: "relevance"
     };
 
-    const titleEl = document.getElementById("page-title");
+    // Fate es una marca, no un departamento: el catalogo entero cabe en una
+    // pantalla, asi que no hay barra de filtros. Los tipos de parte son la unica
+    // navegacion que hace falta y se resuelven en el cliente, sin recargar.
+    function fateSubCounts() {
+      const c = {};
+      FATE_ITEMS.forEach(p => { if (p.sub) c[p.sub] = (c[p.sub] || 0) + 1; });
+      return c;
+    }
 
-    function currentCat() { return state.cats.length === 1 ? stikeCategory(state.cats[0]) : null; }
+    function buildChips() {
+      const counts = fateSubCounts();
+      // Orden de armado: del cuadro hacia afuera, y la ropa al final.
+      const order = ["Marcos", "Sillas y Postes", "Platos", "Tacos y Protectores de Maza"];
+      const subs = Object.keys(counts).sort((a, b) => {
+        const ia = order.indexOf(a), ib = order.indexOf(b);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+      });
+      const chip = (label, value, n) =>
+        `<button type="button" class="chip${state.sub === value ? " active" : ""}"` +
+        ` data-sub="${value === null ? "" : value}" aria-pressed="${state.sub === value}">` +
+        `${label}<i>${n}</i></button>`;
+      document.getElementById("subcat-chips").innerHTML =
+        chip("Todo", null, FATE_ITEMS.length) + subs.map(sb => chip(sb, sb, counts[sb])).join("");
+      document.querySelectorAll("#subcat-chips .chip").forEach(b => b.addEventListener("click", () => {
+        state.sub = b.dataset.sub || null;
+        const url = state.sub ? `fate/tienda.html?sub=${encodeURIComponent(state.sub)}` : "fate/tienda.html";
+        history.replaceState(null, "", url);
+        render();
+      }));
+    }
+
+    // El filtro de tipo no crea una pagina nueva: sin esto cada ?sub= competiria
+    // en Google contra el propio catalogo.
+    function syncCanonical() {
+      const target = "https://daniel666674.github.io/bmxstore/fate/tienda.html";
+      const link = document.querySelector('link[rel=canonical]');
+      if (link) link.setAttribute("href", target);
+      const og = document.querySelector('meta[property="og:url"]');
+      if (og) og.setAttribute("content", target);
+    }
 
     function buildHeader() {
-      const cat = currentCat();
-      titleEl.textContent = state.sub ? state.sub : (cat ? cat.name : "Catálogo Fate");
+      document.getElementById("page-title").textContent = state.sub || "Todo lo que hace Fate";
+      const intro = document.getElementById("page-intro");
+      intro.hidden = !!state.sub;
     }
 
     function buildFilters() {
-      const fateCats = [...new Set(STIKE_PRODUCTS.filter(p => p.brand === FATE_BRAND).map(p => p.cat))];
-      document.getElementById("filter-cats").innerHTML = STIKE_CATEGORIES.filter(c => fateCats.includes(c.slug)).map(c => `
-        <label><input type="checkbox" value="${c.slug}" ${state.cats.includes(c.slug) ? "checked" : ""}> ${c.name}</label>`).join("");
-      document.querySelectorAll("#filter-cats input").forEach(cb => cb.addEventListener("change", () => {
-        state.cats = [...document.querySelectorAll("#filter-cats input:checked")].map(i => i.value);
-        state.sub = null;
-        render();
-      }));
-      document.querySelectorAll("input[name=price]").forEach(r => r.addEventListener("change", e => { state.price = e.target.value; render(); }));
       document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
-      document.getElementById("clear-filters").addEventListener("click", () => {
-        state.cats = []; state.sub = null; state.price = "all";
-        document.querySelectorAll(".filters input[type=checkbox]").forEach(i => i.checked = false);
-        document.querySelector("input[name=price][value=all]").checked = true;
-        render();
-      });
-    }
-
-    function buildSubcats() {
-      const cat = currentCat();
-      const box = document.getElementById("subcat-chips");
-      if (!cat || !cat.subs.length) { box.innerHTML = ""; return; }
-      const fateSubs = new Set(STIKE_PRODUCTS.filter(p => p.brand === FATE_BRAND && p.cat === cat.slug).map(p => p.sub));
-      const subs = cat.subs.filter(s => fateSubs.has(s));
-      if (!subs.length) { box.innerHTML = ""; return; }
-      box.innerHTML = `<a class="chip ${!state.sub ? "active" : ""}" href="fate/tienda.html?cat=${cat.slug}">Todo</a>` +
-        subs.map(s => `<a class="chip ${state.sub === s ? "active" : ""}" href="fate/tienda.html?cat=${cat.slug}&sub=${encodeURIComponent(s)}">${s}</a>`).join("");
     }
 
     function filtered() {
-      let list = STIKE_PRODUCTS.filter(p => p.brand === FATE_BRAND);
-      if (state.cats.length) list = list.filter(p => state.cats.includes(p.cat));
+      let list = FATE_ITEMS.slice();
       if (state.sub) list = list.filter(p => p.sub === state.sub);
-      if (state.price !== "all") {
-        const [lo, hi] = state.price.split("-").map(Number);
-        list = list.filter(p => p.price >= lo && p.price <= hi);
-      }
       if (state.sort === "price-asc") list.sort((a,b) => a.price - b.price);
       else if (state.sort === "price-desc") list.sort((a,b) => b.price - a.price);
       else if (state.sort === "name") list.sort((a,b) => a.n.localeCompare(b.n));
@@ -208,15 +199,17 @@
 
     function render() {
       buildHeader();
-      buildSubcats();
+      buildChips();
+      syncCanonical();
       const list = filtered();
       const grid = document.getElementById("grid");
       const empty = document.getElementById("empty");
       grid.innerHTML = list.map(stikeProductCard).join("");
       empty.style.display = list.length ? "none" : "block";
       grid.style.display = list.length ? "grid" : "none";
-      document.getElementById("result-count").textContent = `${list.length} producto${list.length === 1 ? "" : "s"} Fate`;
-      document.getElementById("showing").textContent = `Mostrando ${list.length} resultado${list.length === 1 ? "" : "s"}`;
+      document.getElementById("showing").textContent = state.sub
+        ? `${list.length} de ${FATE_ITEMS.length} referencias Fate`
+        : `Catálogo completo · ${FATE_ITEMS.length} referencias`;
     }
 
     buildFilters();
