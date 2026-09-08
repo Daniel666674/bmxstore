@@ -33,16 +33,28 @@
      sobre relleno oscuro. */
   --ink-contrast: #ffffff;
 
-  /* Type */
-  --display: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  /* Type — Archivo is a grotesque with industrial character (right for a
+     BMX shop); Inter stays as the workhorse for running text. */
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+  /* Optical tracking: large type needs negative tracking to stop looking
+     loose, micro/eyebrow type needs positive tracking to stay readable. */
+  --track-display: -.03em;
+  --track-head:    -.015em;
+  --track-micro:   .16em;
 
   /* Layout */
   --maxw: 1240px;
   --radius: 14px;
   --shadow: 0 24px 60px rgba(0,0,0,.55);
   --header-h: 118px;
-  --ease: cubic-bezier(.16,1,.3,1);
+
+  /* Motion. One easing per intent instead of one curve for everything. */
+  --ease:       cubic-bezier(.16,1,.3,1);    /* expo out — entrances */
+  --ease-quart: cubic-bezier(.25,1,.5,1);    /* quart out — UI state */
+  --ease-soft:  cubic-bezier(.4,0,.2,1);     /* symmetric — hovers */
+  --ease-back:  cubic-bezier(.34,1.4,.64,1); /* slight overshoot — pops */
 }
 
 /* ------------------------------- Reset ---------------------------------- */
@@ -61,7 +73,17 @@ img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; }
 ul { list-style: none; margin: 0; padding: 0; }
-h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.02; letter-spacing: .5px; text-transform: uppercase; margin: 0; }
+/* Display type is set tight and heavy: at these sizes positive tracking
+   reads as amateur, so headings pull in rather than spread out. */
+h1, h2, h3 {
+  font-family: var(--display); font-weight: 800; line-height: .98;
+  letter-spacing: var(--track-display); text-transform: uppercase; margin: 0;
+  font-stretch: 105%;
+}
+h4, h5 { font-family: var(--display); font-weight: 700; letter-spacing: var(--track-head); margin: 0; }
+/* Prices, counts and any figure that stacks in a column needs tabular
+   figures so the digits line up between rows. */
+.price, .pdp-price, .hero-stats b, .crew-stat b, .ro-v, .count { font-variant-numeric: tabular-nums; }
 
 /* Graffiti background texture for the whole page */
 body::before {
@@ -77,7 +99,7 @@ body::before {
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .tag-pill {
   display: inline-block; font-family: var(--display); text-transform: uppercase;
-  font-size: 12px; letter-spacing: 2px; padding: 6px 14px; border-radius: 999px; font-weight: 500;
+  font-size: 11px; letter-spacing: var(--track-micro); padding: 6px 14px; border-radius: 999px; font-weight: 700;
 }
 .spray { color: var(--cyan); }
 .mark {
@@ -88,18 +110,18 @@ body::before {
 .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 30px; flex-wrap: wrap; }
 .section-head h2 { font-size: clamp(30px, 5vw, 52px); }
 .kicker {
-  font-family: var(--display); text-transform: uppercase; letter-spacing: 3px;
-  font-size: 14px; color: var(--accent-2); margin-bottom: 8px; display: block;
+  font-family: var(--display); text-transform: uppercase; letter-spacing: var(--track-micro); font-weight: 700;
+  font-size: 11px; color: var(--accent-2); margin-bottom: 10px; display: block;
 }
-.link-more { font-family: var(--display); text-transform: uppercase; letter-spacing: 1px; color: var(--ink); border-bottom: 3px solid var(--accent); padding-bottom: 3px; }
+.link-more { font-family: var(--display); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink); border-bottom: 3px solid var(--accent); padding-bottom: 3px; }
 .link-more:hover { color: var(--accent); }
 
 /* Buttons */
 .btn {
   position: relative; isolation: isolate; overflow: hidden;
   display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-  font-family: var(--display); text-transform: uppercase; letter-spacing: 2px; font-weight: 500;
-  font-size: 14px; padding: 14px 30px; border: 1.5px solid var(--ink); border-radius: 999px;
+  font-family: var(--display); text-transform: uppercase; letter-spacing: .11em; font-weight: 700;
+  font-size: 13px; padding: 14px 30px; border: 1.5px solid var(--ink); border-radius: 999px;
   background: var(--ink); color: var(--ink-contrast);
   transition: color .45s var(--ease), border-color .45s var(--ease), transform .35s var(--ease), box-shadow .45s var(--ease);
 }
@@ -148,7 +170,7 @@ body::before {
 .header-main { display: flex; align-items: center; gap: 22px; height: 78px; }
 .brand { display: flex; align-items: center; gap: 13px; flex-shrink: 0; }
 .brand .logo { height: 52px; width: auto; display: block; }
-.brand .name { font-family: var(--display); font-weight: 600; font-size: 27px; letter-spacing: 3px; text-transform: uppercase; line-height: .9; }
+.brand .name { font-family: var(--display); font-weight: 800; font-size: 27px; letter-spacing: .02em; text-transform: uppercase; line-height: .9; }
 .brand .name small { display: block; font-size: 9.5px; letter-spacing: 3.5px; color: var(--muted); font-weight: 400; margin-top: 2px; }
 
 /* Search */
@@ -182,7 +204,7 @@ body::before {
 .nav-list > li { position: relative; }
 .nav-list > li > a {
   position: relative; display: flex; align-items: center; height: 48px; padding: 0 14px; white-space: nowrap;
-  font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 1.8px; font-size: 14px;
+  font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; font-size: 13px;
   color: rgba(255,255,255,.62); transition: color .25s var(--ease);
 }
 .nav-list > li > a::after {
@@ -241,7 +263,7 @@ body::before {
 .hero h1 .o1 { color: var(--cyan); }
 .hero h1 .o2 { -webkit-text-stroke: 2px var(--ink); color: transparent; }
 .hero p.lead { font-size: 18px; color: var(--muted); max-width: 52ch; margin: 0 0 26px; }
-.hero-lockup { display: flex; align-items: center; gap: 16px; margin: 0 0 22px; font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 4px; font-size: 13px; color: var(--muted); }
+.hero-lockup { display: flex; align-items: center; gap: 16px; margin: 0 0 22px; font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: var(--track-micro); font-size: 12px; color: var(--muted); }
 .hero-lockup .rule { width: 46px; height: 1px; background: var(--ink); opacity: .7; flex-shrink: 0; }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-stats { display: flex; gap: 28px; margin-top: 34px; flex-wrap: wrap; }
@@ -300,52 +322,96 @@ body::before {
 .cat-card:hover .go { background: var(--ink); color: var(--ink-contrast); opacity: 1; transform: translateX(0); }
 
 /* =========================== PRODUCT CARDS ============================ */
-/* 3 columns en desktop: tarjetas mas grandes, foto mas visible. */
-.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 26px; }
+/* Row gap is tighter than it used to be: the CTA now slides over the photo
+   instead of sitting under the price, so no dead space is reserved below
+   each card and the rows read as a grid rather than floating islands. */
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px 26px; }
 .product-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-/* Minimal card: no border, no radius, no shadow, no lift — the photo does the
-   work and the chrome (badge, wishlist, CTA) only appears on hover, matching
-   the category cards. */
-.card {
-  background: transparent; border: none; border-radius: 0; overflow: visible;
-  display: flex; flex-direction: column;
+.card { background: transparent; border: none; border-radius: 0; display: flex; flex-direction: column; }
+
+/* Photo plate is white, not grey: the product shots are JPEGs with baked-in
+   white backgrounds, so any tinted plate shows them as a visible white box
+   floating inside the tile. White makes the photo edge disappear. Depth
+   comes from a shadow on hover instead of from a background shift. */
+.card .thumb {
+  position: relative; aspect-ratio: 1/1; overflow: hidden;
+  background: var(--panel);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.05);
+  transition: box-shadow .45s var(--ease-soft), transform .45s var(--ease-soft);
 }
-.card .thumb { position: relative; aspect-ratio: 1/1; background: var(--bg); overflow: hidden; }
-.card .thumb img { width: 100%; height: 100%; object-fit: contain; background: var(--bg); transition: transform .7s var(--ease); }
-.card:hover .thumb img { transform: scale(1.05); }
-.card .badge { position: absolute; top: 10px; left: 10px; font-family: var(--display); text-transform: uppercase; font-size: 11px; letter-spacing: .5px; padding: 4px 9px; border-radius: 0; z-index: 2; opacity: 0; transition: opacity .3s var(--ease); }
-.card:hover .badge { opacity: 1; }
-/* "Agotado" is stock info, not decoration: it stays visible without hover. */
-.card .badge.sold { opacity: 1; }
-/* Fondos explicitos (no atados al token de ink): estas etiquetas van
-   pegadas sobre fotos de producto casi siempre blancas, asi que necesitan
-   contraste fijo sin importar el tema. */
+.card:hover .thumb {
+  box-shadow: 0 0 0 1px rgba(0,0,0,.07), 0 18px 34px -18px rgba(0,0,0,.45);
+  transform: translateY(-3px);
+}
+.card .thumb img {
+  width: 100%; height: 100%; object-fit: contain; background: transparent;
+  padding: 6%;
+  transition: transform .85s var(--ease);
+}
+.card:hover .thumb img { transform: scale(1.055); }
+
+/* Badges are stock/price information, not decoration — they stay visible. */
+.card .badge {
+  position: absolute; top: 12px; left: 12px; z-index: 2;
+  font-family: var(--display); text-transform: uppercase; font-weight: 700;
+  font-size: 10px; letter-spacing: var(--track-micro); padding: 5px 9px 4px;
+  border-radius: 0;
+}
 .badge.promo { background: #18181b; color: #fff; }
-.badge.new { background: #3f3f46; color: #fff; }
+.badge.new { background: #fff; color: #18181b; box-shadow: inset 0 0 0 1px #18181b; }
 .badge.sold { background: #e4e4e7; color: #52525b; }
-.card .fav { position: absolute; top: 10px; right: 10px; z-index: 2; background: #fff; border: none; box-shadow: 0 2px 10px rgba(0,0,0,.12); color: var(--ink); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; opacity: 0; transition: opacity .3s var(--ease), transform .2s; }
-.card:hover .fav, .card .fav.liked { opacity: 1; }
-.card .fav:hover { transform: scale(1.1); }
+
+.card .fav {
+  position: absolute; top: 10px; right: 10px; z-index: 3; background: #fff; border: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,.12); color: var(--ink); width: 34px; height: 34px;
+  border-radius: 50%; display: grid; place-items: center;
+  opacity: 0; transform: scale(.85);
+  transition: opacity .3s var(--ease-quart), transform .3s var(--ease-back);
+}
+.card:hover .fav, .card .fav.liked { opacity: 1; transform: scale(1); }
+.card .fav:hover { transform: scale(1.12); }
 .card .fav svg { fill: none; stroke: var(--ink); transition: fill .2s; }
 .card .fav.liked svg { fill: var(--ink); }
-/* Centrado y en mayusculas: la ficha es foto + nombre + precio, nada mas. */
-.card .body { padding: 18px 6px 0; display: flex; flex-direction: column; gap: 8px; flex: 1; text-align: center; }
-.card .title { font-family: var(--display); font-size: 13.5px; font-weight: 500; line-height: 1.4; text-transform: uppercase; letter-spacing: 1.4px; color: var(--ink); }
-.card .title a:hover { color: var(--muted); }
-.card .price { font-family: var(--display); font-weight: 400; font-size: 14px; letter-spacing: 1px; color: var(--muted); }
-.card .price .old { font-family: var(--display); font-size: 13px; color: var(--line); text-decoration: line-through; margin-left: 8px; font-weight: 400; }
-/* The CTA is revealed on hover so the resting grid stays a clean wall of photos */
-.card .add, .card .body > .btn {
-  margin-top: auto; border-radius: 0;
-  opacity: 0; transform: translateY(6px);
-  transition: opacity .3s var(--ease), transform .3s var(--ease);
+
+/* Quick-add rides over the bottom of the photo on hover. */
+.card .quick {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 10px;
+  opacity: 0; transform: translateY(100%);
+  transition: opacity .35s var(--ease-quart), transform .45s var(--ease);
 }
-.card:hover .add, .card:hover .body > .btn { opacity: 1; transform: translateY(0); }
+.card:hover .quick, .card .quick:focus-within { opacity: 1; transform: translateY(0); }
+.card .quick .btn { border-radius: 0; width: 100%; }
+
+/* Left-aligned, three tiers: brand (micro) → name → price. Centred text and
+   an all-caps product name both hurt scanning in a long grid. */
+.card .body { padding: 14px 2px 0; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.card .brand-line {
+  font-family: var(--display); font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--track-micro); color: var(--muted);
+}
+.card .brand-line .bl-sub { display: none; }
+/* Single-brand catalogue: show what the part is, not who made it. */
+body.fate-page .card .brand-line .bl-brand { display: none; }
+body.fate-page .card .brand-line .bl-sub { display: inline; }
+.card .title {
+  font-family: var(--display); font-size: 15px; font-weight: 600; line-height: 1.25;
+  letter-spacing: var(--track-head); color: var(--ink); text-transform: none;
+}
+.card .title a { background-image: linear-gradient(var(--ink), var(--ink)); background-size: 0 1px;
+  background-position: 0 100%; background-repeat: no-repeat; transition: background-size .4s var(--ease); }
+.card:hover .title a { background-size: 100% 1px; }
+.card .price {
+  margin-top: 1px; font-family: var(--display); font-weight: 700; font-size: 15px;
+  letter-spacing: 0; color: var(--ink);
+}
+.card .price .old { font-weight: 500; font-size: 13px; color: var(--muted); text-decoration: line-through; margin-left: 8px; }
+
 /* Touch/keyboard users never hover: don't hide the CTA from them. */
 @media (hover: none) {
-  .card .add, .card .body > .btn, .card .badge, .card .fav { opacity: 1; transform: none; }
+  .card .quick { opacity: 1; transform: none; position: static; padding: 10px 0 0; }
+  .card .fav { opacity: 1; transform: none; }
 }
-.card .add:focus-visible, .card .body > .btn:focus-visible { opacity: 1; transform: none; }
+.card .quick .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .swatch-row { display: flex; flex-wrap: wrap; gap: 5px; }
 .swatch { font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); background: var(--bg-3); }
 .swatch.out { text-decoration: line-through; opacity: .45; }
@@ -433,13 +499,25 @@ body::before {
 /* Sidebar sits directly on the page canvas, no card box around it — the
    grouping comes from the divider rules between sections, not a panel. */
 .filters { position: sticky; top: 130px; background: transparent; border: none; border-radius: 0; padding: 0; }
-.filters h4 { font-family: var(--display); text-transform: uppercase; font-size: 15px; letter-spacing: 1px; margin: 0 0 14px; border-bottom: 2px solid var(--ink); padding-bottom: 12px; }
+.filters h4 { font-family: var(--display); text-transform: uppercase; font-size: 13px; font-weight: 700; letter-spacing: var(--track-micro); margin: 0 0 14px; border-bottom: 2px solid var(--ink); padding-bottom: 12px; }
 .filters .fgroup { padding: 18px 0; border-bottom: 1px solid var(--line); }
 .filters .fgroup:first-of-type { padding-top: 0; }
-.filters label { display: flex; align-items: center; gap: 9px; font-size: 14px; color: var(--muted); padding: 5px 0; cursor: pointer; }
+.filters label {
+  display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted);
+  padding: 6px 0; cursor: pointer; transition: color .2s var(--ease-soft);
+}
 .filters label:hover { color: var(--ink); }
-.filters input[type=checkbox], .filters input[type=radio] { accent-color: var(--ink); width: 16px; height: 16px; }
-.filters .fgroup-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+/* Checked rows carry weight so the active filter set is readable at a glance
+   instead of hiding in a wall of identical grey rows. */
+.filters label:has(input:checked) { color: var(--ink); font-weight: 600; }
+.filters input[type=checkbox], .filters input[type=radio] { accent-color: var(--ink); width: 15px; height: 15px; flex-shrink: 0; }
+.filters .fgroup-label { font-size: 13px; text-transform: uppercase; letter-spacing: var(--track-micro); color: var(--muted); }
+/* The brand list runs to 25+ entries; cap it and let it scroll so the rail
+   doesn't push the page height past the grid it's meant to filter. */
+.filters .fgroup .scroll-list { max-height: 268px; overflow-y: auto; margin-right: -8px; padding-right: 8px; }
+.filters .fgroup .scroll-list::-webkit-scrollbar { width: 4px; }
+.filters .fgroup .scroll-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+.filters .fgroup .scroll-list::-webkit-scrollbar-track { background: transparent; }
 .shop-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
 .shop-toolbar select { background: var(--bg-3); border: 2px solid var(--line); color: var(--ink); border-radius: 8px; padding: 9px 12px; font-family: var(--body); }
 .empty { text-align: center; padding: 70px 20px; color: var(--muted); }
@@ -455,8 +533,10 @@ body::before {
    background when nothing between the two creates a new stacking context
    (position: sticky here does), so it silently no-ops and the shot's own
    white shows through instead. contain, never cover, so nothing crops. */
-.pdp-gallery .main { position: relative; aspect-ratio: 1/1; overflow: hidden; background: var(--bg); }
-.pdp-gallery .main img { width: 100%; height: 100%; object-fit: contain; background: var(--bg); transition: transform .6s var(--ease); cursor: zoom-in; }
+/* Same white plate as the catalogue cards, for the same reason: the shots
+   are JPEGs with baked-in white backgrounds. */
+.pdp-gallery .main { position: relative; aspect-ratio: 1/1; overflow: hidden; background: var(--panel); box-shadow: 0 0 0 1px rgba(0,0,0,.05); }
+.pdp-gallery .main img { width: 100%; height: 100%; object-fit: contain; padding: 4%; background: transparent; transition: transform .6s var(--ease); cursor: zoom-in; }
 .pdp-gallery .main:hover img { transform: scale(1.03); }
 .pdp-zoom {
   position: absolute; top: 16px; right: 16px; z-index: 2; width: 40px; height: 40px; border-radius: 50%;
@@ -465,7 +545,7 @@ body::before {
 }
 .pdp-zoom:hover { transform: scale(1.08); background: var(--ink); color: var(--ink-contrast); }
 .pdp-thumbs { display: flex; gap: 10px; margin-top: 10px; }
-.pdp-thumbs button { flex: 0 0 auto; width: 86px; aspect-ratio: 1/1; overflow: hidden; border: 1px solid transparent; background: var(--bg); padding: 0; cursor: pointer; transition: border-color .2s, opacity .2s; opacity: .72; }
+.pdp-thumbs button { flex: 0 0 auto; width: 86px; aspect-ratio: 1/1; overflow: hidden; border: 1px solid var(--line); background: var(--panel); padding: 0; cursor: pointer; transition: border-color .2s, opacity .2s; opacity: .72; }
 .pdp-thumbs button img { width: 100%; height: 100%; object-fit: cover; }
 .pdp-thumbs button:hover { opacity: 1; }
 .pdp-thumbs button.active { border-color: var(--ink); opacity: 1; }
@@ -480,16 +560,20 @@ body::before {
   display: grid; place-items: center; font-size: 18px; transition: background .15s;
 }
 .pdp-lightbox .lb-close:hover { background: rgba(255,255,255,.24); }
-/* Quiet type hierarchy: the title is a calm uppercase line, not a poster
-   headline, and the price sits just under it at a similar visual weight. */
-.pdp-info h1 { font-size: clamp(21px, 2.3vw, 27px); font-weight: 500; letter-spacing: 2.5px; line-height: 1.25; margin: 0 0 18px; }
-.pdp-info .price { font-family: var(--display); font-weight: 500; font-size: 26px; letter-spacing: 1px; color: var(--ink); }
-.pdp-info .price .old { font-family: var(--display); font-size: 17px; color: var(--muted); text-decoration: line-through; margin-left: 10px; font-weight: 400; }
+/* Name then price, in that order of weight. Both were set loose and light
+   before, which left the page with no clear first thing to read. */
+.pdp-info h1 { font-size: clamp(26px, 3vw, 38px); font-weight: 800; letter-spacing: var(--track-display); line-height: 1.05; margin: 0 0 14px; }
+.pdp-info .price { font-family: var(--display); font-weight: 700; font-size: 27px; letter-spacing: -.01em; color: var(--ink); }
+.pdp-info .price .old { font-family: var(--display); font-size: 17px; color: var(--muted); text-decoration: line-through; margin-left: 10px; font-weight: 500; }
 /* Copy block: bold product name, then the description and the spec lines
    flowing underneath as one continuous read. */
 .pdp-copy { margin: 26px 0 24px; }
-.pdp-copy-title { font-size: 14px; font-weight: 700; letter-spacing: 1px; margin: 0 0 14px; }
-.pdp-copy-title::after { content: ":"; }
+/* Section label, not a second copy of the H1: the product name is already
+   the page heading directly above this. */
+.pdp-copy-title {
+  font-family: var(--display); font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--track-micro); color: var(--muted); margin: 0 0 10px;
+}
 .pdp-info .desc { color: var(--muted); margin: 0 0 16px; font-size: 14.5px; line-height: 1.7; }
 .stock-line { font-size: 14px; color: var(--muted); margin: 0 0 20px; }
 .pdp-info .stock { display: inline; font-size: 14px; color: var(--muted); }
@@ -506,12 +590,23 @@ body::before {
 .pdp .btn.wa { margin-top: 12px; }
 /* Spec list: plain flowing lines ("Label: value"), not a rigid table */
 .spec-table { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }
-.spec-row { font-size: 14px; color: var(--ink); }
-.spec-row .k { color: var(--ink); font-weight: 600; }
-.spec-row .k::after { content: ": "; font-weight: 400; }
-.spec-row .v { color: var(--muted); }
-.spec-row.plain .v { color: var(--ink); }
-.spec-row.plain .v::before { content: "• "; color: var(--muted); }
+/* Specs read as a table, not as a run of bolded sentences: label column on
+   the left, value on the right, hairline between rows. A buyer comparing
+   two frames scans down the values — that only works if they're aligned. */
+.spec-row {
+  display: grid; grid-template-columns: minmax(120px, 34%) 1fr; gap: 16px;
+  font-size: 14px; color: var(--ink);
+  padding: 9px 0; border-bottom: 1px solid var(--line);
+}
+.spec-row:first-of-type { border-top: 1px solid var(--line); }
+.spec-row .k {
+  color: var(--muted); font-weight: 500;
+  font-family: var(--display); font-size: 11px; text-transform: uppercase;
+  letter-spacing: var(--track-micro); align-self: center;
+}
+.spec-row .v { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.spec-row.plain { grid-template-columns: 1fr; }
+.spec-row.plain .v { color: var(--ink); font-weight: 400; }
 .pdp-meta { border-top: 1px solid var(--line); margin-top: 34px; padding-top: 20px; font-size: 13.5px; color: var(--muted); }
 .pdp-meta div { margin-bottom: 8px; }
 .pdp-meta b { color: var(--ink); font-weight: 600; }
@@ -727,28 +822,49 @@ body::before {
 /* Scroll progress bar */
 .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 9998; background: var(--ink); transition: width .1s linear; }
 
-/* Scroll reveal: stronger entrance */
+/* Scroll reveal. Short travel, no blur and no scale: a long blurred zoom on
+   every block is the house style of a template, and it costs a repaint on
+   each frame. Content should arrive, not perform. */
 .reveal {
   opacity: 0;
-  transform: translateY(54px) scale(.98);
-  filter: blur(8px);
-  transition: opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease);
-  will-change: opacity, transform, filter;
+  transform: translateY(22px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+  will-change: opacity, transform;
 }
-.reveal.in { opacity: 1; transform: none; filter: none; }
+.reveal.in { opacity: 1; transform: none; }
 
-/* Stagger children: stronger entrance */
 .stagger > * {
   opacity: 0;
-  transform: translateY(40px) scale(.97);
-  filter: blur(6px);
-  transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease);
-  will-change: opacity, transform, filter;
+  transform: translateY(18px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+  will-change: opacity, transform;
 }
-.stagger > *.in { opacity: 1; transform: none; filter: none; }
+.stagger > *.in { opacity: 1; transform: none; }
+
+/* Word-by-word headline reveal: each word rides up out of its own clipped
+   box, so the line assembles instead of fading in as one lump. */
+.rw { display: inline-block; overflow: hidden; vertical-align: top; }
+.rw-i {
+  display: inline-block; transform: translateY(105%);
+  transition: transform .9s var(--ease);
+}
+.rw-in .rw-i { transform: translateY(0); }
+
+/* Product cards rise as their row reaches the viewport. */
+.card-rise { opacity: 0; transform: translateY(26px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+.card-rise.in { opacity: 1; transform: none; }
+
+/* The marquee's lean is driven by scroll velocity in JS and applied to the
+   wrapper (the track itself is mid-keyframe-animation). Deliberately no
+   transition here: the JS updates this transform every frame and eases it
+   by decaying the velocity, so a CSS transition would only lag behind the
+   per-frame value and never reach it. */
+.marquee { will-change: transform; }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .stagger > *, .hero-copy > *, .hero-video, .hero-video-panel, .hero-video-panel video { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+  .reveal, .stagger > *, .card-rise, .hero-copy > *, .hero-video, .hero-video-panel, .hero-video-panel video { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+  .rw { overflow: visible; }
+  .rw-i { transform: none !important; transition: none !important; }
 }
 
 /* Glitch effect */
@@ -1100,13 +1216,13 @@ body::before {
 
 .article { max-width: 760px; margin: 0 auto; padding: 8px 0 70px; }
 .article .article-head { margin-bottom: 26px; }
-.article .article-tag { display: inline-block; font-family: var(--display); text-transform: uppercase; letter-spacing: 2px; font-size: 12px; color: var(--accent-2); margin-bottom: 12px; }
-.article h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.02; margin-bottom: 14px; }
+.article .article-tag { display: inline-block; font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: var(--track-micro); font-size: 11px; color: var(--accent-2); margin-bottom: 14px; }
+.article h1 { font-size: clamp(28px, 3.6vw, 42px); font-weight: 800; line-height: 1.06; letter-spacing: var(--track-head); margin-bottom: 16px; text-wrap: balance; }
 .article .article-meta { color: var(--muted); font-size: 14px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .article .article-meta .dot { opacity: .5; }
 .article .article-cover { aspect-ratio: 16/9; border-radius: 16px; border: 1px solid var(--line); background: linear-gradient(135deg, var(--bg-3), #050506); margin: 24px 0; position: relative; overflow: hidden; display: grid; place-items: center; }
 .article .article-cover img { width: 46%; opacity: .14; }
-.article .article-body { font-size: 17px; line-height: 1.75; color: var(--muted); }
+.article .article-body { font-size: 17.5px; line-height: 1.72; color: #34343a; }
 .article .article-body h2 { font-size: 28px; margin: 36px 0 12px; color: var(--ink); }
 .article .article-body h3 { font-size: 21px; margin: 26px 0 8px; color: var(--ink); }
 .article .article-body p { margin: 0 0 16px; }
@@ -1216,6 +1332,9 @@ body.fate-page .hero-stats .s1 b, body.fate-page .hero-stats .s2 b, body.fate-pa
 body.fate-page .sticker { border-color: var(--fate-accent); }
 body.fate-page .post-card .post-cover .post-tag { background: var(--fate-accent); border-color: var(--fate-accent); }
 body.fate-page .article-tag { color: var(--fate-accent); }
+/* Catalogue badges carry the brand colour on Fate's own pages. */
+body.fate-page .badge.promo { background: var(--fate-accent); }
+body.fate-page .badge.new { color: var(--fate-accent); box-shadow: inset 0 0 0 1px var(--fate-accent); }
 body.fate-page .article-body blockquote { border-left-color: var(--fate-accent); }
 body.fate-page .cta-band { border-top: 3px solid var(--fate-accent); }
 /* .brand .name is white for the dark shared header; inside the light footer
