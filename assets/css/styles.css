@@ -1247,6 +1247,11 @@ body.fate-page .footer-brand .brand .name { color: var(--fate-accent); }
   color: rgba(255,255,255,.4);
 }
 
+/* Real Fate emblem (a circular seal shot on black) used as the .logo image
+   in the header/footer brand lockup; cropped round so only the seal shows,
+   not its square photo edges. */
+body.fate-page .brand .logo { border-radius: 50%; object-fit: cover; aspect-ratio: 1/1; }
+
 @media (max-width: 760px) {
   .hero-video-panel .corner-ribbon { top: 18px; right: -50px; width: 160px; font-size: 11px; }
   .fate-manifesto { padding: 56px 0; }
