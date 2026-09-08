@@ -45,7 +45,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=27">
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -122,6 +122,20 @@
         <a class="link-more" href="tienda.html">Ver todo →</a>
       </div>
       <div class="cat-grid stagger" id="home-cats"></div>
+    </div>
+  </section>
+
+  <!-- COMPRA POR TIPO DE PARTE -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Repuestos BMX</span>
+          <h2>Compra por <span class="spray">tipo de parte</span></h2>
+        </div>
+        <a class="link-more" href="tienda.html?cat=repuestos">Ver repuestos →</a>
+      </div>
+      <div class="part-grid" id="home-parts"></div>
     </div>
   </section>
 
@@ -250,9 +264,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="assets/js/products-data.js?v=2"></script>
-  <script src="assets/js/data.js?v=2"></script>
-  <script src="assets/js/app.js?v=5"></script>
+  <script src="assets/js/products-data.js?v=3"></script>
+  <script src="assets/js/data.js?v=3"></script>
+  <script src="assets/js/app.js?v=7"></script>
   <script>
     stikeInit("home");
 
@@ -264,6 +278,21 @@
         <h3>${c.name}</h3>
         <span class="blurb">${c.blurb}</span>
       </a>`).join("");
+
+    // Compra por tipo de parte: 71% del catálogo vive dentro de "Repuestos",
+    // así que las partes se listan directo en vez de esconderse tras un filtro.
+    const partCounts = {};
+    STIKE_PRODUCTS.forEach(p => { if (p.sub) partCounts[p.sub] = (partCounts[p.sub] || 0) + 1; });
+    const repuestos = STIKE_CATEGORIES.find(c => c.slug === "repuestos");
+    document.getElementById("home-parts").innerHTML = repuestos.subs
+      .filter(s => partCounts[s])
+      .sort((a, b) => partCounts[b] - partCounts[a])
+      .slice(0, 12) // two clean rows of six; el resto vive en "Ver repuestos"
+      .map(s => `
+        <a class="part-tile" href="${stikeSubUrl("repuestos", s)}">
+          <span class="pt-name">${s}</span>
+          <span class="pt-count">${partCounts[s]} producto${partCounts[s] === 1 ? "" : "s"}</span>
+        </a>`).join("");
 
     // Destacados (primeros productos variados)
     // 6 = dos filas limpias de 3 en la grilla de 3 columnas

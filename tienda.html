@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=27">
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -72,6 +72,13 @@
           </select>
         </label>
       </div>
+      <div id="shop-parts-shelf" hidden>
+        <div class="shelf-head">
+          <h2 class="shelf-title">Explora por tipo de parte</h2>
+          <p class="shelf-note">Cada tipo tiene su propia guía de compra y medidas.</p>
+        </div>
+        <div class="part-grid" id="shop-parts"></div>
+      </div>
       <div class="product-grid" id="grid"></div>
       <div class="empty" id="empty" style="display:none">
         <h3 style="font-size:28px">Sin resultados</h3>
@@ -83,9 +90,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="assets/js/products-data.js?v=2"></script>
-  <script src="assets/js/data.js?v=2"></script>
-  <script src="assets/js/app.js?v=5"></script>
+  <script src="assets/js/products-data.js?v=3"></script>
+  <script src="assets/js/data.js?v=3"></script>
+  <script src="assets/js/app.js?v=7"></script>
   <script>
     stikeInit();
 
@@ -145,8 +152,11 @@
         render();
       }));
       // Marcas
-      document.getElementById("filter-brands").innerHTML = STIKE_BRANDS.map(b => `
-        <label><input type="checkbox" class="brand-cb" value="${b}" ${state.brand === b ? "checked" : ""}> ${b}</label>`).join("");
+      // Igual que las subcategorias: solo marcas que hoy tienen producto en tienda.
+      const brandCounts = {};
+      STIKE_PRODUCTS.forEach(p => { if (p.brand) brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1; });
+      document.getElementById("filter-brands").innerHTML = STIKE_BRANDS.filter(b => brandCounts[b]).map(b => `
+        <label><input type="checkbox" class="brand-cb" value="${b}" ${state.brand === b ? "checked" : ""}> ${b} <em>${brandCounts[b]}</em></label>`).join("");
       document.querySelectorAll(".brand-cb").forEach(cb => cb.addEventListener("change", (e) => {
         // alterna una sola marca a la vez, por simplicidad
         document.querySelectorAll(".brand-cb").forEach(o => { if (o !== e.target) o.checked = false; });
@@ -168,11 +178,15 @@
       const cat = currentCat();
       const group = document.getElementById("subcat-group");
       const box = document.getElementById("filter-subcats");
-      if (!cat || !cat.subs.length) { group.style.display = "none"; box.innerHTML = ""; return; }
+      // Solo subcategorias con stock: un filtro que devuelve cero resultados es un
+      // callejon sin salida, y la taxonomia trae tipos que aun no se surten.
+      const subs = stikeStockedSubs(cat);
+      if (!cat || !subs.length) { group.style.display = "none"; box.innerHTML = ""; return; }
+      const counts = stikeSubCounts(cat.slug);
       group.style.display = "";
       document.getElementById("subcat-label").textContent = `Subcategoría de ${cat.name}`;
-      box.innerHTML = `<label><input type="radio" name="subcat" value="" ${!state.sub ? "checked" : ""}> Todas</label>` +
-        cat.subs.map(s => `<label><input type="radio" name="subcat" value="${s}" ${state.sub === s ? "checked" : ""}> ${s}</label>`).join("");
+      box.innerHTML = `<label><input type="radio" name="subcat" value="" ${!state.sub ? "checked" : ""}> Todas <em>${subs.reduce((n, s) => n + counts[s], 0)}</em></label>` +
+        subs.map(s => `<label><input type="radio" name="subcat" value="${s}" ${state.sub === s ? "checked" : ""}> ${s} <em>${counts[s]}</em></label>`).join("");
       document.querySelectorAll('input[name=subcat]').forEach(r => r.addEventListener("change", e => {
         state.sub = e.target.value || null;
         render();
@@ -196,9 +210,46 @@
       return list;
     }
 
+    // Cuando el filtro coincide con una landing de tipo de parte, esa landing es la
+    // version canonica: si no, la URL con query string compite contra ella en Google.
+    function syncCanonical() {
+      const cat = currentCat();
+      const base = "https://daniel666674.github.io/bmxstore/";
+      let target = base + "tienda.html";
+      if (cat && state.sub) {
+        const url = stikeSubUrl(cat.slug, state.sub);
+        if (url.indexOf("categoria/") === 0) target = base + url;
+      }
+      const link = document.querySelector('link[rel=canonical]');
+      if (link) link.setAttribute("href", target);
+      const og = document.querySelector('meta[property="og:url"]');
+      if (og) og.setAttribute("content", target);
+    }
+
+    // Vitrina de tipos de parte: solo con una categoria activa y sin subcategoria,
+    // que es el momento en que el visitante todavia esta decidiendo que busca.
+    function buildPartsShelf() {
+      const shelf = document.getElementById("shop-parts-shelf");
+      const cat = currentCat();
+      const showShelf = cat && !state.sub && !state.q && cat.subs && cat.subs.length > 2;
+      if (!showShelf) { shelf.hidden = true; return; }
+      const counts = {};
+      STIKE_PRODUCTS.forEach(p => { if (p.cat === cat.slug && p.sub) counts[p.sub] = (counts[p.sub] || 0) + 1; });
+      const subs = cat.subs.filter(sub => counts[sub]).sort((a, b) => counts[b] - counts[a]);
+      if (subs.length < 3) { shelf.hidden = true; return; }
+      document.getElementById("shop-parts").innerHTML = subs.map(sub => `
+        <a class="part-tile" href="${stikeSubUrl(cat.slug, sub)}">
+          <span class="pt-name">${sub}</span>
+          <span class="pt-count">${counts[sub]} producto${counts[sub] === 1 ? "" : "s"}</span>
+        </a>`).join("");
+      shelf.hidden = false;
+    }
+
     function render() {
       buildHeader();
       buildSubcats();
+      buildPartsShelf();
+      syncCanonical();
       const list = filtered();
       const grid = document.getElementById("grid");
       const empty = document.getElementById("empty");
