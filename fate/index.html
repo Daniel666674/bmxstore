@@ -19,10 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=12">
+  <link rel="stylesheet" href="assets/css/styles.css?v=14">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23fff' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
 </head>
-<body>
+<body class="fate-page">
   <script>window.STIKE_LOADER_TEXT = "FATE";</script>
 
   <header class="site-header">
@@ -52,6 +52,7 @@
     </div>
   </header>
   <div class="nav-backdrop" id="nav-backdrop"></div>
+  <div class="fate-stripe" aria-hidden="true"></div>
 
   <section class="hero">
     <div class="wrap hero-grid">
@@ -76,6 +77,7 @@
       </div>
       <div class="hero-video-panel">
         <img src="assets/img/products/IMG_7139.jpeg" alt="Marco Fate BMX Colombia, soldado a mano en Bogotá" style="width:100%;height:100%;object-fit:cover;object-position:65% 45%;display:block">
+        <span class="corner-ribbon">Soldado a mano</span>
         <span class="sticker" style="position:absolute;bottom:20px;left:20px;z-index:2">HECHO EN BOGOTÁ</span>
       </div>
     </div>
@@ -87,6 +89,12 @@
       <span>HECHO EN BOGOTÁ <i>✦</i> SOLDADURA TIG <i>✦</i> CROMOLY <i>✦</i> PROBADO EN CALLE Y PARK <i>✦</i> FATE BMX COLOMBIA <i>✦</i></span>
     </div>
   </div>
+
+  <section class="fate-manifesto">
+    <div class="wrap">
+      <p>No importamos el diseño.<br>Lo soldamos en Bogotá<br>y lo probamos en <span>la calle</span>.</p>
+    </div>
+  </section>
 
   <section class="section" style="padding-top:60px">
     <div class="wrap">
@@ -108,6 +116,7 @@
 
         <article class="post-card">
           <a href="fate/historia-fate.html" class="post-cover" aria-label="La historia de Fate BMX Colombia" style="background-image:linear-gradient(180deg, rgba(10,10,11,.05), rgba(10,10,11,.8)), url('assets/img/products/IMG_7139.jpeg');background-size:cover;background-position:center">
+            <span class="post-index">01</span>
             <span class="post-tag">Historia</span>
           </a>
           <div class="post-body">
@@ -120,6 +129,7 @@
 
         <article class="post-card">
           <a href="fate/taller-fate.html" class="post-cover" aria-label="Cómo se hace un cuadro Fate" style="background-image:linear-gradient(180deg, rgba(10,10,11,.05), rgba(10,10,11,.8)), url('assets/img/products/3B54281B-6080-4074-A754-4142F71ADBC2.jpeg');background-size:cover;background-position:center">
+            <span class="post-index">02</span>
             <span class="post-tag">Taller</span>
           </a>
           <div class="post-body">
@@ -132,6 +142,7 @@
 
         <article class="post-card">
           <a href="fate/riders-fate.html" class="post-cover" aria-label="Los riders detrás de Fate" style="background-image:linear-gradient(180deg, rgba(10,10,11,.05), rgba(10,10,11,.8)), url('assets/img/products/IMG_7138.jpeg');background-size:cover;background-position:center">
+            <span class="post-index">03</span>
             <span class="post-tag">Riders</span>
           </a>
           <div class="post-body">
@@ -162,6 +173,8 @@
       <a class="btn" href="index.html">Ir a Stike Bike Shop →</a>
     </div>
   </section>
+
+  <div class="fate-stripe" aria-hidden="true"></div>
 
   <footer class="site-footer">
     <div class="wrap">

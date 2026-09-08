@@ -1185,3 +1185,69 @@ body::before {
   .stage-grid { grid-template-columns: 1fr 1fr; }
   .stage-grid .ro-item:first-child { grid-column: 1 / -1; }
 }
+
+/* ====================== FATE BRAND IDENTITY (scoped) =================== */
+/* Fate is an independent brand distributed through Stike, not a re-skinned
+   Stike page, so its own pages (body.fate-page) get one signature accent
+   color plus a few bespoke devices instead of the neutral black/white the
+   rest of the site uses. Everything here is scoped to body.fate-page so it
+   never leaks into the shared Stike pages. Higher specificity than the
+   plain selectors above (incl. the mobile hero overrides) wins on its own,
+   so no duplication is needed inside existing media queries. */
+body.fate-page { --fate-accent: #8a3a24; }
+
+/* Hazard-stripe brand bar directly under the header, on every Fate page */
+.fate-stripe { height: 8px; background: repeating-linear-gradient(-45deg, var(--fate-accent) 0 14px, #0a0a0b 14px 28px); }
+
+body.fate-page .nav-list > li > a::after { background: var(--fate-accent); }
+body.fate-page .nav-list > li.active > a,
+body.fate-page .nav-list > li > a:hover { color: var(--fate-accent); }
+body.fate-page .eyebrow.tag-pill { background: var(--fate-accent); }
+body.fate-page .kicker { color: var(--fate-accent); }
+body.fate-page .hero h1 { color: var(--fate-accent); }
+body.fate-page .hero-lockup .rule { background: var(--fate-accent); opacity: 1; }
+body.fate-page .btn:not(.ghost) { background: var(--fate-accent); border-color: var(--fate-accent); }
+body.fate-page .btn.ghost { color: var(--fate-accent); border-color: var(--fate-accent); }
+body.fate-page .btn.ghost::before { background: var(--fate-accent); }
+body.fate-page .btn.ghost:hover { color: #ffffff; }
+body.fate-page .link-more, body.fate-page .read-more { color: var(--fate-accent); }
+body.fate-page .marquee .track i { color: var(--fate-accent); opacity: 1; }
+body.fate-page .hero-stats .s1 b, body.fate-page .hero-stats .s2 b, body.fate-page .hero-stats .s3 b { color: var(--fate-accent); }
+body.fate-page .sticker { border-color: var(--fate-accent); }
+body.fate-page .post-card .post-cover .post-tag { background: var(--fate-accent); border-color: var(--fate-accent); }
+body.fate-page .article-tag { color: var(--fate-accent); }
+body.fate-page .article-body blockquote { border-left-color: var(--fate-accent); }
+body.fate-page .cta-band { border-top: 3px solid var(--fate-accent); }
+/* .brand .name is white for the dark shared header; inside the light footer
+   that leaves it barely legible, so Fate's footer wordmark needs its own
+   color anyway — giving both ends the accent bookends the page in brand. */
+body.fate-page .site-header .brand .name,
+body.fate-page .footer-brand .brand .name { color: var(--fate-accent); }
+
+/* Corner ribbon on the hero photo panel — a stamped/welded-badge touch */
+.hero-video-panel .corner-ribbon {
+  position: absolute; top: 32px; right: -48px; z-index: 3; display: inline-block; width: 200px; padding: 7px 0;
+  text-align: center; background: var(--fate-accent); color: #ffffff;
+  font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px;
+  transform: rotate(45deg); box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+
+/* Big statement/manifesto block */
+.fate-manifesto { padding: 90px 0; text-align: center; border-bottom: 1px solid var(--line); }
+.fate-manifesto p {
+  font-family: var(--display); font-weight: 700; text-transform: uppercase;
+  font-size: clamp(28px, 5.5vw, 58px); line-height: 1.12; letter-spacing: -.5px; margin: 0;
+}
+.fate-manifesto p span { color: var(--fate-accent); }
+
+/* Numbered index on Historias post covers, editorial-magazine style */
+.post-cover .post-index {
+  position: absolute; bottom: 8px; right: 14px; z-index: 1;
+  font-family: var(--display); font-weight: 800; font-size: 46px; line-height: 1;
+  color: rgba(255,255,255,.4);
+}
+
+@media (max-width: 760px) {
+  .hero-video-panel .corner-ribbon { top: 18px; right: -50px; width: 160px; font-size: 11px; }
+  .fate-manifesto { padding: 56px 0; }
+}
