@@ -201,8 +201,40 @@ function stikeStockFor(p, size, color) {
   return typeof p.units === "number" ? p.units : 0;
 }
 
-/* Total aproximado para la grilla (badge "Agotado" / "solo N") sin variante elegida.
-   Ver nota en stikeIsOutOfStock: agotado real = alguna de las pools presentes suma 0. */
+/* =========================================================================
+   MOTOR DE STOCK Y VISIBILIDAD DE STIKE
+
+   Estas cuatro funciones deciden que se puede vender y que se ve en el
+   sitio. Viven aca, en data.js, y NO en products-data.js a proposito: el
+   panel reescribe products-data.js completo en cada publicacion, asi que
+   cualquier regla que viviera ahi se borraria sola.
+
+   Son la unica fuente: assets/js/pdp-render.js las consume en vez de tener
+   su propia copia (antes tenia una, y dos copias de la misma regla es la
+   forma mas confiable de que un dia digan cosas distintas).
+
+   Las tres reglas propias de Stike, y por que:
+
+   1. DESCONOCIDO NO ES CERO. Un producto al que todavia no le registraron
+      unidades no esta agotado: no sabemos cuanto hay. Antes se trataba
+      como 0 y el sitio le ponia "Agotado" a mercancia que estaba en la
+      vitrina fisica.
+
+   2. STOCK POR COMBINACION MINIMA. Talla y color son dos bodegas
+      independientes, no una matriz. Una camiseta M negra se puede vender
+      hasta min(stock de M, stock de negro). Sumar las pools mentiria:
+      diria "hay 4" cuando hay 4 repartidas en tallas que nadie pidio.
+
+   3. EL AGOTADO NO DESAPARECE. isVisible solo esconde borradores. Un
+      agotado se queda publicado, marcado OutOfStock, y su ficha ofrece
+      avisar por WhatsApp cuando vuelva: conserva el posicionamiento que
+      ya gano en Google y convierte la visita en un contacto en vez de un
+      rebote. Vuelve a la venta solo cuando suben el stock, sin que nadie
+      toque nada.
+   ========================================================================= */
+
+/* Suma cruda de una pool. Para el panel, que muestra el inventario tal
+   como esta guardado; no para decidir si algo se puede vender. */
 function stikeTotalStock(p) {
   const sizeTotal = p.sizes ? stikePoolTotal(p.sizes) : null;
   const colorTotal = p.colors ? stikePoolTotal(p.colors) : null;
@@ -211,7 +243,67 @@ function stikeTotalStock(p) {
   if (colorTotal != null) return colorTotal;
   return typeof p.units === "number" ? p.units : 0;
 }
-function stikeIsOutOfStock(p) { return stikeTotalStock(p) <= 0; }
+
+/* Cuanto se puede vender AHORA, en la mejor combinacion disponible.
+   Devuelve null cuando no hay stock registrado ("no sabemos"), que es
+   distinto de 0 ("sabemos que no hay"). */
+function stikeSellable(p) {
+  if (!p) return null;
+  const sizes = p.sizes && p.sizes.length ? p.sizes : null;
+  const colors = p.colors && p.colors.length ? p.colors : null;
+
+  if (sizes && colors) {
+    /* Dos bodegas: la mejor combinacion posible es el mejor de los minimos.
+       Con S=0 y negro=5, la talla S no se puede vender aunque haya negro. */
+    let best = 0;
+    for (const s of sizes) for (const c of colors) best = Math.max(best, Math.min(s.u || 0, c.u || 0));
+    return best;
+  }
+  if (sizes) return Math.max(0, ...sizes.map(s => s.u || 0));
+  if (colors) return Math.max(0, ...colors.map(c => c.u || 0));
+  return typeof p.units === "number" ? p.units : null;   // null = sin registrar
+}
+
+/* true SOLO si sabemos con certeza que no hay nada vendible. */
+function stikeIsOut(p) {
+  const n = stikeSellable(p);
+  return n !== null && n <= 0;
+}
+
+/* Que puede mostrar el sitio. Un borrador no; un agotado si. */
+function stikeIsVisible(p) {
+  return !!p && p.published !== false;
+}
+
+/* Nombre viejo, mismo significado. Se conserva porque lo llaman las
+   tarjetas de la vitrina y el carrito. */
+function stikeIsOutOfStock(p) { return stikeIsOut(p); }
+
+/* El texto del mensaje de WhatsApp de una ficha de producto.
+   Vive aca porque lo necesitan DOS lados: pdp-render.js lo hornea en el
+   HTML (para quien llega con JavaScript apagado o lento) y pdp.js lo
+   reescribe cuando el cliente elige talla o color. Cuando cada uno tenia su
+   propia redaccion, cambiar el saludo en uno dejaba el otro viejo.
+
+   Si el producto esta agotado el mensaje cambia de "quiero comprar" a
+   "avisame cuando llegue": la ficha sigue publicada, asi que la visita se
+   convierte en un contacto en vez de un rebote. */
+function stikeWaText(p, opts) {
+  opts = opts || {};
+  const bits = [];
+  if (opts.size) bits.push("talla " + opts.size);
+  if (opts.color) bits.push("color " + opts.color);
+  const variant = bits.length ? " (" + bits.join(", ") + ")" : "";
+  const name = opts.shortName || "Stike";
+  return stikeIsOut(p)
+    ? `Hola ${name}! ${p.n}${variant} está agotado, ¿me avisas cuando vuelva?`
+    : `Hola ${name}! Me interesa: ${p.n}${variant} (${stikePrice(p.price)}). ¿Está disponible?`;
+}
+
+/* La etiqueta del boton, que tiene que ir a juego con el mensaje. */
+function stikeWaLabel(p) {
+  return stikeIsOut(p) ? "Avísame cuando llegue" : "Comprar por WhatsApp";
+}
 
 /* Etiqueta corta para tarjetas: chips de talla/color, tachados si agotados */
 function stikeVariantChips(p) {
@@ -221,5 +313,36 @@ function stikeVariantChips(p) {
   return parts.join("");
 }
 
+/* =========================================================================
+   CATALOGO VISIBLE
+
+   Un borrador (published: false) no se ve en el sitio. En vez de repetir el
+   filtro en las ~30 vitrinas que leen el catalogo (tienda, las 23 landings
+   de parte, home, fate, buscador, relacionados, carrito, el configurador),
+   se filtra UNA vez aca: data.js carga siempre justo despues de
+   products-data.js, antes que cualquier pagina lea nada.
+
+   El catalogo crudo queda en STIKE_ALL_PRODUCTS, que es lo que necesita el
+   panel de administracion: ahi si hay que ver los borradores, marcados
+   como tales.
+   ========================================================================= */
+/* El sitio corre esto en el navegador; tools/build-pages.mjs lo corre en
+   Node, donde no hay window. Un solo nombre para el global de los dos. */
+const STIKE_GLOBAL = typeof window !== "undefined" ? window : globalThis;
+
+STIKE_GLOBAL.STIKE_ALL_PRODUCTS = STIKE_GLOBAL.STIKE_PRODUCTS || [];
+STIKE_GLOBAL.STIKE_PRODUCTS = STIKE_GLOBAL.STIKE_ALL_PRODUCTS.filter(stikeIsVisible);
+
 /* Part types that have their own landing page (categoria/<slug>.html). */
-window.STIKE_PART_PAGES = ["bielas", "bombas", "cadenas", "cascos", "frenos", "gafas", "gorras", "grips", "guantes", "herramientas", "llantas", "manubrios", "manzanas", "marcos", "pedales", "platos", "rines", "rodilleras", "sillas-y-postes", "tacos-y-protectores-de-maza", "tenedores", "tenis", "timones"];
+STIKE_GLOBAL.STIKE_PART_PAGES = ["bielas", "bombas", "cadenas", "cascos", "frenos", "gafas", "gorras", "grips", "guantes", "herramientas", "llantas", "manubrios", "manzanas", "marcos", "pedales", "platos", "rines", "rodilleras", "sillas-y-postes", "tacos-y-protectores-de-maza", "tenedores", "tenis", "timones"];
+
+/* Doble export: el sitio lo carga con <script>, y tools/build-pages.mjs lo
+   consume desde Node para generar las fichas con exactamente estas reglas. */
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    STIKE_CATEGORIES, STIKE_BRANDS, SIZE_CATEGORIES, SKU_CAT_CODES,
+    stikeTotalStock, stikeSellable, stikeIsOut, stikeIsVisible, stikeIsOutOfStock,
+    stikeStockFor, stikePoolStock, stikePoolTotal, stikeCategory, stikePrice,
+    stikeWaText, stikeWaLabel,
+  };
+}

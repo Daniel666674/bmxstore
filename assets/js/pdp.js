@@ -62,13 +62,16 @@ function stikePdpInit(slug) {
     return stikeStockFor(p, p.sizes ? selectedSize : undefined, p.colors ? selectedColor : undefined);
   }
 
+  /* El texto lo redacta stikeWaText (assets/js/data.js), el mismo que usa el
+     generador al hornear la ficha, para que el mensaje no dependa de si el
+     cliente eligio variante o no. Si el producto esta agotado, el mensaje y
+     la etiqueta del boton cambian a "avisame cuando llegue". */
   function updateWaBuy() {
-    const bits = [];
-    if (selectedSize) bits.push("talla " + selectedSize);
-    if (selectedColor) bits.push("color " + selectedColor);
-    const variant = bits.length ? " (" + bits.join(", ") + ")" : "";
-    const msg = encodeURIComponent(`Hola Stike! Me interesa: ${p.n}${variant} (${stikePrice(p.price)}). ¿Está disponible?`);
-    if (waBuy) waBuy.href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${msg}`;
+    if (!waBuy) return;
+    const msg = stikeWaText(p, { size: selectedSize, color: selectedColor, shortName: STIKE_CONFIG.name });
+    waBuy.href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+    const label = stikeWaLabel(p);
+    if (waBuy.textContent.trim() !== label) waBuy.textContent = label;
   }
 
   function applyColorGallery() {
@@ -154,8 +157,14 @@ function stikePdpInit(slug) {
   updateWaBuy();
 
   // Relacionados
-  const related = STIKE_PRODUCTS.filter(x => x.cat === p.cat && x.slug !== p.slug).slice(0, 3);
-  const fallback = STIKE_PRODUCTS.filter(x => x.slug !== p.slug).slice(0, 3);
+  /* Relacionados en vivo, no horneados en el HTML: se calculan del catalogo
+     que acaba de cargar, asi que no envejecen y no hace falta un script que
+     los pode despues. Se excluye lo agotado: recomendar algo que no se puede
+     comprar gasta el espacio de algo que si. STIKE_PRODUCTS ya viene sin
+     borradores (ver data.js). */
+  const vendible = x => x.slug !== p.slug && !stikeIsOut(x);
+  const related = STIKE_PRODUCTS.filter(x => x.cat === p.cat && vendible(x)).slice(0, 3);
+  const fallback = STIKE_PRODUCTS.filter(vendible).slice(0, 3);
   const relatedMount = document.getElementById("related");
   if (relatedMount) relatedMount.innerHTML = (related.length ? related : fallback).map(stikeProductCard).join("");
 }

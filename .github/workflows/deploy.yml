@@ -30,6 +30,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Datos internos del negocio: viven en el repo (el panel los lee y
+      # escribe con el token de GitHub) pero NO se publican al sitio.
+      # costs.json lleva el costo y el margen de cada producto; sales-log
+      # lleva nombre y telefono de clientes reales; audit-log lleva quien
+      # cambio que. El checkout de este job es desechable, asi que borrarlos
+      # aca no toca el repo: solo los saca del artefacto que se publica.
+      #
+      # OJO: data/site-content.json NO se toca. Ese si es publico a
+      # proposito: el sitio lo consulta en vivo (assets/js/app.js y
+      # tienda.html) para los textos editables del hero y las categorias.
+      # Si se excluye, los textos vuelven a los de por defecto en silencio.
+      - name: Strip internal data from the artifact
+        run: |
+          rm -f data/costs.json data/sales-log.json data/audit-log.json
+          rm -f PROPOSAL.md
+          echo "Archivos que quedan en data/:"
+          ls -la data/
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
@@ -41,3 +59,32 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # El paso anterior no prueba nada por si mismo: prueba que subimos lo
+      # que quisimos subir, no que lo interno quedo fuera. Esto consulta el
+      # sitio YA publicado y falla el deploy si alguna ruta interna responde.
+      # Si este paso se pone rojo, hay datos del negocio expuestos al publico.
+      - name: Verify internal data is NOT publicly reachable
+        run: |
+          base="${{ steps.deployment.outputs.page_url }}"
+          base="${base%/}"
+          failed=0
+          for path in data/costs.json data/sales-log.json data/audit-log.json PROPOSAL.md; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$base/$path" || echo "000")
+            if [ "$code" = "200" ]; then
+              echo "::error::$base/$path responde 200 — hay datos internos publicados"
+              failed=1
+            else
+              echo "ok  $path -> HTTP $code"
+            fi
+          done
+          # Y al revés: lo que SI tiene que estar, tiene que estar. Si este
+          # archivo se cae, los textos editables del sitio mueren en silencio.
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$base/data/site-content.json" || echo "000")
+          if [ "$code" != "200" ]; then
+            echo "::error::$base/data/site-content.json responde $code — los textos editables del panel no van a aplicar"
+            failed=1
+          else
+            echo "ok  data/site-content.json -> HTTP 200 (publico a proposito)"
+          fi
+          exit $failed

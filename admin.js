@@ -288,7 +288,10 @@ function generateDemoAudit() {
 
 function seedDemoData() {
   demoMode = true;
-  const base = (window.STIKE_PRODUCTS || []).map(p => JSON.parse(JSON.stringify(p)));
+  /* STIKE_ALL_PRODUCTS: el catalogo CRUDO. data.js filtra los borradores de
+     window.STIKE_PRODUCTS para el sitio, pero el panel tiene que verlos
+     todos, marcados como borrador. */
+  const base = (window.STIKE_ALL_PRODUCTS || window.STIKE_PRODUCTS || []).map(p => JSON.parse(JSON.stringify(p)));
   costsMap = {};
   base.forEach(p => { costsMap[p.slug] = Math.round((p.price * 0.62) / 1000) * 1000; });
   workingCatalog = base.map(p => ({ ...p, cost: costsMap[p.slug] || 0 }));
@@ -385,6 +388,9 @@ function validateCatalog(catalog) {
     (p.sizes || []).forEach(s => { if (s.u < 0) errors.push(`${label}: stock negativo en talla ${s.v}`); });
     (p.colors || []).forEach(c => { if (c.u < 0) errors.push(`${label}: stock negativo en color ${c.v}`); });
     if (!(p.sizes && p.sizes.length) && !(p.colors && p.colors.length) && typeof p.units !== "number") errors.push(`${label}: falta unidades en stock`);
+    /* Sin foto, la ficha sale con el logo generico y el og:image apunta al
+       logo: el producto compartido por WhatsApp no muestra el producto. */
+    if (!(p.imgs && p.imgs.length)) errors.push(`${label}: falta la foto (al menos una)`);
   });
   return errors;
 }
@@ -485,7 +491,26 @@ async function uploadPendingPhotos(scopeSlugs, statusLines) {
       const file = pendingUploads.get(path);
       const blob = await compressImageFile(file);
       const bytes = new Uint8Array(await blob.arrayBuffer());
-      await ghPutOnce(path, b64EncodeBytes(bytes), `Foto para ${d.n}`, undefined);
+      /* Los nombres son aleatorios, asi que normalmente la ruta esta libre.
+         Si YA existe algo ahi (se reuso una ruta, o un reintento a medio
+         camino), hay que pasarle el sha o GitHub rechaza la escritura; y
+         ademas hay que romper el cache: navegadores y CDN siguen sirviendo
+         los bytes viejos de una ruta que ya conocian, indefinidamente. */
+      const existing = await ghGetMeta(path);
+      await ghPutOnce(path, b64EncodeBytes(bytes), `Foto para ${d.n}`, existing ? existing.sha : undefined);
+      if (existing) {
+        const stamped = `${path}?v=${Date.now()}`;
+        d.imgs = d.imgs.map(u => (u === path ? stamped : u));
+        if (d.img === path) d.img = stamped;
+        /* imgColorMap esta indexado por la ruta de la foto, asi que si la
+           ruta cambia hay que mover la clave: si no, la galeria deja de
+           saber que foto corresponde a que color y el selector de color
+           deja de cambiar la imagen. */
+        if (d.imgColorMap && Object.prototype.hasOwnProperty.call(d.imgColorMap, path)) {
+          d.imgColorMap[stamped] = d.imgColorMap[path];
+          delete d.imgColorMap[path];
+        }
+      }
       pendingUploads.delete(path);
     }
   }
@@ -511,25 +536,32 @@ async function regenerateProductPages(merged, scopeSlugs, commitMessage) {
     const row = merged.find(r => r.slug === slug);
     if (!row || row.published === false) continue;
     const cat = catIndex.get(row.cat);
-    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat, placeholderImg: stikeProductImage(row, 1200) });
+    const html = PdpRender.renderProductPage(row, templateCache, {
+      site: STIKE_SITE,
+      categoryName: cat ? cat.name : row.cat,
+      whatsapp: STIKE_SITE.whatsapp,
+      placeholderImg: stikeProductImage(row, 1200),
+    });
     const path = `producto/${row.slug}.html`;
     const meta = await ghGetMeta(path);
     await ghPutOnce(path, b64EncodeText(html), commitMessage, meta ? meta.sha : undefined);
   }
 }
 
+/* El sitemap se reconcilia contra el catalogo COMPLETO, no contra lo que se
+   toco en esta sesion, asi que se autocorrige solo.
+   La lista de paginas fijas y el dominio salen de assets/js/site.js, que es
+   la misma fuente que usa tools/build-pages.mjs. Cuando cada uno tenia su
+   copia, la de aca se quedo sin las cuatro paginas de Fate y el sitemap
+   perdia ese micro-sitio en cada publicacion. */
 async function regenerateSitemap(merged, commitMessage) {
-  const base = "https://daniel666674.github.io/bmxstore";
   const staticPages = [
-    ["", "1.0", "weekly"], ["tienda.html", "0.9", "weekly"], ["armar.html", "0.9", "monthly"],
-    ["marcas.html", "0.6", "monthly"], ["fate/", "0.6", "monthly"], ["fate/tienda.html", "0.6", "weekly"],
-    ["nosotros.html", "0.6", "monthly"], ["contacto.html", "0.6", "monthly"],
-    ["blog.html", "0.8", "weekly"], ["blog-historia-bmx.html", "0.7", "yearly"],
-    ["blog-bmx-bogota.html", "0.7", "yearly"], ["blog-arma-tu-bmx.html", "0.7", "yearly"],
+    ...STIKE_SITE.staticPages,
+    ...(window.STIKE_PART_PAGES || []).map(s => [`categoria/${s}.html`, "0.7", "weekly"]),
   ];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  staticPages.forEach(([p, pr, cf]) => { xml += `  <url><loc>${base}/${p}</loc><changefreq>${cf}</changefreq><priority>${pr}</priority></url>\n`; });
-  merged.filter(p => p.published !== false).forEach(p => { xml += `  <url><loc>${base}/producto/${p.slug}.html</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>\n`; });
+  staticPages.forEach(([p, pr, cf]) => { xml += `  <url><loc>${STIKE_SITE.url(p)}</loc><changefreq>${cf}</changefreq><priority>${pr}</priority></url>\n`; });
+  merged.filter(p => p.published !== false).forEach(p => { xml += `  <url><loc>${STIKE_SITE.url(`producto/${p.slug}.html`)}</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>\n`; });
   xml += `</urlset>\n`;
   const meta = await ghGetMeta(CONFIG.paths.sitemap);
   await ghPutOnce(CONFIG.paths.sitemap, b64EncodeText(xml), commitMessage, meta ? meta.sha : undefined);
@@ -690,8 +722,23 @@ function loadImageElement(file) {
     img.src = URL.createObjectURL(file);
   });
 }
+/* En moviles con poca memoria -- sobre todo los navegadores embebidos de
+   WhatsApp e Instagram -- drawImage() sobre una foto de camara moderna
+   puede fallar EN SILENCIO: sin excepcion, sin error. El canvas queda
+   transparente y se exporta como un JPEG perfectamente valido que es un
+   cuadrado negro, y pasa cualquier verificacion de formato y de tamano.
+
+   Se muestrean 9 puntos -- las cuatro esquinas, los cuatro puntos medios de
+   los bordes y el centro -- y se rechaza el resultado si los nueve salen
+   identicos byte a byte. Una foto real nunca lo es; un cuadrado de un solo
+   color, siempre. */
 function canvasLooksReal(ctx, w, h) {
-  const pts = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1], [w >> 1, h >> 1], [w >> 2, h >> 2], [(3 * w / 4) | 0, (3 * h / 4) | 0], [(w / 3) | 0, (2 * h / 3) | 0]];
+  const mx = w >> 1, my = h >> 1, rx = w - 1, ry = h - 1;
+  const pts = [
+    [0, 0], [mx, 0], [rx, 0],
+    [0, my], [mx, my], [rx, my],
+    [0, ry], [mx, ry], [rx, ry],
+  ];
   let first = null;
   for (const [x, y] of pts) {
     const d = ctx.getImageData(Math.min(Math.max(x, 0), w - 1), Math.min(Math.max(y, 0), h - 1), 1, 1).data;
@@ -708,7 +755,7 @@ function canvasLooksReal(ctx, w, h) {
  * valido): se muestrea una grilla de pixeles y, si salen todos iguales, se
  * reintenta el dibujo.
  */
-async function compressImageFile(file, maxDim = 1600, quality = 0.82) {
+async function compressImageFile(file, maxDim = 1600, quality = 0.87) {
   const bitmap = await createImageBitmap(file).catch(() => null);
   const img = bitmap || await loadImageElement(file);
   const srcW = bitmap ? bitmap.width : img.width, srcH = bitmap ? bitmap.height : img.height;
@@ -718,6 +765,13 @@ async function compressImageFile(file, maxDim = 1600, quality = 0.82) {
     const canvas = document.createElement("canvas");
     canvas.width = w; canvas.height = h;
     const ctx = canvas.getContext("2d");
+    /* Fondo blanco ANTES de dibujar. Un canvas arranca transparente, y al
+       exportar a JPEG -- que no tiene canal alfa -- todo lo transparente se
+       aplana a NEGRO por especificacion del formato. Sin esto, cualquier
+       PNG con fondo recortado (que es como llegan la mitad de las fotos de
+       producto) se publica con el fondo negro. */
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
     ctx.drawImage(bitmap || img, 0, 0, w, h);
     if (!canvasLooksReal(ctx, w, h)) { await sleep(80); continue; }
     const blob = await new Promise(res => canvas.toBlob(res, "image/jpeg", quality));
@@ -991,8 +1045,11 @@ function addPhotosToDraft(files) {
   const d = editorDraft;
   for (const file of files) {
     if (!file.type.startsWith("image/")) continue;
-    const ext = file.type === "image/png" ? "png" : "jpg";
-    const path = `assets/img/products/${randomFilename(ext)}`;
+    /* Siempre .jpg: compressImageFile reencoda TODO a JPEG, asi que un PNG
+       guardado como .png tendria bytes JPEG adentro. El navegador lo
+       adivina y lo muestra igual, pero el rastreador de WhatsApp o
+       Facebook que lee el og:image no tiene por que perdonarlo. */
+    const path = `assets/img/products/${randomFilename("jpg")}`;
     pendingUploads.set(path, file);
     d.imgs = d.imgs || [];
     d.imgs.push(path);

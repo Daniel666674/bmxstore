@@ -20,18 +20,29 @@
   }
   function money(n) { return "$" + Number(n).toLocaleString("es-CO"); }
 
-  var SITE_URL = "https://daniel666674.github.io/bmxstore";
-  var SITE_ORIGIN = "https://daniel666674.github.io";
+  /* La identidad del sitio (dominio, base path, WhatsApp) vive en
+     assets/js/site.js, no aca: este archivo se usa igual desde el navegador
+     (admin.html) y desde Node (tools/build-pages.mjs), y las dos rutas
+     tienen que producir EXACTAMENTE la misma URL o las fichas quedan
+     apuntando a otro lado. Se resuelve en este orden: lo que pasa el
+     caller por ctx, el global del navegador, y en Node el require. */
+  function resolveSite(ctx) {
+    if (ctx && ctx.site) return ctx.site;
+    if (typeof root !== "undefined" && root.STIKE_SITE) return root.STIKE_SITE;
+    if (typeof require === "function") { try { return require("./site.js"); } catch (e) {} }
+    throw new Error("pdp-render: falta la config del sitio (assets/js/site.js)");
+  }
 
-  function poolTotal(pool) { return pool ? pool.reduce((s, r) => s + r.u, 0) : null; }
-
-  function totalStock(p) {
-    var sizeTotal = p.sizes ? poolTotal(p.sizes) : null;
-    var colorTotal = p.colors ? poolTotal(p.colors) : null;
-    if (sizeTotal != null && colorTotal != null) return Math.min(sizeTotal, colorTotal);
-    if (sizeTotal != null) return sizeTotal;
-    if (colorTotal != null) return colorTotal;
-    return typeof p.units === "number" ? p.units : 0;
+  /* El motor de stock vive en assets/js/data.js y es el mismo que usa el
+     sitio. Este archivo tenia su propia copia de totalStock: dos copias de
+     la misma regla, que tarde o temprano dicen cosas distintas. Ahora se
+     resuelve igual que la config del sitio: global en el navegador, require
+     en Node. */
+  function resolveStock(ctx) {
+    if (ctx && ctx.stock) return ctx.stock;
+    if (typeof root !== "undefined" && root.stikeSellable) return root;
+    if (typeof require === "function") { try { return require("./data.js"); } catch (e) {} }
+    throw new Error("pdp-render: falta el motor de stock (assets/js/data.js)");
   }
 
   function renderGallery(p, coverUrl) {
@@ -85,25 +96,44 @@
      igual en Node (build) y en el navegador (admin.html).                    */
   function renderProductPage(p, template, ctx) {
     ctx = ctx || {};
+    var site = resolveSite(ctx);
     var categoryName = ctx.categoryName || p.cat;
     var coverUrl = (p.imgs && p.imgs[0]) || ctx.placeholderImg || "";
-    var out = totalStock(p);
-    var low = out > 0 && out <= 5;
-    var stockHtml = out > 0
-      ? `<span class="stock${low ? " low" : ""}">${low ? `Solo ${out} disponible${out === 1 ? "" : "s"}` : "En stock"}</span>`
-      : `<span class="stock out">Agotado — consúltanos por WhatsApp</span>`;
+    var stock = resolveStock(ctx);
+    /* Dos numeros distintos, a proposito:
+         crudo     lo que hay guardado -> el conteo que se muestra
+         agotado   si NO queda nada vendible -> apaga la compra
+       No son lo mismo: un producto sin unidades registradas tiene crudo 0
+       pero no esta agotado (no sabemos cuanto hay), y marcarlo agotado
+       esconderia mercancia que esta en la vitrina fisica. */
+    var out = stock.stikeTotalStock(p);
+    var isOut = stock.stikeIsOut(p);
+    var low = !isOut && out > 0 && out <= 5;
+    /* Este texto es el que ya viven las fichas publicadas. Antes el generador
+       escribia una version mas pobre ("En stock", sin el conteo), asi que
+       cualquier producto que el dueno editara en el panel perdia el texto al
+       regenerarse. Una sola fuente, y es esta. */
+    var stockHtml = isOut
+      ? `<span class="stock out">● Agotado por ahora — te avisamos cuando vuelva</span>`
+      : out > 0
+        ? `<span class="stock${low ? " low" : ""}">${low ? `● ¡Solo ${out} disponible${out === 1 ? "" : "s"}!` : `● En stock (${out} disponible${out === 1 ? "" : "s"})`}</span>`
+        : `<span class="stock">● Disponible — consúltanos por WhatsApp</span>`;
     var oldPrice = p.old ? `<span class="old">${money(p.old)}</span>` : "";
     var discount = p.old ? `<span class="tag-pill" style="background:#18181b;color:#fff;margin-left:10px;font-size:11px;padding:4px 10px">-${Math.round((1 - p.price / p.old) * 100)}%</span>` : "";
-    var waMsg = encodeURIComponent(`Hola Stike! Me interesa: ${p.n} (${money(p.price)}). ¿Está disponible?`);
-    var canonical = `${SITE_URL}/producto/${p.slug}.html`;
-    var shareMsg = encodeURIComponent(`Mira este producto de Stike Bike Shop: ${p.n}, ${money(p.price)}\n${canonical}`);
-    var ogImage = coverUrl ? (coverUrl.indexOf("http") === 0 ? coverUrl : `${SITE_URL}/${coverUrl.replace(/^\//, "")}`) : `${SITE_URL}/assets/img/og-stike.jpg`;
+    var waMsg = encodeURIComponent(stock.stikeWaText(p, { shortName: site.shortName || site.name }));
+    var canonical = site.url(`producto/${p.slug}.html`);
+    var shareMsg = encodeURIComponent(`Mira este producto de ${site.name}: ${p.n}, ${money(p.price)}\n${canonical}`);
+    /* site.url() pone la barra; concatenar a mano fue exactamente el bug que
+       dejo las 52 fichas con el og:image en 404. */
+    var ogImage = coverUrl
+      ? (coverUrl.indexOf("http") === 0 ? coverUrl : site.url(coverUrl))
+      : site.url(site.ogFallback);
     var catLink = `tienda.html?cat=${esc(p.cat)}`;
     var subLink = p.sub ? `tienda.html?cat=${esc(p.cat)}&sub=${encodeURIComponent(p.sub)}` : null;
     var subCrumb = subLink ? `<span class="sep">/</span><a href="${subLink}" style="color:inherit">${esc(p.sub)}</a>` : "";
 
     return replaceAll(template, {
-      TITLE: esc(p.n) + ": Stike Bike Shop",
+      TITLE: esc(p.n) + ": " + site.name,
       META_DESC: esc(ctx.metaDesc || `${p.n} de ${p.brand} en Stike Bike Shop, tu tienda BMX en Bogotá.`),
       CANONICAL: canonical,
       OG_IMAGE: ogImage,
@@ -115,8 +145,15 @@
       STOCK_BLOCK: stockHtml,
       SIZE_BLOCK: renderSizeBlock(p),
       COLOR_BLOCK: renderColorBlock(p),
-      ADD_DISABLED: out === 0 ? "disabled style=opacity:.5" : "",
-      WA_HREF: `https://wa.me/${(ctx.whatsapp || "573118108848")}?text=${waMsg}`,
+      ADD_DISABLED: isOut ? "disabled style=opacity:.5" : "",
+      WA_LABEL: stock.stikeWaLabel(p),
+      /* Datos estructurados: precio sin formato y disponibilidad. Un agotado
+         se marca OutOfStock y se QUEDA en el indice, con su posicionamiento
+         intacto para cuando vuelva la mercancia. Sacarlo obliga a
+         reconstruir ese posicionamiento en cada reposicion. */
+      PRICE_PLAIN: String(p.price),
+      AVAILABILITY: isOut ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+      WA_HREF: `https://wa.me/${(ctx.whatsapp || site.whatsapp)}?text=${waMsg}`,
       SHARE_WA_HREF: `https://wa.me/?text=${shareMsg}`,
       DESC: esc(ctx.desc || p.desc || `${p.n} de ${p.brand}, disponible en Stike Bike Shop.`),
       SPECS: renderSpecs(p),
@@ -128,7 +165,7 @@
     });
   }
 
-  var api = { renderProductPage: renderProductPage, totalStock: totalStock };
+  var api = { renderProductPage: renderProductPage };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PdpRender = api;
 })(typeof window !== "undefined" ? window : globalThis);

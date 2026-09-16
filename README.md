@@ -1,10 +1,17 @@
 # Stike Bike Shop — tienda BMX (Bogotá) + panel admin
 
 Sitio para **Stike Bike Shop**, tienda BMX de Bogotá, con estética propia
-**grafiti bogotano**: base oscura + acentos multicolor de arte callejero.
+**monocroma en blanco y negro** (tipografía Archivo para títulos, Inter para
+texto corrido; los acentos de color de la paleta original quedaron como una
+rampa de grises, ver `:root` en `assets/css/styles.css`).
 100% estático (HTML/CSS/JS sin frameworks ni build step) y con un panel
 admin (`admin.html`) que habla directo con GitHub — **GitHub es el
 backend**, no hay servidor ni base de datos.
+
+> **Las reglas del motor** (qué se puede vender, qué se ve, cómo se publica)
+> están en **[MOTOR.md](MOTOR.md)**, incluida la lista de en qué se aparta
+> del motor de catálogo del que salió esta arquitectura. Si vas a tocar
+> stock, visibilidad o la generación de fichas, ese es el documento.
 
 > Vende por WhatsApp: no hay pasarela de pago. El carrito funciona con
 > `localStorage` y el checkout arma un mensaje de WhatsApp con el pedido.
@@ -45,11 +52,15 @@ App de una sola página, sin build, que lee y escribe directo la API de
 contenidos de GitHub (`assets/js/products-data.js`, `producto/*.html`,
 `sitemap.xml`, y los archivos internos en `data/`).
 
-- **Acceso**: ninguno — es una demo, entra directo sin login. Lo único que
-  realmente controla quién puede publicar es el token de GitHub (siguiente
-  punto); las firmas de commit/ventas/auditoría usan un `session.email` fijo
-  en `admin.js`. Si esto pasa a producción real, ahí sí hace falta un login
-  de verdad antes de exponer el token a cualquiera.
+- **Acceso**: ⚠️ **pendiente** — hoy entra directo, sin login, y las firmas
+  de commit/ventas/auditoría usan un `session.email` fijo en `admin.js`. Lo
+  único que realmente controla quién puede *publicar* es el token de GitHub
+  (siguiente punto), y sin token el panel muestra datos de ejemplo, no los
+  reales. Falta conectar Google Sign-In contra lista blanca: los campos ya
+  están en `assets/js/site.js` (`OAUTH_CLIENT_ID`, `ADMIN_EMAILS`,
+  `OWNER_EMAILS`) y mientras `ADMIN_EMAILS` esté vacío el panel se comporta
+  como hasta hoy. `OWNER_EMAILS` es el segundo nivel: quién ve costos y
+  márgenes (el código de roles ya existe, hoy todos entran como dueño).
 - **Token de GitHub**: cada admin pega su propio Personal Access Token
   (fine-grained, permiso *Contents: Read and write* sobre este repo) en la
   pestaña "Configuración". Se guarda solo en `localStorage` de ese
@@ -58,7 +69,15 @@ contenidos de GitHub (`assets/js/products-data.js`, `producto/*.html`,
   `main`, la misma que dispara el deploy a GitHub
   Pages — ver `.github/workflows/deploy.yml`).
 - **Costos internos**: `data/costs.json` (nunca se publica en
-  `products-data.js` ni aparece en la ficha de ningún producto).
+  `products-data.js` ni aparece en la ficha de ningún producto). Desde el
+  workflow de deploy, ese archivo y `data/sales-log.json` y
+  `data/audit-log.json` **se excluyen del sitio publicado**, y un paso del
+  workflow falla el deploy si alguna de esas rutas responde 200 en vivo.
+  `data/site-content.json` sí queda público a propósito: el sitio lo
+  consulta en vivo para los textos editables.
+  Ojo: el repositorio es **público**, así que esos archivos siguen siendo
+  legibles en github.com. Excluirlos del deploy cierra una puerta, no las
+  dos — ver la nota al final de [MOTOR.md](MOTOR.md#5-publicar).
 - **Reglas de correctitud** (uniqueness de slug/SKU en dos pasadas, nombres
   de foto aleatorios, merge de 3 vías campo por campo al publicar,
   reintento con backoff en conflictos 409, validación completa antes de
@@ -67,17 +86,32 @@ contenidos de GitHub (`assets/js/products-data.js`, `producto/*.html`,
 ## ▶️ Cómo verlo
 
 ```bash
-cd bmxstore
+# desde el directorio que CONTIENE bmxstore/, no desde adentro:
 python3 -m http.server 8000
-# abre http://localhost:8000
+# abre http://localhost:8000/bmxstore/
 ```
+
+Tiene que ser así porque las páginas llevan `<base href="/bmxstore/">` (el
+sitio vive en un subdirectorio en GitHub Pages). Servido desde adentro, los
+`assets/` dan 404 y la página carga sin JavaScript ni estilos. Cuando el
+sitio pase a su dominio propio, `BASE_PATH` en `assets/js/site.js` pasa a
+`"/"` y se sirve desde adentro con normalidad.
 
 `admin.html` funciona igual en local, pero para cargar o publicar necesita
 un token de GitHub real con acceso de escritura a este repo.
 
 ## 🛠️ Personalizar
 
+- **Dominio y URL del sitio:** `assets/js/site.js`. Cambiar `DOMAIN` y
+  `BASE_PATH` y correr `node tools/build-pages.mjs` reescribe las 52 fichas,
+  el sitemap, el robots.txt y el `<base href>` de todas las páginas. Es el
+  único lugar donde vive el dominio; no lo escribas a mano en ningún HTML.
 - **Datos de contacto / redes:** `STIKE_CONFIG` al inicio de `assets/js/app.js`.
+  (El número de WhatsApp está también en `site.js`, porque lo usan las fichas
+  generadas; `tools/build-pages.mjs` se niega a generar si los dos no
+  coinciden.)
+- **Reglas de stock y visibilidad:** bloque `MOTOR DE STOCK` en
+  `assets/js/data.js`. Después de tocarlo, `node tools/stock-test.mjs`.
 - **Categorías, marcas, tallas obligatorias, códigos de SKU:**
   `assets/js/data.js` (`STIKE_CATEGORIES`, `STIKE_BRANDS`, `SIZE_CATEGORIES`,
   `SKU_CAT_CODES`).
@@ -108,6 +142,12 @@ CONTENIDO de `styles.css`/`data.js`/`app.js`/etc. acordate de subir ese
 número en todos los HTML que lo referencian, si no los visitantes con
 cache del navegador siguen viendo la versión vieja.
 
+> Esto sigue siendo **a mano** y es el footgun que queda en pie:
+> `tools/build-pages.mjs` no toca esos números. Automatizarlo (sellar el
+> `?v=` con un hash del contenido del archivo, en el momento del deploy) es
+> un cambio chico y pendiente; hoy la mitigación es acordarse, y que un
+> visitante nuevo nunca ve el problema.
+
 ## 🗂️ Estructura
 
 ```
@@ -117,6 +157,12 @@ bmxstore/
 ├── admin.html  admin.js  admin-sw.js       ← panel de inventario
 ├── _template.html                          ← plantilla de producto/<slug>.html
 ├── producto/<slug>.html                    ← una página generada por producto
+├── MOTOR.md                                ← las reglas del motor
+├── tools/                                  ← build y pruebas (Node, no van al sitio)
+│   ├── build-pages.mjs      regenera fichas/sitemap/robots/<base href>
+│   ├── stock-test.mjs       19 casos del motor de stock, sin dependencias
+│   ├── e2e-test.mjs         24 casos en navegador real (Playwright)
+│   └── photo-test.mjs       el PNG transparente (Playwright)
 ├── data/
 │   ├── costs.json          (interno, nunca se publica al sitio)
 │   ├── sales-log.json      (ventas, append-only)
@@ -124,9 +170,11 @@ bmxstore/
 │   └── site-content.json   (textos editables del sitio)
 └── assets/
     ├── css/styles.css
-    └── js/{products-data.js, data.js, app.js, pdp.js, pdp-render.js, animations.js}
+    └── js/{site.js, products-data.js, data.js, app.js, pdp.js, pdp-render.js, animations.js}
 ```
 
 ---
-Sitio de demostración: reemplaza costos placeholder, la clave del panel y
-los datos de contacto por los reales antes de operar con el negocio.
+**Antes de operar con el negocio:** conectar el acceso al panel (Google
+Sign-In, ver arriba), completar los datos legales (`legalName` y `nit` en
+`STIKE_CONFIG`, hoy con placeholders visibles en las páginas de términos y
+privacidad) y revisar que los costos de `data/costs.json` sean los reales.
