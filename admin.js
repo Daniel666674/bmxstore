@@ -388,6 +388,9 @@ function validateCatalog(catalog) {
     (p.sizes || []).forEach(s => { if (s.u < 0) errors.push(`${label}: stock negativo en talla ${s.v}`); });
     (p.colors || []).forEach(c => { if (c.u < 0) errors.push(`${label}: stock negativo en color ${c.v}`); });
     if (!(p.sizes && p.sizes.length) && !(p.colors && p.colors.length) && typeof p.units !== "number") errors.push(`${label}: falta unidades en stock`);
+    /* Sin foto, la ficha sale con el logo generico y el og:image apunta al
+       logo: el producto compartido por WhatsApp no muestra el producto. */
+    if (!(p.imgs && p.imgs.length)) errors.push(`${label}: falta la foto (al menos una)`);
   });
   return errors;
 }
@@ -488,7 +491,26 @@ async function uploadPendingPhotos(scopeSlugs, statusLines) {
       const file = pendingUploads.get(path);
       const blob = await compressImageFile(file);
       const bytes = new Uint8Array(await blob.arrayBuffer());
-      await ghPutOnce(path, b64EncodeBytes(bytes), `Foto para ${d.n}`, undefined);
+      /* Los nombres son aleatorios, asi que normalmente la ruta esta libre.
+         Si YA existe algo ahi (se reuso una ruta, o un reintento a medio
+         camino), hay que pasarle el sha o GitHub rechaza la escritura; y
+         ademas hay que romper el cache: navegadores y CDN siguen sirviendo
+         los bytes viejos de una ruta que ya conocian, indefinidamente. */
+      const existing = await ghGetMeta(path);
+      await ghPutOnce(path, b64EncodeBytes(bytes), `Foto para ${d.n}`, existing ? existing.sha : undefined);
+      if (existing) {
+        const stamped = `${path}?v=${Date.now()}`;
+        d.imgs = d.imgs.map(u => (u === path ? stamped : u));
+        if (d.img === path) d.img = stamped;
+        /* imgColorMap esta indexado por la ruta de la foto, asi que si la
+           ruta cambia hay que mover la clave: si no, la galeria deja de
+           saber que foto corresponde a que color y el selector de color
+           deja de cambiar la imagen. */
+        if (d.imgColorMap && Object.prototype.hasOwnProperty.call(d.imgColorMap, path)) {
+          d.imgColorMap[stamped] = d.imgColorMap[path];
+          delete d.imgColorMap[path];
+        }
+      }
       pendingUploads.delete(path);
     }
   }
@@ -700,8 +722,23 @@ function loadImageElement(file) {
     img.src = URL.createObjectURL(file);
   });
 }
+/* En moviles con poca memoria -- sobre todo los navegadores embebidos de
+   WhatsApp e Instagram -- drawImage() sobre una foto de camara moderna
+   puede fallar EN SILENCIO: sin excepcion, sin error. El canvas queda
+   transparente y se exporta como un JPEG perfectamente valido que es un
+   cuadrado negro, y pasa cualquier verificacion de formato y de tamano.
+
+   Se muestrean 9 puntos -- las cuatro esquinas, los cuatro puntos medios de
+   los bordes y el centro -- y se rechaza el resultado si los nueve salen
+   identicos byte a byte. Una foto real nunca lo es; un cuadrado de un solo
+   color, siempre. */
 function canvasLooksReal(ctx, w, h) {
-  const pts = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1], [w >> 1, h >> 1], [w >> 2, h >> 2], [(3 * w / 4) | 0, (3 * h / 4) | 0], [(w / 3) | 0, (2 * h / 3) | 0]];
+  const mx = w >> 1, my = h >> 1, rx = w - 1, ry = h - 1;
+  const pts = [
+    [0, 0], [mx, 0], [rx, 0],
+    [0, my], [mx, my], [rx, my],
+    [0, ry], [mx, ry], [rx, ry],
+  ];
   let first = null;
   for (const [x, y] of pts) {
     const d = ctx.getImageData(Math.min(Math.max(x, 0), w - 1), Math.min(Math.max(y, 0), h - 1), 1, 1).data;
@@ -718,7 +755,7 @@ function canvasLooksReal(ctx, w, h) {
  * valido): se muestrea una grilla de pixeles y, si salen todos iguales, se
  * reintenta el dibujo.
  */
-async function compressImageFile(file, maxDim = 1600, quality = 0.82) {
+async function compressImageFile(file, maxDim = 1600, quality = 0.87) {
   const bitmap = await createImageBitmap(file).catch(() => null);
   const img = bitmap || await loadImageElement(file);
   const srcW = bitmap ? bitmap.width : img.width, srcH = bitmap ? bitmap.height : img.height;
@@ -728,6 +765,13 @@ async function compressImageFile(file, maxDim = 1600, quality = 0.82) {
     const canvas = document.createElement("canvas");
     canvas.width = w; canvas.height = h;
     const ctx = canvas.getContext("2d");
+    /* Fondo blanco ANTES de dibujar. Un canvas arranca transparente, y al
+       exportar a JPEG -- que no tiene canal alfa -- todo lo transparente se
+       aplana a NEGRO por especificacion del formato. Sin esto, cualquier
+       PNG con fondo recortado (que es como llegan la mitad de las fotos de
+       producto) se publica con el fondo negro. */
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
     ctx.drawImage(bitmap || img, 0, 0, w, h);
     if (!canvasLooksReal(ctx, w, h)) { await sleep(80); continue; }
     const blob = await new Promise(res => canvas.toBlob(res, "image/jpeg", quality));
@@ -1001,8 +1045,11 @@ function addPhotosToDraft(files) {
   const d = editorDraft;
   for (const file of files) {
     if (!file.type.startsWith("image/")) continue;
-    const ext = file.type === "image/png" ? "png" : "jpg";
-    const path = `assets/img/products/${randomFilename(ext)}`;
+    /* Siempre .jpg: compressImageFile reencoda TODO a JPEG, asi que un PNG
+       guardado como .png tendria bytes JPEG adentro. El navegador lo
+       adivina y lo muestra igual, pero el rastreador de WhatsApp o
+       Facebook que lee el og:image no tiene por que perdonarlo. */
+    const path = `assets/img/products/${randomFilename("jpg")}`;
     pendingUploads.set(path, file);
     d.imgs = d.imgs || [];
     d.imgs.push(path);
