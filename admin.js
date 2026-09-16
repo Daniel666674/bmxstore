@@ -511,25 +511,32 @@ async function regenerateProductPages(merged, scopeSlugs, commitMessage) {
     const row = merged.find(r => r.slug === slug);
     if (!row || row.published === false) continue;
     const cat = catIndex.get(row.cat);
-    const html = PdpRender.renderProductPage(row, templateCache, { categoryName: cat ? cat.name : row.cat, placeholderImg: stikeProductImage(row, 1200) });
+    const html = PdpRender.renderProductPage(row, templateCache, {
+      site: STIKE_SITE,
+      categoryName: cat ? cat.name : row.cat,
+      whatsapp: STIKE_SITE.whatsapp,
+      placeholderImg: stikeProductImage(row, 1200),
+    });
     const path = `producto/${row.slug}.html`;
     const meta = await ghGetMeta(path);
     await ghPutOnce(path, b64EncodeText(html), commitMessage, meta ? meta.sha : undefined);
   }
 }
 
+/* El sitemap se reconcilia contra el catalogo COMPLETO, no contra lo que se
+   toco en esta sesion, asi que se autocorrige solo.
+   La lista de paginas fijas y el dominio salen de assets/js/site.js, que es
+   la misma fuente que usa tools/build-pages.mjs. Cuando cada uno tenia su
+   copia, la de aca se quedo sin las cuatro paginas de Fate y el sitemap
+   perdia ese micro-sitio en cada publicacion. */
 async function regenerateSitemap(merged, commitMessage) {
-  const base = "https://daniel666674.github.io/bmxstore";
   const staticPages = [
-    ["", "1.0", "weekly"], ["tienda.html", "0.9", "weekly"], ["armar.html", "0.9", "monthly"],
-    ["marcas.html", "0.6", "monthly"], ["fate/", "0.6", "monthly"], ["fate/tienda.html", "0.6", "weekly"],
-    ["nosotros.html", "0.6", "monthly"], ["contacto.html", "0.6", "monthly"],
-    ["blog.html", "0.8", "weekly"], ["blog-historia-bmx.html", "0.7", "yearly"],
-    ["blog-bmx-bogota.html", "0.7", "yearly"], ["blog-arma-tu-bmx.html", "0.7", "yearly"],
+    ...STIKE_SITE.staticPages,
+    ...(window.STIKE_PART_PAGES || []).map(s => [`categoria/${s}.html`, "0.7", "weekly"]),
   ];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  staticPages.forEach(([p, pr, cf]) => { xml += `  <url><loc>${base}/${p}</loc><changefreq>${cf}</changefreq><priority>${pr}</priority></url>\n`; });
-  merged.filter(p => p.published !== false).forEach(p => { xml += `  <url><loc>${base}/producto/${p.slug}.html</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>\n`; });
+  staticPages.forEach(([p, pr, cf]) => { xml += `  <url><loc>${STIKE_SITE.url(p)}</loc><changefreq>${cf}</changefreq><priority>${pr}</priority></url>\n`; });
+  merged.filter(p => p.published !== false).forEach(p => { xml += `  <url><loc>${STIKE_SITE.url(`producto/${p.slug}.html`)}</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>\n`; });
   xml += `</urlset>\n`;
   const meta = await ghGetMeta(CONFIG.paths.sitemap);
   await ghPutOnce(CONFIG.paths.sitemap, b64EncodeText(xml), commitMessage, meta ? meta.sha : undefined);
