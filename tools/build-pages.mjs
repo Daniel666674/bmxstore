@@ -69,10 +69,15 @@ const SITE = require(path.join(ROOT, "assets/js/site.js"));
 const PdpRender = require(path.join(ROOT, "assets/js/pdp-render.js"));
 const browser = loadBrowserScripts(
   ["assets/js/products-data.js", "assets/js/data.js"],
-  ["STIKE_PRODUCTS", "STIKE_CATEGORIES", "STIKE_PART_PAGES"]
+  ["STIKE_ALL_PRODUCTS", "STIKE_PRODUCTS", "STIKE_CATEGORIES", "STIKE_PART_PAGES",
+   "stikeIsVisible", "stikeIsOut", "stikeTotalStock", "stikeSellable", "stikeWaText", "stikeWaLabel", "stikePrice"]
 );
 
-const PRODUCTS = browser.STIKE_PRODUCTS || [];
+/* El catalogo COMPLETO, borradores incluidos: hay que saber que un borrador
+   existe para no dejar su ficha vieja publicada. data.js ya filtro
+   STIKE_PRODUCTS para el sitio. */
+const PRODUCTS = browser.STIKE_ALL_PRODUCTS || [];
+const VISIBLE = PRODUCTS.filter((p) => p.published !== false);
 const CATEGORIES = browser.STIKE_CATEGORIES || [];
 
 /* --------------------------------------------------------------------------
@@ -135,15 +140,28 @@ function write(relPath, content) {
 const template = read("_template.html");
 const catName = (slug) => (CATEGORIES.find((c) => c.slug === slug) || {}).name || slug;
 
-for (const p of PRODUCTS) {
+for (const p of VISIBLE) {
   const html = PdpRender.renderProductPage(p, template, {
     site: SITE,
+    stock: browser,          // el motor de stock de data.js, el mismo del sitio
     categoryName: catName(p.cat),
     whatsapp: SITE.whatsapp,
     placeholderImg: SITE.ogFallback,
   });
   write(`producto/${p.slug}.html`, withBaseHref(html));
 }
+
+/* Fichas en disco que ya no corresponden a ningun producto publicado: un
+   borrador que antes estuvo publicado, o un producto borrado. El panel las
+   borra al publicar; aca solo se avisan, porque borrar archivos sin que
+   nadie lo pida es peor que dejar una pagina colgada. El script de la ficha
+   ya maneja el caso "este archivo no es ningun producto" sin inventar nada.
+   -------------------------------------------------------------------------- */
+const vivos = new Set(VISIBLE.map((p) => p.slug));
+const huerfanas = fs.existsSync(path.join(ROOT, "producto"))
+  ? fs.readdirSync(path.join(ROOT, "producto"))
+      .filter((f) => f.endsWith(".html") && !vivos.has(f.replace(/\.html$/, "")))
+  : [];
 
 /* --------------------------------------------------------------------------
    2. <base href> y URLs absolutas en todas las paginas
@@ -229,6 +247,26 @@ write("robots.txt", read("robots.txt").replace(/^Sitemap:.*$/m, `Sitemap: ${SITE
    Verificacion de salida: las URL generadas tienen que ser URL validas.
    Esto es lo que habria atrapado el og:image roto de las 52 fichas.
    -------------------------------------------------------------------------- */
+/* Un marcador sin reemplazar sale como "__PRICE_PLAIN__" en medio del HTML:
+   no revienta nada, solo deja la ficha mal y los datos estructurados
+   invalidos, que Google descarta en silencio. */
+const leftovers = [];
+for (const [f, body] of generated) {
+  if (!f.endsWith(".html")) continue;
+  for (const m of new Set([...body.matchAll(/__[A-Z][A-Z_]*__/g)].map((x) => x[0]))) {
+    leftovers.push(`${f}: ${m}`);
+  }
+}
+
+/* Los datos estructurados tienen que ser JSON valido o Google los tira. */
+const badJson = [];
+for (const [f, body] of generated) {
+  if (!f.endsWith(".html")) continue;
+  for (const m of body.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    try { JSON.parse(m[1]); } catch (e) { badJson.push(`${f}: ${e.message}`); }
+  }
+}
+
 const badUrls = [];
 for (const [f, body] of generated) {
   if (!f.endsWith(".html")) continue;
@@ -251,6 +289,18 @@ console.log(`  sitio        ${SITE.siteUrl}`);
 console.log(`  base href    ${SITE.basePath}`);
 console.log(`  productos    ${PRODUCTS.length} (${PRODUCTS.filter((p) => p.published === false).length} en borrador, fuera del sitemap)`);
 console.log(`  archivos     ${written} ${CHECK_ONLY ? "cambiarian" : "escritos"}, ${unchanged} sin cambios`);
+if (huerfanas.length) {
+  console.log(`\n  ${huerfanas.length} ficha(s) en producto/ que no son de ningun producto publicado:`);
+  huerfanas.slice(0, 10).forEach((f) => console.log("   · producto/" + f));
+  console.log("   (el panel las borra al publicar; revisalas si no esperabas ninguna)");
+}
+
+for (const [label, list] of [["marcador(es) sin reemplazar", leftovers], ["bloque(s) de datos estructurados invalidos", badJson]]) {
+  if (!list.length) continue;
+  console.error(`\n  ${list.length} ${label}:`);
+  list.slice(0, 10).forEach((x) => console.error("   · " + x));
+  process.exitCode = 1;
+}
 
 if (badUrls.length) {
   console.error(`\n  ${badUrls.length} URL sospechosa(s):`);

@@ -29,7 +29,15 @@
     "brand": "__BRAND__",
     "sku": "__SKU__",
     "url": "__CANONICAL__",
-    "image": "__OG_IMAGE__"
+    "image": "__OG_IMAGE__",
+    "offers": {
+      "@type": "Offer",
+      "url": "__CANONICAL__",
+      "priceCurrency": "COP",
+      "price": "__PRICE_PLAIN__",
+      "availability": "__AVAILABILITY__",
+      "itemCondition": "https://schema.org/NewCondition"
+    }
   }
   </script>
 </head>
@@ -62,7 +70,7 @@
           </div>
           <button class="btn" id="add-btn" __ADD_DISABLED__>Agregar al carrito</button>
         </div>
-        <a class="btn wa block" id="wa-buy" href="__WA_HREF__" target="_blank" rel="noopener">Comprar por WhatsApp</a>
+        <a class="btn wa block" id="wa-buy" href="__WA_HREF__" target="_blank" rel="noopener">__WA_LABEL__</a>
         <ul class="pdp-service">
           <li><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Envíos a toda Colombia</span></li>
           <li><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Armado y ajuste <b>gratis</b></span></li>

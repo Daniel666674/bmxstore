@@ -288,7 +288,10 @@ function generateDemoAudit() {
 
 function seedDemoData() {
   demoMode = true;
-  const base = (window.STIKE_PRODUCTS || []).map(p => JSON.parse(JSON.stringify(p)));
+  /* STIKE_ALL_PRODUCTS: el catalogo CRUDO. data.js filtra los borradores de
+     window.STIKE_PRODUCTS para el sitio, pero el panel tiene que verlos
+     todos, marcados como borrador. */
+  const base = (window.STIKE_ALL_PRODUCTS || window.STIKE_PRODUCTS || []).map(p => JSON.parse(JSON.stringify(p)));
   costsMap = {};
   base.forEach(p => { costsMap[p.slug] = Math.round((p.price * 0.62) / 1000) * 1000; });
   workingCatalog = base.map(p => ({ ...p, cost: costsMap[p.slug] || 0 }));
