@@ -1373,9 +1373,9 @@ function renderSalesTab() {
   $("#sales-month-chart").innerHTML = months.map((m, i) => {
     const h = (m.total / maxM) * (H - padB - padT);
     const x = padX + i * bw, y = H - padB - h;
-    return `<rect x="${(x + bw * .18).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw * .64).toFixed(1)}" height="${Math.max(1, h).toFixed(1)}" rx="4" fill="#33e0ff" opacity="${i === months.length - 1 ? 1 : .55}"/>
-      <text x="${(x + bw / 2).toFixed(1)}" y="${H - 9}" text-anchor="middle" font-size="11" fill="#8e8e96">${m.label}</text>`;
-  }).join("") + `<line x1="${padX}" y1="${H - padB}" x2="${W - padX}" y2="${H - padB}" stroke="#232327"/>`;
+    return `<rect x="${(x + bw * .18).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw * .64).toFixed(1)}" height="${Math.max(1, h).toFixed(1)}" rx="4" fill="#22d3ee" opacity="${i === months.length - 1 ? 1 : .55}"/>
+      <text x="${(x + bw / 2).toFixed(1)}" y="${H - 9}" text-anchor="middle" font-size="11" fill="#93979f">${m.label}</text>`;
+  }).join("") + `<line x1="${padX}" y1="${H - padB}" x2="${W - padX}" y2="${H - padB}" stroke="#33373f"/>`;
 
   const rows = salesLog.slice().reverse();
   $("#sales-count").textContent = rows.length
@@ -1447,10 +1447,10 @@ function renderKpis() {
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(" ");
   $("#kpi-chart").innerHTML = `
-    <polyline points="${toPts(old)}" fill="none" stroke="#4a4a55" stroke-width="1.5" stroke-dasharray="4 4"/>
-    <polyline points="${pad},${H - pad} ${toPts(cur)} ${W - pad},${H - pad}" fill="#33e0ff1f" stroke="none"/>
-    <polyline points="${toPts(cur)}" fill="none" stroke="#33e0ff" stroke-width="2.5"/>
-    <line x1="${pad}" y1="${H - pad}" x2="${W - pad}" y2="${H - pad}" stroke="#232327"/>`;
+    <polyline points="${toPts(old)}" fill="none" stroke="#4a4e58" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <polyline points="${pad},${H - pad} ${toPts(cur)} ${W - pad},${H - pad}" fill="#22d3ee22" stroke="none"/>
+    <polyline points="${toPts(cur)}" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+    <line x1="${pad}" y1="${H - pad}" x2="${W - pad}" y2="${H - pad}" stroke="#33373f"/>`;
 
   // Desglose por categoria y por marca
   const breakdown = (keyFn) => {
