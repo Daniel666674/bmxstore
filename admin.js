@@ -888,65 +888,73 @@ function renderEditor() {
   const sizeCatActive = SIZE_CATEGORIES.has(d.sub);
 
   $("#editor-drawer").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="ed-head">
       <h3>${editorIsNew ? "Nuevo producto" : "Editar producto"}</h3>
       <button class="btn ghost sm" id="ed-close">Cerrar ✕</button>
     </div>
-    <div class="field"><label>Nombre</label><input id="ed-n" value="${escAttr(d.n)}"></div>
-    <div class="row2">
-      <div class="field"><label>Marca</label>
-        <select id="ed-brand">${STIKE_BRANDS.map(b => `<option ${b === d.brand ? "selected" : ""}>${b}</option>`).join("")}</select>
+
+    <div class="ed-body">
+      <h4 class="ed-section first">Identidad</h4>
+      <div class="field"><label>Nombre</label><input id="ed-n" value="${escAttr(d.n)}"><div class="err" id="ed-n-err"></div></div>
+      <div class="row2">
+        <div class="field"><label>Marca</label>
+          <select id="ed-brand">${STIKE_BRANDS.map(b => `<option ${b === d.brand ? "selected" : ""}>${b}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label>Categoría</label>
+          <select id="ed-cat">${STIKE_CATEGORIES.filter(c => c.slug !== "promo").map(c => `<option value="${c.slug}" ${c.slug === d.cat ? "selected" : ""}>${c.name}</option>`).join("")}</select>
+        </div>
       </div>
-      <div class="field"><label>Categoría</label>
-        <select id="ed-cat">${STIKE_CATEGORIES.filter(c => c.slug !== "promo").map(c => `<option value="${c.slug}" ${c.slug === d.cat ? "selected" : ""}>${c.name}</option>`).join("")}</select>
+      <div class="field"><label>Subcategoría</label>
+        <select id="ed-sub"><option value="">— ninguna —</option>${catSubs.map(s => `<option ${s === d.sub ? "selected" : ""}>${s}</option>`).join("")}</select>
+        <div class="hint" id="ed-sub-hint">${sizeCatActive ? "Esta subcategoría requiere tallas (ver abajo)." : ""}</div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Slug (URL)</label><input id="ed-slug" value="${escAttr(d.slug)}" class="mono"><div class="err" id="ed-slug-err"></div></div>
+        <div class="field"><label>SKU</label><input id="ed-sku" value="${escAttr(d.sku)}" class="mono"><div class="err" id="ed-sku-err"></div></div>
+      </div>
+
+      <h4 class="ed-section">Precio y publicación</h4>
+      <div class="row2">
+        <div class="field"><label>Precio (COP)</label><input id="ed-price" type="number" min="0" step="1000" value="${d.price || 0}"></div>
+        ${isOwner ? `<div class="field"><label>Costo interno (COP) <span class="hint">— nunca se publica</span></label><input id="ed-cost" type="number" min="0" step="1000" value="${d.cost || 0}"></div>` : ""}
+      </div>
+      <div class="row3">
+        <div class="field"><label><input type="checkbox" id="ed-promo" ${d.promo ? "checked" : ""}> En promo</label></div>
+        <div class="field" id="ed-old-field" style="${d.promo ? "" : "display:none"}"><label>Precio anterior</label><input id="ed-old" type="number" min="0" step="1000" value="${d.old || ""}"></div>
+        <div class="field"><label>Etiqueta</label><select id="ed-tag"><option value="">— ninguna —</option><option value="new" ${d.tag === "new" ? "selected" : ""}>Nuevo</option></select></div>
+      </div>
+      <div class="field"><label><input type="checkbox" id="ed-published" ${d.published !== false ? "checked" : ""}> Publicado (visible en la tienda)</label></div>
+
+      <h4 class="ed-section">Especificaciones</h4>
+      <div class="field"><label>Una por línea, "Clave: valor"</label>
+        <textarea id="ed-spec" rows="4">${(d.spec || []).join("\n")}</textarea>
+      </div>
+
+      <h4 class="ed-section">Stock</h4>
+      <div class="card" style="padding:14px;margin:0 0 4px">
+        <div class="err" id="ed-stock-err"></div>
+        <div id="ed-sizes-box"></div>
+        <div id="ed-colors-box"></div>
+      </div>
+
+      <h4 class="ed-section">Fotos <span class="hint" style="text-transform:none;letter-spacing:0">— la primera es la portada</span></h4>
+      <div class="card" style="padding:14px;margin:0">
+        <div class="photogrid" id="ed-photogrid"></div>
+        <label class="uploadbox" style="margin-top:10px;display:block">
+          + Agregar fotos<input type="file" id="ed-photo-input" accept="image/*" multiple style="display:none">
+        </label>
+        <div id="ed-cover-crop"></div>
       </div>
     </div>
-    <div class="field"><label>Subcategoría</label>
-      <select id="ed-sub"><option value="">— ninguna —</option>${catSubs.map(s => `<option ${s === d.sub ? "selected" : ""}>${s}</option>`).join("")}</select>
-      <div class="hint" id="ed-sub-hint">${sizeCatActive ? "Esta subcategoría requiere tallas (ver abajo)." : ""}</div>
-    </div>
-    <div class="row2">
-      <div class="field"><label>Slug (URL)</label><input id="ed-slug" value="${escAttr(d.slug)}" class="mono"><div class="err" id="ed-slug-err"></div></div>
-      <div class="field"><label>SKU</label><input id="ed-sku" value="${escAttr(d.sku)}" class="mono"><div class="err" id="ed-sku-err"></div></div>
-    </div>
-    <div class="row2">
-      <div class="field"><label>Precio (COP)</label><input id="ed-price" type="number" min="0" step="1000" value="${d.price || 0}"></div>
-      ${isOwner ? `<div class="field"><label>Costo interno (COP) <span class="hint">— nunca se publica</span></label><input id="ed-cost" type="number" min="0" step="1000" value="${d.cost || 0}"></div>` : ""}
-    </div>
-    <div class="row3">
-      <div class="field"><label><input type="checkbox" id="ed-promo" ${d.promo ? "checked" : ""}> En promo</label></div>
-      <div class="field" id="ed-old-field" style="${d.promo ? "" : "display:none"}"><label>Precio anterior</label><input id="ed-old" type="number" min="0" step="1000" value="${d.old || ""}"></div>
-      <div class="field"><label>Etiqueta</label><select id="ed-tag"><option value="">— ninguna —</option><option value="new" ${d.tag === "new" ? "selected" : ""}>Nuevo</option></select></div>
-    </div>
-    <div class="field"><label><input type="checkbox" id="ed-published" ${d.published !== false ? "checked" : ""}> Publicado (visible en la tienda)</label></div>
 
-    <div class="field"><label>Especificaciones (una por línea, "Clave: valor")</label>
-      <textarea id="ed-spec" rows="4">${(d.spec || []).join("\n")}</textarea>
-    </div>
-
-    <div class="card" style="padding:14px;margin:16px 0">
-      <h4 style="font-size:14px;margin-bottom:8px">Stock</h4>
-      <div id="ed-sizes-box"></div>
-      <div id="ed-colors-box"></div>
-    </div>
-
-    <div class="card" style="padding:14px;margin:16px 0">
-      <h4 style="font-size:14px;margin-bottom:8px">Fotos <span class="hint">(la primera es la portada)</span></h4>
-      <div class="photogrid" id="ed-photogrid"></div>
-      <label class="uploadbox" style="margin-top:10px;display:block">
-        + Agregar fotos<input type="file" id="ed-photo-input" accept="image/*" multiple style="display:none">
-      </label>
-      <div id="ed-cover-crop"></div>
-    </div>
-
-    <div style="display:flex;gap:10px;margin-top:18px">
+    <div class="ed-foot">
       <button class="btn cyan" id="ed-save">Guardar en el borrador</button>
       ${!editorIsNew ? `<button class="btn bad" id="ed-delete">Eliminar producto</button>` : ""}
     </div>
   `;
 
   $("#ed-close").addEventListener("click", closeEditor);
-  $("#ed-n").addEventListener("input", e => { d.n = e.target.value; if (!editorSlugManual) { $("#ed-slug").value = d.slug = uniqueSlug(slugify(d.n), editorOriginalSlug); validateSlugField(); } });
+  $("#ed-n").addEventListener("input", e => { d.n = e.target.value; validateNameField(); if (!editorSlugManual) { $("#ed-slug").value = d.slug = uniqueSlug(slugify(d.n), editorOriginalSlug); validateSlugField(); } });
   $("#ed-brand").addEventListener("change", e => { d.brand = e.target.value; if (editorIsNew && !editorSkuManual) { d.sku = generateSku(d.cat, d.brand); $("#ed-sku").value = d.sku; validateSkuField(); } });
   $("#ed-cat").addEventListener("change", e => { d.cat = e.target.value; d.sub = ""; if (editorIsNew && !editorSkuManual) d.sku = generateSku(d.cat, d.brand); renderEditor(); });
   $("#ed-sub").addEventListener("change", e => { d.sub = e.target.value; renderStockEditor(); $("#ed-sub-hint").textContent = SIZE_CATEGORIES.has(d.sub) ? "Esta subcategoría requiere tallas (ver abajo)." : ""; });
@@ -975,6 +983,10 @@ function renderEditor() {
 }
 
 function escAttr(s) { return String(s == null ? "" : s).replace(/"/g, "&quot;"); }
+function validateNameField() {
+  $("#ed-n-err").textContent = editorDraft.n ? "" : "El nombre es obligatorio.";
+  return !!editorDraft.n;
+}
 function validateSlugField() {
   const taken = editorDraft.slug && isSlugTaken(editorDraft.slug, editorOriginalSlug);
   $("#ed-slug-err").textContent = editorDraft.slug ? (taken ? "Ese slug ya lo usa otro producto en tu catálogo local." : "") : "El slug es obligatorio.";
@@ -1132,11 +1144,21 @@ function renderCoverCrop() {
 
 function saveEditorDraft() {
   const d = editorDraft;
-  const slugOk = validateSlugField(), skuOk = validateSkuField();
-  if (!d.n) { alert("Falta el nombre del producto."); return; }
-  if (!slugOk || !skuOk) { alert("Revisa slug/SKU antes de guardar."); return; }
-  if (SIZE_CATEGORIES.has(d.sub) && (!d.sizes || !d.sizes.length)) { alert(`"${d.sub}" requiere al menos una talla.`); return; }
-  if (d.colors && d.colors.length === 1) { alert("Si activas colores necesitas 2 o más."); return; }
+  const nameOk = validateNameField(), slugOk = validateSlugField(), skuOk = validateSkuField();
+  const stockErr = $("#ed-stock-err");
+  stockErr.textContent = "";
+  let stockOk = true;
+  if (SIZE_CATEGORIES.has(d.sub) && (!d.sizes || !d.sizes.length)) { stockErr.textContent = `"${d.sub}" requiere al menos una talla.`; stockOk = false; }
+  else if (d.colors && d.colors.length === 1) { stockErr.textContent = "Si activas colores necesitas 2 o más."; stockOk = false; }
+
+  /* Sin alert() bloqueante: el error queda escrito junto al campo (igual
+     que slug/sku ya hacian) y el foco salta al primero con problema, para
+     que quien esta cargando 50 productos seguidos no tenga que leer un
+     popup nativo cada vez que se le olvida un campo. */
+  if (!nameOk) { $("#ed-n").focus(); return; }
+  if (!slugOk) { $("#ed-slug").focus(); return; }
+  if (!skuOk) { $("#ed-sku").focus(); return; }
+  if (!stockOk) { stockErr.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
 
   const idx = editorOriginalSlug ? workingCatalog.findIndex(p => p.slug === editorOriginalSlug) : -1;
   if (idx >= 0) workingCatalog[idx] = d; else workingCatalog.push(d);
@@ -1777,7 +1799,14 @@ $("#btn-registrar-venta").addEventListener("click", registrarVenta);
 $("#btn-save-content").addEventListener("click", saveSiteContent);
 $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "editor-overlay") closeEditor(); });
 $("#sale-overlay").addEventListener("click", e => { if (e.target.id === "sale-overlay") closeQuickSale(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape" && quickSaleSlug) closeQuickSale(); });
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  // Antes solo la venta rapida cerraba con Escape; el editor de producto
+  // -- la pantalla que mas se usa hoy, cargando inventario -- se quedaba
+  // sin esa salida rapida.
+  if (quickSaleSlug) closeQuickSale();
+  else if (editorDraft) closeEditor();
+});
 
 /* ============================== ACCESO (Google Sign-In) ====================
    Gate de identidad delante del panel. Mientras STIKE_SITE.adminEmails
