@@ -74,6 +74,21 @@ console.log('\nEl SDK de Google bloqueado (ad-blocker, red restrictiva) NO dispa
   await page.close();
 }
 
+console.log('\nGoogle Fonts bloqueado (ad-blocker, corte de red) NO dispara el banner: es cosmético, no una falla');
+{
+  // Mismo bug de fondo que el del SDK de Google, encontrado al agregar el
+  // <link> de Inter: si la fuente no carga, el panel funciona perfecto en
+  // la fuente del sistema -- no amerita el banner rojo de "no cargó".
+  const page = await browser.newPage();
+  await page.route('**/fonts.googleapis.com/**', route => route.abort());
+  await page.route('**/fonts.gstatic.com/**', route => route.abort());
+  await page.goto(`${B}/admin.html`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(4700);
+  t('el panel sigue funcionando sin la fuente', await page.locator('#login-gate').isVisible(), true);
+  t('NO aparece el banner genérico por la fuente bloqueada', await page.locator('#boot-crash').count(), 0);
+  await page.close();
+}
+
 await browser.close();
 console.log(fail ? `\n  ${fail} FALLARON\n` : '\n  todo pasó\n');
 process.exit(fail ? 1 : 0);
