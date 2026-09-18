@@ -1640,7 +1640,13 @@ async function saveSiteContent() {
 
 /* ============================== APP SHELL ==================================== */
 function showApp() {
-  $("#session-info").innerHTML = `<span class="pill owner">Modo demo</span>`;
+  $("#session-info").innerHTML = STIKE_SITE.adminEmails.length
+    ? `<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+         <span class="pill ${session.role === "owner" ? "owner" : "editor"}">${session.role === "owner" ? "Dueño" : "Editor"}</span>
+         <span class="pill dot">${session.email}</span>
+         <button class="btn ghost sm" onclick="clearLogin()">Cerrar sesión</button>
+       </div>`
+    : `<span class="pill owner">Modo demo</span>`;
   $("#cfg-repo").textContent = `${CONFIG.owner}/${CONFIG.repo}`;
   $("#cfg-branch").textContent = CONFIG.branch;
   $("#pat-status").textContent = session.pat ? "Token guardado en este navegador." : "Sin token: el panel está en modo demo con datos de ejemplo. Pega un token para trabajar con datos reales.";
@@ -1767,8 +1773,133 @@ $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "edito
 $("#sale-overlay").addEventListener("click", e => { if (e.target.id === "sale-overlay") closeQuickSale(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && quickSaleSlug) closeQuickSale(); });
 
+/* ============================== ACCESO (Google Sign-In) ====================
+   Gate de identidad delante del panel. Mientras STIKE_SITE.adminEmails
+   tenga algo (hoy lo tiene), el panel NO arranca hasta que alguien entre
+   con una cuenta de Google que este en esa lista. session.email/role
+   quedan puestos ANTES de llamar a bootApp(), asi que todo lo que ya lee
+   session.role (renderProductGrid, renderSalesTab, ...) se comporta bien
+   sin que haga falta tocar nada mas ahi.
+
+   Verificacion SIN backend: el sitio es estatico, asi que en vez de
+   validar la firma del JWT nosotros mismos, se le pregunta a Google
+   (oauth2.googleapis.com/tokeninfo) si el token es valido y de que cuenta
+   es -- una llamada HTTPS de lectura, no hace falta servidor propio.
+
+   Esto sigue siendo una restriccion de INTERFAZ, no un muro real: quien
+   tenga su propio token de GitHub puede llamar la API de Contenidos sin
+   pasar por aca. Sirve para que nadie toque el catalogo real sin haber
+   iniciado sesion, no para contener a alguien con malas intenciones.
+   ============================================================================= */
+const LOGIN_STORAGE_KEY = "stike_admin_login_v1";
+
+/* Los navegadores embebidos de WhatsApp/Instagram/Facebook bloquean el
+   popup de Google Sign-In con un error criptico de origen -- Google lo
+   documenta como algo que no van a arreglar. Se detectan por el user
+   agent y se les muestra un aviso en vez de dejarlos atascados. */
+function isEmbeddedBrowser() {
+  return /FBAN|FBAV|FB_IAB|Instagram|\bLine\/|WhatsApp/i.test(navigator.userAgent || "");
+}
+
+function loadStoredLogin() {
+  try {
+    const raw = sessionStorage.getItem(LOGIN_STORAGE_KEY);
+    if (!raw) return null;
+    const email = String(JSON.parse(raw).email || "").toLowerCase();
+    // Se revalida contra la lista ACTUAL, no se confia ciegamente en lo
+    // guardado: si a alguien lo sacaron de ADMIN_EMAILS despues de que iba
+    // a entrar, no debe seguir adentro solo porque el navegador recuerda
+    // el login viejo. sessionStorage (no localStorage) a proposito: cierra
+    // sola al cerrar la pestaña, en vez de quedar viva indefinidamente en
+    // una computadora compartida.
+    if (!email || !STIKE_SITE.adminEmails.some(e => e.toLowerCase() === email)) return null;
+    return { email, role: STIKE_SITE.ownerEmails.some(e => e.toLowerCase() === email) ? "owner" : "employee" };
+  } catch (e) { return null; }
+}
+function persistLogin(email) {
+  try { sessionStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify({ email, ts: Date.now() })); } catch (e) {}
+}
+function clearLogin() {
+  try { sessionStorage.removeItem(LOGIN_STORAGE_KEY); } catch (e) {}
+  location.reload();
+}
+
+/* Sin esto, cualquier pagina podria fingir un login pasandole al callback
+   un email cualquiera: el credential es un JWT y hay que preguntarle a
+   Google si de verdad lo firmo Google y para esta app (aud). */
+async function verifyGoogleCredential(idToken) {
+  const res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
+  if (!res.ok) throw new Error("Google no pudo verificar la sesión. Intenta de nuevo.");
+  const info = await res.json();
+  if (info.aud !== STIKE_SITE.oauthClientId) throw new Error("El token no corresponde a este panel.");
+  if (info.email_verified !== "true" && info.email_verified !== true) throw new Error("Esa cuenta de Google no tiene el correo verificado.");
+  return String(info.email || "").toLowerCase();
+}
+
+/* El SDK de Google carga async/defer en paralelo a admin.js: puede no
+   estar listo todavia cuando se llega aca. Si nunca carga (sin internet,
+   un bloqueador de anuncios), avisa en pantalla en vez de dejar el boton
+   sin aparecer en silencio -- mismo principio que el detector de fallas
+   inline del <head>. */
+function whenGoogleReady(cb, deadline) {
+  deadline = deadline || Date.now() + 10000;
+  if (window.google && google.accounts && google.accounts.id) return cb();
+  if (Date.now() > deadline) {
+    const note = $("#login-gate-note");
+    if (note) { note.hidden = false; note.textContent = "No se pudo cargar el inicio de sesión de Google. Revisa tu conexión e intenta recargar la página."; }
+    return;
+  }
+  setTimeout(() => whenGoogleReady(cb, deadline), 100);
+}
+
+/* Bloquea el panel hasta autenticar. Llama a onAuthenticated() una vez que
+   session.email/session.role quedaron puestos con una cuenta autorizada. */
+function requireGoogleLogin(onAuthenticated) {
+  const gate = $("#login-gate");
+  const restored = loadStoredLogin();
+  if (restored) {
+    session.email = restored.email;
+    session.role = restored.role;
+    onAuthenticated();
+    return;
+  }
+
+  gate.hidden = false;
+
+  if (isEmbeddedBrowser()) {
+    $("#login-gate-msg").textContent = "Este navegador (el de WhatsApp o Instagram) no puede iniciar sesión con Google.";
+    const note = $("#login-gate-note");
+    note.hidden = false;
+    note.textContent = "Abrí este enlace en Chrome o Safari para entrar al panel.";
+    return;
+  }
+
+  whenGoogleReady(() => {
+    google.accounts.id.initialize({
+      client_id: STIKE_SITE.oauthClientId,
+      callback: response => {
+        const note = $("#login-gate-note");
+        note.hidden = true;
+        verifyGoogleCredential(response.credential).then(email => {
+          if (!STIKE_SITE.adminEmails.some(e => e.toLowerCase() === email)) {
+            note.hidden = false;
+            note.textContent = `${email} no está autorizado para entrar al panel. Pide que agreguen tu correo.`;
+            return;
+          }
+          persistLogin(email);
+          session.email = email;
+          session.role = STIKE_SITE.ownerEmails.some(e => e.toLowerCase() === email) ? "owner" : "employee";
+          gate.hidden = true;
+          onAuthenticated();
+        }).catch(e => { note.hidden = false; note.textContent = e.message; });
+      },
+    });
+    google.accounts.id.renderButton($("#google-signin-btn"), { theme: "outline", size: "large", text: "signin_with", width: 280 });
+  });
+}
+
 /* ============================== INIT =========================================== */
-(function init() {
+function bootApp() {
   disableAutofill();
   resetSearchFilter(false);          // antes del primer render: filtro siempre vacio
   populateCategoryFilter();
@@ -1780,4 +1911,9 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && quickSaleS
   requestAnimationFrame(() => resetSearchFilter(true));
   setTimeout(() => resetSearchFilter(true), 250);
   window.STIKE_ADMIN_BOOTED = true;
+}
+
+(function init() {
+  if (STIKE_SITE.adminEmails.length) requireGoogleLogin(bootApp);
+  else bootApp();  // ADMIN_EMAILS vacio: entra directo, como antes de conectar el login
 })();
