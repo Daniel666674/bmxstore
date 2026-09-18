@@ -162,8 +162,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
    bloqueando los clics. Detectado con Playwright antes de publicar. */
 .login-gate[hidden]{display:none}
 .login-gate-card{
-  width:100%; max-width:360px; background:var(--panel); border:1px solid var(--line);
-  border-radius:var(--radius); padding:28px 26px; text-align:center;
+  width:100%; max-width:380px; background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--radius); padding:36px 30px 32px; text-align:center;
+  box-shadow:0 24px 48px -12px rgba(0,0,0,.5);
+}
+.login-gate-mark{
+  width:44px; height:44px; margin:0 auto 18px; border-radius:12px;
+  background:var(--accent-soft); color:var(--accent);
+  display:flex; align-items:center; justify-content:center;
 }
 .login-gate-card .brand{font-family:inherit;font-weight:800;font-size:20px;letter-spacing:-.01em;margin-bottom:4px}
 .login-gate-card .brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:1px;font-family:inherit;text-transform:uppercase}
@@ -177,7 +183,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .side{background:var(--panel);border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
 .side .brand{font-family:inherit;font-weight:800;font-size:18px;letter-spacing:-.01em;padding:6px 10px 18px}
 .side .brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:1px}
-.navbtn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;background:none;border:none;color:var(--muted);text-align:left;font-weight:600}
+.navbtn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;background:none;border:none;color:var(--muted);text-align:left;font-weight:500}
+.navbtn .nav-ic{width:18px;height:18px;flex:none}
 .navbtn:hover{background:var(--bg-2);color:var(--ink)}
 .navbtn.active{background:var(--bg-2);color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
 .side .spacer{flex:1}
@@ -245,6 +252,12 @@ tr:hover td{background:var(--bg-2)}
 .demo-banner p{margin:3px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}
 
 /* ---- reporting ---- */
+/* Reemplaza el 🔒 de texto plano que se interpolaba en el numero cuando
+   session.role no es "owner". El tamano sigue el font-size de donde se usa
+   (1em) para no necesitar variantes por contexto: se ve chico en una celda
+   de tabla y grande en el numero de un KPI, sin CSS aparte para cada uno. */
+.locked{display:inline-flex;align-items:center;color:var(--muted)}
+.locked svg{width:1em;height:1em}
 .kpi .delta{font-size:12px;margin-top:3px}
 .kpi .delta.up{color:var(--good)}
 .kpi .delta.down{color:var(--bad)}
@@ -321,6 +334,9 @@ tr:hover td{background:var(--bg-2)}
      alguien con malas intenciones -- ver README. -->
 <div id="login-gate" class="login-gate" hidden>
   <div class="login-gate-card">
+    <div class="login-gate-mark">
+      <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="12" height="8" rx="1.5"/><path d="M6.5 9V6.3a3.5 3.5 0 017 0V9"/></svg>
+    </div>
     <div class="brand">Stike<small>Panel admin</small></div>
     <p id="login-gate-msg">Inicia sesión con una cuenta autorizada de Google para entrar al panel.</p>
     <div id="google-signin-btn"></div>
@@ -332,12 +348,12 @@ tr:hover td{background:var(--bg-2)}
 <div id="app">
   <nav class="side">
     <div class="brand">Stike<small>PANEL ADMIN</small></div>
-    <button class="navbtn active" data-panel="productos">📦 Productos</button>
-    <button class="navbtn" data-panel="ventas">🧾 Ventas</button>
-    <button class="navbtn" data-panel="kpis">📈 KPIs</button>
-    <button class="navbtn" data-panel="auditoria">🕒 Auditoría</button>
-    <button class="navbtn" data-panel="contenido">✏️ Contenido del sitio</button>
-    <button class="navbtn" data-panel="config">⚙️ Configuración</button>
+    <button class="navbtn active" data-panel="productos"><svg class="nav-ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l7-4 7 4-7 4-7-4z"/><path d="M3 8v8l7 4 7-4V8"/><path d="M10 12v8"/></svg><span>Productos</span></button>
+    <button class="navbtn" data-panel="ventas"><svg class="nav-ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l1 15-6 2-6-2 1-15z"/><path d="M8 7h4"/><path d="M8 10h4"/></svg><span>Ventas</span></button>
+    <button class="navbtn" data-panel="kpis"><svg class="nav-ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5-6 4 3 5-7"/><path d="M13 7h4v4"/></svg><span>KPIs</span></button>
+    <button class="navbtn" data-panel="auditoria"><svg class="nav-ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l3 2"/></svg><span>Auditoría</span></button>
+    <button class="navbtn" data-panel="contenido"><svg class="nav-ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3l4 4-9 9H4v-4l9-9z"/></svg><span>Contenido del sitio</span></button>
+    <button class="navbtn" data-panel="config"><svg class="nav-ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="2.6"/><path d="M10 3v2M10 15v2M17 10h-2M5 10H3M14.9 5.1l-1.4 1.4M6.5 13.5l-1.4 1.4M14.9 14.9l-1.4-1.4M6.5 6.5L5.1 5.1"/></svg><span>Configuración</span></button>
     <div class="spacer"></div>
     <div class="side-foot" id="session-info"></div>
   </nav>
