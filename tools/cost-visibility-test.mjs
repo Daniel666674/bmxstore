@@ -48,7 +48,7 @@ console.log('\nKPIs: el margen se oculta al empleado');
   await page.click('[data-panel="kpis"]');
   await page.waitForTimeout(200);
   const html = await page.locator('main').innerHTML();
-  t('el dato de margen queda tras candado, no el numero', html.includes('🔒') && html.includes('solo dueño'), true);
+  t('el dato de margen queda tras candado, no el numero', html.includes('class="locked"') && html.includes('solo dueño'), true);
   t('no se filtra el texto "Costo: $..." al empleado', /Costo:\s*\$[\d.]+/.test(html), false);
   await context.close();
 }
@@ -58,7 +58,7 @@ console.log('\nKPIs: el margen se oculta al empleado');
   await page.waitForTimeout(200);
   const html = await page.locator('main').innerHTML();
   t('el dueño ve "Margen bruto (30d)"', html.includes('Margen bruto (30d)'), true);
-  t('el dueño NO ve el candado en ningún KPI', html.includes('🔒'), false);
+  t('el dueño NO ve el candado en ningún KPI', html.includes('class="locked"'), false);
   t('el dueño ve el costo en pesos', /Costo:\s*\$[\d.]+/.test(html), true);
   await context.close();
 }

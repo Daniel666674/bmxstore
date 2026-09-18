@@ -310,7 +310,7 @@ function renderDemoBanner() {
   if (!el) return;
   el.innerHTML = demoMode ? `
     <div class="demo-banner">
-      <span style="font-size:18px;line-height:1">🧪</span>
+      <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;color:var(--warn)"><path d="M8 3h4"/><path d="M9 3v5.2L4.6 15a2 2 0 001.7 3h7.4a2 2 0 001.7-3L11 8.2V3"/></svg>
       <div>
         <b>Modo demo — datos de ejemplo</b>
         <p>El catálogo es el real del sitio, pero las <b>ventas, costos, márgenes y auditoría son ficticios</b>,
@@ -1388,6 +1388,12 @@ function renderSalesTab() {
 }
 
 /* ============================== KPIs ======================================== */
+/* Icono de candado reutilizable para todo dato que session.role oculta
+   (costo, margen). 1em de lado: hereda el tamano de texto de donde se
+   ponga, asi se ve chico en una celda de tabla y grande en un numero de
+   KPI sin necesitar una variante de CSS por contexto. */
+const LOCKED_ICON = `<span class="locked" title="Solo dueño"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="9" width="11" height="8" rx="1.5"/><path d="M6.5 9V6.5a3.5 3.5 0 017 0V9"/></svg></span>`;
+
 function renderKpis() {
   const isOwner = session.role === "owner";
   const now = Date.now();
@@ -1423,7 +1429,7 @@ function renderKpis() {
     <div class="kpi"><div class="n">${money(revenue)}</div><div class="l">Ingresos (30d)</div>${delta(revenue, prevRevenue)}</div>
     <div class="kpi"><div class="n">${units}</div><div class="l">Unidades vendidas (30d)</div>${delta(units, prevUnits)}</div>
     <div class="kpi"><div class="n">${money(avgTicket)}</div><div class="l">Ticket promedio</div>${delta(avgTicket, prevAvg)}</div>
-    <div class="kpi"><div class="n">${isOwner ? marginPct + "%" : "🔒"}</div><div class="l">Margen bruto (30d)</div>
+    <div class="kpi"><div class="n">${isOwner ? marginPct + "%" : LOCKED_ICON}</div><div class="l">Margen bruto (30d)</div>
       <div class="delta flat">${isOwner ? "Costo: " + money(cogs) : "solo dueño"}</div></div>
     <div class="kpi"><div class="n">${lowStock}</div><div class="l">Bajo stock / agotados</div>
       <div class="delta ${lowStock ? "down" : "up"}">${lowStock ? "requieren reposición" : "todo cubierto"}</div></div>
@@ -1485,7 +1491,7 @@ function renderKpis() {
   const top = Object.values(bySlug).sort((a, b) => b.revenue - a.revenue).slice(0, 10);
   $("#top-products-tbody").innerHTML = top.map(t => {
     const m = t.revenue > 0 ? Math.round(((t.revenue - t.cost) / t.revenue) * 100) + "%" : "—";
-    return `<tr><td>${t.name}</td><td>${t.units}</td><td>${money(t.revenue)}</td><td>${isOwner ? m : "🔒"}</td></tr>`;
+    return `<tr><td>${t.name}</td><td>${t.units}</td><td>${money(t.revenue)}</td><td>${isOwner ? m : LOCKED_ICON}</td></tr>`;
   }).join("")
     || `<tr><td colspan="4" class="muted" style="padding:16px;text-align:center">Sin ventas en los últimos 30 días.</td></tr>`;
 }
