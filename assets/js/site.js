@@ -34,12 +34,31 @@
      los dos y se niega a generar si no coinciden. */
   var WHATSAPP  = "573118108848";
 
-  /* Acceso al panel — pendiente (se conecta cuando este el client ID de
-     Google). Mientras ADMIN_EMAILS este vacio, admin.html sigue entrando
-     sin login, igual que hasta hoy. */
-  var OAUTH_CLIENT_ID = "";
-  var ADMIN_EMAILS    = [];   // quien puede entrar al panel
-  var OWNER_EMAILS     = [];  // de esos, quien ve costos y margenes
+  /* Acceso al panel. Mientras ADMIN_EMAILS este vacio, admin.html entra
+     sin login (asi arranco esto). Con la lista llena, como ahora, admin.html
+     exige iniciar sesion con una de estas cuentas de Google antes de mostrar
+     nada del catalogo real.
+
+     El Client ID es publico a proposito -- va escrito en la pagina, y lo
+     que protege el acceso es esta lista de correos, no el secreto de la
+     credencial (ese no se usa: Sign In With Google no lo necesita). */
+  var OAUTH_CLIENT_ID = "752305520255-7e2abc762p3saer5sube25jh9rt9jle7.apps.googleusercontent.com";
+
+  /* Quien puede ENTRAR al panel. Un correo que no este aca se autentica bien
+     con Google (es una cuenta real) pero el panel lo rechaza igual: la
+     lista de Google en Cloud Console es aparte y NO sustituye a esta. */
+  var ADMIN_EMAILS = [
+    "daniel.f.acosta96@gmail.com",
+    "camilor95@gmail.com",
+    "jparra375@gmail.com",
+  ];
+
+  /* De los de arriba, quien ve costo y margen. El resto entra y publica
+     igual, pero esos numeros quedan ocultos (ver session.role en admin.js). */
+  var OWNER_EMAILS = [
+    "daniel.f.acosta96@gmail.com",
+    "jparra375@gmail.com",
+  ];
 
   /* ------------------------------ DERIVADO ------------------------------ */
 

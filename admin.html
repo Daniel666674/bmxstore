@@ -10,6 +10,10 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3C/svg%3E">
+<!-- Sign In With Google. async+defer: no bloquea el resto de la carga: el
+     panel espera este SDK solo cuando de verdad hay que mostrar el boton
+     (ver whenGoogleReady en admin.js), nunca al cargar la pagina. -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 /* Detector de fallas INLINE, antes de cargar nada mas: si admin.js (o
    cualquier otro script/CSS del panel) no llega a cargar por la razon que
@@ -80,6 +84,29 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--cyan);outline-of
 .pill.dirty{color:var(--orange);border-color:#3a2a1c}
 .pill.low{color:var(--yellow)}
 .pill.out{color:var(--bad)}
+
+/* ---- gate de acceso (Google Sign-In) ---- */
+.login-gate{
+  position:fixed; inset:0; z-index:9000;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg); padding:24px;
+}
+/* [hidden] por si solo pierde contra ".login-gate{display:flex}" porque
+   tienen la misma especificidad y esta regla carga despues que la hoja de
+   estilos del navegador: sin esto, ocultar el gate (gate.hidden = true, al
+   iniciar sesion) no lo saca de pantalla, se queda encima de todo el panel
+   bloqueando los clics. Detectado con Playwright antes de publicar. */
+.login-gate[hidden]{display:none}
+.login-gate-card{
+  width:100%; max-width:360px; background:var(--panel); border:1px solid var(--line);
+  border-radius:var(--radius); padding:28px 26px; text-align:center;
+}
+.login-gate-card .brand{font-family:Oswald,sans-serif;font-size:22px;text-transform:uppercase;margin-bottom:4px}
+.login-gate-card .brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:1px;font-family:inherit;text-transform:uppercase}
+.login-gate-card p{color:var(--muted);font-size:13px;line-height:1.5;margin:14px 0 18px}
+#google-signin-btn{display:flex;justify-content:center;min-height:44px}
+.login-gate-note{font-size:12px;color:var(--bad);margin-top:14px}
+.login-gate-note[hidden]{display:none}
 
 /* ---- shell ---- */
 #app{display:grid;min-height:100vh;grid-template-columns:220px 1fr}
@@ -225,8 +252,22 @@ tr:hover td{background:var(--bg-2)}
 </head>
 <body>
 
-<!-- Demo: sin login, entra directo. Lo único que realmente hace falta para
-     publicar es el token de GitHub en la pestaña Configuración. -->
+<!-- Con ADMIN_EMAILS vacio en site.js, este gate ni se muestra: admin.html
+     entra directo, como al principio. Con la lista llena (el caso de hoy),
+     bloquea el panel hasta iniciar sesion con una cuenta autorizada.
+     Es una restriccion de INTERFAZ, no un muro real: quien tenga su propio
+     token de GitHub puede llamar la API sin pasar por aca. Sirve para que
+     nadie toque el catalogo real sin haber entrado, no para contener a
+     alguien con malas intenciones -- ver README. -->
+<div id="login-gate" class="login-gate" hidden>
+  <div class="login-gate-card">
+    <div class="brand">Stike<small>Panel admin</small></div>
+    <p id="login-gate-msg">Inicia sesión con una cuenta autorizada de Google para entrar al panel.</p>
+    <div id="google-signin-btn"></div>
+    <p id="login-gate-note" class="login-gate-note" hidden></p>
+  </div>
+</div>
+
 <!-- ============================== APP ============================== -->
 <div id="app">
   <nav class="side">
