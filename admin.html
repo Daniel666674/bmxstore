@@ -218,6 +218,12 @@ tr:hover td{background:var(--bg-2)}
 
 /* ---- grilla de productos: misma estetica de tarjeta que la tienda ---- */
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+/* Mismo bug que ya aparecio con .login-gate: [hidden] pierde contra una
+   regla de clase que fija display, por igual especificidad y orden de
+   carga. Se repite aca porque .pgrid tambien se oculta/muestra por JS
+   (toggle Tarjetas/Tabla) -- detectado por la prueba de la vista de tabla
+   antes de publicar. */
+.pgrid[hidden]{display:none}
 .pcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s}
 .pcard:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 14px 32px rgba(0,0,0,.4)}
 .pcard .thumb{position:relative;aspect-ratio:1/1;background:#f3f3f3;overflow:hidden}
@@ -326,6 +332,35 @@ tr:hover td{background:var(--bg-2)}
 .errlist li{color:#ffc4c8;font-size:12.5px}
 
 .spark{display:block}
+
+/* ---- selector Tarjetas/Tabla ---- */
+.viewtoggle{display:inline-flex;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:2px}
+.viewtoggle-btn{background:none;border:none;color:var(--muted);font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:6px}
+.viewtoggle-btn.active{background:var(--panel-2);color:var(--ink)}
+
+/* ---- barra de acciones en lote ---- */
+.bulkbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--accent-soft);border:1px solid #1c4a56;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--ink)}
+.bulkbar[hidden]{display:none}
+
+/* ---- vista de tabla del catalogo ---- */
+.ptable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+.ptable-wrap[hidden]{display:none}
+.ptable{width:100%;border-collapse:collapse;font-size:13px}
+.ptable th,.ptable td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.ptable thead th{background:var(--panel-2);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;white-space:nowrap}
+.ptable th[data-sort]{cursor:pointer;user-select:none}
+.ptable th[data-sort]:hover{color:var(--ink)}
+.ptable th.num,.ptable td.num{text-align:right;font-variant-numeric:tabular-nums}
+.ptable tbody tr:last-child td{border-bottom:none}
+.ptable tbody tr:hover td{background:var(--bg-2)}
+.ptable tbody tr.selected td{background:var(--accent-soft)}
+.ptable .pt-thumb{width:36px;height:36px;border-radius:7px;overflow:hidden;background:#f3f3f3;flex:none}
+.ptable .pt-thumb img{width:100%;height:100%;object-fit:contain}
+.ptable .pt-name{font-weight:600}
+.ptable .pt-brand{color:var(--muted);font-size:11.5px}
+.ptable .pt-actions{display:flex;gap:6px;justify-content:flex-end}
+.sort-ic{display:inline-block;margin-left:3px;opacity:.6;font-size:10px}
+.pill.good{color:var(--good);background:var(--good-soft);border-color:transparent}
 @media (max-width:900px){
   #app{grid-template-columns:1fr}
   .side{position:static;height:auto;flex-direction:row;overflow-x:auto}
@@ -390,6 +425,10 @@ tr:hover td{background:var(--bg-2)}
                data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other">
         <select id="p-filter-cat"><option value="">Todas las categorías</option></select>
         <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px"><input type="checkbox" id="p-filter-low"> Solo bajo/agotado</label>
+        <div class="viewtoggle" id="view-toggle" role="group" aria-label="Vista del catálogo">
+          <button class="viewtoggle-btn" data-view="cards" type="button">Tarjetas</button>
+          <button class="viewtoggle-btn" data-view="table" type="button">Tabla</button>
+        </div>
         <div class="right">
           <button class="btn ghost sm" id="btn-export-csv">Exportar CSV</button>
           <button class="btn ghost sm" id="btn-export-json">Exportar JSON</button>
@@ -400,7 +439,37 @@ tr:hover td{background:var(--bg-2)}
       </div>
       <input type="file" id="import-file" accept=".csv,.json" style="display:none">
       <p class="hint muted" id="p-count" style="margin:-4px 0 14px"></p>
+
+      <!-- Barra de acciones en lote: solo tiene sentido en la vista de
+           tabla, que es la que tiene checkboxes de seleccion. -->
+      <div class="bulkbar" id="bulk-bar" hidden>
+        <span id="bulk-count"></span>
+        <div class="right" style="display:flex;gap:8px">
+          <button class="btn ghost sm" id="bulk-publish">Publicar seleccionados</button>
+          <button class="btn ghost sm" id="bulk-price">Ajustar precio %</button>
+          <button class="btn bad sm" id="bulk-delete">Eliminar</button>
+        </div>
+      </div>
+
       <div class="pgrid" id="product-grid"></div>
+      <div class="ptable-wrap" id="product-table-wrap" hidden>
+        <table class="ptable">
+          <thead>
+            <tr>
+              <th style="width:32px"><input type="checkbox" id="ptable-select-all"></th>
+              <th style="width:48px"></th>
+              <th data-sort="n">Producto</th>
+              <th>SKU</th>
+              <th>Categoría</th>
+              <th data-sort="price" class="num">Precio</th>
+              <th data-sort="stock" class="num">Stock</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="product-table-body"></tbody>
+        </table>
+      </div>
     </section>
 
     <!-- ---------------- Ventas ---------------- -->
@@ -500,6 +569,7 @@ tr:hover td{background:var(--bg-2)}
 
 <div class="overlay" id="editor-overlay"><div class="drawer" id="editor-drawer"></div></div>
 <div class="overlay center" id="sale-overlay"><div class="modal" id="sale-modal"></div></div>
+<div class="overlay center" id="confirm-overlay"><div class="modal" id="confirm-modal"></div></div>
 <div class="status" id="status-box"></div>
 
 <script src="assets/js/site.js?v=1"></script>

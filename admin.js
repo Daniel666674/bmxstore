@@ -796,6 +796,35 @@ function populateCategoryFilter() {
 /* Grilla de tarjetas con la MISMA estetica que la tienda (foto grande,
    marca, nombre, precio) mas lo que el admin necesita ver de un vistazo:
    SKU, stock real y estado (borrador / bajo / agotado / sin publicar). */
+/* ============================== VISTA: TARJETAS / TABLA =====================
+   Dos vistas del mismo catalogo filtrado. La preferencia se guarda en este
+   navegador (mismo patron que el token de GitHub), no en el catalogo.
+
+   La seleccion para acciones en lote es SOLO de la vista de tabla (las
+   tarjetas no tienen checkbox) y se limpia en cada renderProductGrid(): es
+   una eleccion corta y en el momento ("filtro, selecciono, actuo"), no un
+   estado que tenga sentido arrastrar entre re-renders -- evita el bug de
+   actuar sobre un slug que ya no esta ni visible despues de cambiar el filtro.
+   El click de un checkbox individual NO llama a renderProductGrid(): solo
+   actualiza el Set y la barra, para no perder el resto de la seleccion. */
+let productsView = localStorage.getItem("stike_admin_view") === "table" ? "table" : "cards";
+let selectedSlugs = new Set();
+let tableSort = { key: "n", dir: 1 };
+
+function setProductsView(view) {
+  productsView = view === "table" ? "table" : "cards";
+  localStorage.setItem("stike_admin_view", productsView);
+  $$("#view-toggle .viewtoggle-btn").forEach(b => b.classList.toggle("active", b.getAttribute("data-view") === productsView));
+  renderProductGrid();
+}
+
+function updateBulkBar() {
+  const bar = $("#bulk-bar");
+  const n = selectedSlugs.size;
+  bar.hidden = n === 0;
+  if (n) $("#bulk-count").textContent = `${n} producto${n === 1 ? "" : "s"} seleccionado${n === 1 ? "" : "s"}`;
+}
+
 function renderProductGrid() {
   const q = ($("#p-search").value || "").toLowerCase().trim();
   const catFilter = $("#p-filter-cat").value;
@@ -805,6 +834,19 @@ function renderProductGrid() {
     .filter(p => !catFilter || p.cat === catFilter)
     .filter(p => !lowOnly || stikeTotalStock(p) <= STIKE_LOW_STOCK_ADMIN);
 
+  selectedSlugs = new Set();
+  updateBulkBar();
+  $("#product-grid").hidden = productsView !== "cards";
+  $("#product-table-wrap").hidden = productsView !== "table";
+  if (productsView === "table") renderProductTable(visible); else renderCards(visible);
+
+  $("#p-count").textContent = catalogLoaded
+    ? `${visible.length} de ${workingCatalog.length} producto${workingCatalog.length === 1 ? "" : "s"}`
+    : "";
+  populateSaleProductSelect();
+}
+
+function renderCards(visible) {
   const cards = visible.map(p => {
     const total = stikeTotalStock(p);
     const out = total <= 0;
@@ -813,12 +855,12 @@ function renderProductGrid() {
       !p.published ? `<span class="pill">Borrador</span>` : "",
       out ? `<span class="pill out dot">Agotado</span>`
         : low ? `<span class="pill low dot">Bajo: ${total}</span>` : "",
-      p.promo ? `<span class="pill" style="color:var(--yellow)">Oferta</span>` : "",
+      p.promo ? `<span class="pill" style="color:var(--warn)">Oferta</span>` : "",
       dirtySlugs.has(p.slug) ? `<span class="pill dirty">Sin publicar</span>` : "",
     ].filter(Boolean).join("");
     const img = (p.imgs && p.imgs[0]) ? previewSrcFor(p.imgs[0]) : stikeProductImage(p, 600);
     const stockTxt = out ? `<span style="color:var(--bad)">Sin stock</span>`
-      : low ? `<span style="color:var(--yellow)">${total} en stock</span>`
+      : low ? `<span style="color:var(--warn)">${total} en stock</span>`
       : `${total} en stock`;
     return `<article class="pcard" data-slug="${p.slug}">
       <div class="thumb">
@@ -846,14 +888,73 @@ function renderProductGrid() {
     ? `Todavía no se cargó el catálogo — guarda tu token de GitHub en <b>Configuración</b> para verlo.`
     : "Ningún producto coincide con el filtro.";
   $("#product-grid").innerHTML = cards || `<div class="grid-empty">${emptyMsg}</div>`;
-  $("#p-count").textContent = catalogLoaded
-    ? `${visible.length} de ${workingCatalog.length} producto${workingCatalog.length === 1 ? "" : "s"}`
-    : "";
   $$("#product-grid [data-edit]").forEach(b => b.addEventListener("click", () => openEditor(b.getAttribute("data-edit"))));
   $$("#product-grid [data-sell]").forEach(b => b.addEventListener("click", () => openQuickSale(b.getAttribute("data-sell"))));
-  populateSaleProductSelect();
 }
 const STIKE_LOW_STOCK_ADMIN = 5;
+
+/* La etiqueta y color del estado, compartida por tarjetas (implicita en
+   .flags) y tabla (un solo chip .pill): un producto puede estar en
+   exactamente uno de estos tres estados a la vez. */
+function productStatusChip(p) {
+  if (!p.published) return `<span class="pill">Borrador</span>`;
+  if (dirtySlugs.has(p.slug)) return `<span class="pill dirty">Sin publicar</span>`;
+  return `<span class="pill good">Publicado</span>`;
+}
+
+function sortIndicator(key) {
+  if (tableSort.key !== key) return "";
+  return `<span class="sort-ic">${tableSort.dir > 0 ? "▲" : "▼"}</span>`;
+}
+
+function renderProductTable(visible) {
+  const sorted = visible.slice().sort((a, b) => {
+    let av, bv;
+    if (tableSort.key === "n") { av = a.n.toLowerCase(); bv = b.n.toLowerCase(); }
+    else if (tableSort.key === "price") { av = a.price || 0; bv = b.price || 0; }
+    else { av = stikeTotalStock(a); bv = stikeTotalStock(b); }
+    if (av < bv) return -1 * tableSort.dir;
+    if (av > bv) return 1 * tableSort.dir;
+    return 0;
+  });
+
+  $$(".ptable th[data-sort]").forEach(th => {
+    th.innerHTML = th.textContent.replace(/[▲▼]/g, "").trim() + sortIndicator(th.getAttribute("data-sort"));
+  });
+
+  $("#product-table-body").innerHTML = sorted.map(p => {
+    const total = stikeTotalStock(p);
+    const out = total <= 0;
+    const low = !out && total <= STIKE_LOW_STOCK_ADMIN;
+    const img = (p.imgs && p.imgs[0]) ? previewSrcFor(p.imgs[0]) : stikeProductImage(p, 200);
+    const stockTxt = out ? `<span style="color:var(--bad)">0</span>` : low ? `<span style="color:var(--warn)">${total}</span>` : total;
+    return `<tr data-slug="${p.slug}">
+      <td><input type="checkbox" data-pt-select="${p.slug}" ${selectedSlugs.has(p.slug) ? "checked" : ""}></td>
+      <td><div class="pt-thumb"><img src="${img}" alt=""></div></td>
+      <td><div class="pt-name">${p.n}</div><div class="pt-brand">${p.brand}</div></td>
+      <td class="mono">${p.sku}</td>
+      <td>${stikeCategory(p.cat) ? stikeCategory(p.cat).name : p.cat}${p.sub ? " · " + p.sub : ""}</td>
+      <td class="num tabnum">${money(p.price)}</td>
+      <td class="num tabnum">${stockTxt}</td>
+      <td>${productStatusChip(p)}</td>
+      <td><div class="pt-actions">
+        <button class="btn ghost sm" data-edit="${p.slug}">Editar</button>
+        <button class="btn cyan sm" data-sell="${p.slug}" ${out ? "disabled title=\"Sin stock\"" : ""}>Vender</button>
+      </div></td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="9" class="muted" style="padding:24px;text-align:center">Ningún producto coincide con el filtro.</td></tr>`;
+
+  $$("#product-table-body [data-edit]").forEach(b => b.addEventListener("click", () => openEditor(b.getAttribute("data-edit"))));
+  $$("#product-table-body [data-sell]").forEach(b => b.addEventListener("click", () => openQuickSale(b.getAttribute("data-sell"))));
+  $$("#product-table-body [data-pt-select]").forEach(cb => cb.addEventListener("change", e => {
+    const slug = e.target.getAttribute("data-pt-select");
+    if (e.target.checked) selectedSlugs.add(slug); else selectedSlugs.delete(slug);
+    e.target.closest("tr").classList.toggle("selected", e.target.checked);
+    $("#ptable-select-all").checked = selectedSlugs.size > 0 && selectedSlugs.size === sorted.length;
+    updateBulkBar();
+  }));
+  $("#ptable-select-all").checked = sorted.length > 0 && sorted.every(p => selectedSlugs.has(p.slug));
+}
 
 /* ============================== PRODUCT EDITOR ============================== */
 function blankProduct() {
@@ -1304,7 +1405,7 @@ function renderQuickSale() {
     <div class="qs-head">
       <img src="${img}" alt="">
       <div>
-        <div style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--cyan)">${p.brand}</div>
+        <div style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent)">${p.brand}</div>
         <h3>${p.n}</h3>
         <div class="mono muted" style="font-size:11.5px">${p.sku}</div>
       </div>
@@ -1526,16 +1627,79 @@ function renderAudit() {
 }
 
 /* ============================== BULK PRICE ================================== */
-function bulkPriceAdjust() {
-  const catFilter = $("#p-filter-cat").value;
-  const pct = prompt(`Ajustar precio ${catFilter ? "de " + catFilter : "de TODO el catálogo"} en % (ej: 10 para +10%, -5 para -5%):`);
-  if (pct === null || pct.trim() === "") return;
-  const factor = 1 + (parseFloat(pct) / 100 || 0);
-  if (!confirm(`¿Aplicar ${pct}% a ${catFilter ? catFilter : "todos los productos"}? Esto se agrega a tus cambios sin publicar.`)) return;
-  workingCatalog.forEach(p => {
-    if (catFilter && p.cat !== catFilter) return;
-    p.price = Math.max(0, Math.round((p.price * factor) / 100) * 100);
-    markDirty(p.slug);
+/* ============================== MODAL GENERICO (reemplaza prompt/confirm) ===
+   Un solo overlay (#confirm-overlay/#confirm-modal, definido una vez en
+   admin.html) reusado para dos flujos distintos -- el ajuste de precio en
+   lote y la confirmacion de borrado en lote -- exactamente como
+   #sale-overlay ya se reusa para la venta rapida de cualquier producto.
+   Antes, ajustar precio en lote pedia el porcentaje con prompt() y
+   confirmaba con confirm(): dos popups nativos seguidos, sin vista previa
+   de a cuantos productos afecta hasta despues de contestar el primero. */
+function closeConfirmModal() { $("#confirm-overlay").classList.remove("open"); }
+
+function openBulkPriceModal(slugs, label) {
+  const targets = () => workingCatalog.filter(p => slugs.includes(p.slug));
+  $("#confirm-modal").innerHTML = `
+    <h3 style="margin-bottom:4px">Ajustar precio</h3>
+    <p class="muted" style="margin:0 0 16px;font-size:13px">${label}</p>
+    <div class="field"><label>Porcentaje (ej. 10 para +10%, -5 para -5%)</label>
+      <input id="bp-pct" type="number" step="0.5" value="0" autofocus>
+    </div>
+    <p class="hint muted" id="bp-preview" style="margin:0 0 16px"></p>
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" id="bp-cancel" style="flex:1">Cancelar</button>
+      <button class="btn cyan" id="bp-apply" style="flex:2">Aplicar</button>
+    </div>`;
+  const preview = () => {
+    const pct = parseFloat($("#bp-pct").value) || 0;
+    const n = targets().length;
+    $("#bp-preview").textContent = pct === 0
+      ? `Se aplicará a ${n} producto${n === 1 ? "" : "s"} — 0% no cambia nada.`
+      : `Se aplicará ${pct > 0 ? "+" : ""}${pct}% a ${n} producto${n === 1 ? "" : "s"}. Ejemplo: ${money(100000)} → ${money(Math.max(0, Math.round((100000 * (1 + pct / 100)) / 100) * 100))}.`;
+  };
+  $("#bp-pct").addEventListener("input", preview);
+  $("#bp-cancel").addEventListener("click", closeConfirmModal);
+  $("#bp-apply").addEventListener("click", () => {
+    const factor = 1 + (parseFloat($("#bp-pct").value) / 100 || 0);
+    targets().forEach(p => { p.price = Math.max(0, Math.round((p.price * factor) / 100) * 100); markDirty(p.slug); });
+    closeConfirmModal();
+    renderProductGrid();
+  });
+  preview();
+  disableAutofill($("#confirm-modal"));
+  $("#confirm-overlay").classList.add("open");
+  $("#bp-pct").focus();
+}
+
+function openBulkDeleteConfirm(slugs) {
+  $("#confirm-modal").innerHTML = `
+    <h3 style="margin-bottom:4px">Eliminar productos</h3>
+    <p class="muted" style="margin:0 0 20px;font-size:13px">¿Eliminar ${slugs.length} producto${slugs.length === 1 ? "" : "s"}? Se quitarán de la tienda al publicar.</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" id="bd-cancel" style="flex:1">Cancelar</button>
+      <button class="btn bad" id="bd-confirm" style="flex:2">Eliminar</button>
+    </div>`;
+  $("#bd-cancel").addEventListener("click", closeConfirmModal);
+  $("#bd-confirm").addEventListener("click", () => {
+    slugs.forEach(slug => {
+      const d = workingCatalog.find(p => p.slug === slug);
+      const ownSlug = findOwnBaselineSlug(slug);
+      workingCatalog = workingCatalog.filter(p => p.slug !== slug);
+      if (ownSlug) deletedSlugs.add(ownSlug);
+      dirtySlugs.delete(slug);
+      if (d) renamedFrom.delete(d.slug);
+    });
+    closeConfirmModal();
+    updateDirtyUI();
+    renderProductGrid();
+  });
+  $("#confirm-overlay").classList.add("open");
+}
+
+function bulkPublishSelected(slugs) {
+  slugs.forEach(slug => {
+    const p = workingCatalog.find(x => x.slug === slug);
+    if (p) { p.published = true; markDirty(slug); }
   });
   renderProductGrid();
 }
@@ -1789,7 +1953,30 @@ $("#p-filter-cat").addEventListener("change", renderProductGrid);
 $("#p-filter-low").addEventListener("change", renderProductGrid);
 $("#btn-export-csv").addEventListener("click", exportCSV);
 $("#btn-export-json").addEventListener("click", exportJSON);
-$("#btn-bulk-price").addEventListener("click", bulkPriceAdjust);
+$("#btn-bulk-price").addEventListener("click", () => {
+  const catFilter = $("#p-filter-cat").value;
+  const slugs = workingCatalog.filter(p => !catFilter || p.cat === catFilter).map(p => p.slug);
+  openBulkPriceModal(slugs, catFilter ? `Categoría: ${catFilter}` : "Todo el catálogo (sin filtrar por categoría).");
+});
+$$("#view-toggle .viewtoggle-btn").forEach(b => b.addEventListener("click", () => setProductsView(b.getAttribute("data-view"))));
+$$(".ptable th[data-sort]").forEach(th => th.addEventListener("click", () => {
+  const key = th.getAttribute("data-sort");
+  tableSort.dir = tableSort.key === key ? -tableSort.dir : 1;
+  tableSort.key = key;
+  renderProductGrid();
+}));
+$("#ptable-select-all").addEventListener("change", e => {
+  $$("#product-table-body [data-pt-select]").forEach(cb => {
+    cb.checked = e.target.checked;
+    const slug = cb.getAttribute("data-pt-select");
+    if (e.target.checked) selectedSlugs.add(slug); else selectedSlugs.delete(slug);
+    cb.closest("tr").classList.toggle("selected", e.target.checked);
+  });
+  updateBulkBar();
+});
+$("#bulk-publish").addEventListener("click", () => bulkPublishSelected([...selectedSlugs]));
+$("#bulk-price").addEventListener("click", () => openBulkPriceModal([...selectedSlugs], `${selectedSlugs.size} producto${selectedSlugs.size === 1 ? "" : "s"} seleccionado${selectedSlugs.size === 1 ? "" : "s"}.`));
+$("#bulk-delete").addEventListener("click", () => openBulkDeleteConfirm([...selectedSlugs]));
 $("#btn-import").addEventListener("click", () => $("#import-file").click());
 $("#import-file").addEventListener("change", e => { const f = e.target.files[0]; if (f) importFile(f); e.target.value = ""; });
 $("#sale-product").addEventListener("change", onSaleProductChange);
@@ -1799,6 +1986,7 @@ $("#btn-registrar-venta").addEventListener("click", registrarVenta);
 $("#btn-save-content").addEventListener("click", saveSiteContent);
 $("#editor-overlay").addEventListener("click", e => { if (e.target.id === "editor-overlay") closeEditor(); });
 $("#sale-overlay").addEventListener("click", e => { if (e.target.id === "sale-overlay") closeQuickSale(); });
+$("#confirm-overlay").addEventListener("click", e => { if (e.target.id === "confirm-overlay") closeConfirmModal(); });
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape") return;
   // Antes solo la venta rapida cerraba con Escape; el editor de producto
@@ -1806,7 +1994,9 @@ document.addEventListener("keydown", e => {
   // sin esa salida rapida.
   if (quickSaleSlug) closeQuickSale();
   else if (editorDraft) closeEditor();
+  else if ($("#confirm-overlay").classList.contains("open")) closeConfirmModal();
 });
+$$("#view-toggle .viewtoggle-btn").forEach(b => b.classList.toggle("active", b.getAttribute("data-view") === productsView));
 
 /* ============================== ACCESO (Google Sign-In) ====================
    Gate de identidad delante del panel. Mientras STIKE_SITE.adminEmails
