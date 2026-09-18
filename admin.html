@@ -37,6 +37,15 @@
   window.addEventListener("error", function (e) {
     var target = e.target;
     if (target && target !== window && (target.tagName === "SCRIPT" || target.tagName === "LINK")) {
+      // El SDK de Google (Sign In With Google) queda afuera de este aviso
+      // generico a proposito: si no carga (bloqueador de anuncios, red
+      // restrictiva), whenGoogleReady() en admin.js ya lo detecta solo y
+      // muestra un mensaje mas claro y accionable DENTRO del propio gate
+      // de login ("revisa tu conexion e intenta recargar"). Sin esta
+      // excepcion, salian los dos avisos a la vez -- el generico con la URL
+      // tecnica tapando al especifico -- y alguien sin experiencia tecnica
+      // ve un panel "roto" cuando en realidad solo el login esta afectado.
+      if (String(target.src || "").indexOf("accounts.google.com") !== -1) return;
       showBoot("No se pudo cargar " + (target.src || target.href));
     } else {
       showBoot((e.message || "error desconocido") + (e.filename ? " (" + e.filename + ":" + e.lineno + ")" : ""));

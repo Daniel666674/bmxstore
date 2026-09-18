@@ -1910,10 +1910,25 @@ function bootApp() {
   // siguiente frame y un instante despues, por si llega tarde.
   requestAnimationFrame(() => resetSearchFilter(true));
   setTimeout(() => resetSearchFilter(true), 250);
-  window.STIKE_ADMIN_BOOTED = true;
 }
 
 (function init() {
   if (STIKE_SITE.adminEmails.length) requireGoogleLogin(bootApp);
   else bootApp();  // ADMIN_EMAILS vacio: entra directo, como antes de conectar el login
+
+  // El detector de fallas del <head> revisa STIKE_ADMIN_BOOTED 4s despues
+  // de window.load y, si sigue en false, muestra la alarma roja de "el
+  // panel no cargo". Eso estaba bien mientras bootApp() corria solo, sin
+  // esperar a nadie -- pero con el login de por medio, bootApp() no corre
+  // hasta que la PERSONA hace clic en el boton de Google y termina el
+  // handshake, y eso casi nunca pasa en 4 segundos. Se disparaba la alarma
+  // en logins perfectamente exitosos.
+  //
+  // La bandera marca otra cosa: "admin.js corrio de punta a punta sin
+  // tirar una excepcion", no "ya hay una sesion adentro". Eso se sabe apenas
+  // termina esta IIFE (requireGoogleLogin no bloquea: monta el gate y
+  // vuelve enseguida). Si algo revienta ANTES de llegar aca, la excepcion
+  // sigue subiendo y la bandera nunca se pone -- la alarma real sigue
+  // funcionando igual.
+  window.STIKE_ADMIN_BOOTED = true;
 })();
