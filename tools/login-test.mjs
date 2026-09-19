@@ -85,10 +85,10 @@ console.log('\nSESIÓN GUARDADA — DUEÑO: entra directo, ve costos');
 
 console.log('\nSESIÓN GUARDADA — EMPLEADO: entra, sin costos');
 {
-  const { page, context, errs } = await openAdmin({ seedLogin: 'camilor95@gmail.com' });
+  const { page, context, errs } = await openAdmin({ seedLogin: 'camilor9507@gmail.com' });
   t('el gate se oculta', await page.locator('#login-gate').isVisible(), false);
   const info = await page.locator('#session-info').textContent();
-  t('muestra el correo', info.includes('camilor95@gmail.com'), true);
+  t('muestra el correo', info.includes('camilor9507@gmail.com'), true);
   t('pill de Editor (no Dueño)', info.includes('Editor') && !info.includes('Dueño'), true);
   await context.close();
 }
