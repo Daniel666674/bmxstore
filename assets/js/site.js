@@ -49,7 +49,7 @@
      lista de Google en Cloud Console es aparte y NO sustituye a esta. */
   var ADMIN_EMAILS = [
     "daniel.f.acosta96@gmail.com",
-    "camilor95@gmail.com",
+    "camilor9507@gmail.com",
     "jparra375@gmail.com",
   ];
 
