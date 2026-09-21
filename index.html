@@ -45,21 +45,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=31">
+  <link rel="stylesheet" href="assets/css/styles.css?v=32">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
   <div id="site-header"></div>
 
-  <!-- HERO: un solo momento fuerte, una foto/video, un solo CTA -->
+  <!-- HERO: fondo solido + tipografia enorme + una foto de producto real
+       recortada (sin video, sin bodegon oscuro), un solo CTA. -->
   <section class="home-hero reveal">
-    <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg">
-      <source src="assets/video/stike-hero.mp4" type="video/mp4">
-    </video>
-    <div class="wrap home-hero-copy">
-      <h1 data-reveal-words>Rueda duro,<br>vive BMX</h1>
-      <p>La casa de todo el que rueda — repuestos, armado a tu medida y asesoría real de riders, en Venecia, Bogotá.</p>
-      <a class="btn" href="tienda.html">Ver catálogo</a>
+    <img class="home-hero-art" src="assets/img/hero-frame-cutout.png" alt="Marco Sunday Soundwave" loading="eager">
+    <div class="wrap">
+      <div class="home-hero-copy">
+        <h1 data-reveal-words>Rueda duro,<br>vive BMX</h1>
+        <p>La casa de todo el que rueda — repuestos, armado a tu medida y asesoría real de riders, en Venecia, Bogotá.</p>
+        <a class="btn" href="tienda.html">Ver catálogo</a>
+      </div>
     </div>
   </section>
 
@@ -105,12 +106,12 @@
     // Foto real de un producto vigente por tile -- nunca la de un producto
     // ya eliminado del catalogo ni un bodegon generico.
     const homeTiles = [
-      { label: "Marcos", href: stikeSubUrl("repuestos", "Marcos"), img: "assets/img/products/marco-fiend-reynolds-negro-1.jpg" },
-      { label: "Timones", href: stikeSubUrl("repuestos", "Timones"), img: "assets/img/products/timon-fiend-team-negro-1.jpg" },
+      { label: "Marcos", href: stikeSubUrl("repuestos", "Marcos"), img: "assets/img/tiles/marcos.jpg" },
+      { label: "Timones", href: stikeSubUrl("repuestos", "Timones"), img: "assets/img/tiles/timones.jpg" },
       { label: "Cañas", href: stikeSubUrl("repuestos", "Espigas"), img: "assets/img/products/cana-bsd-front-load-negra-1.jpg" },
       { label: "Bielas", href: stikeSubUrl("repuestos", "Bielas"), img: "assets/img/products/bielas-primo-churchill-160mm-cromadas-1.jpg" },
-      { label: "Platos", href: stikeSubUrl("repuestos", "Platos"), img: "assets/img/products/plato-fiend-omicron-cromado-25t-1.jpg" },
-      { label: "Fate", href: "fate/", img: "assets/img/products/marco-fate-namaste-v2-2.jpg" },
+      { label: "Platos", href: stikeSubUrl("repuestos", "Platos"), img: "assets/img/tiles/platos.jpg" },
+      { label: "Fate", href: "fate/", img: "assets/img/tiles/fate.jpg" },
     ];
     document.getElementById("home-tiles").innerHTML = homeTiles.map(t => `
       <a class="tile" href="${t.href}">
