@@ -6,49 +6,6 @@
    ========================================================================= */
 window.STIKE_PRODUCTS = [
   {
-    "slug": "marco-cult-americano",
-    "sku": "REP-CUL-003",
-    "n": "Marco Cult Americano",
-    "brand": "Cult",
-    "cat": "repuestos",
-    "sub": "Marcos",
-    "spec": [
-      "Material: Cromoly 4130 full",
-      "Tubo superior: 20.8\"",
-      "Ángulo dirección: 75°",
-      "Peso: 2.1 kg"
-    ],
-    "price": 999600,
-    "promo": false,
-    "tag": "new",
-    "units": 4,
-    "imgs": [
-      "assets/img/products/IMG_7282.jpeg"
-    ],
-    "published": true
-  },
-  {
-    "slug": "bielas-bsd-substance-xl",
-    "sku": "REP-BSD-003",
-    "n": "Bielas BSD Substance XL",
-    "brand": "BSD",
-    "cat": "repuestos",
-    "sub": "Bielas",
-    "spec": [
-      "Largo: 175mm",
-      "Eje: 24mm",
-      "Material: Cromoly tubular",
-      "Estriado: 48"
-    ],
-    "price": 550800,
-    "promo": false,
-    "units": 4,
-    "imgs": [
-      "assets/img/products/IMG_7284.jpeg"
-    ],
-    "published": true
-  },
-  {
     "slug": "cana-shadow-finest-negra-topload",
     "sku": "REP-SHA-009",
     "n": "Caña Shadow Finest Negra TopLoad",
@@ -63,9 +20,9 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 1,
     "imgs": [
+      "assets/img/products/cana-shadow-finest-negra-topload-3.jpg",
       "assets/img/products/cana-shadow-finest-negra-topload-1.jpg",
-      "assets/img/products/cana-shadow-finest-negra-topload-2.jpg",
-      "assets/img/products/cana-shadow-finest-negra-topload-3.jpg"
+      "assets/img/products/cana-shadow-finest-negra-topload-2.jpg"
     ],
     "published": true
   },
@@ -144,22 +101,13 @@ window.STIKE_PRODUCTS = [
     ],
     "price": 1300000,
     "promo": false,
-    "sizes": [
-      {
-        "v": "20.75",
-        "u": 20
-      },
-      {
-        "v": "20.4",
-        "u": 4
-      }
-    ],
     "imgs": [
-      "assets/img/products/marco-fate-namaste-v2-1.jpg",
       "assets/img/products/marco-fate-namaste-v2-2.jpg",
+      "assets/img/products/marco-fate-namaste-v2-1.jpg",
       "assets/img/products/marco-fate-namaste-v2-3.jpg"
     ],
-    "published": true
+    "published": true,
+    "units": 1
   },
   {
     "slug": "marco-subrosa-joris",
@@ -257,10 +205,10 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 1,
     "imgs": [
-      "assets/img/products/cana-odyssey-broc-negra-1.jpg",
-      "assets/img/products/cana-odyssey-broc-negra-2.jpg",
       "assets/img/products/cana-odyssey-broc-negra-3.jpg",
-      "assets/img/products/cana-odyssey-broc-negra-4.jpg"
+      "assets/img/products/cana-odyssey-broc-negra-4.jpg",
+      "assets/img/products/cana-odyssey-broc-negra-1.jpg",
+      "assets/img/products/cana-odyssey-broc-negra-2.jpg"
     ],
     "published": true
   },
