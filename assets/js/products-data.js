@@ -2211,5 +2211,331 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/peg-fiend-belmont-cromo-plastico-4-5mm-1.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "marco-fiend-reynolds-dorado",
+    "sku": "REP-FIE-037",
+    "n": "Marco Fiend Reynolds Dorado Translúcido",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Medidas disponibles: 20.5\" y 20.75\" (1 c/u)",
+      "Tubo superior: 12.75\"",
+      "Color: Dorado translúcido"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/marco-fiend-reynolds-dorado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-reynolds-negro",
+    "sku": "REP-FIE-038",
+    "n": "Marco Fiend Reynolds Negro",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Medidas disponibles: 20.5\" y 20.75\" (1 c/u)",
+      "Tubo superior: 12.75\"",
+      "Color: Negro"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/marco-fiend-reynolds-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-reynolds-purpura",
+    "sku": "REP-FIE-039",
+    "n": "Marco Fiend Reynolds Púrpura Intenso",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Medidas disponibles: 20.5\" y 20.75\" (1 c/u)",
+      "Tubo superior: 12.75\"",
+      "Color: Púrpura intenso"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/marco-fiend-reynolds-purpura-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-mills-azul",
+    "sku": "REP-FIE-040",
+    "n": "Marco Fiend Mills Azul Translúcido",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Tubo superior: 20.5\" X 13.1\"",
+      "Color: Azul translúcido"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/marco-fiend-mills-azul-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-mills-negro",
+    "sku": "REP-FIE-041",
+    "n": "Marco Fiend Mills Negro",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Tubo superior: 20.5\" X 13.1\"",
+      "Color: Negro"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/marco-fiend-mills-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-mills-rojo",
+    "sku": "REP-FIE-042",
+    "n": "Marco Fiend Mills Rojo Translúcido",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Tubo superior: 20.5\" X 13.1\"",
+      "Color: Rojo translúcido"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/marco-fiend-mills-rojo-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-shapershifter-320-blanco",
+    "sku": "REP-FIE-043",
+    "n": "Marco Fiend Shapershifter 320 Blanco Perla Brillante",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Tubo superior: 20.5\" X 12.75\"",
+      "Color: Blanco perla brillante"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/marco-fiend-shapershifter-320-blanco-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "conix-fiend-m24",
+    "sku": "REP-FIE-044",
+    "n": "Conix Fiend M24 Negro-Cromado",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Rosca: M24",
+      "Tapa superior de dirección"
+    ],
+    "price": 60000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/conix-fiend-m24-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "barends-process-aluminio",
+    "sku": "REP-FIE-045",
+    "n": "Barends Process en Aluminio 6061",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Manubrios",
+    "spec": [
+      "Material: Aluminio 6061"
+    ],
+    "price": 75000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/barends-process-aluminio-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-reynolds-v4-gold",
+    "sku": "REP-FIE-046",
+    "n": "Caña Fiend Reynolds V4 Gold",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Reynolds V4",
+      "Color: Dorado"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/cana-fiend-reynolds-v4-gold-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tornillos-fiend-cana-cromo",
+    "sku": "REP-FIE-047",
+    "n": "Juego de Tornillos Fiend para Caña en Cromo",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Material: Cromo"
+    ],
+    "price": 40000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/tornillos-fiend-cana-cromo-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tornillos-fiend-bielas-segment",
+    "sku": "REP-FIE-048",
+    "n": "Juego de Tornillos Fiend para Bielas Segment",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Compatible con: Bielas Segment"
+    ],
+    "price": 45000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/tornillos-fiend-bielas-segment-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-reynolds-cromado-25t",
+    "sku": "REP-FIE-049",
+    "n": "Plato Fiend Reynolds Cromado 25T",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Sin guardia",
+      "Color: Cromado"
+    ],
+    "price": 140000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/plato-fiend-reynolds-cromado-25t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-omicron-negro-25t",
+    "sku": "REP-FIE-050",
+    "n": "Plato Fiend Omicron Negro 25T",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Sin guardia",
+      "Color: Negro"
+    ],
+    "price": 270000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/plato-fiend-omicron-negro-25t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-omicron-negro-28t",
+    "sku": "REP-FIE-051",
+    "n": "Plato Fiend Omicron Negro 28T",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 28T",
+      "Sin guardia",
+      "Color: Negro"
+    ],
+    "price": 270000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/plato-fiend-omicron-negro-28t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "silla-pivotal-fiend-reynolds-zebra",
+    "sku": "REP-FIE-052",
+    "n": "Silla Pivotal Fiend Reynolds Zebra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Sillas y Postes",
+    "spec": [
+      "Tipo: Pivotal",
+      "Estampado: Zebra"
+    ],
+    "price": 180000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/silla-pivotal-fiend-reynolds-zebra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "peg-fiend-7k-aluminio-plastico-4-5mm",
+    "sku": "REP-FIE-053",
+    "n": "Peg Fiend 7K Aluminio Plástico 4.5mm",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Material: Aluminio con funda plástica",
+      "Diámetro: 4.5mm"
+    ],
+    "price": 90000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/peg-fiend-7k-aluminio-plastico-4-5mm-1.jpg"
+    ],
+    "published": true
   }
 ];
