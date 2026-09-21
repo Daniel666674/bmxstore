@@ -793,6 +793,30 @@ function populateCategoryFilter() {
   const sel = $("#p-filter-cat");
   sel.innerHTML = `<option value="">Todas las categorías</option>` + STIKE_CATEGORIES.filter(c => c.slug !== "promo").map(c => `<option value="${c.slug}">${c.name}</option>`).join("");
 }
+
+/* Las subcategorias dependen de la categoria elegida (o, sin elegir
+   ninguna, se listan todas agrupadas en el mismo orden que STIKE_CATEGORIES).
+   Se reconstruye en cada render porque depende de un filtro que puede
+   cambiar; se preserva la seleccion si sigue siendo una opcion valida. */
+function populateSubFilter() {
+  const sel = $("#p-filter-sub");
+  const catFilter = $("#p-filter-cat").value;
+  const current = sel.value;
+  const cats = STIKE_CATEGORIES.filter(c => c.slug !== "promo" && (!catFilter || c.slug === catFilter));
+  const subs = [...new Set(cats.flatMap(c => c.subs))];
+  sel.innerHTML = `<option value="">Todas las subcategorías</option>` + subs.map(s => `<option value="${escAttr(s)}">${s}</option>`).join("");
+  sel.value = subs.includes(current) ? current : "";
+}
+
+/* Las marcas que existen HOY en el catalogo (no la lista completa de
+   STIKE_BRANDS): filtrar por una marca sin productos no tendria sentido. */
+function populateBrandFilter() {
+  const sel = $("#p-filter-brand");
+  const current = sel.value;
+  const brands = [...new Set(workingCatalog.map(p => p.brand).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+  sel.innerHTML = `<option value="">Todas las marcas</option>` + brands.map(b => `<option value="${escAttr(b)}">${b}</option>`).join("");
+  sel.value = brands.includes(current) ? current : "";
+}
 /* Grilla de tarjetas con la MISMA estetica que la tienda (foto grande,
    marca, nombre, precio) mas lo que el admin necesita ver de un vistazo:
    SKU, stock real y estado (borrador / bajo / agotado / sin publicar). */
@@ -825,14 +849,44 @@ function updateBulkBar() {
   if (n) $("#bulk-count").textContent = `${n} producto${n === 1 ? "" : "s"} seleccionado${n === 1 ? "" : "s"}`;
 }
 
+/* Estado de un producto para el filtro y para ordenar la columna Estado:
+   un rango de urgencia (0 = lo mas urgente de revisar) mas que una
+   categoria exclusiva -- un publicado puede estar tambien bajo de stock,
+   por eso el filtro y el rango se calculan aparte de productStatusChip(). */
+function productStatusRank(p) {
+  if (stikeIsOut(p)) return 0;
+  const total = stikeTotalStock(p);
+  if (total > 0 && total <= STIKE_LOW_STOCK_ADMIN) return 1;
+  if (p.published === false) return 2;
+  if (dirtySlugs.has(p.slug)) return 3;
+  return 4; // publicado, con stock sano
+}
+function matchesStatusFilter(p, statusFilter) {
+  if (!statusFilter) return true;
+  const total = stikeTotalStock(p);
+  if (statusFilter === "draft") return p.published === false;
+  if (statusFilter === "dirty") return dirtySlugs.has(p.slug);
+  if (statusFilter === "published") return p.published !== false && !dirtySlugs.has(p.slug);
+  if (statusFilter === "out") return stikeIsOut(p);
+  if (statusFilter === "low") return !stikeIsOut(p) && total > 0 && total <= STIKE_LOW_STOCK_ADMIN;
+  if (statusFilter === "promo") return !!p.promo;
+  return true;
+}
+
 function renderProductGrid() {
+  populateSubFilter();
+  populateBrandFilter();
   const q = ($("#p-search").value || "").toLowerCase().trim();
   const catFilter = $("#p-filter-cat").value;
-  const lowOnly = $("#p-filter-low").checked;
+  const subFilter = $("#p-filter-sub").value;
+  const brandFilter = $("#p-filter-brand").value;
+  const statusFilter = $("#p-filter-status").value;
   const visible = workingCatalog
     .filter(p => !q || `${p.n} ${p.brand} ${p.sku} ${p.sub || ""}`.toLowerCase().includes(q))
     .filter(p => !catFilter || p.cat === catFilter)
-    .filter(p => !lowOnly || stikeTotalStock(p) <= STIKE_LOW_STOCK_ADMIN);
+    .filter(p => !subFilter || p.sub === subFilter)
+    .filter(p => !brandFilter || p.brand === brandFilter)
+    .filter(p => matchesStatusFilter(p, statusFilter));
 
   selectedSlugs = new Set();
   updateBulkBar();
@@ -908,10 +962,14 @@ function sortIndicator(key) {
 }
 
 function renderProductTable(visible) {
+  const catLabel = (p) => `${stikeCategory(p.cat) ? stikeCategory(p.cat).name : p.cat || ""} ${p.sub || ""}`.toLowerCase();
   const sorted = visible.slice().sort((a, b) => {
     let av, bv;
     if (tableSort.key === "n") { av = a.n.toLowerCase(); bv = b.n.toLowerCase(); }
+    else if (tableSort.key === "sku") { av = (a.sku || "").toLowerCase(); bv = (b.sku || "").toLowerCase(); }
+    else if (tableSort.key === "cat") { av = catLabel(a); bv = catLabel(b); }
     else if (tableSort.key === "price") { av = a.price || 0; bv = b.price || 0; }
+    else if (tableSort.key === "status") { av = productStatusRank(a); bv = productStatusRank(b); }
     else { av = stikeTotalStock(a); bv = stikeTotalStock(b); }
     if (av < bv) return -1 * tableSort.dir;
     if (av > bv) return 1 * tableSort.dir;
@@ -1949,8 +2007,18 @@ $("#btn-refresh").addEventListener("click", () => loadAll().catch(e => showStatu
 $("#btn-publish").addEventListener("click", () => publishCatalog());
 $("#btn-new-product").addEventListener("click", () => openEditor(null));
 $("#p-search").addEventListener("input", renderProductGrid);
-$("#p-filter-cat").addEventListener("change", renderProductGrid);
-$("#p-filter-low").addEventListener("change", renderProductGrid);
+$("#p-filter-cat").addEventListener("change", () => { $("#p-filter-sub").value = ""; renderProductGrid(); });
+$("#p-filter-sub").addEventListener("change", renderProductGrid);
+$("#p-filter-brand").addEventListener("change", renderProductGrid);
+$("#p-filter-status").addEventListener("change", renderProductGrid);
+$("#btn-filters-clear").addEventListener("click", () => {
+  $("#p-search").value = "";
+  $("#p-filter-cat").value = "";
+  $("#p-filter-sub").value = "";
+  $("#p-filter-brand").value = "";
+  $("#p-filter-status").value = "";
+  renderProductGrid();
+});
 $("#btn-export-csv").addEventListener("click", exportCSV);
 $("#btn-export-json").addEventListener("click", exportJSON);
 $("#btn-bulk-price").addEventListener("click", () => {

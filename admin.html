@@ -424,7 +424,18 @@ tr:hover td{background:var(--bg-2)}
                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other">
         <select id="p-filter-cat"><option value="">Todas las categorías</option></select>
-        <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px"><input type="checkbox" id="p-filter-low"> Solo bajo/agotado</label>
+        <select id="p-filter-sub"><option value="">Todas las subcategorías</option></select>
+        <select id="p-filter-brand"><option value="">Todas las marcas</option></select>
+        <select id="p-filter-status">
+          <option value="">Cualquier estado</option>
+          <option value="published">Publicado</option>
+          <option value="draft">Borrador</option>
+          <option value="dirty">Sin publicar</option>
+          <option value="low">Bajo stock</option>
+          <option value="out">Agotado</option>
+          <option value="promo">Oferta</option>
+        </select>
+        <button class="btn ghost sm" id="btn-filters-clear" type="button">Limpiar filtros</button>
         <div class="viewtoggle" id="view-toggle" role="group" aria-label="Vista del catálogo">
           <button class="viewtoggle-btn" data-view="cards" type="button">Tarjetas</button>
           <button class="viewtoggle-btn" data-view="table" type="button">Tabla</button>
@@ -459,11 +470,11 @@ tr:hover td{background:var(--bg-2)}
               <th style="width:32px"><input type="checkbox" id="ptable-select-all"></th>
               <th style="width:48px"></th>
               <th data-sort="n">Producto</th>
-              <th>SKU</th>
-              <th>Categoría</th>
+              <th data-sort="sku">SKU</th>
+              <th data-sort="cat">Categoría</th>
               <th data-sort="price" class="num">Precio</th>
               <th data-sort="stock" class="num">Stock</th>
-              <th>Estado</th>
+              <th data-sort="status">Estado</th>
               <th></th>
             </tr>
           </thead>
