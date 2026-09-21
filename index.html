@@ -45,118 +45,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=30">
+  <link rel="stylesheet" href="assets/css/styles.css?v=31">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0b0d'/%3E%3Ccircle cx='19' cy='26' r='7' fill='%23fff'/%3E%3Ccircle cx='45' cy='26' r='7' fill='%23fff'/%3E%3Cellipse cx='32' cy='38' rx='17' ry='15' fill='%23fff'/%3E%3Crect x='19' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='35' y='35' width='10' height='7' rx='3' fill='%230b0b0d'/%3E%3Crect x='28' y='37' width='8' height='2' fill='%230b0b0d'/%3E%3Cellipse cx='32' cy='46' rx='3' ry='2' fill='%230b0b0d'/%3E%3C/svg%3E">
 </head>
 <body>
   <div id="site-header"></div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <!-- Mobile only: full-bleed background video (swapped in via CSS at <=760px) -->
-    <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg">
+  <!-- HERO: un solo momento fuerte, una foto/video, un solo CTA -->
+  <section class="home-hero reveal">
+    <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg">
       <source src="assets/video/stike-hero.mp4" type="video/mp4">
     </video>
-    <div class="hero-overlay"></div>
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow tag-pill">Bogotá · Venecia</span>
-        <h1 data-reveal-words>Rueda <span class="o1 glitch">duro</span>,<br>vive <span class="o2">BMX</span></h1>
-        <div class="hero-lockup">
-          <span class="rule"></span>
-          <span data-content-key="home.heroTagline">La casa de todo el que rueda</span>
-        </div>
-        <p class="lead" data-content-key="home.heroSubtitle">Repuestos de las mejores marcas, ropa y protecciones, y te armamos la BMX a tu medida. Asesoría real de riders reconocidos a nivel internacional, con envíos a toda Colombia.</p>
-        <div class="hero-cta">
-          <a class="btn" href="armar.html">Arma tu BMX</a>
-          <a class="btn ghost" href="tienda.html?cat=repuestos">Ver repuestos</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat s1"><b>+12K</b><span>Comunidad IG / FB</span></div>
-          <div class="stat s2"><b>+800</b><span>Productos en stock</span></div>
-          <div class="stat s3"><b>24h</b><span>Despacho en Bogotá</span></div>
-        </div>
-      </div>
-      <!-- Desktop/tablet only: small video panel on the right -->
-      <div class="hero-video-panel">
-        <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg">
-          <source src="assets/video/stike-hero.mp4" type="video/mp4">
-        </video>
-      </div>
+    <div class="wrap home-hero-copy">
+      <h1 data-reveal-words>Rueda duro,<br>vive BMX</h1>
+      <p>La casa de todo el que rueda — repuestos, armado a tu medida y asesoría real de riders, en Venecia, Bogotá.</p>
+      <a class="btn" href="tienda.html">Ver catálogo</a>
     </div>
   </section>
 
-  <!-- MARQUEE -->
-  <div class="marquee">
-    <div class="track">
-      <span>STREET <i>✦</i> PARK <i>✦</i> DIRT <i>✦</i> FLATLAND <i>✦</i> ENVÍOS A TODA COLOMBIA <i>✦</i> ARMADO GRATIS <i>✦</i> COMUNIDAD STIKE <i>✦</i></span>
-      <span>STREET <i>✦</i> PARK <i>✦</i> DIRT <i>✦</i> FLATLAND <i>✦</i> ENVÍOS A TODA COLOMBIA <i>✦</i> ARMADO GRATIS <i>✦</i> COMUNIDAD STIKE <i>✦</i></span>
-    </div>
-  </div>
-
-  <!-- MARCA DESTACADA: FATE -->
+  <!-- GRILLA DE TILES: el golpe visual principal, con foto de stock real de hoy -->
   <section class="section">
     <div class="wrap">
-      <div class="crew-band reveal">
-        <div class="crew-text">
-          <span class="kicker">Marca aliada · Bogotá</span>
-          <h2>Fate BMX Colombia: la marca <span class="o2">100% bogotana</span></h2>
-          <p>Marcos, sillas, platos y accesorios elegidos y probados por riders bogotanos. La marca BMX más reconocida de Colombia, con su propia página, historia y catálogo completo.</p>
-          <a class="btn" href="fate/">Conocer Fate BMX Colombia →</a>
-        </div>
-        <div class="hero-art" style="aspect-ratio:1/1;max-width:320px;background:radial-gradient(120% 120% at 50% 0%, #161619, #0a0a0b 70%)">
-          <img src="assets/img/products/IMG_7139.jpeg" alt="Marco Fate BMX Colombia" style="position:relative;z-index:2;width:82%;max-width:260px;height:auto;border-radius:12px">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CATEGORÍAS -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="kicker">Explora la tienda</span>
-          <h2>Categorías</h2>
-        </div>
-        <a class="link-more" href="tienda.html">Ver todo →</a>
-      </div>
-      <div class="cat-grid stagger" id="home-cats"></div>
-    </div>
-  </section>
-
-  <!-- COMPRA POR TIPO DE PARTE -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="kicker">Repuestos BMX</span>
-          <h2>Compra por <span class="spray">tipo de parte</span></h2>
-        </div>
-        <a class="link-more" href="tienda.html?cat=repuestos">Ver repuestos →</a>
-      </div>
-      <div class="part-grid" id="home-parts"></div>
-    </div>
-  </section>
-
-  <!-- CREW / COMUNIDAD -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="crew-band reveal">
-        <div class="crew-text">
-          <span class="kicker">El crew</span>
-          <h2>Riders de verdad, <span class="o2">reconocidos</span> a nivel internacional</h2>
-          <p>Stike no es una tienda más: la levantamos riders activos con trayectoria fuera de Colombia, montando, viajando y representando el BMX bogotano en la escena global. Cada consejo que te damos viene de alguien que sí rueda.</p>
-          <p>Y todo eso vive en Instagram: una comunidad que crece cada día con sesiones, jams y la cultura BMX de la ciudad.</p>
-          <a class="btn" href="https://instagram.com/stikebikeshop" target="_blank" rel="noopener">Únete a la comunidad en IG</a>
-        </div>
-        <div class="crew-stats">
-          <div class="crew-stat"><b>+12K</b><span>Comunidad en Instagram</span></div>
-          <div class="crew-stat"><b>100%</b><span>Riders activos</span></div>
-          <div class="crew-stat"><b>Global</b><span>Trayectoria internacional</span></div>
-          <div class="crew-stat"><b>Venecia</b><span>Base en Bogotá</span></div>
-        </div>
-      </div>
+      <div class="tile-grid stagger" id="home-tiles"></div>
     </div>
   </section>
 
@@ -174,164 +84,44 @@
     </div>
   </section>
 
-  <!-- VALUE PROPS -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="props stagger">
-        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span><div><h4>Envíos a Colombia</h4><p>Despacho en 24h dentro de Bogotá y a todo el país.</p></div></div>
-        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span><div><h4>Armado gratis</h4><p>Recibe tu BMX lista para rodar, ajustada por riders.</p></div></div>
-        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span><div><h4>Paga fácil</h4><p>Tarjeta, PSE, Nequi, Efecty y cuotas sin interés.</p></div></div>
-        <div class="prop"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><h4>Asesoría real</h4><p>Hablas con riders que sí montan, no con un bot.</p></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ARMA TU BMX -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="build-band reveal">
-        <div class="build-band-text">
-          <span class="kicker">Hazla tuya</span>
-          <h2>Arma tu <span class="o2">BMX</span> pieza por pieza</h2>
-          <p>Elige marco, tenedor, transmisión, ruedas y timón. Te mostramos la BMX armándose en vivo, con el precio al instante — y la montamos gratis en el taller, sin enredos.</p>
-          <a class="btn" href="armar.html">Empezar a armar</a>
-        </div>
-        <ol class="build-band-steps">
-          <li><span>01</span>Marco</li>
-          <li><span>02</span>Tenedor</li>
-          <li><span>03</span>Transmisión</li>
-          <li><span>04</span>Ruedas</li>
-          <li><span>05</span>Timón</li>
-        </ol>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROMO BANNER -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="kicker" style="color:var(--yellow)" data-content-key="home.promoKicker">Precios de calle</span>
-          <h2>Zona <span class="mark">Promo</span></h2>
-        </div>
-        <a class="link-more" href="tienda.html?cat=promo">Ver ofertas →</a>
-      </div>
-      <div class="product-grid stagger" id="home-promo"></div>
-    </div>
-  </section>
-
-  <!-- MARCAS -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="kicker">Trabajamos con</span>
-          <h2>Marcas</h2>
-        </div>
-        <a class="link-more" href="marcas.html">Todas las marcas →</a>
-      </div>
-      <div class="brand-grid" id="home-brands"></div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIOS -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="kicker">La comunidad habla</span>
-          <h2>Lo que dicen los <span class="spray">riders</span></h2>
-        </div>
-      </div>
-      <div class="testi-grid stagger" id="home-testi"></div>
-    </div>
-  </section>
-
-  <!-- COMUNIDAD (oculta por ahora) -->
-  <section class="section community" style="display:none">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="kicker" style="color:var(--pink)">#RodandoConStike</span>
-          <h2>La comunidad <span class="spray">manda</span></h2>
-        </div>
-        <a class="link-more" href="https://instagram.com/stikebikeshop" target="_blank" rel="noopener">Síguenos en IG →</a>
-      </div>
-      <div class="ig-grid" id="home-ig"></div>
-    </div>
-  </section>
+  <!-- FRANJA DE CONFIANZA: una línea, no cajas con ícono -->
+  <div class="trust-strip">
+    <b>Envíos a toda Colombia</b><span class="sep">·</span>
+    <b>Armado gratis</b><span class="sep">·</span>
+    <b>Paga fácil, cuotas sin interés</b><span class="sep">·</span>
+    <b>Asesoría real de riders</b>
+  </div>
 
   <div id="site-footer"></div>
 
   <script src="assets/js/products-data.js?v=3"></script>
   <script src="assets/js/data.js?v=3"></script>
-  <script src="assets/js/app.js?v=7"></script>
+  <script src="assets/js/app.js?v=8"></script>
   <script>
     stikeInit("home");
 
-
-    // Categorías
-    document.getElementById("home-cats").innerHTML = STIKE_CATEGORIES.map(c => `
-      <a class="cat-card ${c.color}" href="tienda.html?cat=${c.slug}" style="background-image:url('assets/img/cat-${c.slug}.jpg')">
-        <span class="go">→</span>
-        <h3>${c.name}</h3>
-        <span class="blurb">${c.blurb}</span>
+    // Grilla de tiles: subcategorias de Repuestos que hoy tienen stock (las
+    // mismas que ya lista el mega-menu de "Repuestos" en el nav) + Fate.
+    // Foto real de un producto vigente por tile -- nunca la de un producto
+    // ya eliminado del catalogo ni un bodegon generico.
+    const homeTiles = [
+      { label: "Marcos", href: stikeSubUrl("repuestos", "Marcos"), img: "assets/img/products/marco-fiend-reynolds-negro-1.jpg" },
+      { label: "Timones", href: stikeSubUrl("repuestos", "Timones"), img: "assets/img/products/timon-fiend-team-negro-1.jpg" },
+      { label: "Cañas", href: stikeSubUrl("repuestos", "Espigas"), img: "assets/img/products/cana-bsd-front-load-negra-1.jpg" },
+      { label: "Bielas", href: stikeSubUrl("repuestos", "Bielas"), img: "assets/img/products/bielas-primo-churchill-160mm-cromadas-1.jpg" },
+      { label: "Platos", href: stikeSubUrl("repuestos", "Platos"), img: "assets/img/products/plato-fiend-omicron-cromado-25t-1.jpg" },
+      { label: "Fate", href: "fate/", img: "assets/img/products/marco-fate-namaste-v2-2.jpg" },
+    ];
+    document.getElementById("home-tiles").innerHTML = homeTiles.map(t => `
+      <a class="tile" href="${t.href}">
+        <img src="${t.img}" alt="${t.label}" loading="lazy">
+        <span class="tile-label">${t.label}</span>
       </a>`).join("");
 
-    // Compra por tipo de parte: 71% del catálogo vive dentro de "Repuestos",
-    // así que las partes se listan directo en vez de esconderse tras un filtro.
-    const partCounts = {};
-    STIKE_PRODUCTS.forEach(p => { if (p.sub) partCounts[p.sub] = (partCounts[p.sub] || 0) + 1; });
-    const repuestos = STIKE_CATEGORIES.find(c => c.slug === "repuestos");
-    document.getElementById("home-parts").innerHTML = repuestos.subs
-      .filter(s => partCounts[s])
-      .sort((a, b) => partCounts[b] - partCounts[a])
-      .slice(0, 12) // two clean rows of six; el resto vive en "Ver repuestos"
-      .map(s => `
-        <a class="part-tile" href="${stikeSubUrl("repuestos", s)}">
-          <span class="pt-name">${s}</span>
-          <span class="pt-count">${partCounts[s]} producto${partCounts[s] === 1 ? "" : "s"}</span>
-        </a>`).join("");
-
-    // Destacados (primeros productos variados)
-    // 6 = dos filas limpias de 3 en la grilla de 3 columnas
-    const featured = ["marco-fate-bmx-colombia","marco-cult-americano","casco-tsg-evolution","camiseta-stike-graffiti-tee","plato-fate-garuda-25t","tenedor-federal"]
-      .map(stikeFindProduct).filter(Boolean);
+    // Destacados: primeros productos variados del catalogo real de hoy.
+    // 6 = dos filas limpias de 3 en la grilla de 3 columnas.
+    const featured = STIKE_PRODUCTS.slice(0, 6);
     document.getElementById("home-featured").innerHTML = featured.map(stikeProductCard).join("");
-
-    // Promo
-    document.getElementById("home-promo").innerHTML =
-      STIKE_PRODUCTS.filter(p => p.promo).slice(0,3).map(stikeProductCard).join("");
-
-    // Marcas
-    document.getElementById("home-brands").innerHTML =
-      STIKE_BRANDS.filter(b => STIKE_PRODUCTS.some(p => p.brand === b)).map(b => `<a class="brand-chip" href="marcas.html#${encodeURIComponent(b)}">${b}</a>`).join("");
-
-    // Testimonios (sin emojis: estrellas en SVG, avatares con iniciales)
-    const STAR = '<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>';
-    const testimonials = [
-      { q: "Armé mi BMX pieza por pieza con ellos y la asesoría fue real. Me ayudaron a elegir cada parte según mi nivel y presupuesto.", n: "Andrés M.", r: "Street · Venecia", i: "AM" },
-      { q: "Pedí repuestos un martes y el jueves ya estaba rodando. Envío rápido a toda Colombia y todo original.", n: "Laura G.", r: "Park · Bogotá", i: "LG" },
-      { q: "El parche más sólido de la ciudad. Más que una tienda, es la comunidad BMX de Bogotá. Recomendados.", n: "Sebastián R.", r: "Dirt · Soacha", i: "SR" }
-    ];
-    document.getElementById("home-testi").innerHTML = testimonials.map(t => `
-      <figure class="testi-card">
-        <div class="testi-stars">${STAR.repeat(5)}</div>
-        <blockquote>${t.q}</blockquote>
-        <figcaption><span class="testi-avatar">${t.i}</span><span class="testi-who"><b>${t.n}</b><span>${t.r}</span></span></figcaption>
-      </figure>`).join("");
-
-    // Comunidad (grilla estilo IG con placeholders)
-    const igColors = ["pink","cyan","lime","yellow","orange","purple"];
-    document.getElementById("home-ig").innerHTML = igColors.concat(igColors.slice(0,6)).slice(0,12)
-      .map((c,i) => {
-        const fake = { brand: "#STIKE", name: "RIDER " + (i+1), color: c };
-        return `<a class="ig-cell" href="${STIKE_CONFIG.ig}" target="_blank" rel="noopener">
-          <img src="${stikeProductImage(fake, 300)}" alt="Comunidad Stike">
-          <span class="ig-ico">ver en IG</span>
-        </a>`;
-      }).join("");
   </script>
   <script src="assets/js/animations.js?v=5"></script>
 </body>

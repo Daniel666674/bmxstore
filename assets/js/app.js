@@ -219,51 +219,31 @@ function stikeRenderHeader(active) {
   }).join("");
 
   const header = `
-  <div class="topbar">
-    <div class="wrap">
-      <div class="ticker"><span>ENVÍOS A TODA COLOMBIA &nbsp; ✦ &nbsp; <b>3 CUOTAS SIN INTERÉS</b> &nbsp; ✦ &nbsp; RECOGE EN VENECIA &nbsp; ✦ &nbsp; ARMAMOS TU BMX GRATIS &nbsp; ✦ &nbsp; <b>COMUNIDAD STIKE BOGOTÁ</b></span></div>
-      <div class="social">
-        <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig soc-sm" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
-        <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb soc-sm" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>
-        <a href="${C.tiktok}" target="_blank" rel="noopener" class="soc soc-tt soc-sm" title="TikTok" aria-label="TikTok">${SOCICO_TT}</a>
-      </div>
-    </div>
-  </div>
   <header class="site-header">
-    <div class="wrap">
-      <div class="header-main">
-        <a class="brand" href="index.html">
-          ${stikeLogoSVG(52)}
-          <span class="name">Stike<small>BIKE SHOP · BOGOTÁ</small></span>
-        </a>
-        <form class="search" onsubmit="stikeDoSearch(event)">
-          <input type="search" id="site-search" placeholder="Busca marcos, llantas, cascos, marcas..." onfocus="stikeOpenSearch()" autocomplete="off">
-          <button type="button" aria-label="Buscar" onclick="stikeOpenSearch()"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
-        </form>
-        <div class="header-actions">
-          <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
-          <a class="icon-btn hide-mobile" href="nosotros.html" title="Nosotros" aria-label="Nosotros"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></a>
-          <a class="icon-btn hide-mobile" href="contacto.html" title="Contacto" aria-label="Contacto"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.5a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></a>
-          <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-            <span class="cart-count">0</span>
-          </a>
-          <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg></button>
-        </div>
-      </div>
-    </div>
-    <nav class="site-nav" id="site-nav">
-      <div class="wrap">
+    <div class="wrap header-main">
+      <a class="brand" href="index.html">
+        <span class="name">Stike</span>
+      </a>
+      <nav class="site-nav" id="site-nav">
         <ul class="nav-list">
           <li class="${active === 'home' ? 'active' : ''}"><a href="index.html">Inicio</a></li>
           <li><a href="fate/" data-accent="fate">Fate</a></li>
           ${navItems}
           <li class="${active === 'marcas' ? 'active' : ''}"><a href="marcas.html">Marcas</a></li>
           <li class="${active === 'blog' ? 'active' : ''}"><a href="blog.html">Blog</a></li>
-          <li class="nav-build ${active === 'armar' ? 'active' : ''}"><a href="armar.html"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Arma tu BMX</a></li>
+          <li class="nav-build-item ${active === 'armar' ? 'active' : ''}"><a href="armar.html">Arma tu BMX</a></li>
         </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
+        <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-count">0</span>
+        </a>
+        <a class="btn-build" href="armar.html">Arma tu BMX</a>
+        <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg></button>
       </div>
-    </nav>
+    </div>
   </header>
   <div class="nav-backdrop" id="nav-backdrop"></div>`;
 
@@ -436,8 +416,8 @@ function stikeRenderFooter() {
     <div class="wrap">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="brand">${stikeLogoSVG(40)} <span class="name">Stike<small>${C.tagline}</small></span></div>
-          <p style="margin-top:14px">La tienda BMX de Bogotá. Repuestos, ropa, protecciones y la comunidad más activa de la ciudad. Te armamos la BMX a tu medida.</p>
+          <div class="name">Stike</div>
+          <p style="margin-top:10px">La tienda BMX de Bogotá. Repuestos, armado a tu medida y asesoría real de riders.</p>
           <div class="foot-social">
             <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
             <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>
@@ -450,7 +430,6 @@ function stikeRenderFooter() {
           ${catLinks}
           <a href="marcas.html">Marcas</a>
           <a href="armar.html">Arma tu BMX</a>
-          <a href="blog.html">Blog</a>
         </div>
         <div>
           <h5>Ayuda</h5>
@@ -458,21 +437,6 @@ function stikeRenderFooter() {
           <a href="nosotros.html">Nosotros</a>
           <a href="envios.html">Envíos y entregas</a>
           <a href="devoluciones.html">Cambios y devoluciones</a>
-          <a href="contacto.html#faq">Preguntas frecuentes</a>
-          <a href="carrito.html">Mi carrito</a>
-        </div>
-        <div>
-          <h5>Boletín</h5>
-          <p>Recibe lanzamientos, ofertas y eventos de la comunidad.</p>
-          <form class="newsletter" onsubmit="stikeNewsletter(event)">
-            <input type="email" name="email" placeholder="Tu correo" required>
-            <button class="btn sm" type="submit">Unirme</button>
-            <label class="form-consent">
-              <input type="checkbox" name="consent" required>
-              <span>Acepto la <a href="privacidad.html">Política de Privacidad</a> y el tratamiento de mis datos.</span>
-            </label>
-          </form>
-          <p style="margin-top:14px">${C.address}<br>${C.hours}<br>${C.whatsappPretty}</p>
         </div>
       </div>
       <div class="footer-bottom">

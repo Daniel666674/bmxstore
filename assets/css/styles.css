@@ -95,16 +95,13 @@ body::before {
 }
 
 /* Keyboard focus. There was no global indicator, so anyone navigating by
-   keyboard was relying on the browser default — which all but disappears
-   against the dark header. :focus-visible keeps it off mouse clicks. */
+   keyboard was relying on the browser default. :focus-visible keeps it off
+   mouse clicks. The header is a light surface now (ver HEADER mas abajo),
+   asi que ya no necesita un color de foco aparte para leerse sobre negro. */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
   border-radius: 2px;
-}
-.site-header :where(a, button):focus-visible,
-.topbar :where(a, button):focus-visible {
-  outline-color: #ffffff;
 }
 
 /* ----------------------------- Utilities -------------------------------- */
@@ -157,96 +154,70 @@ body::before {
 .btn.block { width: 100%; }
 
 /* =============================== HEADER ================================= */
-/* The header band (topbar + main bar + nav) is a fixed pitch-black surface
-   on purpose, independent of the storefront's light theme tokens below it,
-   so every color in here is spelled out explicitly instead of reusing
-   --ink/--muted/--line (which are tuned for text on white and would go
-   near-invisible on black). */
-.topbar {
-  background: #0b0b0d;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-  font-size: 13px; color: rgba(255,255,255,.6);
-}
-.topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 38px; gap: 14px; }
-.topbar a:hover { color: #ffffff; }
-.topbar .ticker { overflow: hidden; white-space: nowrap; flex: 1; }
-.topbar .ticker span { display: inline-block; animation: ticker 22s linear infinite; }
-.topbar .ticker b { color: #ffffff; font-weight: 800; }
-@keyframes ticker { from { transform: translateX(40%); } to { transform: translateX(-100%); } }
-.topbar .social { display: flex; align-items: center; gap: 4px; }
-
-/* El wrapper que monta el header por JS no debe limitar el rango del sticky al alto del topbar */
+/* Una sola franja: wordmark + nav + 3 iconos. Sin topbar, sin buscador
+   inline (el icono abre el overlay de busqueda que ya existe). El header es
+   blanco, no negro: en el rediseno minimalista el contraste lo pone la
+   grilla de fotos de abajo, no el propio header. */
 #site-header { display: contents; }
-.site-header { position: sticky; top: 0; z-index: 100; background: rgba(11,11,13,.96); backdrop-filter: blur(10px); border-bottom: 2px solid rgba(255,255,255,.08); color: #fff; }
-.brand .name { color: #ffffff; }
-.brand .name small { color: rgba(255,255,255,.5); }
-.header-main { display: flex; align-items: center; gap: 22px; height: 78px; }
-.brand { display: flex; align-items: center; gap: 13px; flex-shrink: 0; }
-.brand .logo { height: 52px; width: auto; display: block; }
-.brand .name { font-family: var(--display); font-weight: 800; font-size: 27px; letter-spacing: .02em; text-transform: uppercase; line-height: .9; }
-.brand .name small { display: block; font-size: 9.5px; letter-spacing: 3.5px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.97); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); color: var(--ink); }
+.header-main { display: flex; align-items: center; gap: 32px; height: 84px; }
+.brand { display: flex; align-items: center; flex-shrink: 0; }
+.brand .name { font-family: var(--display); font-weight: 800; font-size: 25px; letter-spacing: .01em; text-transform: uppercase; line-height: 1; color: var(--ink); }
 
-/* Search */
-.search { flex: 1; max-width: 520px; position: relative; display: flex; }
-.search input {
-  width: 100%; background: var(--bg-3); border: 2px solid var(--line); color: var(--ink);
-  border-radius: 999px; padding: 11px 50px 11px 20px; font-size: 14px; font-family: var(--body);
-}
-.search input:focus { outline: none; border-color: var(--accent); }
-.search button { position: absolute; right: 6px; top: 6px; bottom: 6px; border: none; background: var(--accent); color: var(--ink-contrast); border-radius: 50%; width: 38px; font-size: 16px; }
-
-.header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.header-actions { display: flex; align-items: center; gap: 14px; margin-left: auto; }
 .icon-btn {
-  position: relative; background: var(--bg-3); border: 1px solid var(--line); color: var(--ink);
-  width: 46px; height: 46px; border-radius: 50%; font-size: 18px; display: grid; place-items: center;
-  transition: background .15s, color .15s, transform .15s;
+  position: relative; background: transparent; border: none; color: var(--ink);
+  width: 34px; height: 34px; display: grid; place-items: center; padding: 0;
+  transition: opacity .15s, transform .15s;
 }
-.icon-btn:hover { background: var(--ink); color: var(--ink-contrast); transform: translateY(-2px); }
+.icon-btn:hover { opacity: .6; }
 .cart-count {
-  position: absolute; top: -8px; right: -8px; background: var(--ink); color: var(--ink-contrast);
-  font-family: var(--display); font-size: 12px; min-width: 21px; height: 21px; border-radius: 999px;
-  display: grid; place-items: center; padding: 0 5px; border: 2px solid var(--bg);
+  position: absolute; top: -6px; right: -8px; background: var(--ink); color: var(--ink-contrast);
+  font-family: var(--display); font-size: 11px; min-width: 18px; height: 18px; border-radius: 999px;
+  display: grid; place-items: center; padding: 0 4px;
 }
+.btn-build {
+  font-family: var(--display); font-weight: 700; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink); border: 1.5px solid var(--ink); border-radius: 999px; padding: 10px 20px; white-space: nowrap;
+  transition: background .2s var(--ease-soft), color .2s var(--ease-soft);
+}
+.btn-build:hover { background: var(--ink); color: var(--ink-contrast); }
 .menu-toggle { display: none; }
 
-/* Nav (desktop bar lives on the black header, so it keeps its own fixed
-   light-on-dark palette; the mobile dropdown panel further down is a
-   separate light popup and uses the regular light tokens instead). */
-.site-nav { border-top: 1px solid rgba(255,255,255,.08); }
-.nav-list { display: flex; align-items: stretch; gap: 2px; }
+/* Nav: en la misma franja del header, ya no en una barra propia debajo. */
+.site-nav { display: flex; }
+.nav-list { display: flex; align-items: center; gap: 30px; }
 .nav-list > li { position: relative; }
 .nav-list > li > a {
-  position: relative; display: flex; align-items: center; height: 48px; padding: 0 14px; white-space: nowrap;
-  font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; font-size: 13px;
-  color: rgba(255,255,255,.62); transition: color .25s var(--ease);
+  position: relative; display: flex; align-items: center; white-space: nowrap;
+  font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; font-size: 12.5px;
+  color: var(--ink); padding: 30px 0; transition: opacity .2s var(--ease);
 }
 .nav-list > li > a::after {
-  content: ""; position: absolute; left: 18px; right: 18px; bottom: 8px; height: 1.5px;
-  background: #ffffff; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease);
+  content: ""; position: absolute; left: 0; right: 0; bottom: 26px; height: 1.5px;
+  background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease);
 }
-.nav-list > li > a:hover, .nav-list > li.active > a { color: #ffffff; }
-.nav-list > li > a:hover::after, .nav-list > li.active > a::after { transform: scaleX(1); }
-.nav-list > li > a .caret { display: inline-flex; align-items: center; margin-left: 6px; color: rgba(255,255,255,.45); transition: transform .2s var(--ease); }
-.nav-list > li:hover > a .caret { transform: rotate(180deg); color: #ffffff; }
-.nav-list > li.has-mega > a::after,
-.nav-list > li > a[data-accent]::after { }
-.nav-list > li > a[data-accent="promo"] { color: #ffffff; font-weight: 700; }
-.nav-list > li > a[data-accent="promo"]:hover { color: rgba(255,255,255,.75); }
-.nav-list > li > a[data-accent="fate"] { color: #ffffff; font-weight: 700; }
-.nav-list > li > a[data-accent="fate"]:hover { color: rgba(255,255,255,.75); }
+.nav-list > li > a:hover { opacity: .55; }
+.nav-list > li.active > a::after { transform: scaleX(1); }
+.nav-list > li > a .caret { display: inline-flex; align-items: center; margin-left: 5px; color: var(--muted); transition: transform .2s var(--ease); }
+.nav-list > li:hover > a .caret { transform: rotate(180deg); color: var(--ink); }
+.nav-list > li > a[data-accent="fate"] { font-weight: 700; }
+/* El link "Arma tu BMX" vive dentro del panel movil (junto al resto del
+   nav); en escritorio ya esta como boton aparte (.btn-build), asi que este
+   item duplicado se oculta ahi. */
+.nav-list > li.nav-build-item { display: none; }
 
 /* Mega / dropdown */
 .dropdown {
   position: absolute; top: 100%; left: 0; min-width: 240px; background: var(--panel);
-  border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 0 0 12px 12px;
-  box-shadow: var(--shadow); padding: 10px; opacity: 0; visibility: hidden; transform: translateY(8px);
+  border: 1px solid var(--line); padding: 10px; opacity: 0; visibility: hidden; transform: translateY(4px);
   transition: opacity .16s, transform .16s; z-index: 60;
 }
 .nav-list > li:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
 .dropdown.mega { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 22px; width: 620px; padding: 18px; }
-.dropdown a { display: block; padding: 8px 12px; border-radius: 8px; font-size: 14px; color: var(--muted); }
+.dropdown a { display: block; padding: 8px 12px; font-size: 14px; color: var(--muted); }
 .dropdown a:hover { background: var(--bg-3); color: var(--ink); }
-.dropdown .col-title { font-family: var(--display); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; color: var(--cyan); padding: 6px 12px 2px; }
+.dropdown .col-title { font-family: var(--display); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; color: var(--muted); padding: 6px 12px 2px; }
 
 /* =============================== HERO ================================== */
 /* Desktop/tablet: the hero keeps the storefront's normal light background,
@@ -351,6 +322,57 @@ body::before {
   transition: background .3s var(--ease), transform .3s var(--ease), opacity .3s var(--ease);
 }
 .cat-card:hover .go { background: var(--ink); color: var(--ink-contrast); opacity: 1; transform: translateX(0); }
+
+/* ==================== HOME HERO + GRILLA DE TILES (rediseño) ============
+   Reemplaza SOLO en index.html el hero con video + el .cat-grid de arriba.
+   Clases nuevas a proposito -- .hero/.hero-art/.cat-card siguen intactos
+   porque fate/index.html y nosotros.html todavia los usan. */
+.home-hero {
+  position: relative; isolation: isolate; min-height: 600px; display: flex; align-items: flex-end;
+  background: #0b0b0d center 30% / cover no-repeat;
+}
+.home-hero::after {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.15) 55%, rgba(0,0,0,.35) 100%);
+}
+.home-hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+.home-hero-copy { position: relative; z-index: 1; max-width: 720px; padding: 0 0 60px; color: #fff; }
+.home-hero-copy h1 { font-size: clamp(40px, 6.5vw, 68px); color: #fff; margin: 0 0 16px; }
+.home-hero-copy p { font-size: 16.5px; color: rgba(255,255,255,.85); max-width: 46ch; margin: 0 0 24px; line-height: 1.55; }
+.home-hero-copy .btn { background: #fff; color: #18181b; border-color: #fff; }
+.home-hero-copy .btn::before { background: #18181b; }
+.home-hero-copy .btn:hover { color: #fff; border-color: #fff; }
+
+.tile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.tile {
+  position: relative; display: block; height: 320px; overflow: hidden;
+  background: var(--bg-3) center / cover no-repeat;
+}
+.tile::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 45%);
+  transition: opacity .3s var(--ease);
+}
+.tile:hover::after { opacity: .8; }
+.tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.tile:hover img { transform: scale(1.04); }
+.tile .tile-label {
+  position: absolute; left: 22px; bottom: 18px; z-index: 1; color: #fff;
+  font-size: 23px; font-weight: 800; text-shadow: 0 1px 10px rgba(0,0,0,.35);
+}
+
+/* Franja de confianza: una linea, no cajas con icono (ver .props, sigue
+   viva por si otra pagina la usa, pero index.html ya no la llama). */
+.trust-strip {
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 22px 0; display: flex; justify-content: center; align-items: center;
+  gap: 14px; flex-wrap: wrap; text-align: center;
+}
+.trust-strip span.sep { color: var(--line); }
+.trust-strip b {
+  font-family: var(--display); font-weight: 600; font-size: 11.5px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--accent-2);
+}
 
 /* ====================== PART-TYPE CATEGORY PAGES ====================== */
 /* Riders shop by part ("I need bars"), not by department ("I need a spare
@@ -603,7 +625,7 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
 .cta-band p { margin: 8px 0 0; color: var(--muted); }
 
 .site-footer { background: var(--bg); border-top: 1px solid var(--line); padding: 56px 0 26px; margin-top: 0; }
-.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 30px; }
+.footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 30px; }
 .footer-grid h5 { font-family: var(--display); text-transform: uppercase; letter-spacing: 1px; font-size: 16px; color: var(--ink); margin: 0 0 14px; }
 .footer-grid a, .footer-grid p { color: var(--muted); font-size: 14px; display: block; margin-bottom: 9px; }
 .footer-grid a:hover { color: var(--cyan); }
@@ -871,6 +893,7 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
 
 /* =============================== RESPONSIVE =========================== */
 @media (max-width: 1080px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); }
   .cat-grid { grid-template-columns: repeat(3,1fr); }
   /* Five tiles never divide evenly; let a stranded last tile span the gap
      instead of sitting alone beside empty cells. */
@@ -889,14 +912,15 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
 }
 @media (max-width: 760px) {
   :root { --header-h: 64px; }
-  .search { display: none; }
   .hide-mobile { display: none; }
   .header-main { gap: 12px; height: 64px; }
-  .brand .logo { height: 38px; }
-  .brand .name { font-size: 18px; letter-spacing: 2px; }
-  .brand .name small { font-size: 8px; letter-spacing: 2px; }
-  .header-actions { gap: 6px; }
-  .icon-btn { width: 40px; height: 40px; }
+  .brand .name { font-size: 19px; letter-spacing: .01em; }
+  .header-actions { gap: 10px; }
+  .icon-btn { width: 32px; height: 32px; }
+  .home-hero { min-height: 480px; }
+  .home-hero-copy { padding-bottom: 34px; }
+  .tile-grid { grid-template-columns: 1fr; gap: 10px; }
+  .tile { height: 220px; }
   .site-nav {
     position: fixed; right: 14px; top: 74px; width: min(84vw, 300px); max-height: min(72vh, 560px);
     background: var(--bg-2); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow);
@@ -916,13 +940,15 @@ body.fate-page .card .brand-line .bl-sub { display: inline; }
   .site-nav .nav-list > li > a .caret { color: var(--muted); }
   .site-nav .nav-list > li.active > a { background: var(--ink); color: var(--ink-contrast); }
   .site-nav .nav-list > li.active > a .caret { color: var(--ink-contrast); }
-  /* The mobile panel is a light popup, so the build CTA has to invert: the
-     desktop treatment is white-on-dark and would vanish here. */
-  .site-nav .nav-list > li.nav-build > a {
+  /* "Arma tu BMX" solo vive como boton aparte en escritorio (.btn-build);
+     en el panel movil vuelve a la lista, con tratamiento de CTA. */
+  .site-nav .nav-list > li.nav-build-item { display: block; }
+  .site-nav .nav-list > li.nav-build-item > a {
     color: var(--ink-contrast); background: var(--ink); border-color: var(--ink);
     margin: 8px 0 4px; padding: 13px 16px; justify-content: center;
   }
-  .site-nav .nav-list > li.nav-build > a:hover { background: var(--ink); color: var(--ink-contrast); }
+  .site-nav .nav-list > li.nav-build-item > a:hover { background: var(--ink); color: var(--ink-contrast); }
+  .btn-build { display: none; }
   .dropdown, .dropdown.mega { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; width: auto; display: none; grid-template-columns: 1fr; background: var(--bg-3); border-radius: 12px; margin: 2px 0 8px; padding: 6px; }
   .nav-list > li.open-sub .dropdown { display: block; }
   .menu-toggle { display: grid; }
