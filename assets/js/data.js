@@ -53,7 +53,8 @@ const STIKE_BRANDS = [
   "Total BMX", "Odyssey", "Shadow", "Cult", "Sunday", "Wethepeople",
   "Éclat", "Federal", "Kink", "BSD", "Fly Bikes", "Demolition",
   "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia",
-  "TSG", "KMC", "Cinema", "GW", "Fade", "Stike", "Smith"
+  "TSG", "KMC", "Cinema", "GW", "Fade", "Stike", "Smith",
+  "Fiend", "Rant", "Subrosa", "Optimus", "Merritt", "Innova"
 ];
 
 /* ------------------- Categorias/subcategorias con talla obligatoria -----

@@ -1280,5 +1280,936 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/IMG_7270.jpeg"
     ],
     "published": true
+  },
+  {
+    "slug": "cana-shadow-finest-negra-topload",
+    "sku": "REP-SHA-009",
+    "n": "Caña Shadow Finest Negra TopLoad",
+    "brand": "Shadow",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Tipo: TopLoad",
+      "Color: Negro"
+    ],
+    "price": 310000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-shadow-finest-negra-topload-1.jpg",
+      "assets/img/products/cana-shadow-finest-negra-topload-2.jpg",
+      "assets/img/products/cana-shadow-finest-negra-topload-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "mutanty-savage-v2-stem-plata",
+    "sku": "REP-MUT-003",
+    "n": "Caña Mutanty Savage V2",
+    "brand": "Mutanty",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Savage V2",
+      "Color: Plata"
+    ],
+    "price": 220000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/mutanty-savage-v2-stem-plata-1.jpg",
+      "assets/img/products/mutanty-savage-v2-stem-plata-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-mills-topload",
+    "sku": "REP-FIE-001",
+    "n": "Caña Fiend Mills - TopLoad",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Mills",
+      "Tipo: TopLoad",
+      "Color: Negro"
+    ],
+    "price": 320000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-fiend-mills-topload-1.jpg",
+      "assets/img/products/cana-fiend-mills-topload-2.jpg",
+      "assets/img/products/cana-fiend-mills-topload-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "manzana-optimus-gold",
+    "sku": "REP-OPT-001",
+    "n": "Manzana Optimus Gold",
+    "brand": "Optimus",
+    "cat": "repuestos",
+    "sub": "Manzanas",
+    "spec": [
+      "Posición: Delantera",
+      "Color: Dorado"
+    ],
+    "price": 95000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/manzana-optimus-gold-1.jpg",
+      "assets/img/products/manzana-optimus-gold-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fate-namaste-v2",
+    "sku": "REP-FAT-010",
+    "n": "Marco Fate Namaste V2",
+    "brand": "Fate BMX Colombia",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Color: Negro",
+      "Gráfico: Hare Krishna"
+    ],
+    "price": 1300000,
+    "promo": false,
+    "sizes": [
+      { "v": "20.75", "u": 20 },
+      { "v": "20.4", "u": 4 }
+    ],
+    "imgs": [
+      "assets/img/products/marco-fate-namaste-v2-1.jpg",
+      "assets/img/products/marco-fate-namaste-v2-2.jpg",
+      "assets/img/products/marco-fate-namaste-v2-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-subrosa-joris",
+    "sku": "REP-SUB-001",
+    "n": "Marco Subrosa Joris",
+    "brand": "Subrosa",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Tubo superior: 20.5\""
+    ],
+    "price": 1850000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/marco-subrosa-joris-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-sunday-soundwave-usado",
+    "sku": "REP-SUN-003",
+    "n": "Marco Sunday Soundwave (Usado)",
+    "brand": "Sunday",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Tubo superior: 20.5\"",
+      "Color: Oxblood",
+      "Estado: Usado"
+    ],
+    "price": 1600000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/marco-sunday-soundwave-usado-1.jpg",
+      "assets/img/products/marco-sunday-soundwave-usado-2.jpg",
+      "assets/img/products/marco-sunday-soundwave-usado-3.jpg",
+      "assets/img/products/marco-sunday-soundwave-usado-4.jpg",
+      "assets/img/products/marco-sunday-soundwave-usado-5.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tenedor-odyssey-r15-negro",
+    "sku": "REP-ODY-007",
+    "n": "Tenedor Odyssey R15 Negro",
+    "brand": "Odyssey",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Modelo: R15",
+      "Color: Negro"
+    ],
+    "price": 750000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/tenedor-odyssey-r15-negro-1.jpg",
+      "assets/img/products/tenedor-odyssey-r15-negro-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tenedor-rant-negro-30mm",
+    "sku": "REP-RAN-001",
+    "n": "Tenedor Rant Negro 30mm Offset",
+    "brand": "Rant",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Avance: 30mm",
+      "Color: Negro"
+    ],
+    "price": 600000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/tenedor-rant-negro-30mm-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-odyssey-broc-negra",
+    "sku": "REP-ODY-008",
+    "n": "Caña Odyssey Broc Negra",
+    "brand": "Odyssey",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Broc",
+      "Color: Negro"
+    ],
+    "price": 340000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-odyssey-broc-negra-1.jpg",
+      "assets/img/products/cana-odyssey-broc-negra-2.jpg",
+      "assets/img/products/cana-odyssey-broc-negra-3.jpg",
+      "assets/img/products/cana-odyssey-broc-negra-4.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-bsd-front-load-negra",
+    "sku": "REP-BSD-005",
+    "n": "Caña BSD Front Load Negra",
+    "brand": "BSD",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Tipo: Front Load",
+      "Color: Negro"
+    ],
+    "price": 340000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-bsd-front-load-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-kink-front-load-negra",
+    "sku": "REP-KIN-003",
+    "n": "Caña Kink Front Load Negra",
+    "brand": "Kink",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Tipo: Front Load",
+      "Color: Negro"
+    ],
+    "price": 310000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-kink-front-load-negra-1.jpg",
+      "assets/img/products/cana-kink-front-load-negra-2.jpg",
+      "assets/img/products/cana-kink-front-load-negra-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-shapershifter-320-negro",
+    "sku": "REP-FIE-002",
+    "n": "Marco Fiend Shapershifter 320 Negro Brillante",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Medidas disponibles: 20.5\" y 20.75\" (1 c/u)",
+      "Tubo superior: 12.75\"",
+      "Color: Negro brillante"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/marco-fiend-shapershifter-320-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-shapershifter-320-gris-mate",
+    "sku": "REP-FIE-003",
+    "n": "Marco Fiend Shapershifter 320 Gris Mate",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Tubo superior: 20.75\" X 12.75\"",
+      "Color: Gris mate"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/marco-fiend-shapershifter-320-gris-mate-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "marco-fiend-shapershifter-320-rojo-corsa",
+    "sku": "REP-FIE-004",
+    "n": "Marco Fiend Shapershifter 320 Rojo Corsa",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Marcos",
+    "spec": [
+      "Medidas disponibles: 20.5\" y 20.75\" (1 c/u)",
+      "Tubo superior: 12.75\"",
+      "Color: Rojo corsa"
+    ],
+    "price": 1790000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/marco-fiend-shapershifter-320-rojo-corsa-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tenedor-fiend-process-ic-v2-20mm-cromado",
+    "sku": "REP-FIE-005",
+    "n": "Tenedor Fiend Process IC V2 20mm Cromado",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Eje: 20mm",
+      "Color: Cromado"
+    ],
+    "price": 750000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/tenedor-fiend-process-ic-v2-20mm-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tenedor-fiend-process-ic-v2-20mm-negro",
+    "sku": "REP-FIE-006",
+    "n": "Tenedor Fiend Process IC V2 20mm Negro",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Eje: 20mm",
+      "Color: Negro"
+    ],
+    "price": 670000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/tenedor-fiend-process-ic-v2-20mm-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tenedor-fiend-invest-v2-26mm-cromado",
+    "sku": "REP-FIE-007",
+    "n": "Tenedor Fiend Invest V2 26mm Cromado",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Eje: 26mm",
+      "Color: Cromado"
+    ],
+    "price": 750000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/tenedor-fiend-invest-v2-26mm-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-fiend-reynolds-negro",
+    "sku": "REP-FIE-008",
+    "n": "Timón Fiend Reynolds Negro",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Medida: 9\" - 9.25\" X 27.25\"",
+      "Color: Negro"
+    ],
+    "price": 350000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/timon-fiend-reynolds-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-fiend-reynolds-cromado",
+    "sku": "REP-FIE-009",
+    "n": "Timón Fiend Reynolds Cromado",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Medida: 9\" - 9.25\" X 27.25\"",
+      "Color: Cromado"
+    ],
+    "price": 400000,
+    "promo": false,
+    "units": 3,
+    "imgs": [
+      "assets/img/products/timon-fiend-reynolds-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-fiend-team-negro",
+    "sku": "REP-FIE-010",
+    "n": "Timón Fiend Team Negro",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Medida: 9.5\" - 9.75\" X 29\"",
+      "Color: Negro"
+    ],
+    "price": 350000,
+    "promo": false,
+    "units": 7,
+    "imgs": [
+      "assets/img/products/timon-fiend-team-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-fiend-team-cromado",
+    "sku": "REP-FIE-011",
+    "n": "Timón Fiend Team Cromado",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Medida: 9.5\" - 9.75\" X 29\"",
+      "Color: Cromado"
+    ],
+    "price": 400000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/timon-fiend-team-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-reynolds-v4-negra",
+    "sku": "REP-FIE-012",
+    "n": "Caña Fiend Reynolds V4 Negra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Reynolds V4",
+      "Color: Negro"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/cana-fiend-reynolds-v4-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-reynolds-v4-cromada",
+    "sku": "REP-FIE-013",
+    "n": "Caña Fiend Reynolds V4 Cromada",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Reynolds V4",
+      "Color: Cromado"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/cana-fiend-reynolds-v4-cromada-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-ransom-gold",
+    "sku": "REP-FIE-014",
+    "n": "Caña Fiend Ransom Gold",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Ransom",
+      "Color: Dorado"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-fiend-ransom-gold-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-ransom-cromada",
+    "sku": "REP-FIE-015",
+    "n": "Caña Fiend Ransom Cromada",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Ransom",
+      "Color: Cromado"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/cana-fiend-ransom-cromada-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-mills-fl-negra",
+    "sku": "REP-FIE-016",
+    "n": "Caña Fiend Mills FL Negra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Mills",
+      "Tipo: Front Load",
+      "Color: Negro"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/cana-fiend-mills-fl-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-mills-fl-gold",
+    "sku": "REP-FIE-017",
+    "n": "Caña Fiend Mills FL Gold",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Mills",
+      "Tipo: Front Load",
+      "Color: Dorado"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-fiend-mills-fl-gold-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-fiend-mills-fl-cromada",
+    "sku": "REP-FIE-018",
+    "n": "Caña Fiend Mills FL Cromada",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Modelo: Mills",
+      "Tipo: Front Load",
+      "Color: Cromado"
+    ],
+    "price": 295000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/cana-fiend-mills-fl-cromada-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-fiend-frente-integrado-ransom-negra",
+    "sku": "REP-FIE-019",
+    "n": "Caja de Dirección Fiend Frente Integrado Ransom Negra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada",
+      "Modelo: Ransom",
+      "Color: Negro"
+    ],
+    "price": 135000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/caja-fiend-frente-integrado-ransom-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-fiend-frente-integrado-ransom-cromada",
+    "sku": "REP-FIE-020",
+    "n": "Caja de Dirección Fiend Frente Integrado Ransom Cromada",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada",
+      "Modelo: Ransom",
+      "Color: Cromado"
+    ],
+    "price": 135000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/caja-fiend-frente-integrado-ransom-cromada-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-fiend-centro-mid-22mm-ransom-negra",
+    "sku": "REP-FIE-021",
+    "n": "Caja de Centro Fiend Mid 22mm Ransom Negra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Eje: 22mm",
+      "Modelo: Ransom Mid",
+      "Color: Negro"
+    ],
+    "price": 135000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/caja-fiend-centro-mid-22mm-ransom-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-fiend-centro-mid-22mm-ransom-cromada",
+    "sku": "REP-FIE-022",
+    "n": "Caja de Centro Fiend Mid 22mm Ransom Cromada",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Eje: 22mm",
+      "Modelo: Ransom Mid",
+      "Color: Cromado"
+    ],
+    "price": 135000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/caja-fiend-centro-mid-22mm-ransom-cromada-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "bielas-fiend-segment-22mm-negras-170mm",
+    "sku": "REP-FIE-023",
+    "n": "Bielas Fiend Segment 22mm Negras 170mm",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Eje: 22mm",
+      "Largo: 170mm",
+      "Color: Negro"
+    ],
+    "price": 800000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/bielas-fiend-segment-22mm-negras-170mm-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "bielas-fiend-segment-22mm-cromadas",
+    "sku": "REP-FIE-024",
+    "n": "Bielas Fiend Segment 22mm Cromadas",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Eje: 22mm",
+      "Medidas: 160mm, 165mm, 170mm",
+      "Color: Cromado"
+    ],
+    "price": 890000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/bielas-fiend-segment-22mm-cromadas-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-reynolds-negro-25t-sin-guardia",
+    "sku": "REP-FIE-025",
+    "n": "Plato Fiend Reynolds Negro 25T Sin Guardia",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Sin guardia",
+      "Color: Negro"
+    ],
+    "price": 140000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-fiend-reynolds-negro-25t-sin-guardia-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-omicron-cromado-25t",
+    "sku": "REP-FIE-026",
+    "n": "Plato Fiend Omicron Cromado 25T",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Sin guardia",
+      "Color: Cromado"
+    ],
+    "price": 270000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/plato-fiend-omicron-cromado-25t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-omicron-cromado-28t",
+    "sku": "REP-FIE-027",
+    "n": "Plato Fiend Omicron Cromado 28T",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 28T",
+      "Sin guardia",
+      "Color: Cromado"
+    ],
+    "price": 270000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/plato-fiend-omicron-cromado-28t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-omicron-guard-cromado-26t",
+    "sku": "REP-FIE-028",
+    "n": "Plato Fiend Omicron Guard Cromado 26T",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 26T",
+      "Con guardia",
+      "Color: Cromado"
+    ],
+    "price": 340000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-fiend-omicron-guard-cromado-26t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-omicron-guard-negro-28t",
+    "sku": "REP-FIE-029",
+    "n": "Plato Fiend Omicron Guard Negro 28T",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 28T",
+      "Con guardia",
+      "Color: Negro"
+    ],
+    "price": 340000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-fiend-omicron-guard-negro-28t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cadena-fiend-halflink-negra",
+    "sku": "REP-FIE-030",
+    "n": "Cadena Fiend Halflink Negra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Cadenas",
+    "spec": [
+      "Tipo: Media eslabón",
+      "Color: Negro"
+    ],
+    "price": 120000,
+    "promo": false,
+    "units": 10,
+    "imgs": [
+      "assets/img/products/cadena-fiend-halflink-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-fiend-reynolds-blancos",
+    "sku": "REP-FIE-031",
+    "n": "Pedales Fiend Reynolds Blancos",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Blanco"
+    ],
+    "price": 85000,
+    "promo": false,
+    "units": 10,
+    "imgs": [
+      "assets/img/products/pedales-fiend-reynolds-blancos-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "silla-pivotal-fiend-reynolds-kevlar-negra",
+    "sku": "REP-FIE-032",
+    "n": "Silla Pivotal Fiend Reynolds Kevlar Negra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Sillas y Postes",
+    "spec": [
+      "Tipo: Pivotal",
+      "Refuerzo: Kevlar",
+      "Color: Negro"
+    ],
+    "price": 180000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/silla-pivotal-fiend-reynolds-kevlar-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "poste-pivotal-fiend-185mm-negro",
+    "sku": "REP-FIE-033",
+    "n": "Poste Pivotal Fiend 185mm Negro",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Sillas y Postes",
+    "spec": [
+      "Largo: 185mm",
+      "Color: Negro"
+    ],
+    "price": 135000,
+    "promo": false,
+    "units": 6,
+    "imgs": [
+      "assets/img/products/poste-pivotal-fiend-185mm-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "poste-pivotal-fiend-185mm-cromado",
+    "sku": "REP-FIE-034",
+    "n": "Poste Pivotal Fiend 185mm Cromado",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Sillas y Postes",
+    "spec": [
+      "Largo: 185mm",
+      "Color: Cromado"
+    ],
+    "price": 135000,
+    "promo": false,
+    "units": 6,
+    "imgs": [
+      "assets/img/products/poste-pivotal-fiend-185mm-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "peg-fiend-belmont-cromo-4-4mm",
+    "sku": "REP-FIE-035",
+    "n": "Peg Fiend Belmont Cromo 4.4mm",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Material: Cromoly",
+      "Diámetro: 4.4mm"
+    ],
+    "price": 80000,
+    "promo": false,
+    "units": 6,
+    "imgs": [
+      "assets/img/products/peg-fiend-belmont-cromo-4-4mm-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "peg-fiend-belmont-cromo-plastico-4-5mm",
+    "sku": "REP-FIE-036",
+    "n": "Peg Fiend Belmont Cromo Plástico 4.5mm",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Material: Cromoly con funda plástica",
+      "Diámetro: 4.5mm"
+    ],
+    "price": 90000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/peg-fiend-belmont-cromo-plastico-4-5mm-1.jpg"
+    ],
+    "published": true
   }
 ];
