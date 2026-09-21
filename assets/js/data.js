@@ -54,7 +54,7 @@ const STIKE_BRANDS = [
   "Éclat", "Federal", "Kink", "BSD", "Fly Bikes", "Demolition",
   "SaltPlus", "Stranger", "Mutanty", "Trueno", "Fate BMX Colombia",
   "TSG", "KMC", "Cinema", "GW", "Fade", "Stike", "Smith",
-  "Fiend", "Rant", "Subrosa", "Optimus", "Merritt", "Innova"
+  "Fiend", "Rant", "Subrosa", "Optimus", "Merritt", "Innova", "Primo"
 ];
 
 /* ------------------- Categorias/subcategorias con talla obligatoria -----
