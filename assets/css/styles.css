@@ -365,6 +365,18 @@ body::before {
   font-size: 23px; font-weight: 800; text-shadow: 0 1px 10px rgba(0,0,0,.35);
 }
 
+/* Sexta tile: no es una categoria con foto, es el acceso al catalogo
+   completo -- fondo solido en vez de bodegon/foto para que se lea distinto
+   a las demas de un vistazo. */
+.tile.tile-all { background: var(--ink); display: flex; align-items: flex-end; }
+.tile.tile-all::after { display: none; }
+.tile.tile-all .tile-label {
+  position: static; padding: 22px; text-shadow: none;
+  display: flex; align-items: center; gap: 10px; width: 100%;
+}
+.tile.tile-all .tile-label span { transition: transform .3s var(--ease); }
+.tile.tile-all:hover .tile-label span { transform: translateX(6px); }
+
 /* Franja de confianza: una linea, no cajas con icono (ver .props, sigue
    viva por si otra pagina la usa, pero index.html ya no la llama). */
 .trust-strip {

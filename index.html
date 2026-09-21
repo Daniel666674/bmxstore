@@ -157,7 +157,10 @@
       <a class="tile" href="${t.href}">
         <img src="${t.img}" alt="${t.label}" loading="lazy">
         <span class="tile-label">${t.label}</span>
-      </a>`).join("");
+      </a>`).join("") + `
+      <a class="tile tile-all" href="tienda.html">
+        <span class="tile-label">Todas <span aria-hidden="true">→</span></span>
+      </a>`;
 
     // Destacados: primeros productos variados del catalogo real de hoy.
     // 6 = dos filas limpias de 3 en la grilla de 3 columnas.
