@@ -52,6 +52,47 @@ console.log('\nOrdenar columnas');
   await page.waitForTimeout(150);
   const prices2 = await page.locator('#product-table-body td.num').evaluateAll(els => els.filter((_, i) => i % 2 === 0).map(e => parseInt(e.textContent.replace(/\D/g, ''))));
   t('un segundo click invierte a descendente', prices2, [...sortedAsc].reverse());
+
+  await page.click('th[data-sort="sku"]');
+  await page.waitForTimeout(150);
+  const skus = await page.locator('#product-table-body td.mono').allTextContents();
+  t('ordena por SKU alfabeticamente', skus, [...skus].sort());
+  await page.close();
+}
+
+console.log('\nFiltros: subcategoria, marca y estado');
+{
+  const page = await openAdmin();
+  await page.click('[data-view="table"]');
+  await page.waitForTimeout(150);
+  const total = await page.locator('#product-table-body tr[data-slug]').count();
+
+  await page.selectOption('#p-filter-brand', 'Fiend');
+  await page.waitForTimeout(150);
+  const brandRows = await page.locator('#product-table-body .pt-brand').allTextContents();
+  t('filtro de marca: solo Fiend', brandRows.every(b => b.trim() === 'Fiend'), true);
+  t('filtro de marca: reduce la lista', brandRows.length > 0 && brandRows.length < total, true);
+
+  await page.selectOption('#p-filter-brand', '');
+  await page.selectOption('#p-filter-cat', 'repuestos');
+  await page.waitForTimeout(150);
+  const subOptions = await page.locator('#p-filter-sub option').allTextContents();
+  t('subcategoria se limita a las de Repuestos', subOptions.includes('Marcos') && !subOptions.includes('Cascos'), true);
+  await page.selectOption('#p-filter-sub', 'Marcos');
+  await page.waitForTimeout(150);
+  const subRows = await page.locator('#product-table-body tr[data-slug]').count();
+  t('filtro de subcategoria: solo Marcos, menos filas', subRows > 0 && subRows < total, true);
+
+  await page.selectOption('#p-filter-cat', '');
+  await page.selectOption('#p-filter-sub', '');
+  await page.selectOption('#p-filter-status', 'draft');
+  await page.waitForTimeout(150);
+  t('filtro de estado "Borrador": catalogo real no tiene, da 0', await page.locator('#product-table-body tr[data-slug]').count(), 0);
+
+  await page.click('#btn-filters-clear');
+  await page.waitForTimeout(150);
+  t('limpiar filtros vuelve a mostrar todo', await page.locator('#product-table-body tr[data-slug]').count(), total);
+  t('limpiar filtros resetea los selects', await page.locator('#p-filter-brand').inputValue(), '');
   await page.close();
 }
 
@@ -115,23 +156,33 @@ console.log('\nPublicar en lote (sin modal, accion directa)');
   await page.close();
 }
 
-console.log('\nEliminar en lote: modal de confirmacion, no confirm() nativo');
+console.log('\nEliminar en lote: seleccion multiple de verdad (3 a la vez), modal en vez de confirm() nativo');
 {
   const page = await openAdmin();
   await page.click('[data-view="table"]');
   await page.waitForTimeout(150);
   const before = await page.locator('#product-table-body tr[data-slug]').count();
+  const targetSlugs = await page.locator('#product-table-body tr[data-slug]').evaluateAll(
+    rows => rows.slice(0, 3).map(r => r.getAttribute('data-slug'))
+  );
   await page.check('#product-table-body tr:nth-child(1) input[type=checkbox]');
+  await page.check('#product-table-body tr:nth-child(2) input[type=checkbox]');
+  await page.check('#product-table-body tr:nth-child(3) input[type=checkbox]');
+  await page.waitForTimeout(100);
+  t('la barra confirma los 3 seleccionados', (await page.locator('#bulk-count').textContent()).includes('3 productos'), true);
   let dialogFired = false;
   page.on('dialog', async d => { dialogFired = true; await d.dismiss(); });
   await page.click('#bulk-delete');
   await page.waitForTimeout(150);
-  t('se abre el modal de confirmacion', (await page.locator('#confirm-modal').textContent()).includes('Eliminar'), true);
+  t('el modal menciona las 3 unidades', (await page.locator('#confirm-modal').textContent()).includes('3 producto'), true);
   t('NO se disparo un confirm() nativo', dialogFired, false);
   await page.click('#bd-confirm');
   await page.waitForTimeout(200);
   const after = await page.locator('#product-table-body tr[data-slug]').count();
-  t('un producto menos en la tabla', after, before - 1);
+  t('quedan 3 productos menos en la tabla (no solo 1)', after, before - 3);
+  for (const slug of targetSlugs) {
+    t(`"${slug}" ya no esta en la tabla`, await page.locator(`#product-table-body tr[data-slug="${slug}"]`).count(), 0);
+  }
   await page.close();
 }
 
