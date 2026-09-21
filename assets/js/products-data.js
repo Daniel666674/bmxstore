@@ -2537,5 +2537,165 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/peg-fiend-7k-aluminio-plastico-4-5mm-1.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "timon-primo-rebar-925-negro",
+    "sku": "REP-PRI-001",
+    "n": "Timón Primo Rebar 9.25 Negro",
+    "brand": "Primo",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Altura: 9.25\"",
+      "Color: Negro"
+    ],
+    "price": 380000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/timon-primo-rebar-925-negro-1.jpg",
+      "assets/img/products/timon-primo-rebar-925-negro-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-eclat-chocolate-925",
+    "sku": "REP-ECL-009",
+    "n": "Timón Éclat Chocolate 9.25",
+    "brand": "Éclat",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Altura: 9.25\"",
+      "Color: Negro"
+    ],
+    "price": 340000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/timon-eclat-chocolate-925-1.jpg",
+      "assets/img/products/timon-eclat-chocolate-925-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-shadow-4-piezas-cromado",
+    "sku": "REP-SHA-010",
+    "n": "Timón Shadow 4 Piezas Cromado",
+    "brand": "Shadow",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Tipo: 4 piezas",
+      "Color: Cromado"
+    ],
+    "price": 340000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/timon-shadow-4-piezas-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "bielas-federal-vice-160mm-negras",
+    "sku": "REP-FED-011",
+    "n": "Bielas Federal Vice 160mm Negras",
+    "brand": "Federal",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Largo: 160mm",
+      "Color: Negro",
+      "Incluye cajas de centro"
+    ],
+    "price": 920000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/bielas-federal-vice-160mm-negras-1.jpg",
+      "assets/img/products/bielas-federal-vice-160mm-negras-2.jpg",
+      "assets/img/products/bielas-federal-vice-160mm-negras-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "bielas-demolition-markit-165mm",
+    "sku": "REP-DEM-001",
+    "n": "Bielas Demolition Markit 165mm",
+    "brand": "Demolition",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Largo: 165mm",
+      "Color: Negro"
+    ],
+    "price": 700000,
+    "promo": true,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/bielas-demolition-markit-165mm-1.jpg",
+      "assets/img/products/bielas-demolition-markit-165mm-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "bielas-primo-churchill-160mm-cromadas",
+    "sku": "REP-PRI-002",
+    "n": "Bielas Primo Churchill 160mm Cromadas",
+    "brand": "Primo",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Largo: 160mm",
+      "Color: Cromado"
+    ],
+    "price": 920000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/bielas-primo-churchill-160mm-cromadas-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-rant-4-piezas-negro-95",
+    "sku": "REP-RAN-002",
+    "n": "Timón Rant 4 Piezas Negro 9.5",
+    "brand": "Rant",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Altura: 9.5\"",
+      "Tipo: 4 piezas",
+      "Color: Negro"
+    ],
+    "price": 220000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/timon-rant-4-piezas-negro-95-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "timon-rant-2-piezas-cromado-95",
+    "sku": "REP-RAN-003",
+    "n": "Timón Rant 2 Piezas Cromado 9.5",
+    "brand": "Rant",
+    "cat": "repuestos",
+    "sub": "Timones",
+    "spec": [
+      "Altura: 9.5\"",
+      "Tipo: 2 piezas",
+      "Color: Cromado"
+    ],
+    "price": 220000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/timon-rant-2-piezas-cromado-95-1.jpg"
+    ],
+    "published": true
   }
 ];
