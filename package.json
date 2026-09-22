@@ -1,0 +1,8 @@
+{
+  "name": "stike-bike-shop-tools",
+  "private": true,
+  "description": "Dependencias de node para tools/*.mjs (el sitio en si no tiene build step). Correr `npm install` una vez antes de usar tools/whiten-bg.mjs.",
+  "devDependencies": {
+    "sharp": "^0.35.0"
+  }
+}
