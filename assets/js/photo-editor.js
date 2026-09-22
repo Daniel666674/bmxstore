@@ -376,6 +376,76 @@
   }
   const evalQuadratic = (c, u, v) => c[0] + c[1] * u + c[2] * v + c[3] * u * v + c[4] * u * u + c[5] * v * v;
 
+  /* ------------------- Filtro min/max separable (morfologia) -------------- */
+  /* La prenda es un bloque solido; un doblez del papel de fondo es una
+     linea delgada -- ambos pueden tener un residual igual de alto contra
+     la superficie de fondo (un doblez es una sombra dura), asi que lo que
+     los distingue es la FORMA, no el numero. Cierre (rellena huecos chicos
+     DENTRO de la prenda: bordado claro, textura jaspeada que por color se
+     confunde con fondo) y despues apertura (borra lineas delgadas FUERA de
+     la prenda: el doblez) separan uno de otro sin tocar el contraste de la
+     prenda. Ver tools/whiten-bg.mjs para el mismo algoritmo en Node. */
+  function slideFilter(arr, n, radius, isMin) {
+    const out = new Float32Array(n);
+    const deque = new Int32Array(n);
+    let head = 0, tail = 0;
+    for (let i = 0; i < n; i++) {
+      const v = arr[i];
+      while (tail > head && (isMin ? arr[deque[tail - 1]] >= v : arr[deque[tail - 1]] <= v)) tail--;
+      deque[tail++] = i;
+      if (deque[head] <= i - (2 * radius + 1)) head++;
+      if (i >= radius) out[i - radius] = arr[deque[head]];
+    }
+    for (let i = n; i < n + radius; i++) {
+      while (tail > head && deque[head] <= i - (2 * radius + 1)) head++;
+      if (i - radius < n) out[i - radius] = arr[deque[head]];
+    }
+    return out;
+  }
+  function erodeDilate2D(mask, w, h, radius, isMin) {
+    const rowPass = new Float32Array(w * h);
+    const rowBuf = new Float32Array(w);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) rowBuf[x] = mask[y * w + x];
+      const filtered = slideFilter(rowBuf, w, radius, isMin);
+      for (let x = 0; x < w; x++) rowPass[y * w + x] = filtered[x];
+    }
+    const out = new Float32Array(w * h);
+    const colBuf = new Float32Array(h);
+    for (let x = 0; x < w; x++) {
+      for (let y = 0; y < h; y++) colBuf[y] = rowPass[y * w + x];
+      const filtered = slideFilter(colBuf, h, radius, isMin);
+      for (let y = 0; y < h; y++) out[y * w + x] = filtered[y];
+    }
+    return out;
+  }
+  const opening = (mask, w, h, r) => erodeDilate2D(erodeDilate2D(mask, w, h, r, true), w, h, r, false);
+  const closing = (mask, w, h, r) => erodeDilate2D(erodeDilate2D(mask, w, h, r, false), w, h, r, true);
+  function boxBlur(mask, w, h, radius) {
+    const tmp = new Float32Array(w * h);
+    for (let y = 0; y < h; y++) {
+      let sum = 0;
+      for (let x = -radius; x <= radius; x++) sum += mask[y * w + clamp(x, 0, w - 1)];
+      for (let x = 0; x < w; x++) {
+        tmp[y * w + x] = sum / (2 * radius + 1);
+        sum += mask[y * w + clamp(x + radius + 1, 0, w - 1)] - mask[y * w + clamp(x - radius, 0, w - 1)];
+      }
+    }
+    const out = new Float32Array(w * h);
+    for (let x = 0; x < w; x++) {
+      let sum = 0;
+      for (let y = -radius; y <= radius; y++) sum += tmp[clamp(y, 0, h - 1) * w + x];
+      for (let y = 0; y < h; y++) {
+        out[y * w + x] = sum / (2 * radius + 1);
+        sum += tmp[clamp(y + radius + 1, 0, h - 1) * w + x] - tmp[clamp(y - radius, 0, h - 1) * w + x];
+      }
+    }
+    return out;
+  }
+
+  /* Devuelve imageData modificada, o null si el marco de la foto no
+     parece fondo confiable (la prenda llega hasta el borde en casi todos
+     lados) -- en ese caso no se toca nada, mejor que arruinarla. */
   function whitenImageData(imageData, targetWhite) {
     const { data, width: w, height: h } = imageData;
     const marginX = Math.max(3, Math.round(w * 0.045));
@@ -394,24 +464,69 @@
       for (let x = 0; x < marginX; x += 2) addPoint(x, y);
       for (let x = w - marginX; x < w; x += 2) addPoint(x, y);
     }
-    const coefR = fitQuadratic(points, 2), coefG = fitQuadratic(points, 3), coefB = fitQuadratic(points, 4);
-    const rangeOf = idx => { let lo = 255, hi = 0; for (const p of points) { if (p[idx] < lo) lo = p[idx]; if (p[idx] > hi) hi = p[idx]; } return [lo, hi]; };
+
+    // Ajuste robusto: 3 vueltas, descartando el 40% que peor encaja en
+    // cada una (son prenda que llego hasta el marco, no fondo real).
+    let survivors = points;
+    let coefR, coefG, coefB;
+    for (let iter = 0; iter < 3; iter++) {
+      coefR = fitQuadratic(survivors, 2); coefG = fitQuadratic(survivors, 3); coefB = fitQuadratic(survivors, 4);
+      if (iter === 2) break;
+      const withResidual = points.map(p => {
+        const pr = evalQuadratic(coefR, p[0], p[1]), pg = evalQuadratic(coefG, p[0], p[1]), pb = evalQuadratic(coefB, p[0], p[1]);
+        return [p, Math.max(Math.abs(p[2] - pr), Math.abs(p[3] - pg), Math.abs(p[4] - pb))];
+      });
+      withResidual.sort((a, b) => a[1] - b[1]);
+      const keepCount = Math.max(30, Math.round(withResidual.length * 0.6));
+      survivors = withResidual.slice(0, keepCount).map(([p]) => p);
+    }
+    const rangeOf = idx => { let lo = 255, hi = 0; for (const p of survivors) { if (p[idx] < lo) lo = p[idx]; if (p[idx] > hi) hi = p[idx]; } return [lo, hi]; };
     const [rLo, rHi] = rangeOf(2), [gLo, gHi] = rangeOf(3), [bLo, bHi] = rangeOf(4);
+    // Para decidir si el fondo es CONFIABLE se usa un rango por percentiles
+    // (10-90), no el minimo/maximo real: un solo punto rezagado que el
+    // ajuste robusto no alcanzo a descartar no representa al grueso del marco.
+    const percentileRangeOf = idx => {
+      const vals = survivors.map(p => p[idx]).sort((a, b) => a - b);
+      return [vals[Math.floor(vals.length * 0.1)], vals[Math.ceil(vals.length * 0.9) - 1]];
+    };
+    const [rLoP, rHiP] = percentileRangeOf(2), [gLoP, gHiP] = percentileRangeOf(3), [bLoP, bHiP] = percentileRangeOf(4);
+    const spread = Math.max(rHiP - rLoP, gHiP - gLoP, bHiP - bLoP);
+    if (!(spread < 70 && (rLoP + gLoP + bLoP) / 3 > 120)) return null; // sin fondo confiable
+
     const pad = 12;
+    const predAt = (x, y) => {
+      const u = x / w, v = y / h;
+      return [
+        clamp(evalQuadratic(coefR, u, v), rLo - pad, rHi + pad),
+        clamp(evalQuadratic(coefG, u, v), gLo - pad, gHi + pad),
+        clamp(evalQuadratic(coefB, u, v), bLo - pad, bHi + pad),
+      ];
+    };
+
+    const fgThreshold = 22, morphRadius = 2, featherRadius = 3;
+    const fgMask = new Float32Array(w * h);
     for (let y = 0; y < h; y++) {
-      const v = y / h;
       for (let x = 0; x < w; x++) {
-        const u = x / w;
         const idx = (y * w + x) * 4;
-        const predR = clamp(evalQuadratic(coefR, u, v), rLo - pad, rHi + pad);
-        const predG = clamp(evalQuadratic(coefG, u, v), gLo - pad, gHi + pad);
-        const predB = clamp(evalQuadratic(coefB, u, v), bLo - pad, bHi + pad);
+        const [predR, predG, predB] = predAt(x, y);
+        const residual = Math.max(Math.abs(data[idx] - predR), Math.abs(data[idx + 1] - predG), Math.abs(data[idx + 2] - predB));
+        fgMask[y * w + x] = residual > fgThreshold ? 1 : 0;
+      }
+    }
+    const softMask = boxBlur(opening(closing(fgMask, w, h, morphRadius), w, h, morphRadius), w, h, featherRadius);
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const idx = (y * w + x) * 4;
+        const [predR, predG, predB] = predAt(x, y);
         const gR = clamp(targetWhite / Math.max(1, predR), 0.85, 1.6);
         const gG = clamp(targetWhite / Math.max(1, predG), 0.85, 1.6);
         const gB = clamp(targetWhite / Math.max(1, predB), 0.85, 1.6);
-        data[idx] = Math.min(255, data[idx] * gR);
-        data[idx + 1] = Math.min(255, data[idx + 1] * gG);
-        data[idx + 2] = Math.min(255, data[idx + 2] * gB);
+        const corrR = Math.min(255, data[idx] * gR), corrG = Math.min(255, data[idx + 1] * gG), corrB = Math.min(255, data[idx + 2] * gB);
+        const fgScore = clamp(softMask[y * w + x], 0, 1), bgScore = 1 - fgScore;
+        data[idx] = corrR * fgScore + targetWhite * bgScore;
+        data[idx + 1] = corrG * fgScore + targetWhite * bgScore;
+        data[idx + 2] = corrB * fgScore + targetWhite * bgScore;
       }
     }
     return imageData;
@@ -465,8 +580,12 @@
         try {
           const ctx = baseCanvas.getContext("2d");
           const imageData = ctx.getImageData(0, 0, baseCanvas.width, baseCanvas.height);
-          whitenImageData(imageData, 250);
-          ctx.putImageData(imageData, 0, 0);
+          const result = whitenImageData(imageData, 253);
+          if (!result) {
+            alert("No se detectó un fondo confiable en esta foto (la prenda llega hasta casi todo el borde). No se tocó nada — recorta menos ajustado o usa otra foto como base.");
+            return;
+          }
+          ctx.putImageData(result, 0, 0);
           redrawCanvas();
         } finally {
           setLoading(false);

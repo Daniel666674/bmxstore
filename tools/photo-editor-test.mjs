@@ -157,6 +157,93 @@ const r4 = await page.evaluate(async () => {
 });
 t('Auto brillo nivela dos fotos con distinta exposición a un valor cercano', Math.abs(r4.oscura - r4.clara) <= 12, `  oscura->${r4.oscura}  clara->${r4.clara}`);
 
+/* ---- Quinta pasada: un doblez de papel (sombra dura, delgada) en el fondo
+   desaparece, pero una prenda solida y clara (color similar al fondo) NO
+   se aplana -- lo que las distingue es la forma (linea vs bloque), no el
+   color. Reproduce el caso real: buzo-nightmare-gris con el doblez del
+   papel, y un cuerpo de tela crema como el de buzo-etnies-beige. ---- */
+const r5 = await page.evaluate(async () => {
+  function makeCreasePng() {
+    const c = document.createElement('canvas');
+    c.width = 300; c.height = 300;
+    const cx = c.getContext('2d');
+    cx.fillStyle = 'rgb(248,248,248)';
+    cx.fillRect(0, 0, 300, 300);
+    // doblez del papel: una linea horizontal oscura y delgada, FUERA de la prenda
+    cx.fillStyle = 'rgb(150,150,150)';
+    cx.fillRect(0, 60, 300, 3);
+    // prenda: un bloque solido central, un tono PALIDO (parecido al fondo,
+    // como una tela crema) -- debe seguir distinguiendose del fondo
+    cx.fillStyle = 'rgb(225,215,195)';
+    cx.fillRect(90, 100, 120, 150);
+    return new Promise(res => c.toBlob(b => res(URL.createObjectURL(b)), 'image/png'));
+  }
+  const src = await makeCreasePng();
+  let saved = null;
+  await window.openPhotoEditor(src, { onSave(file) { saved = file; } });
+  await new Promise(r => setTimeout(r, 80));
+  document.querySelector('[data-pe="whiten"]').click();
+  await new Promise(r => setTimeout(r, 200));
+  document.querySelector('[data-pe="save"]').click();
+  await new Promise(r => setTimeout(r, 100));
+  const bmp = await createImageBitmap(saved);
+  const c2 = document.createElement('canvas');
+  c2.width = bmp.width; c2.height = bmp.height;
+  c2.getContext('2d').drawImage(bmp, 0, 0);
+  const px = (x, y) => Array.from(c2.getContext('2d').getImageData(x, y, 1, 1).data).slice(0, 3);
+  return {
+    sobreElDoblez: px(20, 61),       // fuera de la prenda, sobre la linea del doblez
+    fondoLejos: px(20, 200),         // fondo limpio, lejos de todo
+    centroPrenda: px(150, 175),      // dentro del bloque palido (la "prenda")
+  };
+});
+t('doblez del papel (linea delgada en el fondo) desaparece', r5.sobreElDoblez.every(v => v > 235), `  rgb(${r5.sobreElDoblez})`);
+t('el fondo limpio tambien queda blanco', r5.fondoLejos.every(v => v > 235), `  rgb(${r5.fondoLejos})`);
+t('la prenda palida (bloque solido) NO se aplana con el fondo', r5.centroPrenda.every((v, i) => Math.abs(v - [225, 215, 195][i]) < 25), `  rgb(${r5.centroPrenda})`);
+
+/* ---- Sexta pasada: si la prenda llega casi hasta el borde (sin fondo
+   real que medir), "Emparejar fondo blanco" no debe inventar nada --
+   avisa y deja la foto intacta. ---- */
+const r6 = await page.evaluate(async () => {
+  function makeNoBackgroundPng() {
+    const c = document.createElement('canvas');
+    c.width = 300; c.height = 300;
+    const cx = c.getContext('2d');
+    // "prenda" azul saturada que llena casi todo el cuadro, sin margen real de fondo
+    cx.fillStyle = 'rgb(20,40,160)';
+    cx.fillRect(0, 0, 300, 300);
+    cx.fillStyle = 'rgb(230,225,255)';
+    cx.fillRect(0, 0, 300, 8); // una tira minuscula, no representativa
+    return new Promise(res => c.toBlob(b => res(URL.createObjectURL(b)), 'image/png'));
+  }
+  const src = await makeNoBackgroundPng();
+  const before = await (await fetch(src)).blob();
+  const beforeBmp = await createImageBitmap(before);
+  const c0 = document.createElement('canvas');
+  c0.width = beforeBmp.width; c0.height = beforeBmp.height;
+  c0.getContext('2d').drawImage(beforeBmp, 0, 0);
+  const beforePx = Array.from(c0.getContext('2d').getImageData(150, 150, 1, 1).data).slice(0, 3);
+
+  let saved = null;
+  const origAlert = window.alert; let alertCalled = false;
+  window.alert = () => { alertCalled = true; };
+  await window.openPhotoEditor(src, { onSave(file) { saved = file; } });
+  await new Promise(r => setTimeout(r, 80));
+  document.querySelector('[data-pe="whiten"]').click();
+  await new Promise(r => setTimeout(r, 200));
+  window.alert = origAlert;
+  document.querySelector('[data-pe="save"]').click();
+  await new Promise(r => setTimeout(r, 100));
+  const bmp = await createImageBitmap(saved);
+  const c2 = document.createElement('canvas');
+  c2.width = bmp.width; c2.height = bmp.height;
+  c2.getContext('2d').drawImage(bmp, 0, 0);
+  const afterPx = Array.from(c2.getContext('2d').getImageData(150, 150, 1, 1).data).slice(0, 3);
+  return { alertCalled, beforePx, afterPx };
+});
+t('sin fondo confiable: avisa en vez de fallar en silencio', r6.alertCalled === true);
+t('sin fondo confiable: la foto queda intacta (no se inventa un blanco)', near(r6.beforePx, r6.afterPx, 3), `  antes rgb(${r6.beforePx}) despues rgb(${r6.afterPx})`);
+
 await browser.close();
 console.log(fail ? `\n  ${fail} FALLARON\n` : '\n  todo pasó\n');
 process.exit(fail ? 1 : 0);

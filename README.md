@@ -131,13 +131,22 @@ un token de GitHub real con acceso de escritura a este repo.
 - **Fondo blanco parejo en fotos de producto:** las tarjetas y la ficha
   pintan la plaqueta de blanco puro (`assets/css/styles.css`) porque las
   fotos de repuestos son cutouts de estudio con fondo blanco. Una foto de
-  celular sobre papel (como las de ropa) trae el papel gris/tinturado y
-  viñeteado, y se ve como una caja en vez de fundirse. `npm install` (una
-  sola vez, instala `sharp`) y despues `node tools/whiten-bg.mjs
-  <foto.jpg>...` la empareja: mide el color real en el marco exterior de
-  la foto (fondo garantizado) y aclara/neutraliza el resto a partir de ahí,
-  sin tocar el contraste propio de la prenda. `--preview` escribe
-  `foto.preview.jpg` en vez de pisar el original.
+  celular sobre papel (como las de ropa) trae el papel gris/tinturado,
+  viñeteado y a veces el doblez del papel como una sombra dura, y de foto
+  a foto el blanco no queda igual. `npm install` (una sola vez, instala
+  `sharp`) y despues `node tools/whiten-bg.mjs <foto.jpg>...` lo corrige:
+  ajusta de forma robusta una superficie de color por el marco exterior
+  (descartando puntos del marco que en realidad son prenda), clasifica
+  cada pixel por que tan lejos esta de esa superficie y limpia esa
+  clasificación con morfología (cierre + apertura) para que un doblez de
+  papel — una línea delgada — desaparezca sin comerse texto o bordado
+  claro de la prenda — un bloque sólido. El fondo confirmado se funde a un
+  blanco EXACTO e idéntico en todas las fotos; si el marco no resulta
+  creíble (la prenda llega casi hasta el borde, sin fondo real que medir),
+  la foto se deja intacta en vez de arruinarla. `--preview` escribe
+  `foto.preview.jpg` en vez de pisar el original. El mismo algoritmo corre
+  en el navegador dentro del editor de fotos del panel (ver el punto
+  siguiente).
 - **Colores / tipografía / estilos:** variables CSS en `assets/css/styles.css` (`:root`).
 - **Textos del hero/categorías:** pestaña "Contenido del sitio" en el admin,
   o directo en `data/site-content.json`.
