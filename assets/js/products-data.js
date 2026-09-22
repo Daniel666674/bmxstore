@@ -1427,7 +1427,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-etnies-beige-1.jpg",
+      "assets/img/products/buzo-etnies-beige-1.jpg?v=1790048193128",
       "assets/img/products/eb45f983-e634-437b-a509-ec1bd6290578.jpg",
       "assets/img/products/buzo-etnies-beige-2.jpg"
     ],
@@ -1539,41 +1539,6 @@ window.STIKE_PRODUCTS = [
     "published": true
   },
   {
-    "slug": "buzo-vans-cuadros",
-    "sku": "ROP-VAN-001",
-    "n": "Buzo Vans Verde Franja a Cuadros",
-    "brand": "Vans",
-    "cat": "ropa",
-    "sub": "Busos y Chaquetas",
-    "spec": [
-      "Color: Verde",
-      "Detalle: Franja a cuadros en la manga",
-      "Tipo: Capota sin cierre"
-    ],
-    "price": 120000,
-    "promo": false,
-    "sizes": [
-      {
-        "v": "S",
-        "u": 1
-      },
-      {
-        "v": "M",
-        "u": 1
-      },
-      {
-        "v": "L",
-        "u": 1
-      }
-    ],
-    "imgs": [
-      "assets/img/products/buzo-vans-cuadros-1.jpg",
-      "assets/img/products/71f8aee2-000b-4853-8498-414f5b5d4b06.jpg",
-      "assets/img/products/79f4d948-e4ca-4152-86a3-f3a037231f23.jpg"
-    ],
-    "published": true
-  },
-  {
     "slug": "buzo-freaak-azul-camel",
     "sku": "ROP-FRE-001",
     "n": "Buzo Freaak Azul y Camel",
@@ -1601,7 +1566,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-freaak-azul-camel-2.jpg",
+      "assets/img/products/buzo-freaak-azul-camel-2.jpg?v=1790048195771",
       "assets/img/products/1bc7fee5-f935-4f27-97ec-1934b155e0b8.jpg",
       "assets/img/products/buzo-freaak-azul-camel-1.jpg"
     ],
@@ -1744,38 +1709,6 @@ window.STIKE_PRODUCTS = [
     "published": true
   },
   {
-    "slug": "buzo-fox-rosa",
-    "sku": "ROP-FOX-004",
-    "n": "Buzo Fox Negro Logo Rosa",
-    "brand": "Fox",
-    "cat": "ropa",
-    "sub": "Busos y Chaquetas",
-    "spec": [
-      "Color: Negro",
-      "Estampado: Logo Fox en rosa"
-    ],
-    "price": 120000,
-    "promo": false,
-    "sizes": [
-      {
-        "v": "S",
-        "u": 1
-      },
-      {
-        "v": "M",
-        "u": 1
-      },
-      {
-        "v": "L",
-        "u": 1
-      }
-    ],
-    "imgs": [
-      "assets/img/products/buzo-fox-rosa-1.jpg"
-    ],
-    "published": true
-  },
-  {
     "slug": "buzo-fitbikeco-negro",
     "sku": "ROP-FIT-001",
     "n": "Buzo Fit Bike Co. Negro",
@@ -1803,7 +1736,9 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-fitbikeco-negro-1.jpg"
+      "assets/img/products/d1cdd06a-29f4-4c25-9005-17c985167d14.jpg",
+      "assets/img/products/ff98b94f-7799-441d-b41d-d6f40ffc0e73.jpg",
+      "assets/img/products/c7c2c4d6-ca23-4247-a4d1-a88196ffad1e.jpg"
     ],
     "published": true
   },
@@ -1835,7 +1770,9 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-alpinestars-negro-1.jpg"
+      "assets/img/products/ccc0c568-5f0b-4a4e-a6ee-81f04788aaff.jpg",
+      "assets/img/products/27615574-6e85-4dd7-b6ae-5b76b8b897d2.jpg",
+      "assets/img/products/7066a9a6-73b2-4d7c-b009-2135a1b2b9e7.jpg"
     ],
     "published": true
   },
@@ -1902,7 +1839,43 @@ window.STIKE_PRODUCTS = [
     ],
     "imgs": [
       "assets/img/products/chaqueta-nightmare-naranja-1.jpg",
-      "assets/img/products/chaqueta-nightmare-naranja-2.jpg"
+      "assets/img/products/2a13077d-d611-4a13-9e79-a7fbfbc59be3.jpg",
+      "assets/img/products/chaqueta-nightmare-naranja-2.jpg?v=1790048212453"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-vans",
+    "sku": "ROP-VAN-001",
+    "n": "Buzo Vans Verde ",
+    "brand": "Vans",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Verde",
+      "Detalle: logo",
+      "Tipo: Capota sin cierre"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-vans-cuadros-1.jpg",
+      "assets/img/products/71f8aee2-000b-4853-8498-414f5b5d4b06.jpg",
+      "assets/img/products/79f4d948-e4ca-4152-86a3-f3a037231f23.jpg"
     ],
     "published": true
   }
