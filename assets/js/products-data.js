@@ -2005,5 +2005,46 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/fdd1760e-bec8-4259-bb34-e4959cbc2569.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "buzo-freaak-azul-y-gris",
+    "sku": "ROP-FRE-002",
+    "n": "Buzo Freaak Azul y GRIS",
+    "brand": "Total BMX",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Azul y GRIS",
+      "Cierre: Cremallera completa"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      },
+      {
+        "v": "XL",
+        "u": 0
+      },
+      {
+        "v": "XXL",
+        "u": 0
+      }
+    ],
+    "imgs": [
+      "assets/img/products/df0b74e6-98c0-40b5-b860-d732dd185ad1.jpg",
+      "assets/img/products/8a9bac5f-6fd4-4a22-ac8c-38d50da53200.jpg"
+    ],
+    "published": true
   }
 ];
