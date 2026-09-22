@@ -1601,8 +1601,9 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-freaak-azul-camel-1.jpg",
-      "assets/img/products/buzo-freaak-azul-camel-2.jpg"
+      "assets/img/products/buzo-freaak-azul-camel-2.jpg",
+      "assets/img/products/1bc7fee5-f935-4f27-97ec-1934b155e0b8.jpg",
+      "assets/img/products/buzo-freaak-azul-camel-1.jpg"
     ],
     "published": true
   },
@@ -1634,8 +1635,9 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
+      "assets/img/products/638ecaf6-5f43-4822-b679-037e26d0ea8c.jpg",
       "assets/img/products/buzo-sm-bmx-negro-1.jpg",
-      "assets/img/products/buzo-sm-bmx-negro-2.jpg"
+      "assets/img/products/941d3816-7480-4aae-8dcd-ceea9c8225e8.jpg"
     ],
     "published": true
   },
@@ -1896,40 +1898,6 @@ window.STIKE_PRODUCTS = [
     "imgs": [
       "assets/img/products/chaqueta-nightmare-naranja-1.jpg",
       "assets/img/products/chaqueta-nightmare-naranja-2.jpg"
-    ],
-    "published": true
-  },
-  {
-    "slug": "buzo-fibikeco",
-    "sku": "ROP-VAN-002",
-    "n": "Buzo Vans Verde Logo Cursivo",
-    "brand": "Vans",
-    "cat": "ropa",
-    "sub": "Busos y Chaquetas",
-    "spec": [
-      "Color: Negro",
-      "Logo: fitbikeco",
-      "Tipo: Capota sin cierre"
-    ],
-    "price": 120000,
-    "promo": false,
-    "sizes": [
-      {
-        "v": "S",
-        "u": 1
-      },
-      {
-        "v": "M",
-        "u": 1
-      },
-      {
-        "v": "L",
-        "u": 1
-      }
-    ],
-    "imgs": [
-      "assets/img/products/buzo-vans-cursivo-1.jpg",
-      "assets/img/products/buzo-vans-cursivo-2.jpg"
     ],
     "published": true
   }
