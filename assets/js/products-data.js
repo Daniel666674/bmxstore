@@ -1743,40 +1743,6 @@ window.STIKE_PRODUCTS = [
     "published": true
   },
   {
-    "slug": "buzo-alpinestars-negro",
-    "sku": "ROP-ALP-001",
-    "n": "Buzo Alpinestars Negro",
-    "brand": "Alpinestars",
-    "cat": "ropa",
-    "sub": "Busos y Chaquetas",
-    "spec": [
-      "Color: Negro",
-      "Estampado: Alpinestars"
-    ],
-    "price": 120000,
-    "promo": false,
-    "sizes": [
-      {
-        "v": "S",
-        "u": 1
-      },
-      {
-        "v": "M",
-        "u": 1
-      },
-      {
-        "v": "L",
-        "u": 1
-      }
-    ],
-    "imgs": [
-      "assets/img/products/ccc0c568-5f0b-4a4e-a6ee-81f04788aaff.jpg",
-      "assets/img/products/27615574-6e85-4dd7-b6ae-5b76b8b897d2.jpg",
-      "assets/img/products/7066a9a6-73b2-4d7c-b009-2135a1b2b9e7.jpg"
-    ],
-    "published": true
-  },
-  {
     "slug": "chaqueta-micos-trails",
     "sku": "ROP-MIC-001",
     "n": "Chaqueta Micos Trails Negro y Dorado",
@@ -2044,6 +2010,91 @@ window.STIKE_PRODUCTS = [
     "imgs": [
       "assets/img/products/df0b74e6-98c0-40b5-b860-d732dd185ad1.jpg",
       "assets/img/products/8a9bac5f-6fd4-4a22-ac8c-38d50da53200.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "chaqueta-nightmare-negro",
+    "sku": "ROP-NIG-004",
+    "n": "Chaqueta Nightmare Negro",
+    "brand": "Total BMX",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Tela: Satinada, rompevientos",
+      "Cierre: Cremallera completa"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      },
+      {
+        "v": "XL",
+        "u": 0
+      },
+      {
+        "v": "XXL",
+        "u": 0
+      }
+    ],
+    "imgs": [
+      "assets/img/products/adf3825c-f657-4572-bded-5d086750324c.jpg",
+      "assets/img/products/192e6a90-ca08-4468-98e7-5d6303258d5a.jpg",
+      "assets/img/products/0cd73d14-5201-4841-a9a2-b1ffb8de3e49.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-alpinestars-negro",
+    "sku": "ROP-ALP-001",
+    "n": "Buzo Alpinestars Negro",
+    "brand": "Total BMX",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Estampado: Alpinestars"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      },
+      {
+        "v": "XL",
+        "u": 0
+      },
+      {
+        "v": "XXL",
+        "u": 0
+      }
+    ],
+    "imgs": [
+      "assets/img/products/b01a554f-67e8-407b-9c8c-61d1cc1b76a1.jpg",
+      "assets/img/products/9f15afb8-0f5c-43c2-9da7-42bf4798504c.jpg",
+      "assets/img/products/4938950d-b3b9-4da1-94a7-9b87b4aa4673.jpg"
     ],
     "published": true
   }
