@@ -25,5 +25,41 @@
     "edited": 3,
     "deleted": 2,
     "photos": 0
+  },
+  {
+    "ts": "2026-09-22T02:31:36.739Z",
+    "admin": "camilor9507@gmail.com",
+    "summary": "0 creado(s), 2 editado(s), 0 eliminado(s), 2 foto(s)",
+    "created": 0,
+    "edited": 2,
+    "deleted": 0,
+    "photos": 2
+  },
+  {
+    "ts": "2026-09-22T02:39:35.254Z",
+    "admin": "camilor9507@gmail.com",
+    "summary": "0 creado(s), 2 editado(s), 0 eliminado(s), 2 foto(s)",
+    "created": 0,
+    "edited": 2,
+    "deleted": 0,
+    "photos": 2
+  },
+  {
+    "ts": "2026-09-22T02:54:32.694Z",
+    "admin": "camilor9507@gmail.com",
+    "summary": "0 creado(s), 3 editado(s), 0 eliminado(s), 3 foto(s)",
+    "created": 0,
+    "edited": 3,
+    "deleted": 0,
+    "photos": 3
+  },
+  {
+    "ts": "2026-09-22T03:01:55.607Z",
+    "admin": "camilor9507@gmail.com",
+    "summary": "0 creado(s), 2 editado(s), 1 eliminado(s), 3 foto(s)",
+    "created": 0,
+    "edited": 2,
+    "deleted": 1,
+    "photos": 3
   }
 ]

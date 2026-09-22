@@ -1379,12 +1379,22 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-nightmare-gris-1.jpg",
+      "assets/img/products/5580634b-3f6e-4203-ad78-4ff933bfd2e2.jpg",
       "assets/img/products/buzo-nightmare-gris-2.jpg"
     ],
     "published": true
@@ -1403,15 +1413,26 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-etnies-beige-1.jpg",
+      "assets/img/products/eb45f983-e634-437b-a509-ec1bd6290578.jpg",
       "assets/img/products/buzo-etnies-beige-2.jpg"
     ],
-    "published": true
+    "published": true,
+    "imgPos": "top center"
   },
   {
     "slug": "chaqueta-nightmare-aguamarina",
@@ -1428,13 +1449,23 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/chaqueta-nightmare-aguamarina-1.jpg",
-      "assets/img/products/chaqueta-nightmare-aguamarina-2.jpg"
+      "assets/img/products/chaqueta-nightmare-aguamarina-2.jpg",
+      "assets/img/products/44967b86-615a-468b-8b1b-c250cf8143d0.jpg"
     ],
     "published": true
   },
@@ -1453,12 +1484,22 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-xoxo-verde-1.jpg",
+      "assets/img/products/878cc7ce-4906-4555-8066-625a68aeeb41.jpg",
       "assets/img/products/buzo-xoxo-verde-2.jpg"
     ],
     "published": true
@@ -1478,13 +1519,22 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
-      "assets/img/products/buzo-xoxo-vinotinto-1.jpg",
-      "assets/img/products/buzo-xoxo-vinotinto-2.jpg"
+      "assets/img/products/buzo-xoxo-vinotinto-2.jpg",
+      "assets/img/products/beccf633-4581-432c-9068-ff56286dd4a4.jpg"
     ],
     "published": true
   },
@@ -1503,38 +1553,23 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-vans-cuadros-1.jpg",
-      "assets/img/products/buzo-vans-cuadros-2.jpg"
-    ],
-    "published": true
-  },
-  {
-    "slug": "buzo-vans-cursivo",
-    "sku": "ROP-VAN-002",
-    "n": "Buzo Vans Verde Logo Cursivo",
-    "brand": "Vans",
-    "cat": "ropa",
-    "sub": "Busos y Chaquetas",
-    "spec": [
-      "Color: Verde oscuro",
-      "Logo: Vans cursivo",
-      "Tipo: Capota sin cierre"
-    ],
-    "price": 120000,
-    "promo": false,
-    "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
-    ],
-    "imgs": [
-      "assets/img/products/buzo-vans-cursivo-1.jpg",
-      "assets/img/products/buzo-vans-cursivo-2.jpg"
+      "assets/img/products/71f8aee2-000b-4853-8498-414f5b5d4b06.jpg",
+      "assets/img/products/79f4d948-e4ca-4152-86a3-f3a037231f23.jpg"
     ],
     "published": true
   },
@@ -1552,13 +1587,23 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
-      "assets/img/products/buzo-freaak-azul-camel-1.jpg",
-      "assets/img/products/buzo-freaak-azul-camel-2.jpg"
+      "assets/img/products/buzo-freaak-azul-camel-2.jpg",
+      "assets/img/products/1bc7fee5-f935-4f27-97ec-1934b155e0b8.jpg",
+      "assets/img/products/buzo-freaak-azul-camel-1.jpg"
     ],
     "published": true
   },
@@ -1576,13 +1621,23 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
+      "assets/img/products/638ecaf6-5f43-4822-b679-037e26d0ea8c.jpg",
       "assets/img/products/buzo-sm-bmx-negro-1.jpg",
-      "assets/img/products/buzo-sm-bmx-negro-2.jpg"
+      "assets/img/products/941d3816-7480-4aae-8dcd-ceea9c8225e8.jpg"
     ],
     "published": true
   },
@@ -1600,9 +1655,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-fox-procircuit-1.jpg"
@@ -1623,9 +1687,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-fox-honda-1.jpg",
@@ -1647,9 +1720,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-fox-retro-aqua-1.jpg"
@@ -1670,9 +1752,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-fox-rosa-1.jpg"
@@ -1693,9 +1784,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-fitbikeco-negro-1.jpg"
@@ -1716,9 +1816,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/buzo-alpinestars-negro-1.jpg"
@@ -1739,9 +1848,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/chaqueta-micos-trails-1.jpg",
@@ -1764,9 +1882,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "sizes": [
-      { "v": "S", "u": 1 },
-      { "v": "M", "u": 1 },
-      { "v": "L", "u": 1 }
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/chaqueta-nightmare-naranja-1.jpg",
