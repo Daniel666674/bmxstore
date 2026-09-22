@@ -1873,9 +1873,10 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-vans-cuadros-1.jpg",
-      "assets/img/products/71f8aee2-000b-4853-8498-414f5b5d4b06.jpg",
-      "assets/img/products/79f4d948-e4ca-4152-86a3-f3a037231f23.jpg"
+      "assets/img/products/5564bd64-8856-445f-b385-e077e70bbc4d.jpg",
+      "assets/img/products/71f8aee2-000b-4853-8498-414f5b5d4b06.jpg?v=1790048858245",
+      "assets/img/products/79f4d948-e4ca-4152-86a3-f3a037231f23.jpg",
+      "assets/img/products/ce1c910d-cf08-45e4-9715-15a54a4478b6.jpg"
     ],
     "published": true
   }
