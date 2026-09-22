@@ -1635,7 +1635,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/638ecaf6-5f43-4822-b679-037e26d0ea8c.jpg",
+      "assets/img/products/ca6f3ff1-0d17-48ae-8802-88705c1fa42f.jpg",
       "assets/img/products/buzo-sm-bmx-negro-1.jpg",
       "assets/img/products/941d3816-7480-4aae-8dcd-ceea9c8225e8.jpg"
     ],
@@ -1669,7 +1669,9 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-fox-procircuit-1.jpg"
+      "assets/img/products/buzo-fox-procircuit-1.jpg",
+      "assets/img/products/c86545f8-9de7-4715-8133-2095af392ca0.jpg",
+      "assets/img/products/e21e8a2f-72a4-41c6-a6df-a91b6d4d2758.jpg"
     ],
     "published": true
   },
@@ -1702,7 +1704,8 @@ window.STIKE_PRODUCTS = [
     ],
     "imgs": [
       "assets/img/products/buzo-fox-honda-1.jpg",
-      "assets/img/products/buzo-fox-honda-2.jpg"
+      "assets/img/products/33048a83-2eb2-4043-a566-05e54db5df17.jpg",
+      "assets/img/products/83b950bd-4491-43da-8320-55967e071c62.jpg"
     ],
     "published": true
   },
@@ -1734,6 +1737,8 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
+      "assets/img/products/8db16d27-2602-428b-81c1-09f46bbbbb2b.jpg",
+      "assets/img/products/c179f908-fd61-4150-bd7d-dc633ad70a3d.jpg",
       "assets/img/products/buzo-fox-retro-aqua-1.jpg"
     ],
     "published": true
