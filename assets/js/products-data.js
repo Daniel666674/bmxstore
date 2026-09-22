@@ -1921,5 +1921,47 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/ed9837ea-be09-462b-9c9a-acf7bbf63fab.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "buzo-fox-negro",
+    "sku": "ROP-FOX-004",
+    "n": "BUZO FOX NEGRO",
+    "brand": "Total BMX",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Estampado: FOX LOGO"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      },
+      {
+        "v": "XL",
+        "u": 0
+      },
+      {
+        "v": "XXL",
+        "u": 0
+      }
+    ],
+    "imgs": [
+      "assets/img/products/a69bfa64-3064-4816-a066-b612dd3be8cc.jpg",
+      "assets/img/products/b849ed5f-7bc3-492e-a4cf-c7a4560c28ff.jpg",
+      "assets/img/products/092f85a7-0830-4166-9054-f58bfb7905cf.jpg"
+    ],
+    "published": true
   }
 ];
