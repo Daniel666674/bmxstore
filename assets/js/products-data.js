@@ -1875,8 +1875,50 @@ window.STIKE_PRODUCTS = [
     "imgs": [
       "assets/img/products/5564bd64-8856-445f-b385-e077e70bbc4d.jpg",
       "assets/img/products/71f8aee2-000b-4853-8498-414f5b5d4b06.jpg?v=1790048858245",
-      "assets/img/products/79f4d948-e4ca-4152-86a3-f3a037231f23.jpg",
       "assets/img/products/ce1c910d-cf08-45e4-9715-15a54a4478b6.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-vanz-verde-a-cuadros",
+    "sku": "ROP-VAN-002",
+    "n": "BUZO VANZ VERDE A CUADROS",
+    "brand": "Total BMX",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Verde",
+      "Detalle: MANGA A CUADROS",
+      "Tipo: Capota sin cierre"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      },
+      {
+        "v": "XL",
+        "u": 0
+      },
+      {
+        "v": "XXL",
+        "u": 0
+      }
+    ],
+    "imgs": [
+      "assets/img/products/ab1e5417-8660-469c-a8a1-6a77d895ea7d.jpg",
+      "assets/img/products/6eaaa212-2731-46fa-875b-547185c67698.jpg",
+      "assets/img/products/ed9837ea-be09-462b-9c9a-acf7bbf63fab.jpg"
     ],
     "published": true
   }
