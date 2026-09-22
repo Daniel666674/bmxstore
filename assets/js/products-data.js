@@ -1363,5 +1363,415 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/timon-rant-2-piezas-cromado-95-1.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "buzo-nightmare-gris",
+    "sku": "ROP-NIG-001",
+    "n": "Buzo Nightmare Gris Jaspeado",
+    "brand": "Nightmare",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Gris jaspeado",
+      "Cierre: Cremallera completa",
+      "Tela: Algodón/Poliéster"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-nightmare-gris-1.jpg",
+      "assets/img/products/buzo-nightmare-gris-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-etnies-beige",
+    "sku": "ROP-ETN-001",
+    "n": "Buzo Etnies Beige y Negro",
+    "brand": "Etnies",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Beige y negro",
+      "Tela: Algodón/Poliéster"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-etnies-beige-1.jpg",
+      "assets/img/products/buzo-etnies-beige-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "chaqueta-nightmare-aguamarina",
+    "sku": "ROP-NIG-002",
+    "n": "Chaqueta Nightmare Aguamarina",
+    "brand": "Nightmare",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Aguamarina",
+      "Tela: Satinada, rompevientos",
+      "Cierre: Cremallera completa"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/chaqueta-nightmare-aguamarina-1.jpg",
+      "assets/img/products/chaqueta-nightmare-aguamarina-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-xoxo-verde",
+    "sku": "ROP-XOX-001",
+    "n": "Buzo XOXO Verde Wile E. Coyote",
+    "brand": "XOXO",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Verde",
+      "Estampado: Wile E. Coyote \"Oops\"",
+      "Cierre: Cremallera completa"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-xoxo-verde-1.jpg",
+      "assets/img/products/buzo-xoxo-verde-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-xoxo-vinotinto",
+    "sku": "ROP-XOX-002",
+    "n": "Buzo XOXO Vinotinto Wile E. Coyote",
+    "brand": "XOXO",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Vinotinto",
+      "Estampado: Wile E. Coyote \"Oops\"",
+      "Tipo: Capota sin cierre"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-xoxo-vinotinto-1.jpg",
+      "assets/img/products/buzo-xoxo-vinotinto-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-vans-cuadros",
+    "sku": "ROP-VAN-001",
+    "n": "Buzo Vans Verde Franja a Cuadros",
+    "brand": "Vans",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Verde",
+      "Detalle: Franja a cuadros en la manga",
+      "Tipo: Capota sin cierre"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-vans-cuadros-1.jpg",
+      "assets/img/products/buzo-vans-cuadros-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-vans-cursivo",
+    "sku": "ROP-VAN-002",
+    "n": "Buzo Vans Verde Logo Cursivo",
+    "brand": "Vans",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Verde oscuro",
+      "Logo: Vans cursivo",
+      "Tipo: Capota sin cierre"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-vans-cursivo-1.jpg",
+      "assets/img/products/buzo-vans-cursivo-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-freaak-azul-camel",
+    "sku": "ROP-FRE-001",
+    "n": "Buzo Freaak Azul y Camel",
+    "brand": "Freaak",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Azul y camel",
+      "Cierre: Cremallera completa"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-freaak-azul-camel-1.jpg",
+      "assets/img/products/buzo-freaak-azul-camel-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-sm-bmx-negro",
+    "sku": "ROP-SYM-001",
+    "n": "Buzo S&M BMX Negro",
+    "brand": "S&M Bikes",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Estampado: Escudo S&M American Bicycle Co."
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-sm-bmx-negro-1.jpg",
+      "assets/img/products/buzo-sm-bmx-negro-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-fox-procircuit",
+    "sku": "ROP-FOX-001",
+    "n": "Buzo Fox Pro Circuit Negro y Gris",
+    "brand": "Fox",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro y gris",
+      "Estampado: Fox Pro Circuit"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-fox-procircuit-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-fox-honda",
+    "sku": "ROP-FOX-002",
+    "n": "Buzo Fox Honda Racing Crema y Negro",
+    "brand": "Fox",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Crema y negro",
+      "Estampado: Fox x Honda Racing"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-fox-honda-1.jpg",
+      "assets/img/products/buzo-fox-honda-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-fox-retro-aqua",
+    "sku": "ROP-FOX-003",
+    "n": "Buzo Fox Retro Aqua y Negro",
+    "brand": "Fox",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Aqua y negro",
+      "Estampado: Fox estilo retro"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-fox-retro-aqua-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-fox-rosa",
+    "sku": "ROP-FOX-004",
+    "n": "Buzo Fox Negro Logo Rosa",
+    "brand": "Fox",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Estampado: Logo Fox en rosa"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-fox-rosa-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-fitbikeco-negro",
+    "sku": "ROP-FIT-001",
+    "n": "Buzo Fit Bike Co. Negro",
+    "brand": "Fit Bike Co.",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Estampado: Fit Bike Co."
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-fitbikeco-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-alpinestars-negro",
+    "sku": "ROP-ALP-001",
+    "n": "Buzo Alpinestars Negro",
+    "brand": "Alpinestars",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Estampado: Alpinestars"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-alpinestars-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "chaqueta-micos-trails",
+    "sku": "ROP-MIC-001",
+    "n": "Chaqueta Micos Trails Negro y Dorado",
+    "brand": "Micos Trails",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro y dorado",
+      "Tela: Satinada, rompevientos"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/chaqueta-micos-trails-1.jpg",
+      "assets/img/products/chaqueta-micos-trails-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "chaqueta-nightmare-naranja",
+    "sku": "ROP-NIG-003",
+    "n": "Chaqueta Nightmare Naranja y Negro",
+    "brand": "Nightmare",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Naranja y negro",
+      "Tela: Rompevientos",
+      "Cierre: Cremallera completa"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      { "v": "S", "u": 1 },
+      { "v": "M", "u": 1 },
+      { "v": "L", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/chaqueta-nightmare-naranja-1.jpg",
+      "assets/img/products/chaqueta-nightmare-naranja-2.jpg"
+    ],
+    "published": true
   }
 ];
