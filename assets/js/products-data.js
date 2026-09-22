@@ -1533,8 +1533,8 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-xoxo-vinotinto-1.jpg",
-      "assets/img/products/buzo-xoxo-vinotinto-2.jpg"
+      "assets/img/products/buzo-xoxo-vinotinto-2.jpg",
+      "assets/img/products/beccf633-4581-432c-9068-ff56286dd4a4.jpg"
     ],
     "published": true
   },
@@ -1568,41 +1568,8 @@ window.STIKE_PRODUCTS = [
     ],
     "imgs": [
       "assets/img/products/buzo-vans-cuadros-1.jpg",
-      "assets/img/products/buzo-vans-cuadros-2.jpg"
-    ],
-    "published": true
-  },
-  {
-    "slug": "buzo-vans-cursivo",
-    "sku": "ROP-VAN-002",
-    "n": "Buzo Vans Verde Logo Cursivo",
-    "brand": "Vans",
-    "cat": "ropa",
-    "sub": "Busos y Chaquetas",
-    "spec": [
-      "Color: Verde oscuro",
-      "Logo: Vans cursivo",
-      "Tipo: Capota sin cierre"
-    ],
-    "price": 120000,
-    "promo": false,
-    "sizes": [
-      {
-        "v": "S",
-        "u": 1
-      },
-      {
-        "v": "M",
-        "u": 1
-      },
-      {
-        "v": "L",
-        "u": 1
-      }
-    ],
-    "imgs": [
-      "assets/img/products/buzo-vans-cursivo-1.jpg",
-      "assets/img/products/buzo-vans-cursivo-2.jpg"
+      "assets/img/products/71f8aee2-000b-4853-8498-414f5b5d4b06.jpg",
+      "assets/img/products/79f4d948-e4ca-4152-86a3-f3a037231f23.jpg"
     ],
     "published": true
   },
@@ -1929,6 +1896,40 @@ window.STIKE_PRODUCTS = [
     "imgs": [
       "assets/img/products/chaqueta-nightmare-naranja-1.jpg",
       "assets/img/products/chaqueta-nightmare-naranja-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "buzo-fibikeco",
+    "sku": "ROP-VAN-002",
+    "n": "Buzo Vans Verde Logo Cursivo",
+    "brand": "Vans",
+    "cat": "ropa",
+    "sub": "Busos y Chaquetas",
+    "spec": [
+      "Color: Negro",
+      "Logo: fitbikeco",
+      "Tipo: Capota sin cierre"
+    ],
+    "price": 120000,
+    "promo": false,
+    "sizes": [
+      {
+        "v": "S",
+        "u": 1
+      },
+      {
+        "v": "M",
+        "u": 1
+      },
+      {
+        "v": "L",
+        "u": 1
+      }
+    ],
+    "imgs": [
+      "assets/img/products/buzo-vans-cursivo-1.jpg",
+      "assets/img/products/buzo-vans-cursivo-2.jpg"
     ],
     "published": true
   }
