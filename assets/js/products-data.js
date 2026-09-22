@@ -1464,7 +1464,8 @@ window.STIKE_PRODUCTS = [
     ],
     "imgs": [
       "assets/img/products/chaqueta-nightmare-aguamarina-1.jpg",
-      "assets/img/products/chaqueta-nightmare-aguamarina-2.jpg"
+      "assets/img/products/chaqueta-nightmare-aguamarina-2.jpg",
+      "assets/img/products/44967b86-615a-468b-8b1b-c250cf8143d0.jpg"
     ],
     "published": true
   },
@@ -1498,6 +1499,7 @@ window.STIKE_PRODUCTS = [
     ],
     "imgs": [
       "assets/img/products/buzo-xoxo-verde-1.jpg",
+      "assets/img/products/878cc7ce-4906-4555-8066-625a68aeeb41.jpg",
       "assets/img/products/buzo-xoxo-verde-2.jpg"
     ],
     "published": true
