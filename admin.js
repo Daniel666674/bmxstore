@@ -1235,6 +1235,7 @@ function renderPhotoGrid() {
     <div class="pthumb ${i === 0 ? "cover" : ""}" draggable="true" data-idx="${i}">
       ${i === 0 ? `<span class="cov-badge">Portada</span>` : ""}
       <img src="${previewSrcFor(path)}" alt="">
+      <button class="edit" type="button" data-edit-photo="${i}" title="Editar (girar, recortar, fondo, brillo...)">✎</button>
       <button class="rm" type="button" data-rm-photo="${i}" title="Quitar">✕</button>
       ${colorOpts.length ? `<select data-photo-color="${i}">
         <option value="">— color —</option>
@@ -1248,6 +1249,21 @@ function renderPhotoGrid() {
     if (pendingUploads.has(removed)) pendingUploads.delete(removed); // nunca se llegó a subir, se libera el nombre reservado
     if (d.imgColorMap) delete d.imgColorMap[removed];
     renderPhotoGrid();
+  }));
+  $$("#ed-photogrid [data-edit-photo]").forEach(b => b.addEventListener("click", () => {
+    const i = +b.getAttribute("data-edit-photo");
+    const path = d.imgs[i];
+    /* openPhotoEditor no sabe nada de pendingUploads: solo pide una URL y
+       devuelve un archivo editado. Guardarlo en pendingUploads con la
+       MISMA ruta hace que uploadPendingPhotos lo suba al publicar, sea una
+       foto recien agregada o una que ya estaba en GitHub (ver ahi el
+       manejo de sha/cache-bust para ese segundo caso). */
+    window.openPhotoEditor(previewSrcFor(path), {
+      onSave(file) {
+        pendingUploads.set(path, file);
+        renderPhotoGrid();
+      },
+    });
   }));
   $$("#ed-photogrid [data-photo-color]").forEach(sel => sel.addEventListener("change", e => {
     const i = +e.target.getAttribute("data-photo-color");

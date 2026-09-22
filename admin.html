@@ -311,6 +311,7 @@ tr:hover td{background:var(--bg-2)}
 .pthumb.cover{border-color:var(--accent)}
 .pthumb .cov-badge{position:absolute;top:4px;left:4px;background:var(--accent);color:var(--accent-ink);font-size:9px;font-weight:800;padding:2px 6px;border-radius:5px;text-transform:uppercase}
 .pthumb .rm{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;border:none;font-size:12px;line-height:1}
+.pthumb .edit{position:absolute;top:4px;right:28px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);border:none;font-size:11px;line-height:1}
 .pthumb select{position:absolute;bottom:4px;left:4px;right:4px;font-size:10px;padding:2px 4px;border-radius:5px}
 .pthumb.dragover{outline:2px dashed var(--accent)}
 .uploadbox{border:1.5px dashed var(--line);border-radius:10px;padding:16px;text-align:center;color:var(--muted);font-size:12.5px;cursor:pointer}
@@ -319,6 +320,42 @@ tr:hover td{background:var(--bg-2)}
 .crop-grid{display:grid;grid-template-columns:repeat(3,22px);gap:4px}
 .crop-grid button{width:22px;height:22px;border-radius:4px;border:1px solid var(--line);background:var(--bg-2)}
 .crop-grid button.active{background:var(--accent)}
+
+/* ---- editor de fotos (assets/js/photo-editor.js) ---- */
+.pe-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:300;padding:20px}
+.pe-overlay.open{display:flex}
+.pe-modal{width:min(960px,100%);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column}
+.pe-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line-soft)}
+.pe-head h3{font-size:16px}
+.pe-body{display:flex;gap:22px;padding:20px;flex-wrap:wrap}
+.pe-stage{position:relative;display:inline-flex;line-height:0;border-radius:8px;overflow:hidden;background:var(--bg-2);border:1px solid var(--line-soft);align-self:flex-start}
+.pe-stage canvas{display:block;max-width:100%}
+.pe-cropmask{position:absolute;background:rgba(0,0,0,.55);pointer-events:none}
+.pe-cropbox{position:absolute;border:2px dashed var(--accent);cursor:move;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.pe-handle{position:absolute;width:14px;height:14px;background:var(--accent);border:2px solid var(--panel);border-radius:50%;cursor:nwse-resize}
+.pe-handle[data-h="nw"]{left:-8px;top:-8px}
+.pe-handle[data-h="ne"]{right:-8px;top:-8px;cursor:nesw-resize}
+.pe-handle[data-h="sw"]{left:-8px;bottom:-8px;cursor:nesw-resize}
+.pe-handle[data-h="se"]{right:-8px;bottom:-8px}
+.pe-loading{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,17,20,.7);color:var(--ink);font-size:13px;font-weight:600}
+.pe-loading.show{display:flex}
+.pe-tools{flex:1;min-width:240px;display:flex;flex-direction:column;gap:18px}
+.pe-group{display:flex;flex-direction:column;gap:8px}
+.pe-label{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700}
+.pe-label .hint{text-transform:none;letter-spacing:0;font-weight:400}
+.pe-row{display:flex;gap:8px;flex-wrap:wrap}
+.pe-slider{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.pe-slider span{width:66px;flex:none;color:var(--ink-2)}
+.pe-slider input[type="range"]{flex:1;min-width:0}
+.pe-slider b{width:30px;flex:none;text-align:right;font-variant-numeric:tabular-nums}
+.pe-hint{margin:0;font-size:11.5px;color:var(--muted);line-height:1.4}
+.pe-foot{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--line-soft)}
+.pe-foot-right{display:flex;gap:10px}
+@media (max-width:640px){
+  .pe-body{flex-direction:column}
+  .pe-stage{width:100%;justify-content:center}
+  .pe-stage canvas{width:100%;height:auto}
+}
 
 .status{position:fixed;bottom:18px;right:18px;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;font-size:12.5px;box-shadow:0 10px 30px rgba(0,0,0,.4);z-index:200;display:none}
 .status.show{display:block}
@@ -587,6 +624,7 @@ tr:hover td{background:var(--bg-2)}
 <script src="assets/js/products-data.js?v=3"></script>
 <script src="assets/js/data.js?v=3"></script>
 <script src="assets/js/pdp-render.js?v=4"></script>
+<script src="assets/js/photo-editor.js?v=1"></script>
 <script src="admin.js?v=9"></script>
 <script>
   // Service worker propio del panel: solo cachea el logo del shell, nunca

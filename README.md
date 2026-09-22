@@ -82,6 +82,16 @@ contenidos de GitHub (`assets/js/products-data.js`, `producto/*.html`,
   de foto aleatorios, merge de 3 vías campo por campo al publicar,
   reintento con backoff en conflictos 409, validación completa antes de
   publicar) están documentadas como comentarios en `admin.js`.
+- **Editor de fotos**: el ✎ en cada miniatura del grid de fotos (dentro del
+  editor de un producto) abre `assets/js/photo-editor.js` — girar 90°,
+  voltear, recortar (arrastrando el cuadro), brillo/contraste/saturación,
+  "Auto" de brillo (nivela la exposición de esta foto contra un valor
+  estándar, para que varias fotos con distinta luz queden parejas) y
+  "Emparejar fondo blanco" (mismo algoritmo que `tools/whiten-bg.mjs`,
+  corrido en el navegador). Funciona igual para una foto recién agregada
+  que para una ya publicada: al guardar, queda en el mismo lugar que
+  ocupaba una foto nueva (`pendingUploads`) y se sube al publicar, como
+  cualquier otro cambio sin guardar todavía.
 
 ## ▶️ Cómo verlo
 
