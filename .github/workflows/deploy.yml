@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
-# This is a demo with no real hosting account behind it: GitHub Pages is
-# the actual (and only) deploy target. Runs on every push to the working
-# branch, and can be triggered manually from the Actions tab.
+# GitHub Pages es el unico destino de despliegue de este sitio (no hay otra
+# cuenta de hosting detras). Corre en cada push a la rama de trabajo, y se
+# puede disparar a mano desde la pestaña Actions.
 on:
   push:
     branches: ["claude/sweet-albattani-ti0w0e"]
@@ -41,10 +41,18 @@ jobs:
       # proposito: el sitio lo consulta en vivo (assets/js/app.js y
       # tienda.html) para los textos editables del hero y las categorias.
       # Si se excluye, los textos vuelven a los de por defecto en silencio.
+      # propuesta.html es una propuesta comercial interna (dice "mockup" en
+      # su propio texto) y bmx-builder/ es un prototipo interno ("NOT
+      # production" en su propio codigo) -- ninguno de los dos tiene link
+      # desde el sitio real, pero quedaban alcanzables si alguien adivinaba
+      # la URL. Mismo tratamiento que los datos internos: fuera del artefacto
+      # publicado, sin tocar el repo.
       - name: Strip internal data from the artifact
         run: |
           rm -f data/costs.json data/sales-log.json data/audit-log.json
           rm -f PROPOSAL.md
+          rm -f propuesta.html
+          rm -rf bmx-builder
           echo "Archivos que quedan en data/:"
           ls -la data/
 
@@ -69,7 +77,7 @@ jobs:
           base="${{ steps.deployment.outputs.page_url }}"
           base="${base%/}"
           failed=0
-          for path in data/costs.json data/sales-log.json data/audit-log.json PROPOSAL.md; do
+          for path in data/costs.json data/sales-log.json data/audit-log.json PROPOSAL.md propuesta.html bmx-builder/index.html; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$base/$path" || echo "000")
             if [ "$code" = "200" ]; then
               echo "::error::$base/$path responde 200 — hay datos internos publicados"
