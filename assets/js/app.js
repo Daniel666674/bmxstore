@@ -20,9 +20,16 @@ const STIKE_CONFIG = {
   legalName: "[Razón social — completar]",   // p. ej. "Stike Bike Shop S.A.S."
   nit: "[NIT — completar]",
   legalUpdated: "21 de junio de 2026",
-  /* Endpoint para enviar formularios (p. ej. Formspree: https://formspree.io/f/xxxxxxx).
-     Si se deja vacío, el formulario de contacto cae a WhatsApp y el boletín solo confirma. */
-  formEndpoint: ""
+  /* Envío de formularios (contacto + boletín) por correo real al dueño.
+     Para activarlo (gratis, sin tarjeta, sin contraseña):
+       1. Entra a https://web3forms.com
+       2. Escribe el correo donde quieres recibir los mensajes (hola@stikebikeshop.com)
+       3. Click en "Create Access Key" -- te llega una llave (access key) al correo
+       4. Pega esa llave abajo en formAccessKey
+     Mientras formAccessKey esté vacío, el contacto y el boletín se envían por
+     WhatsApp en su lugar (nada se pierde, solo no llega como correo). */
+  formEndpoint: "https://api.web3forms.com/submit",
+  formAccessKey: ""
 };
 
 const STIKE_BASE = "";
@@ -459,31 +466,51 @@ function stikeRenderFooter() {
 }
 
 /* --------------------------- ENVÍO DE FORMULARIOS ---------------------- */
+/* Solo hay endpoint real si además hay llave -- sin llave, Web3Forms
+   siempre responde 400 (access_key inválido), así que ni se intenta. */
 function stikeFormEndpoint() {
-  const e = STIKE_CONFIG.formEndpoint;
-  return (e && /^https?:\/\//.test(e)) ? e : null;
+  const e = STIKE_CONFIG.formEndpoint, k = STIKE_CONFIG.formAccessKey;
+  return (e && /^https?:\/\//.test(e) && k) ? e : null;
 }
-/* Envía `data` al endpoint configurado (Formspree, etc.). Si no hay endpoint,
-   ejecuta `fallback` (o confirma con un toast). `submit` es el evento del form. */
+/* No hay servidor propio que limite cuántas veces se puede enviar un
+   formulario, así que el único freno posible vive aquí: un mismo formulario
+   no puede reenviarse antes de este tiempo. No detiene a alguien decidido
+   a saltárselo (podría llamar la función a mano), pero sí el caso real —
+   doble click o alguien manteniendo apretado enviar. */
+const FORM_COOLDOWN_MS = 8000;
+const formLastSubmit = new WeakMap();
+
+/* Envía `data` al endpoint configurado. Si no hay llave configurada todavía,
+   o si el envío falla, ejecuta `fallback` (o confirma con un toast) en vez
+   de dejar el mensaje perdido en silencio. `submit` es el evento del form. */
 function stikeSubmitForm(e, data, successMsg, fallback) {
   e.preventDefault();
   const form = e.target;
+  const last = formLastSubmit.get(form) || 0;
+  if (Date.now() - last < FORM_COOLDOWN_MS) return;
+  formLastSubmit.set(form, Date.now());
   const endpoint = stikeFormEndpoint();
-  if (!endpoint) {
+  const runFallback = () => {
     if (typeof fallback === "function") fallback();
     else { form.reset(); stikeToast(successMsg); }
-    return;
-  }
+  };
+  if (!endpoint) { runFallback(); return; }
   const btn = form.querySelector('[type="submit"]');
   const prev = btn ? btn.textContent : "";
   if (btn) { btn.disabled = true; btn.textContent = "Enviando…"; }
   fetch(endpoint, {
     method: "POST",
     headers: { "Accept": "application/json" },
-    body: new URLSearchParams(data)
+    body: new URLSearchParams({ ...data, access_key: STIKE_CONFIG.formAccessKey })
   })
-    .then(r => { if (!r.ok) throw new Error("bad status"); form.reset(); stikeToast(successMsg); })
-    .catch(() => stikeToast("No pudimos enviar. Escríbenos por WhatsApp."))
+    .then(r => r.json().catch(() => ({})).then(body => {
+      // Web3Forms (y servicios similares) pueden responder 200 con
+      // success:false -- el status HTTP solo no alcanza para confiar.
+      if (!r.ok || body.success === false) throw new Error(body.message || "bad status");
+      form.reset();
+      stikeToast(successMsg);
+    }))
+    .catch(() => runFallback())
     .finally(() => { if (btn) { btn.disabled = false; btn.textContent = prev; } });
 }
 
@@ -505,7 +532,7 @@ function stikeContact(e) {
     });
 }
 
-/* ------------------------- Boletín (footer + popup) ---------------------- */
+/* ------------------------- Boletín (popup) ---------------------- */
 const NEWSLETTER_KEY = "stike_newsletter_v1";
 
 function stikeMarkNewsletterSubscribed() {
@@ -514,12 +541,16 @@ function stikeMarkNewsletterSubscribed() {
   if (overlay) overlay.classList.remove("open");
 }
 
-function stikeNewsletter(e) {
-  const email = (e.target.querySelector('input[type="email"]').value || "").trim();
-  stikeSubmitForm(e,
-    { email, _subject: "Nuevo suscriptor — boletín Stike", origen: "newsletter" },
-    "¡Bienvenido a la comunidad Stike!");
-  stikeMarkNewsletterSubscribed();
+/* Sin correo configurado (o si el envío falla), un suscriptor perdido en
+   silencio es peor que uno confirmado por WhatsApp: al menos el dueño se
+   entera y puede sumarlo a la lista a mano. */
+function stikeNewsletterFallback(form, email, origen) {
+  return () => {
+    const text = `Nuevo suscriptor al boletín (${origen}): ${email}`;
+    window.open("https://wa.me/" + STIKE_CONFIG.whatsapp + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+    form.reset();
+    stikeToast("¡Gracias! Te sumamos por WhatsApp.");
+  };
 }
 
 function stikeDismissNewsletter(e) {
@@ -530,10 +561,12 @@ function stikeDismissNewsletter(e) {
 }
 
 function stikeSubscribeFromPopup(e) {
-  const email = (e.target.querySelector('input[type="email"]').value || "").trim();
+  const form = e.target;
+  const email = (form.querySelector('input[type="email"]').value || "").trim();
   stikeSubmitForm(e,
     { email, _subject: "Nuevo suscriptor — popup Stike", origen: "popup" },
-    "¡Bienvenido a la comunidad Stike!");
+    "¡Bienvenido a la comunidad Stike!",
+    stikeNewsletterFallback(form, email, "popup"));
   stikeMarkNewsletterSubscribed();
 }
 
