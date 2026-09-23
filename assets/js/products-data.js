@@ -1431,7 +1431,8 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/eb45f983-e634-437b-a509-ec1bd6290578.jpg",
       "assets/img/products/buzo-etnies-beige-2.jpg"
     ],
-    "published": true
+    "published": true,
+    "imgPos": "top center"
   },
   {
     "slug": "chaqueta-nightmare-aguamarina",
