@@ -2097,5 +2097,222 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/4938950d-b3b9-4da1-94a7-9b87b4aa4673.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "cana-sunday-freeze-topload-negra",
+    "sku": "REP-SUN-004",
+    "n": "Caña Sunday Freeze TopLoad Negra",
+    "brand": "Sunday",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Tipo: TopLoad",
+      "Alcance: 48mm",
+      "Elevación: 34mm",
+      "Altura de anclaje: 33mm",
+      "Peso: 10.5oz",
+      "Color: Negro"
+    ],
+    "price": 115000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-sunday-freeze-topload-negra-1.jpg",
+      "assets/img/products/cana-sunday-freeze-topload-negra-2.jpg",
+      "assets/img/products/cana-sunday-freeze-topload-negra-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cana-animal-negra",
+    "sku": "REP-ANI-001",
+    "n": "Caña Animal Negra",
+    "brand": "Animal",
+    "cat": "repuestos",
+    "sub": "Espigas",
+    "spec": [
+      "Color: Negro"
+    ],
+    "price": 250000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cana-animal-negra-1.jpg",
+      "assets/img/products/cana-animal-negra-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "aro-eclat-bondi-cromado",
+    "sku": "REP-ECL-010",
+    "n": "Aro Éclat Bondi Cromado",
+    "brand": "Éclat",
+    "cat": "repuestos",
+    "sub": "Rines",
+    "spec": [
+      "Medida: 38x19mm",
+      "Radios: 36h",
+      "Diámetro: 421mm, ERD 387, ETRTO 406",
+      "Material: Aluminio 6061-T6",
+      "Peso: 538g",
+      "Color: Cromado"
+    ],
+    "price": 360000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/aro-eclat-bondi-cromado-1.jpg",
+      "assets/img/products/aro-eclat-bondi-cromado-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-odyssey-utility-pro-negro-25t",
+    "sku": "REP-ODY-009",
+    "n": "Plato Odyssey Utility Pro Negro 25T",
+    "brand": "Odyssey",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Guardia removible incluida",
+      "Material: Aluminio CNC 7075",
+      "Color: Negro"
+    ],
+    "price": 250000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-odyssey-utility-pro-negro-25t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "bielas-federal-vice-2-cromadas-175mm",
+    "sku": "REP-FED-012",
+    "n": "Bielas Federal Vice 2 Cromadas 175mm",
+    "brand": "Federal",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Medida: 175mm",
+      "Eje: 24mm hollow, 48 spline",
+      "Material: Cromoly 4130 tratado térmicamente",
+      "Incluye caja de centro (BB) y espaciadores",
+      "Color: Cromado"
+    ],
+    "price": 920000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/bielas-federal-vice-2-cromadas-175mm-1.jpg",
+      "assets/img/products/bielas-federal-vice-2-cromadas-175mm-2.jpg",
+      "assets/img/products/bielas-federal-vice-2-cromadas-175mm-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-federal-negro-25t-guardia",
+    "sku": "REP-FED-013",
+    "n": "Plato Federal Negro 25T con Guardia",
+    "brand": "Federal",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Con guardia",
+      "Color: Negro"
+    ],
+    "price": 260000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-federal-negro-25t-guardia-1.jpg",
+      "assets/img/products/plato-federal-negro-25t-guardia-2.jpg",
+      "assets/img/products/plato-federal-negro-25t-guardia-3.jpg",
+      "assets/img/products/plato-federal-negro-25t-guardia-4.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-shadow-sabotage-negro-25t",
+    "sku": "REP-SHA-011",
+    "n": "Plato Shadow Sabotage Negro 25T",
+    "brand": "Shadow",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Color: Negro"
+    ],
+    "price": 190000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-shadow-sabotage-negro-25t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "aro-shadow-la-calle-cromado",
+    "sku": "REP-SHA-012",
+    "n": "Aro Shadow La Calle Cromado",
+    "brand": "Shadow",
+    "cat": "repuestos",
+    "sub": "Rines",
+    "spec": [
+      "Color: Cromado"
+    ],
+    "price": 360000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/aro-shadow-la-calle-cromado-1.jpg",
+      "assets/img/products/aro-shadow-la-calle-cromado-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "aro-stranger-crux-xl-negro",
+    "sku": "REP-STR-001",
+    "n": "Aro Stranger Crux XL Negro",
+    "brand": "Stranger",
+    "cat": "repuestos",
+    "sub": "Rines",
+    "spec": [
+      "Ancho: 43mm",
+      "Radios: 36h",
+      "Costura con pines reforzados"
+    ],
+    "price": 290000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/aro-stranger-crux-xl-negro-1.jpg",
+      "assets/img/products/aro-stranger-crux-xl-negro-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-trueno-exotic-guard-negro-25t",
+    "sku": "REP-TRU-001",
+    "n": "Plato Trueno Exotic Guard Negro 25T",
+    "brand": "Trueno",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T (también disponible en 28T)",
+      "Material: Aluminio 6061-T6",
+      "Peso: 107g",
+      "Con guardia",
+      "Color: Negro"
+    ],
+    "price": 85000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-trueno-exotic-guard-negro-25t-1.jpg"
+    ],
+    "published": true
   }
 ];
