@@ -2314,5 +2314,74 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/plato-trueno-exotic-guard-negro-25t-1.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "tenedor-fiend-invest-v2-26mm-negro",
+    "sku": "REP-FIE-054",
+    "n": "Tenedor Fiend Invest V2 26mm Negro",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Desplazamiento: 26mm",
+      "Eje: 3/8\"",
+      "Tubo de dirección: 1 1/8\" sin rosca",
+      "Material: Cromoly 4130 tratado térmicamente, tapa en aluminio 6061-T6",
+      "Color: Negro"
+    ],
+    "price": 750000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/tenedor-fiend-invest-v2-26mm-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tenedor-pirana-20-cromado",
+    "sku": "REP-PIR-001",
+    "n": "Tenedor Piraña 20\" Cromado",
+    "brand": "Piraña",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Medida: 20\"",
+      "Eje: 3/8\"",
+      "Espigo reforzado",
+      "Color: Cromado"
+    ],
+    "price": 200000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/tenedor-pirana-20-cromado-1.jpg",
+      "assets/img/products/tenedor-pirana-20-cromado-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-palmere-guardia-negro-25t",
+    "sku": "REP-FIE-055",
+    "n": "Plato Fiend Palmere Negro 25T con Guardia",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 25T",
+      "Guardia en nylon desmontable",
+      "Compatible con ejes de 24mm, incluye adaptadores de 22mm y 19mm",
+      "Material: Aluminio CNC 6061, 6mm de grosor",
+      "Peso: 453g",
+      "Color: Negro"
+    ],
+    "price": 230000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-fiend-palmere-guardia-negro-25t-1.jpg",
+      "assets/img/products/plato-fiend-palmere-guardia-negro-25t-2.jpg",
+      "assets/img/products/plato-fiend-palmere-guardia-negro-25t-3.jpg"
+    ],
+    "published": true
   }
 ];
