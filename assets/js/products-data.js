@@ -1427,7 +1427,7 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/buzo-etnies-beige-1.jpg?v=1790048193128",
+      "assets/img/products/3ca51af7-0254-4076-8e7e-f7b4317c0e30.jpg",
       "assets/img/products/eb45f983-e634-437b-a509-ec1bd6290578.jpg",
       "assets/img/products/buzo-etnies-beige-2.jpg"
     ],
