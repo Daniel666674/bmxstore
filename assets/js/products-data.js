@@ -2378,8 +2378,8 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 1,
     "imgs": [
-      "assets/img/products/plato-fiend-palmere-guardia-negro-25t-1.jpg",
       "assets/img/products/plato-fiend-palmere-guardia-negro-25t-2.jpg",
+      "assets/img/products/plato-fiend-palmere-guardia-negro-25t-1.jpg",
       "assets/img/products/plato-fiend-palmere-guardia-negro-25t-3.jpg"
     ],
     "published": true
