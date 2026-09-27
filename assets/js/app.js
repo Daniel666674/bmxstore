@@ -41,10 +41,12 @@ const SOCICO_TT = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.or
 const SOCICO_WA = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.08L2 22l4.92-1.36A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.97 13.47c-.21.59-.96 1.07-1.62 1.21-.43.09-.99.16-2.88-.62-2.43-1-3.96-3.47-4.08-3.63-.12-.17-.99-1.32-.99-2.51 0-1.2.63-1.78.85-2.03.22-.24.48-.3.64-.3h.46c.14 0 .33-.05.51.39.19.46.64 1.57.7 1.68.06.11.1.24.02.39l-.24.37c-.12.13-.25.29-.36.39-.12.1-.24.21-.1.41.14.2.62.91 1.33 1.47.92.73 1.69.96 1.93 1.07.24.1.38.09.52-.06.14-.14.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.38.65 1.62.77.24.12.4.18.46.28.06.1.06.57-.15 1.17z"/></svg>`;
 
 /* ------------------------------ LOGO ----------------------------------- */
-/* Real Stike emblem, vector-traced from the brand artwork (white on transparent) */
+/* Logo oficial Stike (script blanco + "BIKE SHOP" en menta), recortado del
+   arte de marca a PNG/WebP transparente. Se ve bien sobre claro y oscuro
+   porque el propio sticker trae su contorno. */
 function stikeLogoSVG(size) {
   size = size || 46;
-  return `<img class="logo" src="assets/img/logo-stike.svg" alt="Stike Bike Shop" style="height:${size}px;width:auto" />`;
+  return `<picture><source srcset="assets/img/logo-stike.webp" type="image/webp"><img class="logo" src="assets/img/logo-stike.png" alt="Stike Bike Shop" style="height:${size}px;width:auto" /></picture>`;
 }
 
 /* ----------------------------- CARRITO --------------------------------- */
@@ -211,45 +213,67 @@ function stikeNavDropdown(cat) {
 }
 
 /* ------------------------------ HEADER --------------------------------- */
+/* Diseño "Rueda Duro": logo centrado sobre dos franjas -- arriba redes +
+   promesas de servicio, abajo el menu partido en dos mitades a cada lado del
+   logo -- y el buscador como pildora centrada entre dos rieles. En movil se
+   colapsa a logo + iconos y el menu vive en el panel flotante de siempre. */
+const HDR_ICO_USER = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>`;
+const HDR_ICO_PHONE = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>`;
+const HDR_ICO_BAG = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>`;
+const HDR_ICO_SEARCH = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15.5 15.5 21 21"/></svg>`;
+
 function stikeRenderHeader(active) {
   const C = STIKE_CONFIG;
-  const navItems = STIKE_CATEGORIES.map(cat => {
-    const isActive = active === cat.slug ? " active" : "";
+  const caret = `<span class="caret"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>`;
+  const li = (href, label, key, extra) =>
+    `<li class="${active === key ? "active" : ""}${extra || ""}"><a href="${href}">${label}</a></li>`;
+  const catLi = cat => {
     const stocked = stikeStockedSubs(cat).length;
-    const hasMega = stocked ? " has-mega" : "";
-    const accent = cat.slug === "promo" ? ` data-accent="promo"` : "";
-    const caret = stocked ? `<span class="caret"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>` : "";
-    return `<li class="${isActive}${hasMega}">
-      <a href="tienda.html?cat=${cat.slug}"${accent}>${cat.name}${caret}</a>
+    return `<li class="${active === cat.slug ? "active" : ""}${stocked ? " has-mega" : ""}">
+      <a href="tienda.html?cat=${cat.slug}"${cat.slug === "promo" ? ` data-accent="promo"` : ""}>${cat.name}${stocked ? caret : ""}</a>
       ${stikeNavDropdown(cat)}
     </li>`;
-  }).join("");
+  };
+  const cats = STIKE_CATEGORIES.slice();
+  const left = [li("index.html", "Inicio", "home"), li("fate/", "Fate", "fate")]
+    .concat(cats.slice(0, 3).map(catLi)).join("");
+  const right = cats.slice(3).map(catLi)
+    .concat([li("marcas.html", "Marcas", "marcas"), li("blog.html", "Blog", "blog"),
+             li("armar.html", "Arma tu BMX", "armar", " nav-build-item")]).join("");
 
   const header = `
   <header class="site-header">
-    <div class="wrap header-main">
-      <a class="brand" href="index.html">
-        <span class="name">Stike</span>
-      </a>
-      <nav class="site-nav" id="site-nav">
-        <ul class="nav-list">
-          <li class="${active === 'home' ? 'active' : ''}"><a href="index.html">Inicio</a></li>
-          <li><a href="fate/" data-accent="fate">Fate</a></li>
-          ${navItems}
-          <li class="${active === 'marcas' ? 'active' : ''}"><a href="marcas.html">Marcas</a></li>
-          <li class="${active === 'blog' ? 'active' : ''}"><a href="blog.html">Blog</a></li>
-          <li class="nav-build-item ${active === 'armar' ? 'active' : ''}"><a href="armar.html">Arma tu BMX</a></li>
-        </ul>
-      </nav>
-      <div class="header-actions">
-        <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
-        <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-          <span class="cart-count">0</span>
-        </a>
-        <a class="btn-build" href="armar.html">Arma tu BMX</a>
-        <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg></button>
+    <div class="hdr-rail wrap">
+      <div class="hdr-side hdr-left">
+        <div class="hdr-soc">
+          <a href="${C.ig}" target="_blank" rel="noopener" aria-label="Instagram">${SOCICO_IG}</a>
+          <a href="${C.fb}" target="_blank" rel="noopener" aria-label="Facebook">${SOCICO_FB}</a>
+          <a href="${C.tiktok}" target="_blank" rel="noopener" aria-label="TikTok">${SOCICO_TT}</a>
+        </div>
+        <p class="hdr-promo">Envíos a toda Colombia <i></i> Ensamble BMX gratis</p>
       </div>
+      <a class="brand" href="index.html" aria-label="Stike Bike Shop, inicio">${stikeLogoSVG(96)}</a>
+      <div class="hdr-side hdr-right">
+        <p class="hdr-promo">3 cuotas sin interés <i></i> <span>Comunidad <b>Stike</b> Bogotá</span></p>
+        <div class="header-actions">
+          <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar">${HDR_ICO_SEARCH}</button>
+          <a class="icon-btn hdr-contact" href="contacto.html" title="Contacto" aria-label="Contacto">${HDR_ICO_USER}</a>
+          <a class="icon-btn" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">${HDR_ICO_PHONE}</a>
+          <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">${HDR_ICO_BAG}<span class="cart-count">0</span></a>
+          <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <nav class="site-nav wrap" id="site-nav" aria-label="Principal">
+      <ul class="nav-list nav-half nav-l">${left}</ul>
+      <span class="nav-gap" aria-hidden="true"></span>
+      <ul class="nav-list nav-half nav-r">${right}</ul>
+    </nav>
+    <div class="hdr-search wrap">
+      <button type="button" class="search-pill" onclick="stikeOpenSearch()" aria-label="Buscar productos, marcas, categorías">
+        <span class="sp-text">Buscar repuestos, marcas…</span>
+        <span class="sp-ico">${HDR_ICO_SEARCH}</span>
+      </button>
     </div>
   </header>
   <div class="nav-backdrop" id="nav-backdrop"></div>`;
@@ -258,6 +282,17 @@ function stikeRenderHeader(active) {
   if (mount) mount.innerHTML = header;
   stikeBindHeader();
   stikeUpdateCartBadge();
+  /* Al bajar, el header se compacta a una sola franja (logo chico + menu). */
+  const hdr = document.querySelector(".site-header");
+  if (hdr) {
+    let tick = false;
+    const onScroll = () => {
+      if (tick) return; tick = true;
+      requestAnimationFrame(() => { hdr.classList.toggle("is-compact", window.scrollY > 140); tick = false; });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
 }
 
 function stikeFloatNavPosition() {
@@ -409,11 +444,19 @@ function stikeRenderFooter() {
   const C = STIKE_CONFIG;
   const catLinks = STIKE_CATEGORIES.map(c =>
     `<a href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
-  const footer = `
+  /* El home trae su propia franja bajo el hero: no se repite al pie. */
+  const strip = document.querySelector(".rd-strip") ? "" : `
+  <div class="strip-band" aria-hidden="true">
+    <div class="strip-track">
+      ${Array(2).fill(`<span>Flatland</span><span>Comunidad Stike BMX</span><span>Ensamble gratis</span><span>Envíos nacionales</span><span>Street</span><span>Park</span><span>Asesoría de riders</span><span>3 cuotas sin interés</span>`).join("")}
+    </div>
+  </div>`;
+  const footer = strip + `
   <section class="cta-band">
     <div class="wrap">
       <div>
-        <h2>¿Listo para rodar?</h2>
+        <span class="kicker">Bogotá — Venecia</span>
+        <h2>¿Listo para <em>rodar?</em></h2>
         <p>Escríbenos por WhatsApp y arma tu BMX con asesoría real de riders.</p>
       </div>
       <a class="btn wa" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">Hablar por WhatsApp</a>
@@ -423,8 +466,8 @@ function stikeRenderFooter() {
     <div class="wrap">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="name">Stike</div>
-          <p style="margin-top:10px">La tienda BMX de Bogotá. Repuestos, armado a tu medida y asesoría real de riders.</p>
+          <a href="index.html" class="foot-logo" aria-label="Stike Bike Shop">${stikeLogoSVG(84)}</a>
+          <p>La casa de todo el que rueda. Repuestos, armado a tu medida y asesoría real de riders en Venecia, Bogotá.</p>
           <div class="foot-social">
             <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
             <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>
@@ -436,14 +479,21 @@ function stikeRenderFooter() {
           <h5>Tienda</h5>
           ${catLinks}
           <a href="marcas.html">Marcas</a>
+          <a href="fate/">Fate BMX</a>
+        </div>
+        <div>
+          <h5>Stike</h5>
           <a href="armar.html">Arma tu BMX</a>
+          <a href="nosotros.html">Nosotros</a>
+          <a href="blog.html">Blog</a>
+          <a href="contacto.html">Contacto</a>
         </div>
         <div>
           <h5>Ayuda</h5>
-          <a href="contacto.html">Contacto</a>
-          <a href="nosotros.html">Nosotros</a>
           <a href="envios.html">Envíos y entregas</a>
           <a href="devoluciones.html">Cambios y devoluciones</a>
+          <a href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">${C.whatsappPretty}</a>
+          <p class="foot-hours">${C.hours}</p>
         </div>
       </div>
       <div class="footer-bottom">
@@ -690,6 +740,35 @@ function stikeApplyContent() {
     });
 }
 
+/* Filtros plegables en movil: en pantallas chicas la columna de filtros
+   (categoria, 25+ marcas, precio) empujaba los productos casi 1000px hacia
+   abajo. Ahi se pliega a una sola barra "Filtrar" con el numero de filtros
+   activos; en escritorio no cambia nada. */
+function stikeCollapsibleFilters() {
+  const box = document.querySelector(".filters");
+  const head = box && box.querySelector("h4");
+  if (!box || !head) return;
+  const mq = window.matchMedia("(max-width: 760px)");
+  head.setAttribute("role", "button");
+  head.setAttribute("tabindex", "0");
+  const label = head.textContent.trim();
+  const sync = () => {
+    const n = box.querySelectorAll('input[type=checkbox]:checked').length +
+      (box.querySelector('input[name=price]:checked:not([value=all])') ? 1 : 0);
+    head.innerHTML = `${label}${n ? ` <b class="f-count">${n}</b>` : ""}<span class="f-chev" aria-hidden="true"></span>`;
+    head.setAttribute("aria-expanded", String(!box.classList.contains("collapsed")));
+  };
+  const apply = () => { box.classList.toggle("collapsed", mq.matches); sync(); };
+  const toggle = () => { if (!mq.matches) return; box.classList.toggle("collapsed"); sync(); };
+  head.addEventListener("click", toggle);
+  head.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+  box.addEventListener("change", sync);
+  box.addEventListener("click", e => { if (e.target.closest("#clear-filters")) setTimeout(sync, 0); });
+  window.addEventListener("load", sync);
+  (mq.addEventListener ? mq.addEventListener("change", apply) : mq.addListener(apply));
+  apply();
+}
+
 /* Init común para todas las páginas */
 function stikeInit(active) {
   stikeRenderHeader(active);
@@ -700,4 +779,5 @@ function stikeInit(active) {
   stikeCookieBanner();
   stikeRenderNewsletterPopup();
   stikeApplyContent();
+  stikeCollapsibleFilters();
 }

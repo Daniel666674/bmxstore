@@ -1,9 +1,17 @@
 # Stike Bike Shop — tienda BMX (Bogotá) + panel admin
 
-Sitio para **Stike Bike Shop**, tienda BMX de Bogotá, con estética propia
-**monocroma en blanco y negro** (tipografía Archivo para títulos, Inter para
-texto corrido; los acentos de color de la paleta original quedaron como una
-rampa de grises, ver `:root` en `assets/css/styles.css`).
+Sitio para **Stike Bike Shop**, tienda BMX de Bogotá, con la identidad
+**"Rueda Duro"**: fondo gris oscuro con textura de concreto, titulares en
+Archivo ancho y pesado con relieve, voz "de calle" en Barlow Condensed
+cursiva, y la **menta del logo (#52F0D8)** como único acento (contornos con
+brillo, CTA, estados activos). Tokens en `:root` y la capa completa del
+diseño al final de `assets/css/styles.css` (sección "RUEDA DURO").
+Logo oficial en `assets/img/logo-stike.png` / `.webp`.
+
+**Videos del home:** los paneles con marco menta del inicio son `<video>`.
+Para activarlos, subir los `.mp4` a `assets/video/` y poner la ruta en
+`STIKE_HOME_VIDEOS` al final de `index.html` (vacío = se ve la foto).
+
 100% estático (HTML/CSS/JS sin frameworks ni build step) y con un panel
 admin (`admin.html`) que habla directo con GitHub — **GitHub es el
 backend**, no hay servidor ni base de datos.
