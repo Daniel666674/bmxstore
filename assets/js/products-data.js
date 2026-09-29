@@ -2295,23 +2295,24 @@ window.STIKE_PRODUCTS = [
   },
   {
     "slug": "plato-trueno-exotic-guard-negro-25t",
-    "sku": "REP-TRU-001",
+    "sku": "PLT-TRU-001",
     "n": "Plato Trueno Exotic Guard Negro 25T",
     "brand": "Trueno",
     "cat": "repuestos",
     "sub": "Platos",
     "spec": [
-      "Dientes: 25T (también disponible en 28T)",
+      "Dientes: 25T-28T",
       "Material: Aluminio 6061-T6",
       "Peso: 107g",
       "Con guardia",
       "Color: Negro"
     ],
-    "price": 85000,
+    "price": 155000,
     "promo": false,
-    "units": 1,
+    "units": 3,
     "imgs": [
-      "assets/img/products/plato-trueno-exotic-guard-negro-25t-1.jpg"
+      "assets/img/products/plato-trueno-exotic-guard-negro-25t-1.jpg",
+      "assets/img/products/plato-trueno-exotic-guard-negro-25t-2.jpg"
     ],
     "published": true
   },
@@ -2381,6 +2382,537 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/plato-fiend-palmere-guardia-negro-25t-1.jpg",
       "assets/img/products/plato-fiend-palmere-guardia-negro-25t-2.jpg",
       "assets/img/products/plato-fiend-palmere-guardia-negro-25t-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "grips-cult-vans-morado",
+    "sku": "CULT-VANS-PUNOS-MORADO",
+    "n": "Grips Cult x Vans Morado",
+    "brand": "Cult",
+    "cat": "accesorios",
+    "sub": "Grips",
+    "spec": [
+      "Material: Goma",
+      "Diseño: Vans",
+      "Color: Morado"
+    ],
+    "price": 55000,
+    "promo": false,
+    "units": 30,
+    "imgs": [
+      "assets/img/products/grips-cult-vans-morado-1.jpg",
+      "assets/img/products/grips-cult-vans-morado-2.jpg",
+      "assets/img/products/grips-cult-vans-morado-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "grips-stranger-piston",
+    "sku": "GRP-STR-001",
+    "n": "Grips Stranger Piston",
+    "brand": "Stranger",
+    "cat": "accesorios",
+    "sub": "Grips",
+    "spec": [
+      "Material: Goma",
+      "Medida: 165mm x 32mm",
+      "Incluye tapón"
+    ],
+    "price": 45000,
+    "promo": false,
+    "units": 3,
+    "imgs": [
+      "assets/img/products/grips-stranger-piston-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "grips-ontrail-yeti",
+    "sku": "GRP-ONT-001",
+    "n": "Grips Ontrail Yeti",
+    "brand": "Ontrail",
+    "cat": "accesorios",
+    "sub": "Grips",
+    "spec": [
+      "Material: Goma",
+      "Medida: 165mm x 30mm",
+      "Incluye tapón"
+    ],
+    "price": 20000,
+    "promo": false,
+    "units": 85,
+    "imgs": [
+      "assets/img/products/grips-ontrail-yeti-1.jpg",
+      "assets/img/products/grips-ontrail-yeti-2.jpg",
+      "assets/img/products/grips-ontrail-yeti-3.jpg",
+      "assets/img/products/grips-ontrail-yeti-4.jpg",
+      "assets/img/products/grips-ontrail-yeti-5.jpg",
+      "assets/img/products/grips-ontrail-yeti-6.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "grips-odi-xl",
+    "sku": "GRP-ODI-001",
+    "n": "Grips ODI XL",
+    "brand": "ODI",
+    "cat": "accesorios",
+    "sub": "Grips",
+    "spec": [
+      "Material: Goma",
+      "Medida: Extralargos XL 230mm",
+      "Diseño: Mushroom"
+    ],
+    "price": 70000,
+    "promo": false,
+    "units": 3,
+    "imgs": [
+      "assets/img/products/grips-odi-xl-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "poste-counter-layback-cromado",
+    "sku": "PST-CLT-002",
+    "n": "Poste Counter Layback Cromado",
+    "brand": "Counter",
+    "cat": "repuestos",
+    "sub": "Sillas y Postes",
+    "spec": [
+      "Material: Aleación 6061",
+      "Pivote de gran inclinación (layback)",
+      "Medida: 300mm",
+      "Color: Cromado"
+    ],
+    "price": 150000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/poste-counter-layback-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-odyssey-utility-pro-negro-28t",
+    "sku": "ODYSSEY-PLATO-28T-NEGRO",
+    "n": "Plato Odyssey Utility Pro Negro 28T con Guardia",
+    "brand": "Odyssey",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Dientes: 28T",
+      "Material: Aluminio CNC 7075",
+      "Grosor: 8mm",
+      "Guardia removible",
+      "Color: Negro"
+    ],
+    "price": 340000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-odyssey-utility-pro-negro-28t-1.jpg",
+      "assets/img/products/plato-odyssey-utility-pro-negro-28t-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-mutanty-diamond-negro",
+    "sku": "PLT-MUT-001",
+    "n": "Plato Mutanty Diamond Negro con Guardia",
+    "brand": "Mutanty",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Material: Aluminio 7075-T6",
+      "Dientes: 25T-28T",
+      "Con guardia",
+      "Color: Negro"
+    ],
+    "price": 240000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-mutanty-diamond-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-mutanty-diamond-cromado",
+    "sku": "PLT-MUT-002",
+    "n": "Plato Mutanty Diamond Cromado con Guardia",
+    "brand": "Mutanty",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Material: Aluminio 7075-T6",
+      "Dientes: 25T-28T",
+      "Con guardia",
+      "Color: Cromado"
+    ],
+    "price": 240000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/plato-mutanty-diamond-cromado-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-fiend-reynolds-purpura",
+    "sku": "PLT-FND-001",
+    "n": "Plato Fiend Reynolds Púrpura con Guardia",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Material: Aluminio 6061",
+      "Dientes: 25T",
+      "Con guardia",
+      "Color: Púrpura"
+    ],
+    "price": 290000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/plato-fiend-reynolds-purpura-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-gw-corona-negro-28t",
+    "sku": "PLT-GWB-002",
+    "n": "Plato GW Corona Negro 28T",
+    "brand": "GW",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Material: Acero",
+      "Dientes: 28T",
+      "Color: Negro"
+    ],
+    "price": 9000,
+    "promo": false,
+    "units": 0,
+    "imgs": [
+      "assets/img/products/plato-gw-corona-negro-28t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-gw-corona-negro-25t",
+    "sku": "PLT-GWB-003",
+    "n": "Plato GW Corona Negro 25T",
+    "brand": "GW",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Material: Acero",
+      "Dientes: 25T",
+      "Color: Negro"
+    ],
+    "price": 9000,
+    "promo": false,
+    "units": 10,
+    "imgs": [
+      "assets/img/products/plato-gw-corona-negro-25t-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "plato-gw-kl215-negro",
+    "sku": "PLT-GWB-001",
+    "n": "Plato GW KL215 Negro",
+    "brand": "GW",
+    "cat": "repuestos",
+    "sub": "Platos",
+    "spec": [
+      "Material: Aluminio 6061-T6",
+      "Dientes: 25T"
+    ],
+    "price": 35000,
+    "promo": false,
+    "units": 10,
+    "imgs": [
+      "assets/img/products/plato-gw-kl215-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-cinema-tilt-negro",
+    "sku": "PED-CIN-001",
+    "n": "Pedales Cinema Tilt Negro",
+    "brand": "Cinema",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Negro"
+    ],
+    "price": 95000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/pedales-cinema-tilt-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-cult-dak-negro",
+    "sku": "PED-850-001",
+    "n": "Pedales Cult DAK Negro",
+    "brand": "Cult",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Superficie ancha",
+      "Eje: Cromoly 4130",
+      "Color: Negro"
+    ],
+    "price": 85000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/pedales-cult-dak-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-bsd-safari-negro",
+    "sku": "PED-BSD-001",
+    "n": "Pedales BSD Safari Negro",
+    "brand": "BSD",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Negro"
+    ],
+    "price": 90000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/pedales-bsd-safari-negro-1.jpg",
+      "assets/img/products/pedales-bsd-safari-negro-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-demolition-trooper-azul-rojo",
+    "sku": "PED-DMO-005",
+    "n": "Pedales Demolition Trooper Azul/Rojo",
+    "brand": "Demolition",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Azul/Rojo"
+    ],
+    "price": 95000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/pedales-demolition-trooper-azul-rojo-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-demolition-trooper-blanco-negro",
+    "sku": "PED-DMO-004",
+    "n": "Pedales Demolition Trooper Blanco/Negro",
+    "brand": "Demolition",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Blanco/Negro"
+    ],
+    "price": 95000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/pedales-demolition-trooper-blanco-negro-1.jpg",
+      "assets/img/products/pedales-demolition-trooper-blanco-negro-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-demolition-trooper-rojo-blanco",
+    "sku": "PED-DMO-003",
+    "n": "Pedales Demolition Trooper Rojo/Blanco",
+    "brand": "Demolition",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Rojo/Blanco"
+    ],
+    "price": 95000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/pedales-demolition-trooper-rojo-blanco-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-demolition-trooper-azul-blanco",
+    "sku": "PED-DMO-002",
+    "n": "Pedales Demolition Trooper Azul/Blanco",
+    "brand": "Demolition",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Azul/Blanco"
+    ],
+    "price": 95000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/pedales-demolition-trooper-azul-blanco-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "pedales-demolition-trooper-morado-amarillo",
+    "sku": "PED-DMO-001",
+    "n": "Pedales Demolition Trooper Morado/Amarillo",
+    "brand": "Demolition",
+    "cat": "repuestos",
+    "sub": "Pedales",
+    "spec": [
+      "Color: Morado/Amarillo"
+    ],
+    "price": 95000,
+    "promo": false,
+    "units": 3,
+    "imgs": [
+      "assets/img/products/pedales-demolition-trooper-morado-amarillo-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-frente-gw",
+    "sku": "CJF-GWB-001",
+    "n": "Caja de Dirección GW Integrada",
+    "brand": "GW",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada",
+      "Rodamientos sellados",
+      "Material: Aluminio",
+      "Tapa: 15mm"
+    ],
+    "price": 50000,
+    "promo": false,
+    "units": 15,
+    "imgs": [
+      "assets/img/products/caja-frente-gw-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-frente-fate-negra",
+    "sku": "CJF-FAT-001",
+    "n": "Caja de Dirección Fate Integrada Negra",
+    "brand": "Fate BMX Colombia",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada",
+      "Rodamientos sellados",
+      "Material: Aluminio",
+      "Tapa: 15mm",
+      "Color: Negro"
+    ],
+    "price": 85000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/caja-frente-fate-negra-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-frente-tall-seat-colony",
+    "sku": "CJF-CLN-001",
+    "n": "Caja de Dirección Colony Tall Seat",
+    "brand": "Colony",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Altura de pila más alta (tall stack)",
+      "Grabado Colony",
+      "Peso: 55g"
+    ],
+    "price": 120000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/caja-frente-tall-seat-colony-1.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-2.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-frente-fiend-stack",
+    "sku": "CJF-FND-001",
+    "n": "Caja de Dirección Fiend Stack Integrada",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada",
+      "Rodamientos sellados",
+      "Material: Aluminio",
+      "Tapa: 15mm",
+      "Peso: 0.5 lb"
+    ],
+    "price": 140000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/caja-frente-fiend-stack-1.jpg",
+      "assets/img/products/caja-frente-fiend-stack-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-frente-cult-match-v2",
+    "sku": "CJF-CLT-001",
+    "n": "Caja de Dirección Cult Match V2",
+    "brand": "Cult",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Material: Aluminio anodizado duro",
+      "Rodamientos sellados",
+      "Peso: 65g"
+    ],
+    "price": 120000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/caja-frente-cult-match-v2-1.jpg",
+      "assets/img/products/caja-frente-cult-match-v2-2.jpg",
+      "assets/img/products/caja-frente-cult-match-v2-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "tornillos-mutanty-negro",
+    "sku": "MUTANY-TORNILLOS-NEGRO",
+    "n": "Set de Tornillos Mutanty Negro",
+    "brand": "Mutanty",
+    "cat": "accesorios",
+    "sub": "Herramientas",
+    "spec": [
+      "Material: Acero",
+      "Set completo",
+      "Color: Negro"
+    ],
+    "price": 25000,
+    "promo": false,
+    "units": 12,
+    "imgs": [
+      "assets/img/products/tornillos-mutanty-negro-1.jpg"
     ],
     "published": true
   }
