@@ -2838,17 +2838,30 @@ window.STIKE_PRODUCTS = [
     "sub": "Tenedores",
     "spec": [
       "Altura de pila más alta (tall stack)",
-      "Grabado Colony",
+      "Modelo 45/45, grabado Colony",
       "Peso: 55g"
     ],
     "price": 120000,
     "promo": false,
-    "units": 2,
+    "colors": [
+      { "v": "Negro", "u": 1 },
+      { "v": "Cromado", "u": 1 },
+      { "v": "Oro Rosa", "u": 1 }
+    ],
     "imgs": [
       "assets/img/products/caja-frente-tall-seat-colony-1.jpg",
       "assets/img/products/caja-frente-tall-seat-colony-2.jpg",
-      "assets/img/products/caja-frente-tall-seat-colony-3.jpg"
+      "assets/img/products/caja-frente-tall-seat-colony-3.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-cromado-1.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-oro-rosa-1.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-4.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-5.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-6.jpg"
     ],
+    "imgColorMap": {
+      "assets/img/products/caja-frente-tall-seat-colony-cromado-1.jpg": "Cromado",
+      "assets/img/products/caja-frente-tall-seat-colony-oro-rosa-1.jpg": "Oro Rosa"
+    },
     "published": true
   },
   {
@@ -2913,6 +2926,118 @@ window.STIKE_PRODUCTS = [
     "units": 12,
     "imgs": [
       "assets/img/products/tornillos-mutanty-negro-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cadena-primo-121-halflink",
+    "sku": "REP-PRI-003",
+    "n": "Cadena Primo 121 Half Link",
+    "brand": "Primo",
+    "cat": "repuestos",
+    "sub": "Cadenas",
+    "spec": [
+      "Diseño de medio eslabón",
+      "Medidas: 1/2\" x 1/8\"",
+      "Single Speed",
+      "85 eslabones",
+      "Peso: 369g"
+    ],
+    "price": 120000,
+    "promo": false,
+    "colors": [
+      { "v": "Negro", "u": 1 },
+      { "v": "Cromado", "u": 1 },
+      { "v": "Dorado", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/cadena-primo-121-halflink-1.jpg",
+      "assets/img/products/cadena-primo-121-halflink-negro-1.jpg",
+      "assets/img/products/cadena-primo-121-halflink-negro-2.jpg",
+      "assets/img/products/cadena-primo-121-halflink-cromado-1.jpg",
+      "assets/img/products/cadena-primo-121-halflink-cromado-2.jpg",
+      "assets/img/products/cadena-primo-121-halflink-dorado-1.jpg",
+      "assets/img/products/cadena-primo-121-halflink-dorado-2.jpg"
+    ],
+    "imgColorMap": {
+      "assets/img/products/cadena-primo-121-halflink-negro-1.jpg": "Negro",
+      "assets/img/products/cadena-primo-121-halflink-negro-2.jpg": "Negro",
+      "assets/img/products/cadena-primo-121-halflink-cromado-1.jpg": "Cromado",
+      "assets/img/products/cadena-primo-121-halflink-cromado-2.jpg": "Cromado",
+      "assets/img/products/cadena-primo-121-halflink-dorado-1.jpg": "Dorado",
+      "assets/img/products/cadena-primo-121-halflink-dorado-2.jpg": "Dorado"
+    },
+    "published": true
+  },
+  {
+    "slug": "cadena-odyssey-bluebird-halflink-negra",
+    "sku": "REP-ODY-010",
+    "n": "Cadena Odyssey Bluebird Half-Link Negra",
+    "brand": "Odyssey",
+    "cat": "repuestos",
+    "sub": "Cadenas",
+    "spec": [
+      "Placas de cromoly de la marca \"ODSY\"",
+      "Pasadores endurecidos para mayor durabilidad",
+      "100 enlaces",
+      "Tamaño: 1/2\" x 1/8\"",
+      "Color: Negro"
+    ],
+    "price": 130000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cadena-odyssey-bluebird-halflink-negra-1.jpg",
+      "assets/img/products/cadena-odyssey-bluebird-halflink-negra-2.jpg",
+      "assets/img/products/cadena-odyssey-bluebird-halflink-negra-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "cadena-cult-halflink-negra",
+    "sku": "REP-CUL-001",
+    "n": "Cadena Cult Half Link Negra",
+    "brand": "Cult",
+    "cat": "repuestos",
+    "sub": "Cadenas",
+    "spec": [
+      "Recubierta en teflón",
+      "Placas laterales redondeadas, compatibles con piñones 8T o más",
+      "Paso: 1 1/8\"",
+      "Tratada térmicamente",
+      "Pernos de hongo",
+      "Recortes con logo de Cult"
+    ],
+    "price": 135000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/cadena-cult-halflink-negra-1.jpg",
+      "assets/img/products/cadena-cult-halflink-negra-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-frente-cult-crew-negra",
+    "sku": "REP-CUL-002",
+    "n": "Caja de Dirección Cult Crew Negra",
+    "brand": "Cult",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Auriculares Campagnolo estándar",
+      "Dos tapas apilables de diferentes tamaños",
+      "Rodamiento sellado tipo cartucho",
+      "SHIS superior e inferior: IS42",
+      "Diámetro abrazadera vástago SHIS: 28,6mm",
+      "Carrera por la corona: 30mm",
+      "Color: Negro"
+    ],
+    "price": 120000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/caja-frente-cult-crew-negra-1.jpg"
     ],
     "published": true
   }
