@@ -3040,5 +3040,48 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/caja-frente-cult-crew-negra-1.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "caja-frente-maintain-negra",
+    "sku": "REP-MAI-001",
+    "n": "Caja de Dirección Maintain Negra",
+    "brand": "Maintain",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada",
+      "Rodamiento sellado",
+      "Color: Negro"
+    ],
+    "price": 120000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/caja-frente-maintain-negra-1.jpg",
+      "assets/img/products/caja-frente-maintain-negra-2.jpg",
+      "assets/img/products/caja-frente-maintain-negra-3.jpg",
+      "assets/img/products/caja-frente-maintain-negra-4.jpg",
+      "assets/img/products/caja-frente-maintain-negra-5.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "caja-frente-merritt-cromada",
+    "sku": "REP-MER-001",
+    "n": "Caja de Dirección Merritt Cromada",
+    "brand": "Merritt",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada",
+      "Color: Cromado"
+    ],
+    "price": 110000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/caja-frente-merritt-cromada-1.jpg"
+    ],
+    "published": true
   }
 ];
