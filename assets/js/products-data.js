@@ -3106,7 +3106,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "funda-peg-fate-43",
     "sku": "REP-FAT-011",
-    "n": "Funda de Peg Fate 4.3\"",
+    "n": "Cubierta Peg Fate 4.3\"",
     "brand": "Fate BMX Colombia",
     "cat": "repuestos",
     "sub": "Tacos y Protectores de Maza",
