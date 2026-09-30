@@ -3493,8 +3493,7 @@ window.STIKE_PRODUCTS = [
     "imgs": [
       "assets/img/products/reductor-extension-bikes-negro-1.jpg",
       "assets/img/products/reductor-extension-bikes-negro-2.jpg",
-      "assets/img/products/reductor-extension-bikes-negro-3.jpg",
-      "assets/img/products/reductor-extension-bikes-negro-4.jpg"
+      "assets/img/products/reductor-extension-bikes-negro-3.jpg"
     ],
     "published": true
   }
