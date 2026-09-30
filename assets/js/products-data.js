@@ -3083,5 +3083,417 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/caja-frente-merritt-cromada-1.jpg"
     ],
     "published": true
+  },
+  {
+    "slug": "caja-frente-fiend-alta-negra",
+    "sku": "REP-FIE-056",
+    "n": "Caja de Dirección Fiend Alta Negra",
+    "brand": "Fiend",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Tipo: Integrada, altura de pila alta",
+      "Rodamientos sellados",
+      "Color: Negro"
+    ],
+    "price": 120000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/caja-frente-fiend-alta-negra-1.jpg",
+      "assets/img/products/caja-frente-fiend-alta-negra-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "funda-peg-fate-43",
+    "sku": "REP-FAT-011",
+    "n": "Funda de Peg Fate 4.3\"",
+    "brand": "Fate BMX Colombia",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Medida: 4.3\"",
+      "Color: Negro"
+    ],
+    "price": 15000,
+    "promo": false,
+    "units": 10,
+    "imgs": [
+      "assets/img/products/funda-peg-fate-43-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "funda-peg-fate-45",
+    "sku": "REP-FAT-012",
+    "n": "Funda de Peg Fate 4.5\"",
+    "brand": "Fate BMX Colombia",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Medida: 4.5\"",
+      "Color: Negro"
+    ],
+    "price": 20000,
+    "promo": false,
+    "units": 100,
+    "imgs": [
+      "assets/img/products/funda-peg-fate-45-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "funda-peg-odyssey-graduate-475",
+    "sku": "REP-ODY-011",
+    "n": "Funda de Peg Odyssey Graduate 4.75\"",
+    "brand": "Odyssey",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Medida: 4.75\"",
+      "Unidad individual",
+      "Color: Negro"
+    ],
+    "price": 30000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/funda-peg-odyssey-graduate-475-1.jpg",
+      "assets/img/products/funda-peg-odyssey-graduate-475-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "perno-superior-wethepeople-negro",
+    "sku": "REP-WTP-001",
+    "n": "Perno Superior WeThePeople Negro",
+    "brand": "WeThePeople",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Material: Aleación 6061-T6",
+      "Rosca: M25 x 1.5 (compatible con horquillas 2014 en adelante)",
+      "Peso: 33g",
+      "Color: Negro"
+    ],
+    "price": 45000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/perno-superior-wethepeople-negro-1.jpg",
+      "assets/img/products/perno-superior-wethepeople-negro-2.jpg",
+      "assets/img/products/perno-superior-wethepeople-negro-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "perno-superior-cult-sect-m24-negro",
+    "sku": "REP-CUL-003",
+    "n": "Perno Superior Cult Sect M24 Negro",
+    "brand": "Cult",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Modelo: Sect \"Maintain Everyday\"",
+      "Rosca de horquilla: M24",
+      "Peso: 22g",
+      "Color: Negro"
+    ],
+    "price": 50000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/perno-superior-cult-sect-m24-negro-1.jpg",
+      "assets/img/products/perno-superior-cult-sect-m24-negro-2.jpg",
+      "assets/img/products/perno-superior-cult-sect-m24-negro-3.jpg",
+      "assets/img/products/perno-superior-cult-sect-m24-negro-4.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "perno-superior-mutanty-negro",
+    "sku": "REP-MUT-004",
+    "n": "Perno Superior Mutanty Negro",
+    "brand": "Mutanty",
+    "cat": "repuestos",
+    "sub": "Tenedores",
+    "spec": [
+      "Material: Aluminio 6061-T6, maquinado en CNC",
+      "M25: rosca 1.5P x 20mm (compatible Mutanty, Optimus, GW, Radio, entre otros)",
+      "M24: rosca 1.5P x 40mm (compatible Odyssey, Federal, Animal, Primo, entre otros)",
+      "Llave hexagonal 8mm",
+      "Color: Negro"
+    ],
+    "price": 40000,
+    "promo": false,
+    "colors": [
+      { "v": "M25", "u": 5 },
+      { "v": "M24", "u": 1 }
+    ],
+    "imgs": [
+      "assets/img/products/perno-superior-mutanty-negro-1.jpg",
+      "assets/img/products/perno-superior-mutanty-negro-2.jpg",
+      "assets/img/products/perno-superior-mutanty-negro-3.jpg",
+      "assets/img/products/perno-superior-mutanty-negro-m24-1.jpg",
+      "assets/img/products/perno-superior-mutanty-negro-m25-1.jpg"
+    ],
+    "imgColorMap": {
+      "assets/img/products/perno-superior-mutanty-negro-m24-1.jpg": "M24",
+      "assets/img/products/perno-superior-mutanty-negro-m25-1.jpg": "M25"
+    },
+    "published": true
+  },
+  {
+    "slug": "kit-eje-bielas-mutanty",
+    "sku": "REP-MUT-005",
+    "n": "Kit Eje y Tornillos para Bielas Mutanty",
+    "brand": "Mutanty",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Material: Cr-mo Sanko japonés",
+      "Para eje de bielas de 22mm, 48T",
+      "Compatible con bielas Mutanty entre otras de esta medida",
+      "Color: Negro"
+    ],
+    "price": 20000,
+    "promo": false,
+    "units": 7,
+    "imgs": [
+      "assets/img/products/kit-eje-bielas-mutanty-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "protector-rin-mutanty-elite",
+    "sku": "REP-MUT-006",
+    "n": "Protector de Rin Mutanty Elite (x2)",
+    "brand": "Mutanty",
+    "cat": "repuestos",
+    "sub": "Rines",
+    "spec": [
+      "Material: PVC elástico",
+      "Compatible con todas las marcas de rines",
+      "Ancho: 32mm",
+      "El paquete trae 2 protectores",
+      "Color: Negro"
+    ],
+    "price": 14000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/protector-rin-mutanty-elite-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "protector-bucal-rhino",
+    "sku": "REP-RHI-001",
+    "n": "Protector Bucal Rhino",
+    "brand": "Rhino",
+    "cat": "protecciones",
+    "sub": "Cascos",
+    "spec": [
+      "Material moldeable con agua caliente",
+      "Grosor: 1.5mm",
+      "Medida: Adultos"
+    ],
+    "price": 65000,
+    "promo": false,
+    "colors": [
+      { "v": "Naranja", "u": 1 },
+      { "v": "Morado", "u": 1 },
+      { "v": "Verde", "u": 2 },
+      { "v": "Azul Aguamarina", "u": 2 }
+    ],
+    "imgs": [
+      "assets/img/products/protector-bucal-rhino-naranja-1.jpg",
+      "assets/img/products/protector-bucal-rhino-morado-1.jpg",
+      "assets/img/products/protector-bucal-rhino-morado-2.jpg",
+      "assets/img/products/protector-bucal-rhino-verde-1.jpg",
+      "assets/img/products/protector-bucal-rhino-verde-2.jpg",
+      "assets/img/products/protector-bucal-rhino-azul-aguamarina-1.jpg",
+      "assets/img/products/protector-bucal-rhino-azul-aguamarina-2.jpg"
+    ],
+    "imgColorMap": {
+      "assets/img/products/protector-bucal-rhino-naranja-1.jpg": "Naranja",
+      "assets/img/products/protector-bucal-rhino-morado-1.jpg": "Morado",
+      "assets/img/products/protector-bucal-rhino-morado-2.jpg": "Morado",
+      "assets/img/products/protector-bucal-rhino-verde-1.jpg": "Verde",
+      "assets/img/products/protector-bucal-rhino-verde-2.jpg": "Verde",
+      "assets/img/products/protector-bucal-rhino-azul-aguamarina-1.jpg": "Azul Aguamarina",
+      "assets/img/products/protector-bucal-rhino-azul-aguamarina-2.jpg": "Azul Aguamarina"
+    },
+    "published": true
+  },
+  {
+    "slug": "protector-maza-odyssey-clutch-v2-negro",
+    "sku": "REP-ODY-012",
+    "n": "Protector de Maza Odyssey Clutch V2 Negro",
+    "brand": "Odyssey",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Compatible con maza Odyssey Clutch V2",
+      "Color: Negro"
+    ],
+    "price": 28000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/protector-maza-odyssey-clutch-v2-negro-1.jpg",
+      "assets/img/products/protector-maza-odyssey-clutch-v2-negro-2.jpg",
+      "assets/img/products/protector-maza-odyssey-clutch-v2-negro-3.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "hub-guard-delantero-cromo-brainstorm",
+    "sku": "REP-BRA-001",
+    "n": "Hub Guard Delantero Brainstorm Cromo",
+    "brand": "Brainstorm",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Posición: Delantera",
+      "Color: Cromado"
+    ],
+    "price": 75000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/hub-guard-delantero-cromo-brainstorm-1.jpg",
+      "assets/img/products/hub-guard-delantero-cromo-brainstorm-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "hub-guard-delantero-medio-brainstorm",
+    "sku": "REP-BRA-002",
+    "n": "Hub Guard Delantero Brainstorm Medio Nylon",
+    "brand": "Brainstorm",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Posición: Delantera",
+      "Material: Nylon de alta resistencia",
+      "Color: Negro"
+    ],
+    "price": 40000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/hub-guard-delantero-medio-brainstorm-1.jpg",
+      "assets/img/products/hub-guard-delantero-medio-brainstorm-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "hub-guard-trasero-normal-brainstorm",
+    "sku": "REP-BRA-003",
+    "n": "Hub Guard Trasero Brainstorm Normal Nylon",
+    "brand": "Brainstorm",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Posición: Trasera",
+      "Material: Nylon de alta resistencia",
+      "Color: Negro"
+    ],
+    "price": 30000,
+    "promo": false,
+    "units": 2,
+    "imgs": [
+      "assets/img/products/hub-guard-trasero-normal-brainstorm-1.jpg",
+      "assets/img/products/hub-guard-trasero-normal-brainstorm-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "hub-guard-trasero-drive-brainstorm",
+    "sku": "REP-BRA-004",
+    "n": "Hub Guard Trasero Brainstorm Drive Nylon",
+    "brand": "Brainstorm",
+    "cat": "repuestos",
+    "sub": "Tacos y Protectores de Maza",
+    "spec": [
+      "Posición: Trasera, lado de la cadena (drive)",
+      "Material: Plástico de alta resistencia",
+      "Color: Negro"
+    ],
+    "price": 40000,
+    "promo": false,
+    "units": 1,
+    "imgs": [
+      "assets/img/products/hub-guard-trasero-drive-brainstorm-1.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "kit-trinquetes-tall-order-drone",
+    "sku": "REP-TAL-001",
+    "n": "Kit Trinquetes y Resortes Tall Order Drone",
+    "brand": "Tall Order",
+    "cat": "repuestos",
+    "sub": "Manzanas",
+    "spec": [
+      "Juego de muelles y trinquetes para maza cassette Tall Order Drone"
+    ],
+    "price": 70000,
+    "promo": false,
+    "units": 5,
+    "imgs": [
+      "assets/img/products/kit-trinquetes-tall-order-drone-1.jpg",
+      "assets/img/products/kit-trinquetes-tall-order-drone-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "kit-trinquetes-primo-remix",
+    "sku": "REP-PRI-004",
+    "n": "Kit Trinquetes y Resortes Primo Remix",
+    "brand": "Primo",
+    "cat": "repuestos",
+    "sub": "Manzanas",
+    "spec": [
+      "Material: Cr-mo tratado",
+      "Compatible con maza Primo Remix V1 y V2, y Cult Match",
+      "Incluye pestañas y trinquetes"
+    ],
+    "price": 60000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/kit-trinquetes-primo-remix-1.jpg",
+      "assets/img/products/kit-trinquetes-primo-remix-2.jpg"
+    ],
+    "published": true
+  },
+  {
+    "slug": "reductor-extension-bikes-negro",
+    "sku": "REP-EXT-001",
+    "n": "Reductor Extension Bikes Centro Americano a MID (par)",
+    "brand": "Extension",
+    "cat": "repuestos",
+    "sub": "Bielas",
+    "spec": [
+      "Material: Aluminio 6061-T6",
+      "Diámetro exterior: 52mm",
+      "Diámetro interior: 41mm",
+      "Permite usar bielas de 3 piezas con rodamientos sellados",
+      "El paquete incluye 1 par de reductores",
+      "Color: Negro"
+    ],
+    "price": 30000,
+    "promo": false,
+    "units": 4,
+    "imgs": [
+      "assets/img/products/reductor-extension-bikes-negro-1.jpg",
+      "assets/img/products/reductor-extension-bikes-negro-2.jpg",
+      "assets/img/products/reductor-extension-bikes-negro-3.jpg",
+      "assets/img/products/reductor-extension-bikes-negro-4.jpg"
+    ],
+    "published": true
   }
 ];
