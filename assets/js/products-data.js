@@ -3087,16 +3087,17 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-fiend-alta-negra",
     "sku": "REP-FIE-056",
-    "n": "Caja de Dirección Fiend Alta Negra",
+    "n": "Caja de Dirección Fiend Tapa Alta Negra",
     "brand": "Fiend",
     "cat": "repuestos",
     "sub": "Tenedores",
     "spec": [
-      "Tipo: Integrada, altura de pila alta",
+      "Modelo: Tapa Alta",
+      "Tipo: Integrada",
       "Rodamientos sellados",
       "Color: Negro"
     ],
-    "price": 120000,
+    "price": 135000,
     "promo": false,
     "units": 1,
     "imgs": [
@@ -3167,19 +3168,20 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "perno-superior-wethepeople-negro",
     "sku": "REP-WTP-001",
-    "n": "Perno Superior WeThePeople Negro",
+    "n": "Perno Superior WeThePeople Compact M25 Negro",
     "brand": "WeThePeople",
     "cat": "repuestos",
     "sub": "Tenedores",
     "spec": [
+      "Modelo: Compact",
       "Material: Aleación 6061-T6",
       "Rosca: M25 x 1.5 (compatible con horquillas 2014 en adelante)",
       "Peso: 33g",
       "Color: Negro"
     ],
-    "price": 45000,
+    "price": 55000,
     "promo": false,
-    "units": 1,
+    "units": 2,
     "imgs": [
       "assets/img/products/perno-superior-wethepeople-negro-1.jpg",
       "assets/img/products/perno-superior-wethepeople-negro-2.jpg",
