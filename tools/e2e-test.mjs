@@ -46,6 +46,11 @@ const open = async (url) => {
 console.log('\nEL BORRADOR NO SE VE EN NINGUNA PARTE');
 {
   const { page, errs } = await open(`${B}/tienda.html`);
+  /* La tienda pagina de a 24 ("Ver N productos mas"): se carga todo antes de
+     contar, o un borrador en la pagina 3 pasaria la prueba sin verse. */
+  for (let i = 0; i < 20 && await page.locator('[data-loadmore]').count(); i++) {
+    await page.locator('[data-loadmore]').click();
+  }
   t('tienda: no aparece el borrador', await page.locator('.card', { hasText: 'Recoil Rojo' }).count(), 0);
   t('tienda: sigue mostrando el resto', (await page.locator('.card').count()) > 40, true);
   await page.locator('body').press('Control+k');

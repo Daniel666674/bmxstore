@@ -71,7 +71,8 @@ function stikePdpInit(slug) {
     const msg = stikeWaText(p, { size: selectedSize, color: selectedColor, shortName: STIKE_CONFIG.name });
     waBuy.href = `https://wa.me/${STIKE_CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
     const label = stikeWaLabel(p);
-    if (waBuy.textContent.trim() !== label) waBuy.textContent = label;
+    const labelEl = waBuy.querySelector(".wa-l") || waBuy;
+    if (labelEl.textContent.trim() !== label) labelEl.textContent = label;
   }
 
   function applyColorGallery() {
@@ -156,15 +157,58 @@ function stikePdpInit(slug) {
 
   updateWaBuy();
 
+  // Marca: enlace a todo lo de esa marca (el HTML horneado la trae como texto)
+  const brandEl = document.querySelector(".pdp-brand");
+  if (brandEl && p.brand && !brandEl.querySelector("a")) {
+    brandEl.innerHTML = `<a href="tienda.html?brand=${encodeURIComponent(p.brand)}">${brandEl.textContent}</a>`;
+  }
+
+  // Cuotas: el mismo mensaje del banner ("3 cuotas sin interes"), con la cifra
+  const inst = document.querySelector(".pdp-installments");
+  if (inst && !stikeIsOut(p)) {
+    const cuota = Math.ceil(p.price / 3 / 100) * 100;
+    inst.innerHTML = `o <b>3 cuotas sin interés</b> de ${stikePrice(cuota)}`;
+  }
+
+  /* Barra de compra fija en el celular: aparece cuando el boton principal
+     sale de la pantalla (leyendo specs o bajando a relacionados), para que
+     comprar nunca quede a mas de un toque. */
+  if (addBtn && "IntersectionObserver" in window) {
+    const bar = document.createElement("div");
+    bar.className = "pdp-bar";
+    bar.setAttribute("aria-hidden", "true");
+    const thumb = (p.imgs && p.imgs[0]) || "";
+    const out = stikeIsOut(p);
+    bar.innerHTML = `
+      <img src="${thumb}" alt="">
+      <div class="pdp-bar-t"><b>${p.n}</b><span>${stikePrice(p.price)}</span></div>
+      <button type="button" class="btn sm" tabindex="-1">${out ? "Avísame" : (p.sizes && !selectedSize ? "Elegir talla" : "Agregar")}</button>`;
+    document.body.appendChild(bar);
+    bar.querySelector("button").addEventListener("click", () => {
+      if (out) { if (waBuy) waBuy.click(); return; }
+      if ((p.sizes && !selectedSize) || (p.colors && !selectedColor)) {
+        const opts = document.querySelector(".size-select");
+        if (opts) opts.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      addBtn.click();
+    });
+    new IntersectionObserver(([e]) => {
+      const show = !e.isIntersecting && e.boundingClientRect.top < 0;
+      bar.classList.toggle("show", show);
+    }).observe(addBtn);
+  }
+
   // Relacionados
   /* Relacionados en vivo, no horneados en el HTML: se calculan del catalogo
-     que acaba de cargar, asi que no envejecen y no hace falta un script que
-     los pode despues. Se excluye lo agotado: recomendar algo que no se puede
-     comprar gasta el espacio de algo que si. STIKE_PRODUCTS ya viene sin
-     borradores (ver data.js). */
+     que acaba de cargar, asi que no envejecen. Primero el mismo tipo de parte
+     (quien mira un marco compara marcos), despues la misma categoria. Se
+     excluye lo agotado: recomendar algo que no se puede comprar gasta el
+     espacio de algo que si. STIKE_PRODUCTS ya viene sin borradores. */
   const vendible = x => x.slug !== p.slug && !stikeIsOut(x);
-  const related = STIKE_PRODUCTS.filter(x => x.cat === p.cat && vendible(x)).slice(0, 3);
-  const fallback = STIKE_PRODUCTS.filter(vendible).slice(0, 3);
+  const sameSub = STIKE_PRODUCTS.filter(x => p.sub && x.sub === p.sub && vendible(x));
+  const sameCat = STIKE_PRODUCTS.filter(x => x.cat === p.cat && x.sub !== p.sub && vendible(x));
+  let related = sameSub.concat(sameCat).slice(0, 4);
+  if (!related.length) related = STIKE_PRODUCTS.filter(vendible).slice(0, 4);
   const relatedMount = document.getElementById("related");
-  if (relatedMount) relatedMount.innerHTML = (related.length ? related : fallback).map(stikeProductCard).join("");
+  if (relatedMount) relatedMount.innerHTML = related.map(stikeProductCard).join("");
 }

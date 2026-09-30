@@ -3,31 +3,10 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- Page loader ---- */
-  const loader = document.createElement('div');
-  loader.id = 'stike-loader';
-  loader.setAttribute('aria-hidden', 'true');
-  loader.innerHTML = '<div class="loader-inner"><div class="loader-ring"></div><span class="loader-text">' + (window.STIKE_LOADER_TEXT || 'STIKE') + '</span></div>';
-  if (document.body) document.body.insertBefore(loader, document.body.firstChild);
-  window.addEventListener('load', function () {
-    loader.classList.add('done');
-    setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 700);
-  });
-
-  /* ---- Scroll progress bar ---- */
-  var bar = document.createElement('div');
-  bar.className = 'scroll-progress';
-  if (document.body) document.body.appendChild(bar);
-  var barTick = false;
-  window.addEventListener('scroll', function () {
-    if (barTick) return;
-    barTick = true;
-    requestAnimationFrame(function () {
-      var h = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
-      barTick = false;
-    });
-  }, { passive: true });
+  /* El cargador de pantalla completa y la barra de progreso de scroll se
+     quitaron: el cargador escondia la pagina hasta que bajaba la ultima
+     imagen (el contenido ya estaba listo mucho antes) y la barra no le
+     decia nada util a quien compra. */
 
   /* ---- Volver arriba ---- */
   var backToTop = document.createElement('button');

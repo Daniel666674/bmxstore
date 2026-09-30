@@ -34,6 +34,19 @@ const STIKE_CONFIG = {
 
 const STIKE_BASE = "";
 
+/* Vista previa de las dos propuestas de diseño: ?look=a (Taller) o ?look=b
+   (Vitrina); se recuerda en este navegador. TEMPORAL: al elegir una, este
+   bloque y el CSS del otro look se eliminan. */
+(function () {
+  let look = "a";
+  try {
+    const q = new URLSearchParams(location.search).get("look");
+    if (q === "a" || q === "b") localStorage.setItem("stike_look", q);
+    look = q || localStorage.getItem("stike_look") || "a";
+  } catch (e) {}
+  document.documentElement.dataset.look = look === "b" ? "b" : "a";
+})();
+
 /* ----------------------------- SOCIAL ICONS ----------------------------- */
 const SOCICO_IG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="white"/></svg>`;
 const SOCICO_FB = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M16 4h-2.5C11.6 4 10 5.6 10 7.5V10H8v3h2v9h3v-9h2.5l.5-3H13V7.5c0-.3.2-.5.5-.5H16V4z"/></svg>`;
@@ -128,42 +141,53 @@ function stikeToast(msg) {
 /* ------------------------- TARJETA DE PRODUCTO ------------------------- */
 const STIKE_LOW_STOCK = 5;
 function stikeProductUrl(p) { return `producto/${p.slug}.html`; }
+const ICO_HEART = `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>`;
+const ICO_BAG = `<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>`;
+const ICO_ARROW = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+/* Una sola tarjeta para todas las vitrinas (tienda, landings de parte, home,
+   Fate, carrito, relacionados). Jerarquia: foto > marca > nombre > precio.
+   La segunda foto aparece al pasar el mouse, como en las tiendas grandes:
+   el cliente ve el producto desde otro angulo sin abrir la ficha.
+   El boton rapido existe dos veces a proposito: sobre la foto para mouse
+   (.card-quick) y debajo del precio para pantallas tactiles (.card-cta);
+   CSS muestra solo uno segun (hover: hover). */
 function stikeProductCard(p) {
   const out = stikeIsOutOfStock(p);
-  const badge = out ? `<span class="badge sold">Agotado</span>`
-              : p.promo ? `<span class="badge promo">Oferta</span>`
-              : p.tag === "new" ? `<span class="badge new">Nuevo</span>` : "";
-  const oldPrice = p.old ? `<span class="old">${stikePrice(p.old)}</span>` : "";
-  const hasVariants = !!(p.sizes || p.colors);
   const url = stikeProductUrl(p);
-  /* Jerarquia de ficha: marca (micro) > nombre > precio. El CTA se desliza
-     sobre la foto en hover en vez de ocupar sitio debajo, para que la
-     grilla en reposo sea una pared limpia de fotos sin huecos muertos. */
-  const cta = out
-    ? `<a class="btn cyan sm block" href="${url}">Ver producto</a>`
-    : hasVariants
-      ? `<a class="btn cyan sm block" href="${url}">${p.sizes ? "Elegir talla" : "Elegir color"}</a>`
-      : `<button class="btn cyan sm add block" data-add="${p.slug}">Agregar al carrito</button>`;
-  /* Kicker carries the brand on the multi-brand storefront. On a
-     single-brand catalogue (Fate) the brand repeats on every card and stops
-     being information, so CSS swaps it for the subcategory there instead. */
-  const brandLine = (p.brand || p.sub || p.cat)
-    ? `<div class="brand-line"><span class="bl-brand">${p.brand || ""}</span><span class="bl-sub">${p.sub || p.cat || ""}</span></div>`
-    : "";
+  const imgs = (p.imgs && p.imgs.length) ? p.imgs : [stikeProductImage(p, 600)];
+  const onSale = !!(p.old && p.old > p.price);
+  const badges = [];
+  if (out) badges.push(`<span class="badge sold">Agotado</span>`);
+  else if (onSale) badges.push(`<span class="badge promo">-${Math.round((1 - p.price / p.old) * 100)}%</span>`);
+  else if (p.promo) badges.push(`<span class="badge promo">Oferta</span>`);
+  if (!out && p.tag === "new") badges.push(`<span class="badge new">Nuevo</span>`);
+  const hasVariants = !!(p.sizes || p.colors);
+  const label = out ? "Avísame cuando llegue" : hasVariants ? (p.sizes ? "Elegir talla" : "Elegir color") : "Agregar al carrito";
+  /* En tactil la tarjeta es angosta (2 columnas): etiqueta corta. */
+  const short = out ? "Avísame" : hasVariants ? (p.sizes ? "Elegir talla" : "Elegir color") : "Agregar";
+  const cta = (cls, txt) => (out || hasVariants)
+    ? `<a class="btn ${cls}" href="${url}">${txt}</a>`
+    : `<button class="btn ${cls}" type="button" data-add="${p.slug}" aria-label="Agregar ${p.n} al carrito">${ICO_BAG}<span>${txt}</span></button>`;
+  const img2 = imgs[1] ? `<img class="img-2" src="${imgs[1]}" alt="" loading="lazy">` : "";
+  const sizes = p.sizes && p.sizes.length
+    ? `<p class="card-sizes" aria-label="Tallas">${p.sizes.map(s => `<span${s.u <= 0 ? ' class="out"' : ""}>${s.v}</span>`).join("")}</p>` : "";
   return `
-  <article class="card">
-    <div class="thumb">
-      ${badge}
-      <button class="fav" title="Guardar" aria-label="Guardar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
-      <a href="${url}" class="thumb-link" tabindex="-1" aria-hidden="true">
-        <img src="${stikeProductImage(p, 600)}" alt="${p.n}" loading="lazy">
+  <article class="card${out ? " is-out" : ""}">
+    <div class="card-media">
+      <a class="card-img${img2 ? " has-2" : ""}" href="${url}" tabindex="-1" aria-hidden="true">
+        <img class="img-1" src="${imgs[0]}" alt="${p.n}" loading="lazy">${img2}
       </a>
-      <div class="quick">${cta}</div>
+      ${badges.length ? `<div class="card-badges">${badges.join("")}</div>` : ""}
+      <button class="card-fav fav" type="button" aria-label="Guardar ${p.n}">${ICO_HEART}</button>
+      <div class="card-quick">${cta("sm block", label)}</div>
     </div>
-    <div class="body">
-      ${brandLine}
-      <div class="title"><a href="${url}">${p.n}</a></div>
-      <div class="price">${stikePrice(p.price)}${oldPrice}</div>
+    <div class="card-body">
+      <p class="card-brand brand-line"><span class="bl-brand">${p.brand || ""}</span><span class="bl-sub">${p.sub || p.cat || ""}</span></p>
+      <h3 class="card-title title"><a href="${url}">${p.n}</a></h3>
+      ${sizes}
+      <p class="card-price price">${stikePrice(p.price)}${onSale ? ` <s class="old">${stikePrice(p.old)}</s>` : ""}</p>
+      <div class="card-cta">${cta("secondary sm block", short)}</div>
     </div>
   </article>`;
 }
@@ -197,151 +221,225 @@ function stikeStockedSubs(cat) {
   return cat.subs.filter(s => counts[s]);
 }
 
+/* Grupos del mega menu de Repuestos: como se piensa una BMX (cuadro,
+   direccion, transmision, ruedas), no en orden alfabetico. Solo aparecen los
+   tipos con stock; uno nuevo que no este en la lista cae en "Otros". */
+const STIKE_PART_GROUPS = [
+  ["Cuadro", ["Marcos", "Tenedores"]],
+  ["Dirección", ["Timones", "Espigas", "Manubrios"]],
+  ["Transmisión", ["Bielas", "Platos", "Cadenas", "Pedales"]],
+  ["Ruedas", ["Rines", "Manzanas", "Llantas"]],
+  ["Complementos", ["Sillas y Postes", "Tacos y Protectores de Maza", "Frenos"]],
+];
 function stikeNavDropdown(cat) {
   const subs = stikeStockedSubs(cat);
   if (!subs.length) return "";
   const counts = stikeSubCounts(cat.slug);
-  const items = subs.map(s =>
-    `<a href="${stikeSubUrl(cat.slug, s)}">${s}<i>${counts[s]}</i></a>`).join("");
-  if (cat.slug === "repuestos") {
-    return `<div class="dropdown mega">
-      <a href="tienda.html?cat=${cat.slug}" style="grid-column:1/-1" class="col-title">Ver todos los repuestos →</a>
-      ${items}
-    </div>`;
+  const link = s => `<a href="${stikeSubUrl(cat.slug, s)}"><span>${s}</span><i>${counts[s]}</i></a>`;
+  const total = subs.reduce((n, s) => n + counts[s], 0);
+  if (cat.slug !== "repuestos") {
+    return `<div class="drop"><a class="drop-all" href="tienda.html?cat=${cat.slug}">Ver todo ${cat.name} <i>${total}</i></a>${subs.map(link).join("")}</div>`;
   }
-  return `<div class="dropdown">${items}</div>`;
+  const used = new Set();
+  const cols = STIKE_PART_GROUPS.map(([title, list]) => {
+    const items = list.filter(s => counts[s]);
+    items.forEach(s => used.add(s));
+    return items.length ? `<div class="mega-col"><p class="mega-h">${title}</p>${items.map(link).join("")}</div>` : "";
+  }).filter(Boolean);
+  const rest = subs.filter(s => !used.has(s));
+  if (rest.length) cols.push(`<div class="mega-col"><p class="mega-h">Otros</p>${rest.map(link).join("")}</div>`);
+  return `<div class="mega"><div class="mega-in wrap">
+      <div class="mega-cols">${cols.join("")}</div>
+      <a class="mega-feature" href="armar.html">
+        <img src="assets/img/hero/bike-r.jpg" alt="" loading="lazy">
+        <span class="mega-feature-txt"><b>Arma tu BMX</b><span>Elige cada pieza y te la armamos gratis en el taller</span><em>Empezar ${ICO_ARROW}</em></span>
+      </a>
+    </div>
+    <div class="mega-foot"><div class="wrap"><a href="tienda.html?cat=repuestos">Ver todos los repuestos (${total}) ${ICO_ARROW}</a></div></div>
+  </div>`;
 }
 
 /* ------------------------------ HEADER --------------------------------- */
-/* Diseño "Rueda Duro": logo centrado sobre dos franjas -- arriba redes +
-   promesas de servicio, abajo el menu partido en dos mitades a cada lado del
-   logo -- y el buscador como pildora centrada entre dos rieles. En movil se
-   colapsa a logo + iconos y el menu vive en el panel flotante de siempre. */
-const HDR_ICO_USER = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>`;
-const HDR_ICO_PHONE = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>`;
-const HDR_ICO_BAG = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>`;
-const HDR_ICO_SEARCH = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15.5 15.5 21 21"/></svg>`;
+/* Franja de anuncios + header pegado que se esconde al bajar y vuelve al
+   subir (el cliente siempre tiene carrito y buscador a un gesto, sin que
+   el header le robe pantalla mientras lee). Un solo DOM plano para los dos
+   looks: CSS lo acomoda en dos filas (look A: buscador | logo | acciones,
+   menu debajo) o en una sola (look B: logo | menu | buscador | acciones). */
+const ICO_SEARCH = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>`;
+const ICO_MENU = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`;
+const ICO_CLOSE = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>`;
+const ICO_PIN = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>`;
+const ICO_CARET = `<svg class="caret" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`;
+const STIKE_ANNOUNCEMENTS = ["Envíos a toda Colombia", "Ensamble de tu BMX gratis", "Paga en 3 cuotas sin interés", "Asesoría real de riders"];
 
 function stikeRenderHeader(active) {
   const C = STIKE_CONFIG;
-  const caret = `<span class="caret"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>`;
-  const li = (href, label, key, extra) =>
-    `<li class="${active === key ? "active" : ""}${extra || ""}"><a href="${href}">${label}</a></li>`;
-  const catLi = cat => {
-    const stocked = stikeStockedSubs(cat).length;
-    return `<li class="${active === cat.slug ? "active" : ""}${stocked ? " has-mega" : ""}">
-      <a href="tienda.html?cat=${cat.slug}"${cat.slug === "promo" ? ` data-accent="promo"` : ""}>${cat.name}${stocked ? caret : ""}</a>
-      ${stikeNavDropdown(cat)}
-    </li>`;
+  const catItem = cat => {
+    const drop = stikeNavDropdown(cat);
+    const cls = [
+      active === cat.slug ? "active" : "",
+      drop ? (cat.slug === "repuestos" ? "has-mega" : "has-drop") : "",
+      cat.slug === "promo" ? "is-promo" : ""
+    ].filter(Boolean).join(" ");
+    return `<li class="${cls}"><a href="tienda.html?cat=${cat.slug}"${drop ? ' aria-haspopup="true"' : ""}>${cat.name}${drop ? ICO_CARET : ""}</a>${drop}</li>`;
   };
-  const cats = STIKE_CATEGORIES.slice();
-  const left = [li("index.html", "Inicio", "home"), li("fate/", "Fate", "fate")]
-    .concat(cats.slice(0, 3).map(catLi)).join("");
-  const right = cats.slice(3).map(catLi)
-    .concat([li("marcas.html", "Marcas", "marcas"), li("blog.html", "Blog", "blog"),
-             li("armar.html", "Arma tu BMX", "armar", " nav-build-item")]).join("");
+  const promo = STIKE_CATEGORIES.find(c => c.slug === "promo");
+  const navItems = STIKE_CATEGORIES.filter(c => c.slug !== "promo").map(catItem).join("") +
+    `<li class="${active === "marcas" ? "active" : ""}"><a href="marcas.html">Marcas</a></li>` +
+    `<li><a href="fate/">Fate BMX</a></li>` +
+    `<li class="${active === "blog" ? "active" : ""}"><a href="blog.html">Blog</a></li>` +
+    (promo ? catItem(promo) : "");
+
+  /* Menu movil: las categorias con subtipos se abren en acordeon. */
+  const drawerCats = STIKE_CATEGORIES.map(cat => {
+    const subs = stikeStockedSubs(cat);
+    const counts = stikeSubCounts(cat.slug);
+    if (!subs.length) return `<a class="dr-link${cat.slug === "promo" ? " is-promo" : ""}" href="tienda.html?cat=${cat.slug}">${cat.name}</a>`;
+    return `<details class="dr-acc"${active === cat.slug ? " open" : ""}>
+      <summary>${cat.name}${ICO_CARET}</summary>
+      <div class="dr-sub"><a href="tienda.html?cat=${cat.slug}">Ver todo ${cat.name}</a>${subs.map(s => `<a href="${stikeSubUrl(cat.slug, s)}">${s}<i>${counts[s]}</i></a>`).join("")}</div>
+    </details>`;
+  }).join("");
 
   const header = `
-  <header class="site-header">
-    <div class="hdr-rail wrap">
-      <div class="hdr-side hdr-left">
-        <div class="hdr-soc">
-          <a href="${C.ig}" target="_blank" rel="noopener" aria-label="Instagram">${SOCICO_IG}</a>
-          <a href="${C.fb}" target="_blank" rel="noopener" aria-label="Facebook">${SOCICO_FB}</a>
-          <a href="${C.tiktok}" target="_blank" rel="noopener" aria-label="TikTok">${SOCICO_TT}</a>
-        </div>
-        <p class="hdr-promo">Envíos a toda Colombia <i></i> Ensamble BMX gratis</p>
-      </div>
-      <a class="brand" href="index.html" aria-label="Stike Bike Shop, inicio">${stikeLogoSVG(96)}</a>
-      <div class="hdr-side hdr-right">
-        <p class="hdr-promo">3 cuotas sin interés <i></i> <span>Comunidad <b>Stike</b> Bogotá</span></p>
-        <div class="header-actions">
-          <button class="icon-btn search-trigger" onclick="stikeOpenSearch()" title="Buscar" aria-label="Buscar">${HDR_ICO_SEARCH}</button>
-          <a class="icon-btn hdr-contact" href="contacto.html" title="Contacto" aria-label="Contacto">${HDR_ICO_USER}</a>
-          <a class="icon-btn" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">${HDR_ICO_PHONE}</a>
-          <a class="icon-btn" href="carrito.html" title="Carrito" aria-label="Carrito">${HDR_ICO_BAG}<span class="cart-count">0</span></a>
-          <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menú"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>
-        </div>
+  <div class="annc" role="region" aria-label="Beneficios">
+    <div class="annc-in wrap">
+      <p class="annc-loc">${ICO_PIN}<span>Venecia, Bogotá · ${C.hours.replace("Lun a Sáb · ", "Lun–Sáb ")}</span></p>
+      <div class="annc-rot" aria-live="polite">${STIKE_ANNOUNCEMENTS.map((t, i) => `<span${i === 0 ? ' class="on"' : ""}>${t}</span>`).join("")}</div>
+      <div class="annc-soc">
+        <a href="${C.ig}" target="_blank" rel="noopener" aria-label="Instagram">${SOCICO_IG}</a>
+        <a href="${C.fb}" target="_blank" rel="noopener" aria-label="Facebook">${SOCICO_FB}</a>
+        <a href="${C.tiktok}" target="_blank" rel="noopener" aria-label="TikTok">${SOCICO_TT}</a>
       </div>
     </div>
-    <nav class="site-nav wrap" id="site-nav" aria-label="Principal">
-      <ul class="nav-list nav-half nav-l">${left}</ul>
-      <span class="nav-gap" aria-hidden="true"></span>
-      <ul class="nav-list nav-half nav-r">${right}</ul>
-    </nav>
-    <div class="hdr-search wrap">
-      <button type="button" class="search-pill" onclick="stikeOpenSearch()" aria-label="Buscar productos, marcas, categorías">
-        <span class="sp-text">Buscar repuestos, marcas…</span>
-        <span class="sp-ico">${HDR_ICO_SEARCH}</span>
+  </div>
+  <header class="sh" id="sh">
+    <div class="sh-in wrap">
+      <button class="sh-ico sh-menu" id="sh-menu" type="button" aria-label="Abrir menú" aria-controls="sh-drawer" aria-expanded="false">${ICO_MENU}</button>
+      <button class="sh-search" type="button" onclick="stikeOpenSearch()" aria-label="Buscar productos">
+        ${ICO_SEARCH}<span class="sh-search-t">Buscar repuestos, marcas…</span><kbd>Ctrl K</kbd>
       </button>
+      <a class="sh-logo" href="index.html" aria-label="Stike Bike Shop, inicio">${stikeLogoSVG(64)}</a>
+      <nav class="sh-nav" aria-label="Principal"><ul>${navItems}</ul></nav>
+      <div class="sh-actions">
+        <button class="sh-ico sh-search-m" type="button" onclick="stikeOpenSearch()" aria-label="Buscar">${ICO_SEARCH}</button>
+        <a class="sh-ico sh-wa" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp">${SOCICO_WA}</a>
+        <a class="sh-build btn sm" href="armar.html">Arma tu BMX</a>
+        <a class="sh-cart" href="carrito.html" aria-label="Carrito">${ICO_BAG}<span class="sh-cart-t">Carrito</span><span class="cart-count">0</span></a>
+      </div>
     </div>
   </header>
-  <div class="nav-backdrop" id="nav-backdrop"></div>`;
+  <div class="dr-backdrop" id="sh-backdrop" hidden></div>
+  <aside class="drawer" id="sh-drawer" aria-label="Menú" aria-hidden="true">
+    <div class="dr-head">
+      <a href="index.html" class="dr-logo" aria-label="Inicio">${stikeLogoSVG(44)}</a>
+      <button class="sh-ico" type="button" id="sh-close" aria-label="Cerrar menú">${ICO_CLOSE}</button>
+    </div>
+    <button class="dr-search" type="button" onclick="stikeCloseDrawer();stikeOpenSearch()">${ICO_SEARCH}<span>Buscar repuestos, marcas…</span></button>
+    <nav class="dr-nav" aria-label="Menú móvil">
+      ${drawerCats}
+      <a class="dr-link" href="marcas.html">Marcas</a>
+      <a class="dr-link" href="fate/">Fate BMX</a>
+      <a class="dr-link" href="blog.html">Blog</a>
+      <a class="dr-link" href="nosotros.html">Nosotros</a>
+      <a class="dr-link" href="contacto.html">Contacto</a>
+    </nav>
+    <a class="btn block" href="armar.html">Arma tu BMX ${ICO_ARROW}</a>
+    <a class="dr-help" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">
+      <span class="dr-help-ico">${SOCICO_WA}</span>
+      <span><b>¿Dudas con una pieza?</b><span>Escríbenos: ${C.whatsappPretty}</span></span>
+    </a>
+  </aside>`;
 
   const mount = document.getElementById("site-header");
   if (mount) mount.innerHTML = header;
   stikeBindHeader();
   stikeUpdateCartBadge();
-  /* Al bajar, el header se compacta a una sola franja (logo chico + menu). */
-  const hdr = document.querySelector(".site-header");
-  if (hdr) {
-    let tick = false;
-    const onScroll = () => {
-      if (tick) return; tick = true;
-      requestAnimationFrame(() => { hdr.classList.toggle("is-compact", window.scrollY > 140); tick = false; });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-  }
 }
 
-function stikeFloatNavPosition() {
-  const nav = document.getElementById("site-nav");
-  const header = document.querySelector(".site-header");
-  if (!nav || !header) return;
-  const bottom = header.getBoundingClientRect().bottom;
-  nav.style.top = (bottom + 10) + "px";
-  nav.style.maxHeight = Math.min(560, window.innerHeight - bottom - 24) + "px";
+function stikeOpenDrawer() {
+  const d = document.getElementById("sh-drawer"), b = document.getElementById("sh-backdrop");
+  if (!d) return;
+  d.classList.add("open"); d.setAttribute("aria-hidden", "false");
+  if (b) { b.hidden = false; requestAnimationFrame(() => b.classList.add("show")); }
+  const btn = document.getElementById("sh-menu"); if (btn) btn.setAttribute("aria-expanded", "true");
+  document.body.style.overflow = "hidden";
+  const close = document.getElementById("sh-close"); if (close) close.focus();
 }
-
-function stikeCloseNav() {
-  const nav = document.getElementById("site-nav");
-  const backdrop = document.getElementById("nav-backdrop");
-  if (nav) nav.classList.remove("open");
-  if (backdrop) backdrop.classList.remove("show");
+function stikeCloseDrawer() {
+  const d = document.getElementById("sh-drawer"), b = document.getElementById("sh-backdrop");
+  if (!d || !d.classList.contains("open")) return;
+  d.classList.remove("open"); d.setAttribute("aria-hidden", "true");
+  if (b) { b.classList.remove("show"); setTimeout(() => { b.hidden = true; }, 250); }
+  const btn = document.getElementById("sh-menu"); if (btn) { btn.setAttribute("aria-expanded", "false"); btn.focus(); }
   document.body.style.overflow = "";
 }
+/* Nombre viejo: lo siguen llamando paginas que no se tocaron. */
+function stikeCloseNav() { stikeCloseDrawer(); }
 
 function stikeBindHeader() {
-  const toggle = document.getElementById("menu-toggle");
-  const nav = document.getElementById("site-nav");
-  const backdrop = document.getElementById("nav-backdrop");
-  if (toggle && nav) {
-    toggle.addEventListener("click", () => {
-      const willOpen = !nav.classList.contains("open");
-      if (willOpen) {
-        stikeFloatNavPosition();
-        nav.classList.add("open");
-        if (backdrop) backdrop.classList.add("show");
-        document.body.style.overflow = "hidden";
-      } else {
-        stikeCloseNav();
-      }
+  /* Las paginas de Fate traen su propio header (el de antes). Para ellas se
+     conserva el comportamiento anterior del boton de menu. */
+  const legacyToggle = document.getElementById("menu-toggle");
+  const legacyNav = document.getElementById("site-nav");
+  if (legacyToggle && legacyNav && !document.getElementById("sh")) {
+    const backdrop = document.getElementById("nav-backdrop");
+    legacyToggle.addEventListener("click", () => {
+      const open = !legacyNav.classList.contains("open");
+      legacyNav.classList.toggle("open", open);
+      if (backdrop) backdrop.classList.toggle("show", open);
+      document.body.style.overflow = open ? "hidden" : "";
     });
+    if (backdrop) backdrop.addEventListener("click", () => {
+      legacyNav.classList.remove("open"); backdrop.classList.remove("show"); document.body.style.overflow = "";
+    });
+    return;
   }
-  if (backdrop) backdrop.addEventListener("click", stikeCloseNav);
-  window.addEventListener("resize", () => { if (nav && nav.classList.contains("open")) stikeFloatNavPosition(); });
-  nav && nav.querySelectorAll(".nav-list > li").forEach(li => {
-    const caret = li.querySelector(".caret");
-    if (!caret) return;
-    li.querySelector("a").addEventListener("click", (e) => {
-      if (window.innerWidth <= 760 && li.querySelector(".dropdown")) {
-        e.preventDefault();
-        li.classList.toggle("open-sub");
-        stikeFloatNavPosition();
-      }
-    });
+  const menu = document.getElementById("sh-menu");
+  if (menu) menu.addEventListener("click", stikeOpenDrawer);
+  const close = document.getElementById("sh-close");
+  if (close) close.addEventListener("click", stikeCloseDrawer);
+  const backdrop = document.getElementById("sh-backdrop");
+  if (backdrop) backdrop.addEventListener("click", stikeCloseDrawer);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") stikeCloseDrawer(); });
+
+  /* Menus desplegables accesibles por teclado: se abren con foco, no solo
+     con hover, y se cierran al salir. */
+  document.querySelectorAll(".sh-nav li.has-mega, .sh-nav li.has-drop").forEach(li => {
+    li.addEventListener("focusin", () => li.classList.add("open"));
+    li.addEventListener("focusout", e => { if (!li.contains(e.relatedTarget)) li.classList.remove("open"); });
+    li.addEventListener("mouseleave", () => li.classList.remove("open"));
   });
+
+  /* Anuncios rotando cada 4 s (en escritorio se ven todos a la vez). */
+  const rot = document.querySelector(".annc-rot");
+  if (rot && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const items = rot.querySelectorAll("span");
+    let i = 0;
+    setInterval(() => { items[i].classList.remove("on"); i = (i + 1) % items.length; items[i].classList.add("on"); }, 4000);
+  }
+
+  /* Header que se esconde al bajar y reaparece al subir. Su altura queda en
+     --sh-h y el estado en html.sh-hidden, para que lo que va pegado debajo
+     (filtros, galeria de la ficha, resumen del carrito) se acomode. */
+  const sh = document.getElementById("sh");
+  if (sh) {
+    const root = document.documentElement;
+    const setH = () => root.style.setProperty("--sh-h", sh.offsetHeight + "px");
+    setH();
+    if ("ResizeObserver" in window) new ResizeObserver(setH).observe(sh);
+    else window.addEventListener("resize", setH);
+    let lastY = window.scrollY, ticking = false;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < 200 || y < lastY - 6) sh.classList.remove("is-hidden");
+      else if (y > lastY + 6 && !sh.matches(":focus-within") && !document.body.style.overflow) sh.classList.add("is-hidden");
+      root.classList.toggle("sh-hidden", sh.classList.contains("is-hidden"));
+      sh.classList.toggle("is-scrolled", y > 10);
+      lastY = y; ticking = false;
+    };
+    window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  }
 }
 
 function stikeDoSearch(e) {
@@ -440,75 +538,77 @@ function stikeCloseSearch() {
 }
 
 /* ------------------------------ FOOTER --------------------------------- */
+/* Franja de beneficios: la misma promesa en todas las paginas, justo antes
+   del pie. El home la pone arriba (bajo el hero), asi que aqui se omite. */
+function stikeValueProps() {
+  const I = d => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const items = [
+    [I('<rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>'), "Envíos a toda Colombia", "Despacho en 24 h en Bogotá"],
+    [I('<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'), "Ensamble gratis", "Armamos y ajustamos tu BMX"],
+    [I('<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>'), "3 cuotas sin interés", "Paga fácil con tarjeta"],
+    [I('<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/>'), "Asesoría de riders", "Te ayudamos a elegir cada pieza"],
+  ];
+  return `<section class="vp" aria-label="Por qué comprar en Stike"><div class="wrap vp-grid">${items.map(([ico, t, sub]) =>
+    `<div class="vp-item"><span class="vp-ico">${ico}</span><p><b>${t}</b><span>${sub}</span></p></div>`).join("")}</div></section>`;
+}
+
+function stikeSubscribeFooter(e) {
+  const form = e.target;
+  const email = (form.querySelector('input[type="email"]').value || "").trim();
+  stikeSubmitForm(e,
+    { email, _subject: "Nuevo suscriptor — pie de página Stike", origen: "footer" },
+    "¡Listo! Ya eres parte de la comunidad Stike.",
+    stikeNewsletterFallback(form, email, "footer"));
+  try { localStorage.setItem(NEWSLETTER_KEY, "subscribed"); } catch (err) {}
+}
+
 function stikeRenderFooter() {
   const C = STIKE_CONFIG;
-  const catLinks = STIKE_CATEGORIES.map(c =>
-    `<a href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
-  /* El home trae su propia franja bajo el hero: no se repite al pie. */
-  const strip = document.querySelector(".rd-strip") ? "" : `
-  <div class="strip-band" aria-hidden="true">
-    <div class="strip-track">
-      ${Array(2).fill(`<span>Flatland</span><span>Comunidad Stike BMX</span><span>Ensamble gratis</span><span>Envíos nacionales</span><span>Street</span><span>Park</span><span>Asesoría de riders</span><span>3 cuotas sin interés</span>`).join("")}
-    </div>
-  </div>`;
-  const footer = strip + `
-  <section class="cta-band">
-    <div class="wrap">
-      <div>
-        <span class="kicker">Bogotá — Venecia</span>
-        <h2>¿Listo para <em>rodar?</em></h2>
-        <p>Escríbenos por WhatsApp y arma tu BMX con asesoría real de riders.</p>
+  const vp = document.querySelector(".vp") ? "" : stikeValueProps();
+  const catLinks = STIKE_CATEGORIES.map(c => `<a href="tienda.html?cat=${c.slug}">${c.name}</a>`).join("");
+  const footer = `${vp}
+  <section class="help">
+    <div class="wrap help-in">
+      <div class="help-txt">
+        <p class="kicker">Asesoría real</p>
+        <h2>¿No sabes qué medida o pieza elegir?</h2>
+        <p>Escríbenos y un rider del taller te ayuda a escoger. Si la armas con nosotros, el ensamble es gratis.</p>
       </div>
-      <a class="btn wa" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">Hablar por WhatsApp</a>
+      <div class="help-act">
+        <a class="btn lg" href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">${SOCICO_WA}<span>Escribir por WhatsApp</span></a>
+        <p class="help-hours">${C.hours}</p>
+      </div>
     </div>
   </section>
-  <footer class="site-footer">
-    <div class="wrap">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="foot-logo" aria-label="Stike Bike Shop">${stikeLogoSVG(84)}</a>
-          <p>La casa de todo el que rueda. Repuestos, armado a tu medida y asesoría real de riders en Venecia, Bogotá.</p>
-          <div class="foot-social">
-            <a href="${C.ig}" target="_blank" rel="noopener" class="soc soc-ig" title="Instagram" aria-label="Instagram">${SOCICO_IG}</a>
-            <a href="${C.fb}" target="_blank" rel="noopener" class="soc soc-fb" title="Facebook" aria-label="Facebook">${SOCICO_FB}</a>
-            <a href="${C.tiktok}" target="_blank" rel="noopener" class="soc soc-tt" title="TikTok" aria-label="TikTok">${SOCICO_TT}</a>
-            <a href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener" class="soc soc-wa" title="WhatsApp" aria-label="WhatsApp">${SOCICO_WA}</a>
-          </div>
-        </div>
-        <div>
-          <h5>Tienda</h5>
-          ${catLinks}
-          <a href="marcas.html">Marcas</a>
-          <a href="fate/">Fate BMX</a>
-        </div>
-        <div>
-          <h5>Stike</h5>
-          <a href="armar.html">Arma tu BMX</a>
-          <a href="nosotros.html">Nosotros</a>
-          <a href="blog.html">Blog</a>
-          <a href="contacto.html">Contacto</a>
-        </div>
-        <div>
-          <h5>Ayuda</h5>
-          <a href="envios.html">Envíos y entregas</a>
-          <a href="devoluciones.html">Cambios y devoluciones</a>
-          <a href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">${C.whatsappPretty}</a>
-          <p class="foot-hours">${C.hours}</p>
+  <footer class="ft">
+    <div class="wrap ft-grid">
+      <div class="ft-brand">
+        <a href="index.html" class="ft-logo" aria-label="Stike Bike Shop">${stikeLogoSVG(72)}</a>
+        <p>La casa de todo el que rueda. Repuestos, ropa y protecciones BMX, armado a tu medida y asesoría real de riders en Venecia, Bogotá.</p>
+        <div class="ft-soc">
+          <a href="${C.ig}" target="_blank" rel="noopener" class="soc" aria-label="Instagram">${SOCICO_IG}</a>
+          <a href="${C.fb}" target="_blank" rel="noopener" class="soc" aria-label="Facebook">${SOCICO_FB}</a>
+          <a href="${C.tiktok}" target="_blank" rel="noopener" class="soc" aria-label="TikTok">${SOCICO_TT}</a>
+          <a href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener" class="soc" aria-label="WhatsApp">${SOCICO_WA}</a>
         </div>
       </div>
-      <div class="footer-bottom">
-        <span>© ${new Date().getFullYear()} ${C.full} — Bogotá, Colombia.</span>
-        <nav class="footer-legal" aria-label="Enlaces legales">
-          <a href="privacidad.html">Privacidad</a>
-          <a href="cookies.html">Cookies</a>
-          <a href="terminos.html">Términos</a>
-          <a href="envios.html">Envíos</a>
-          <a href="devoluciones.html">Devoluciones</a>
-        </nav>
-        <div class="pay-icons">
-          <span>VISA</span><span>MASTERCARD</span><span>PSE</span><span>NEQUI</span><span>EFECTY</span>
-        </div>
+      <nav class="ft-col" aria-label="Tienda"><h5>Tienda</h5>${catLinks}<a href="marcas.html">Marcas</a><a href="fate/">Fate BMX</a></nav>
+      <nav class="ft-col" aria-label="Stike"><h5>Stike</h5><a href="armar.html">Arma tu BMX</a><a href="nosotros.html">Nosotros</a><a href="blog.html">Blog</a><a href="contacto.html">Contacto</a></nav>
+      <nav class="ft-col" aria-label="Ayuda"><h5>Ayuda</h5><a href="envios.html">Envíos y entregas</a><a href="devoluciones.html">Cambios y devoluciones</a><a href="https://wa.me/${C.whatsapp}" target="_blank" rel="noopener">${C.whatsappPretty}</a><a href="mailto:${C.email}">${C.email}</a></nav>
+      <div class="ft-news">
+        <h5>Boletín</h5>
+        <p>Lanzamientos, ofertas y eventos de la comunidad, primero en tu correo.</p>
+        <form class="ft-form" onsubmit="stikeSubscribeFooter(event)">
+          <input type="email" required placeholder="Tu correo" autocomplete="email" aria-label="Tu correo">
+          <button class="btn sm" type="submit">Suscribirme</button>
+        </form>
+        <p class="ft-legal-note">Al suscribirte aceptas la <a href="privacidad.html">política de privacidad</a>.</p>
       </div>
+    </div>
+    <div class="wrap ft-bottom">
+      <span>© ${new Date().getFullYear()} ${C.full} · Bogotá, Colombia</span>
+      <nav class="footer-legal" aria-label="Legal"><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="terminos.html">Términos</a></nav>
+      <div class="pay-icons" aria-label="Medios de pago"><span>Visa</span><span>Mastercard</span><span>PSE</span><span>Nequi</span><span>Efecty</span></div>
     </div>
   </footer>`;
   const mount = document.getElementById("site-footer");
@@ -640,7 +740,22 @@ function stikeRenderNewsletterPopup() {
     </div>`;
   document.body.appendChild(el);
   el.addEventListener("click", (e) => { if (e.target === el) stikeDismissNewsletter(); });
-  setTimeout(() => el.classList.add("open"), 2200);
+  /* Nunca apenas se abre la pagina: el popup inmediato es lo que mas
+     espanta en una tienda. Aparece a los 40 s o al pasar el 60% de la
+     pagina, lo que ocurra primero, y una sola vez. */
+  let shown = false;
+  const show = () => {
+    if (shown || localStorage.getItem(NEWSLETTER_KEY)) return;
+    if (document.body.style.overflow === "hidden") return;
+    shown = true; el.classList.add("open");
+    window.removeEventListener("scroll", onScroll);
+  };
+  const onScroll = () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    if (h > 0 && window.scrollY / h > 0.6) show();
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  setTimeout(show, 40000);
 }
 
 /* --------------------- Delegación global de eventos -------------------- */
@@ -648,7 +763,7 @@ document.addEventListener("click", (e) => {
   const add = e.target.closest("[data-add]");
   if (add) { stikeAddToCart(add.getAttribute("data-add")); }
   const fav = e.target.closest(".fav");
-  if (fav) { fav.classList.toggle("liked"); }
+  if (fav) { fav.setAttribute("aria-pressed", String(fav.classList.toggle("liked"))); }
 });
 
 /* Atajo de teclado para el buscador (⌘K / Ctrl+K) */
@@ -740,35 +855,6 @@ function stikeApplyContent() {
     });
 }
 
-/* Filtros plegables en movil: en pantallas chicas la columna de filtros
-   (categoria, 25+ marcas, precio) empujaba los productos casi 1000px hacia
-   abajo. Ahi se pliega a una sola barra "Filtrar" con el numero de filtros
-   activos; en escritorio no cambia nada. */
-function stikeCollapsibleFilters() {
-  const box = document.querySelector(".filters");
-  const head = box && box.querySelector("h4");
-  if (!box || !head) return;
-  const mq = window.matchMedia("(max-width: 760px)");
-  head.setAttribute("role", "button");
-  head.setAttribute("tabindex", "0");
-  const label = head.textContent.trim();
-  const sync = () => {
-    const n = box.querySelectorAll('input[type=checkbox]:checked').length +
-      (box.querySelector('input[name=price]:checked:not([value=all])') ? 1 : 0);
-    head.innerHTML = `${label}${n ? ` <b class="f-count">${n}</b>` : ""}<span class="f-chev" aria-hidden="true"></span>`;
-    head.setAttribute("aria-expanded", String(!box.classList.contains("collapsed")));
-  };
-  const apply = () => { box.classList.toggle("collapsed", mq.matches); sync(); };
-  const toggle = () => { if (!mq.matches) return; box.classList.toggle("collapsed"); sync(); };
-  head.addEventListener("click", toggle);
-  head.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
-  box.addEventListener("change", sync);
-  box.addEventListener("click", e => { if (e.target.closest("#clear-filters")) setTimeout(sync, 0); });
-  window.addEventListener("load", sync);
-  (mq.addEventListener ? mq.addEventListener("change", apply) : mq.addListener(apply));
-  apply();
-}
-
 /* Init común para todas las páginas */
 function stikeInit(active) {
   stikeRenderHeader(active);
@@ -779,5 +865,4 @@ function stikeInit(active) {
   stikeCookieBanner();
   stikeRenderNewsletterPopup();
   stikeApplyContent();
-  stikeCollapsibleFilters();
 }
