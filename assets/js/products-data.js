@@ -3005,9 +3005,9 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 1,
     "imgs": [
-      "assets/img/products/cadena-odyssey-bluebird-halflink-negra-1.jpg",
       "assets/img/products/cadena-odyssey-bluebird-halflink-negra-2.jpg",
-      "assets/img/products/cadena-odyssey-bluebird-halflink-negra-3.jpg"
+      "assets/img/products/cadena-odyssey-bluebird-halflink-negra-3.jpg",
+      "assets/img/products/cadena-odyssey-bluebird-halflink-negra-1.jpg"
     ],
     "published": true
   },
@@ -3056,30 +3056,6 @@ window.STIKE_PRODUCTS = [
     "units": 1,
     "imgs": [
       "assets/img/products/caja-frente-cult-crew-negra-1.jpg"
-    ],
-    "published": true
-  },
-  {
-    "slug": "caja-frente-maintain-negra",
-    "sku": "REP-MAI-001",
-    "n": "Caja de Dirección Maintain Negra",
-    "brand": "Maintain",
-    "cat": "repuestos",
-    "sub": "Tenedores",
-    "spec": [
-      "Tipo: Integrada",
-      "Rodamiento sellado",
-      "Color: Negro"
-    ],
-    "price": 120000,
-    "promo": false,
-    "units": 1,
-    "imgs": [
-      "assets/img/products/caja-frente-maintain-negra-1.jpg",
-      "assets/img/products/caja-frente-maintain-negra-2.jpg",
-      "assets/img/products/caja-frente-maintain-negra-3.jpg",
-      "assets/img/products/caja-frente-maintain-negra-4.jpg",
-      "assets/img/products/caja-frente-maintain-negra-5.jpg"
     ],
     "published": true
   },
