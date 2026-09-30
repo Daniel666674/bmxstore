@@ -2844,9 +2844,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "colors": [
-      { "v": "Negro", "u": 1 },
-      { "v": "Cromado", "u": 1 },
-      { "v": "Oro Rosa", "u": 1 }
+      {
+        "v": "Negro",
+        "u": 1
+      },
+      {
+        "v": "Cromado",
+        "u": 1
+      },
+      {
+        "v": "Oro Rosa",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/caja-frente-tall-seat-colony-1.jpg",
@@ -2946,9 +2955,18 @@ window.STIKE_PRODUCTS = [
     "price": 120000,
     "promo": false,
     "colors": [
-      { "v": "Negro", "u": 1 },
-      { "v": "Cromado", "u": 1 },
-      { "v": "Dorado", "u": 1 }
+      {
+        "v": "Negro",
+        "u": 1
+      },
+      {
+        "v": "Cromado",
+        "u": 1
+      },
+      {
+        "v": "Dorado",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/cadena-primo-121-halflink-1.jpg",
@@ -3230,8 +3248,14 @@ window.STIKE_PRODUCTS = [
     "price": 40000,
     "promo": false,
     "colors": [
-      { "v": "M25", "u": 5 },
-      { "v": "M24", "u": 1 }
+      {
+        "v": "M25",
+        "u": 5
+      },
+      {
+        "v": "M24",
+        "u": 1
+      }
     ],
     "imgs": [
       "assets/img/products/perno-superior-mutanty-negro-1.jpg",
@@ -3304,10 +3328,22 @@ window.STIKE_PRODUCTS = [
     "price": 65000,
     "promo": false,
     "colors": [
-      { "v": "Naranja", "u": 1 },
-      { "v": "Morado", "u": 1 },
-      { "v": "Verde", "u": 2 },
-      { "v": "Azul Aguamarina", "u": 2 }
+      {
+        "v": "Naranja",
+        "u": 1
+      },
+      {
+        "v": "Morado",
+        "u": 1
+      },
+      {
+        "v": "Verde",
+        "u": 2
+      },
+      {
+        "v": "Azul Aguamarina",
+        "u": 2
+      }
     ],
     "imgs": [
       "assets/img/products/protector-bucal-rhino-naranja-1.jpg",
@@ -3327,7 +3363,13 @@ window.STIKE_PRODUCTS = [
       "assets/img/products/protector-bucal-rhino-azul-aguamarina-1.jpg": "Azul Aguamarina",
       "assets/img/products/protector-bucal-rhino-azul-aguamarina-2.jpg": "Azul Aguamarina"
     },
-    "published": true
+    "published": true,
+    "sizes": [
+      {
+        "v": "Adulto",
+        "u": 6
+      }
+    ]
   },
   {
     "slug": "protector-maza-odyssey-clutch-v2-negro",
