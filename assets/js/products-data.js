@@ -3038,12 +3038,12 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-cult-crew-negra",
     "sku": "REP-CUL-002",
-    "n": "Caja de Dirección Cult Crew Negra",
+    "n": "Caja de frente Cult doble tapa",
     "brand": "Cult",
     "cat": "repuestos",
     "sub": "Tenedores",
     "spec": [
-      "Auriculares Campagnolo estándar",
+      "caja de frente estándar",
       "Dos tapas apilables de diferentes tamaños",
       "Rodamiento sellado tipo cartucho",
       "SHIS superior e inferior: IS42",
@@ -3055,14 +3055,19 @@ window.STIKE_PRODUCTS = [
     "promo": false,
     "units": 1,
     "imgs": [
-      "assets/img/products/caja-frente-cult-crew-negra-1.jpg"
+      "assets/img/products/88419cd9-33bf-4d2a-bba5-862cb83e6a56.jpg",
+      "assets/img/products/82cdd208-a3d1-458a-957c-e4ed1d51e98d.jpg",
+      "assets/img/products/5c5ad209-6411-42d7-8234-9b50f77d237a.jpg",
+      "assets/img/products/d4458703-3d36-4622-bc13-df9971fd2846.jpg",
+      "assets/img/products/40cebe7c-f080-4528-ab18-612a013f52b8.jpg",
+      "assets/img/products/025828c7-0ae6-4808-bfdd-0b9207af7a06.jpg"
     ],
     "published": true
   },
   {
     "slug": "caja-frente-merritt-cromada",
     "sku": "REP-MER-001",
-    "n": "Caja de Dirección Merritt Cromada",
+    "n": "Caja de frente Merritt Cromada",
     "brand": "Merritt",
     "cat": "repuestos",
     "sub": "Tenedores",
