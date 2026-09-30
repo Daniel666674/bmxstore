@@ -583,7 +583,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-fiend-frente-integrado-ransom-negra",
     "sku": "REP-FIE-019",
-    "n": "Caja de Dirección Fiend Frente Integrado Ransom Negra",
+    "n": "Caja De Frente Fiend Frente Integrado Ransom Negra",
     "brand": "Fiend",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -603,7 +603,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-fiend-frente-integrado-ransom-cromada",
     "sku": "REP-FIE-020",
-    "n": "Caja de Dirección Fiend Frente Integrado Ransom Cromada",
+    "n": "Caja De Frente Fiend Frente Integrado Ransom Cromada",
     "brand": "Fiend",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -2789,7 +2789,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-gw",
     "sku": "CJF-GWB-001",
-    "n": "Caja de Dirección GW Integrada",
+    "n": "Caja De Frente GW Integrada",
     "brand": "GW",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -2810,7 +2810,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-fate-negra",
     "sku": "CJF-FAT-001",
-    "n": "Caja de Dirección Fate Integrada Negra",
+    "n": "Caja De Frente Fate Integrada Negra",
     "brand": "Fate BMX Colombia",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -2832,7 +2832,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-tall-seat-colony",
     "sku": "CJF-CLN-001",
-    "n": "Caja de Dirección Colony Tall Seat",
+    "n": "Caja De frente Colony Tapa Alta",
     "brand": "Colony",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -2858,25 +2858,23 @@ window.STIKE_PRODUCTS = [
       }
     ],
     "imgs": [
-      "assets/img/products/caja-frente-tall-seat-colony-1.jpg",
       "assets/img/products/caja-frente-tall-seat-colony-2.jpg",
       "assets/img/products/caja-frente-tall-seat-colony-3.jpg",
-      "assets/img/products/caja-frente-tall-seat-colony-cromado-1.jpg",
-      "assets/img/products/caja-frente-tall-seat-colony-oro-rosa-1.jpg",
-      "assets/img/products/caja-frente-tall-seat-colony-4.jpg",
+      "assets/img/products/caja-frente-tall-seat-colony-1.jpg",
       "assets/img/products/caja-frente-tall-seat-colony-5.jpg",
-      "assets/img/products/caja-frente-tall-seat-colony-6.jpg"
+      "assets/img/products/caja-frente-tall-seat-colony-4.jpg"
     ],
     "imgColorMap": {
-      "assets/img/products/caja-frente-tall-seat-colony-cromado-1.jpg": "Cromado",
-      "assets/img/products/caja-frente-tall-seat-colony-oro-rosa-1.jpg": "Oro Rosa"
+      "assets/img/products/caja-frente-tall-seat-colony-1.jpg": "Oro Rosa",
+      "assets/img/products/caja-frente-tall-seat-colony-3.jpg": "Cromado",
+      "assets/img/products/caja-frente-tall-seat-colony-2.jpg": "Negro"
     },
     "published": true
   },
   {
     "slug": "caja-frente-fiend-stack",
     "sku": "CJF-FND-001",
-    "n": "Caja de Dirección Fiend Stack Integrada",
+    "n": "Caja De Frente Fiend Stack Integrada",
     "brand": "Fiend",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -2899,7 +2897,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-cult-match-v2",
     "sku": "CJF-CLT-001",
-    "n": "Caja de Dirección Cult Match V2",
+    "n": "Caja De Frente Cult Match V2",
     "brand": "Cult",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -3038,7 +3036,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-cult-crew-negra",
     "sku": "REP-CUL-002",
-    "n": "Caja de frente Cult doble tapa",
+    "n": "Caja De Frente Cult Doble Tapa Negra",
     "brand": "Cult",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -3067,7 +3065,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-merritt-cromada",
     "sku": "REP-MER-001",
-    "n": "Caja de frente Merritt Cromada",
+    "n": "Caja De Frente Merritt Cromada",
     "brand": "Merritt",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -3086,7 +3084,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "caja-frente-fiend-alta-negra",
     "sku": "REP-FIE-056",
-    "n": "Caja de Dirección Fiend Tapa Alta Negra",
+    "n": "Caja De Frente Fiend Tapa Alta Negra",
     "brand": "Fiend",
     "cat": "repuestos",
     "sub": "Tenedores",
