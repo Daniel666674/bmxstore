@@ -2917,26 +2917,6 @@ window.STIKE_PRODUCTS = [
     "published": true
   },
   {
-    "slug": "tornillos-mutanty-negro",
-    "sku": "MUTANY-TORNILLOS-NEGRO",
-    "n": "Set de Tornillos Mutanty Negro",
-    "brand": "Mutanty",
-    "cat": "accesorios",
-    "sub": "Herramientas",
-    "spec": [
-      "Material: Acero",
-      "Set completo",
-      "Color: Negro"
-    ],
-    "price": 25000,
-    "promo": false,
-    "units": 12,
-    "imgs": [
-      "assets/img/products/tornillos-mutanty-negro-1.jpg"
-    ],
-    "published": true
-  },
-  {
     "slug": "cadena-primo-121-halflink",
     "sku": "REP-PRI-003",
     "n": "Cadena Primo 121 Half Link",
@@ -3252,7 +3232,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "kit-eje-bielas-mutanty",
     "sku": "REP-MUT-005",
-    "n": "Kit Eje y Tornillos para Bielas Mutanty",
+    "n": "Kit De Tornillos para Bielas Mutanty x2",
     "brand": "Mutanty",
     "cat": "repuestos",
     "sub": "Bielas",
