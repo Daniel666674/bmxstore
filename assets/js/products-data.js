@@ -3165,7 +3165,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "perno-superior-wethepeople-negro",
     "sku": "REP-WTP-001",
-    "n": "Perno Superior WeThePeople Compact M25 Negro",
+    "n": "Conix Wethepeople Compact M25 Negro",
     "brand": "WeThePeople",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -3189,7 +3189,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "perno-superior-cult-sect-m24-negro",
     "sku": "REP-CUL-003",
-    "n": "Perno Superior Cult Sect M24 Negro",
+    "n": "Conix Cult Sect M24 Negro",
     "brand": "Cult",
     "cat": "repuestos",
     "sub": "Tenedores",
@@ -3213,7 +3213,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "perno-superior-mutanty-negro",
     "sku": "REP-MUT-004",
-    "n": "Perno Superior Mutanty Negro",
+    "n": "Conix Mutanty Negro",
     "brand": "Mutanty",
     "cat": "repuestos",
     "sub": "Tenedores",
