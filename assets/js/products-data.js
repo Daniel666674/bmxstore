@@ -182,7 +182,7 @@ window.STIKE_PRODUCTS = [
       "Avance: 30mm",
       "Color: Negro"
     ],
-    "price": 600000,
+    "price": 400000,
     "promo": false,
     "units": 2,
     "imgs": [
@@ -2421,7 +2421,7 @@ window.STIKE_PRODUCTS = [
     ],
     "price": 45000,
     "promo": false,
-    "units": 3,
+    "units": 9,
     "imgs": [
       "assets/img/products/grips-stranger-piston-1.jpg"
     ],
@@ -2441,7 +2441,7 @@ window.STIKE_PRODUCTS = [
     ],
     "price": 20000,
     "promo": false,
-    "units": 85,
+    "units": 8,
     "imgs": [
       "assets/img/products/grips-ontrail-yeti-1.jpg",
       "assets/img/products/grips-ontrail-yeti-2.jpg",
