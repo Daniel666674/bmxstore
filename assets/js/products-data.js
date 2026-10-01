@@ -3144,7 +3144,7 @@ window.STIKE_PRODUCTS = [
   {
     "slug": "funda-peg-odyssey-graduate-475",
     "sku": "REP-ODY-011",
-    "n": "Funda de Peg Odyssey Graduate 4.75\"",
+    "n": "Cubierta Peg Odyssey Graduate 4.75\"",
     "brand": "Odyssey",
     "cat": "repuestos",
     "sub": "Tacos y Protectores de Maza",
