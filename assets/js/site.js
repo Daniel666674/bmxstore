@@ -26,7 +26,7 @@
   /* Hoy: GitHub Pages. La migracion al dominio propio es cambiar estas dos
      lineas por  DOMAIN = "stikebikeshop.com"  y  BASE_PATH = "/". */
   var DOMAIN    = "daniel666674.github.io";
-  var BASE_PATH = "/bmxstore/";            // con "/" al inicio y al final
+  var BASE_PATH = "/stike-x7k2m9/";        // con "/" al inicio y al final
 
   /* El numero que arma los mensajes de WhatsApp de las fichas de producto.
      Tiene que ser el mismo de STIKE_CONFIG.whatsapp en assets/js/app.js
